@@ -199,10 +199,12 @@ ExportCSVApp.controller('homeController',
                     var response = JSON.parse(this.responseText);
                     var resUrl = this.responseURL;
                     var value = 0;
-                    for (var i = 0; i < response.rows.length; i++) {
+					if( response.httpStatus != 'Conflict' && response.httpStatusCode != 409 && response.rows.length > 0 )
+					{
+						for (var i = 0; i < response.rows.length; i++) {
                         value += parseInt(response.rows[i][3]);
-                    }
-
+						}
+					}
                     var resUrlList = resUrl.split('&');
 
                     var deCode = (resUrlList[5].split(':', 2))[1];
