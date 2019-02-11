@@ -192,7 +192,10 @@ ExportCSVApp.controller('homeController',
                 if (categoryoptioncombo == "BpkvMcVXQgy") {
                     catId = "wzqerAiRUfl"; // >25 years
                 }
-
+                if (categoryoptioncombo == "X66r2y4EuwS") {
+                    //catId = "wzqerAiRUfl,KqmIk38scuj"; // >25 years
+                    catId = "";// for default sum of <25 years and >25 years
+                }
                 function reqListener() {
                     this.responseText;
 
