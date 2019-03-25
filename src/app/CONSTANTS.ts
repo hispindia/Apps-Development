@@ -87,11 +87,16 @@ export const weeks = [
     { name: "Week 53", value: "W53" },
 ];
 
-export const years = [
-    "2018",
-    "2017",
-    "2016"
-];
+export const years = function() {
+    var startDate = 2016;
+    var date = new Date();
+    var endDate = date.getFullYear();
+    var arr = [];
+    for(var i = startDate; i <= endDate; i++) {
+         arr.push(i);
+        } 
+    return arr;
+}
 
 export const periods = [
     "Weekly",

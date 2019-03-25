@@ -17,7 +17,7 @@ export class RightbarselectionsComponent {
   selectedDataSet: string;
   selectedPeriodType: string;
 
-  years = arrays.years;
+  years = arrays.years();
   months = arrays.months;
   sixmonths = arrays.sixmonths;
   quarters = arrays.quarters;
