@@ -23,6 +23,21 @@ ExportCSVApp.controller('homeController',
 
 
         //org unit group
+        /*
+        api/organisationUnitGroupSets.json?fields=id,name,code,organisationUnitGroups[id,name,attributeValues[attribute[id,name,code],value]]&paging=false
+        for (var w = 0; w < data.programs.length; w++) {
+            if (data.programs[w].attributeValues.length != 0) {
+                for (var w1 = 0; w1 < data.programs[w].attributeValues.length; w1++) {
+                    if (data.programs[w].attributeValues[w1].attribute.code == 'Report_program' && data.programs[w].attributeValues[w1].value == "true") {
+
+                        prgNm = data.programs[w].name;
+                        prgId = data.programs[w].id;
+                        programName.push({ "name": prgNm, "id": prgId });
+                    }
+                }
+            }
+        }
+        */
         $.get('../../organisationUnitGroups.json?paging=false', function (ou) {
             var ouid = [];
             var ids;
