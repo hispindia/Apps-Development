@@ -38,25 +38,34 @@ ExportCSVApp.controller('homeController',
             }
         }
         */
-        $.get('../../organisationUnitGroups.json?paging=false', function (ou) {
-            var ouid = [];
-            var ids;
-            var dn;
-            for (var i = 0; i < ou.organisationUnitGroups.length; i++) {
-                ids = ou.organisationUnitGroups[i].id;
-                dn = ou.organisationUnitGroups[i].displayName;
+        //api/organisationUnitGroupSets.json?fields=id,name,code,organisationUnitGroups[id,name,code]&paging=false
 
-                if (ids == 'FrKiTIjDUxU' || ids == 'VnGNfO08w38' || ids == 'GhuHmwRnPBs' || ids == 'oPJQbzZ20Ff') {
-                    ouid.push(["all", "ALL"]);
-                    ouid.push([ids, dn]);
+        $scope.orgUnitGroups = [];
+        $.get('../../organisationUnitGroupSets.json?fields=id,displayName,code,organisationUnitGroups[id,displayName,code]&paging=false', function (ougGrpSet) {
+            var orgGroups = [];
+            var orgUnitGroupId;
+            var orgUnitGroupName;
+            var orgUnitGroupCode;
+
+            for (var i = 0; i < ougGrpSet.organisationUnitGroupSets.length; i++) {
+                if( ougGrpSet.organisationUnitGroupSets[i].code === 'ExcelExportGroupSet'){
+                    for (var j = 0; j < ougGrpSet.organisationUnitGroupSets[i].organisationUnitGroups.length; j++) {
+                        orgUnitGroupId = ougGrpSet.organisationUnitGroupSets[i].organisationUnitGroups[j].id;
+                        orgUnitGroupName = ougGrpSet.organisationUnitGroupSets[i].organisationUnitGroups[j].displayName;
+                        orgUnitGroupCode = ougGrpSet.organisationUnitGroupSets[i].organisationUnitGroups[j].code;
+                        orgGroups.push(["all", "ALL", "ALL"]);
+                        orgGroups.push([orgUnitGroupId, orgUnitGroupName, orgUnitGroupCode]);
+                        //$scope.csvExportAllOrgUnitGroups.push([orgUnitGroupId, orgUnitGroupName, orgUnitGroupCode]);
+                    }
                 }
             }
+
             var uniques = new Array();
             var itemsFound = {};
-            for (var i = 0, l = ouid.length; i < l; i++) {
-                var stringified = JSON.stringify(ouid[i]);
+            for (var i = 0, l = orgGroups.length; i < l; i++) {
+                var stringified = JSON.stringify(orgGroups[i]);
                 if (itemsFound[stringified]) { continue; }
-                uniques.push(ouid[i]);
+                uniques.push(orgGroups[i]);
                 itemsFound[stringified] = true;
             }
             var i;
@@ -65,22 +74,27 @@ ExportCSVApp.controller('homeController',
             for (i = 0; i < n; i++) {
                 tmp.push({
                     id: uniques[i][0],
-                    displayName: uniques[i][1]
+                    displayName: uniques[i][1],
+                    code: uniques[i][2]
                 });
             }
             var mObj = new Object;
             mObj.uniques = tmp;
 
             $scope.orgUnitGroups = mObj.uniques;
+
         }).fail(function (jqXHR, textStatus, errorThrown) {
 
-        })
+        });
 
-
+        console.log( "All CSV EXPORT Group - " + $scope.orgUnitGroups );
         /***************************************************************************************
 		 **** RETRIEVING DATA FROM SELECTION ***********************************************
 		 ************************************************************************************* **/
 
+        for (var i = 1; i < $scope.orgUnitGroups.length; i++) {
+            console.log( "All CSV EXPORT Group - " + $scope.orgUnitGroups[i].id + " -- " + $scope.orgUnitGroups[i].code + " -- " + $scope.orgUnitGroups[i].displayName );
+        }
 
         // Get JSON data
         $http.get('data.json').then(function (response) {
@@ -125,7 +139,7 @@ ExportCSVApp.controller('homeController',
 
             document.getElementById("loader").style.display = "block";
 
-            if ($scope.controllerData.orgunit === undefined) {
+            if ($scope.controllerData.orgUnitGroup === undefined) {
                 alert("Please select Organisation Unit Group");
                 window.location.assign('#home.html');
             }
@@ -134,9 +148,12 @@ ExportCSVApp.controller('homeController',
                 window.location.assign('#home.html');
             }
             else {
-                $scope.orgGroupId = $scope.controllerData.orgunit.id;
+                $scope.orgGroupId = $scope.controllerData.orgUnitGroup.id;
+                $scope.orgGroupDisplayName = $scope.controllerData.orgUnitGroup.displayName;
                 $scope.periodId = $scope.controllerData.period;
+                $scope.orgGroupCode = $scope.controllerData.orgUnitGroup.code;
 
+                /*
                 if ($scope.orgGroupId == "FrKiTIjDUxU") // Associated clinincs
                 {
 
@@ -160,7 +177,17 @@ ExportCSVApp.controller('homeController',
 
                     $scope.code = "CB205-0000";
                 }
-                if ($scope.orgGroupId == "all") {
+                */
+
+                if ( $scope.orgGroupId === "all" &&  $scope.orgGroupDisplayName === "ALL" && $scope.orgGroupCode === "ALL" ) {
+
+                    var orgUnitGroupsArray = [];
+                    for (var i = 0; i < $scope.orgUnitGroups.length; i++) {
+                        if( $scope.orgUnitGroups[i].id !== 'all'){
+                            $scope.addJsonData( $scope.orgUnitGroups[i].id, $scope.periodId, $scope.orgUnitGroups[i].code);
+                        }
+                    }
+                    /*
                     var orgUnitGroupsArray = [
                         { code: 'AS205-0000', orgId: 'FrKiTIjDUxU', period: $scope.periodId },
                         { code: 'OU205-0000', orgId: 'oPJQbzZ20Ff', period: $scope.periodId },
@@ -170,19 +197,14 @@ ExportCSVApp.controller('homeController',
 
                     for (var i = 0; i < orgUnitGroupsArray.length; i++) {
                         $scope.addJsonData(orgUnitGroupsArray[i].orgId, orgUnitGroupsArray[i].period, orgUnitGroupsArray[i].code);
-
                     }
-
+                    */
                 }
                 else {
-                    $scope.addJsonData($scope.orgGroupId, $scope.periodId, $scope.code);
-
+                    $scope.addJsonData($scope.orgGroupId, $scope.periodId, $scope.orgGroupCode);
                 }
-
             }
-
-
-        }
+        };
 
         // Get data from JSON
 
@@ -246,8 +268,6 @@ ExportCSVApp.controller('homeController',
                         }
                     }
                 }
-
-
 
                 var oReq = new XMLHttpRequest();
                 oReq.addEventListener("load", reqListener);
