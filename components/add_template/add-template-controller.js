@@ -192,7 +192,9 @@ excelUpload.controller('AddTemplateController',
                     var lbl = $scope.engAddress[y] + "" + x;
                     htmlString += "<td style='padding:2px 5px'>" + lbl + "</td>";
                     htmlString += "<td><select class='form-control' id='row_"+ x + "_" + y +"'><option value='-1'>--Select--</option>";
-
+                    $scope.selectedDataSetInfo.dataSetElements.sort((a,b) => {
+                      return  a.dataElement.name.localeCompare(b.dataElement.name)
+                    })
                     $scope.selectedDataSetInfo.dataSetElements.forEach(function(de){
                         de.dataElement.categoryCombo.categoryOptionCombos.forEach(function(coc){
                             var sel = $scope.isSelected( lbl, de.dataElement.id + "-" + coc.id ) ? "selected" : "";
@@ -229,7 +231,9 @@ excelUpload.controller('AddTemplateController',
                     var lbl = $scope.getData(x, $scope.newTemplate.rowStart.cn);
                     htmlString += "<td style='padding:2px 5px'>" + lbl + "</td>";
                     htmlString += "<td><select class='form-control' id='row_"+ x + "_" + $scope.newTemplate.rowStart.cn +"'><option value='-1'>--Select--</option>";
-
+                    $scope.selectedDataSetInfo.dataSetElements.sort((a,b) => {
+                        return  a.dataElement.name.localeCompare(b.dataElement.name)
+                      })
                     $scope.selectedDataSetInfo.dataSetElements.forEach(function(de){
                         de.dataElement.categoryCombo.categoryOptionCombos.forEach(function(coc){
                             var sel = $scope.isSelected( lbl, de.dataElement.id + "-" + coc.id ) ? "selected" : "";
