@@ -40,6 +40,8 @@ excelUpload.controller('ImportFacilitywiseController',
 
         $scope.confirmedUploads = [];
 
+        $scope.dataEndingCell = 0;
+
 		/* **************************************************************************************
 		 **** RETRIEVING ROOT JSON AND NEEDED DATA ***********************************************
 		 ************************************************************************************* **/
@@ -408,7 +410,7 @@ excelUpload.controller('ImportFacilitywiseController',
         $scope.isEverythingOK = true;
 
         $scope.validateAll = function (orgUnit, index) {
-            
+            var numberCells = '';
             var dataCells = [];
             //				$scope.validatedMessage.length = 0;
             //				$("#loader").fadeIn();
@@ -439,8 +441,17 @@ excelUpload.controller('ImportFacilitywiseController',
 
 
 
-			/* *** */				var selectedTemp = $scope.getTemplate($scope.confirmedUploads.TempVal);
-
+            /* *** */				var selectedTemp = $scope.getTemplate($scope.confirmedUploads.TempVal);
+            //Sheet length validation
+            dataCells[dataCells.length-1].address.split("").forEach(val => {               
+                if(!isNaN(val)) {
+                    numberCells  += val;
+                }
+            })
+            if(numberCells != $scope.dataEndingCell) {
+                alert("Oops! Excel sheet not Correct");
+                window.history.back();
+            }
             if (selectedTemp != "") {
 
                 $.each(selectedTemp.DEMappings, function (i, dem) {
@@ -524,11 +535,20 @@ excelUpload.controller('ImportFacilitywiseController',
             console.log(" de : " + isDeFound + " coc : " + isCocFound);
 
             if (!isDeFound) {
-                $scope.validatedMessage.push("Data element " + deId + " is not found");
+                
+                $.get("../../../api/dataElements/" + deId + ".json?fields=name", function (elementName) {
+                    $scope.validatedMessage.push("Data element: " + elementName.name +" (" + deId + ") not found");
+                });
                 return false;
             } else {
                 if (!isCocFound) {
-                    $scope.validatedMessage.push("COC " + coc + " of data element " + deId + " is not found");
+                    let deIdName = "";
+                    $.get("../../../api/dataElements/" + deId + ".json?fields=name", function (elementName) {
+                        deIdName = elementName.name;
+                    });
+                    $.get("../../../api/categoryCombos/" + deId + ".json?fields=name", function (COCName) {
+                    $scope.validatedMessage.push("COC: " + COCName.name + " ( "+ coc + ") of data element: " + deIdName + " (" + deId + ") is not found");
+                    });
                     return false;
                 } else
                     return true;
@@ -638,6 +658,32 @@ excelUpload.controller('ImportFacilitywiseController',
                             error: function (response) { }
                         });
                         */
+
+                        //Checking true false and date type
+                       $.get("../../../api/dataElements/" + dataValue.dataElement + ".json?fields=valueType", function (data) {
+
+                        var deType = data.valueType;
+                        if(deType == "BOOLEAN") {
+                            let convertToSmall = ($scope.getImportDataByAddress(cellAddress, orgUnit)).toLowerCase();
+                            if(convertToSmall == "yes" || convertToSmall == "true" || convertToSmall == "t" || convertToSmall == "y") {
+                                dataValue.value = true;
+                            }
+                            if(convertToSmall == "no" || convertToSmall == "false" || convertToSmall == "f" || convertToSmall == "n") {
+                                dataValue.value = false;
+                            }
+                        }
+
+                        if (deType === "DATE") {                               
+                            var temp = $scope.getImportDataByAddress(cellAddress, orgUnit);
+                            
+                            var dd = temp.substring(0, 2);
+                            var mm = temp.substring(2, 4);
+                            var yy = temp.substring(4, 8);
+
+                            var date = yy + "-" + mm + "-" + dd;
+                            dataValue.value = date;
+                        }
+                    });
 
                         /************************************* FOR SC ************************************************************/
                         if (factype == "SC") {
@@ -1120,8 +1166,10 @@ excelUpload.controller('ImportFacilitywiseController',
             var t = "";
 
             $scope.templates.templates.forEach(function (te) {
-                if (te.id == id)
+                if (te.id == id) {
                     t = te;
+                    $scope.dataEndingCell = te.dataEnd.rn;
+                }
             });
 
             return t;
@@ -1192,7 +1240,7 @@ excelUpload.controller('ImportFacilitywiseController',
             $("#loader").fadeIn();
             $scope.validatedMessage.length = 0;
             $scope.isEverythingOK = true;
-         
+
             $scope.confirmedUploads.orgUnits.forEach(function (orgUnit, index) {
                 $scope.validateAll(orgUnit, index);
             });
