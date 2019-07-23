@@ -571,9 +571,6 @@ excelUpload.controller('ImportFacilitywiseController',
                 console.log(factype);
             var selectedTemp = $scope.getTemplate($scope.confirmedUploads.TempVal);
             var dataValues = [];
-            $("#loader").fadeIn();
-            $("#templateProgress").html(orgUnit.name + " -> preparing data values to import");
-
             if (selectedTemp != "") {
 
 
@@ -1281,7 +1278,12 @@ excelUpload.controller('ImportFacilitywiseController',
             };
 
             $scope.confirmedUploads.orgUnits.forEach(function (orgUnit, index) {
+                
+            $("#loader").fadeIn();
+            $("#templateProgress").html(orgUnit.name + " -> preparing data values to import");
+            $timeout(()=> {
                 $scope.importData(orgUnit, index, callbackfunct);
+            },1000)
             });
 
         };
