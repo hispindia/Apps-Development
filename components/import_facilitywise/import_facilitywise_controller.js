@@ -661,16 +661,20 @@ excelUpload.controller('ImportFacilitywiseController',
 
                         var deType = data.valueType;
                         if(deType == "BOOLEAN") {
+                            var tempBoolenValue = $scope.getImportDataByAddress(cellAddress, orgUnit);
                             let convertToSmall = ($scope.getImportDataByAddress(cellAddress, orgUnit)).toLowerCase();
-                            if(convertToSmall == "yes" || convertToSmall == "true" || convertToSmall == "t" || convertToSmall == "y") {
+                            if( tempBoolenValue === "TRUE" || tempBoolenValue === "YES" || tempBoolenValue === "True" || tempBoolenValue === "Yes" ||
+                                convertToSmall == "yes" || convertToSmall == "true" || convertToSmall == "t" || convertToSmall == "y") {
+
                                 dataValue.value = true;
                             }
-                            if(convertToSmall == "no" || convertToSmall == "false" || convertToSmall == "f" || convertToSmall == "n") {
+                            else if( tempBoolenValue === "FALSE" || tempBoolenValue === "NO" || tempBoolenValue === "False" || tempBoolenValue === "No" ||
+                                    convertToSmall == "no" || convertToSmall == "false" || convertToSmall == "f" || convertToSmall == "n") {
                                 dataValue.value = false;
                             }
                         }
 
-                        if (deType === "DATE") {                               
+                        else if (deType === "DATE") {
                             var temp = $scope.getImportDataByAddress(cellAddress, orgUnit);
                             
                             var dd = temp.substring(0, 2);
