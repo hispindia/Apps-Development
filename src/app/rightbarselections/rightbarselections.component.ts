@@ -45,11 +45,7 @@ export class RightbarselectionsComponent {
       this.options = utility.getweeks(sd, ed);
     }
   };
-
-
-
   constructor(private callingBridge: SharedService, public snackBar: MatSnackBar) {
-
     //method service which gets value from headerseletions
     this.callingBridge.periodValidateServiceMedthod.subscribe(
       (value) => {
@@ -88,7 +84,6 @@ export class RightbarselectionsComponent {
   }
 
   //function to get reports on table
-
   generateReport = function () {
     if (this.selectedPeriodType == "Yearly") this.reportingPeriod = this.selectedYearModel;
     else if (this.selectedPeriodType == "Weekly") this.reportingPeriod = this.optionvalue;

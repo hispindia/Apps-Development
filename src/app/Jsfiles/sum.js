@@ -1,7 +1,7 @@
 
 
 var cellSumFunction = (function() {
-
+console.log('here is me');
     return {
 
         //sum function starts here
@@ -30,6 +30,7 @@ var cellSumFunction = (function() {
              
             });
   
+            console.log('here is me');
   
             if (flag && sum != 0) { 
               var cell = "<td>" + sum + "</td>";
@@ -54,6 +55,8 @@ var cellSumFunction = (function() {
           //sum function ends here
       },
       sumReportsAll: function() {
+      console.log('here is me');
+
         var REMOVE_TOTAL = [
           "bGnNmKSuZlw","ShLvZi45WYv","FN9wO5d2jmN","NVirEUvg4lE","i5doaVaayYN","YcywkvYogw3"
         ]
@@ -111,6 +114,7 @@ var cellSumFunction = (function() {
       },
 
       verticalSumReport : function(){
+      console.log('here is me');
         $(".custom-table-div table tbody").each(function (indexTable) {
           var arrayLength = $(this).find("tr").first().children("td").length;
           var rowCount = $(this).children("tr").length;
@@ -124,7 +128,7 @@ var cellSumFunction = (function() {
             var tdcount = $(this).children("td").length;
             console.log(arrayLength,tdcount);
             if(arrayLength == tdcount && countflag){
-              debugger
+          //    debugger
               $(this).find("td").each(function (indexCell) {
                 var value = 0;
               // console.log($(this));
@@ -139,7 +143,7 @@ var cellSumFunction = (function() {
             
             }
             else if((arrayLength == tdcount || arrayLength-1 == tdcount) && !countflag){
-              debugger
+            //  debugger
               $(this).find("td").each(function (indexCell) {
                 var value = 0;
                 if ($(this)[0].innerText == "") {
@@ -165,7 +169,7 @@ var cellSumFunction = (function() {
             }
             // console.log(indexRow,)
             if(rowCount-1 == indexRow){
-              debugger
+              // debugger
           var newrow = "<tr>";
           for(var k in array){
           if(array.length-1 == k){ newrow += "<td><b>Total<b></td>";}
@@ -240,7 +244,7 @@ var cellSumFunction = (function() {
              // console.log(array);
             }
             if(rowCount-1 == indexRow){
-              debugger
+            //  debugger
           var newrow = "<tr>";
           for(var k in array){
           if(array.length-1 == k){ newrow += "<td><b>Total<b></td>";}

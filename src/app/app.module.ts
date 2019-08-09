@@ -91,7 +91,7 @@ import { AlltablesComponent } from './alltables/alltables.component';
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatTreeModule,
+    MatTreeModule
   ],
   declarations: []
 })

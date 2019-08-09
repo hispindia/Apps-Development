@@ -1,22 +1,19 @@
-import { Component} from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { SharedService } from 'src/app/shared.service';
 import { AjaxserviceService } from 'src/app/ajaxservice.service';
 import * as $ from 'jquery';
 import * as x from 'src/app/CONSTANTS';
 import { MatSnackBar } from '@angular/material';
 import 'src/app/Jsfiles/sum.js';
-
+import * as XLSX from 'xlsx';
 declare var cellSumFunction: any;
-
 @Component({
   selector: 'app-tablecard',
   templateUrl: './tablecard.component.html',
   styleUrls: ['./tablecard.component.css']
 })
-
 export class TablecardComponent {
-
-
+  @ViewChild('table') table: ElementRef;
   ou: string;
   pe: any;
   ds: string;
@@ -26,7 +23,6 @@ export class TablecardComponent {
   dsIds = [];
 
   constructor(private callingBridge: SharedService, private ajax: AjaxserviceService, public snackBar: MatSnackBar) {
-   
     // method service which gets selectedDataset from datasetstab
     this.callingBridge.dataSetServiceMethod.subscribe(
       (ds) => {
@@ -36,11 +32,9 @@ export class TablecardComponent {
             this.dsNames.push(this.selectedDatasets[k].name);
           }
         }
-        
       }
     );
-
-
+   
     //method service which gets selectedOrgUnit from orgunitlibrary
     this.callingBridge.paramsServiceMethod.subscribe(
       (params) => {
@@ -66,7 +60,6 @@ export class TablecardComponent {
         this.displayReport(this.ou, this.pe, this.ds);
       }
     );
-
   }
 
   openSnackBar(message: string, action: string) {
@@ -87,7 +80,6 @@ export class TablecardComponent {
   }
 
   modifyReport(domstr) {
-    debugger
     var response = $.parseHTML(domstr);
     if(response[0].nodeName == 'P')response.splice(0,1);
     console.log(response);
@@ -152,7 +144,12 @@ export class TablecardComponent {
     $("#loader-table").fadeIn(100);
     this.callingBridge.callMethodToSendOuandPe([this.ou,this.pe]);
   }
-
-
+exportToExcel()
+{
+  const ws: XLSX.WorkSheet=XLSX.utils.table_to_sheet(this.table.nativeElement);
+  const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'report');
+  XLSX.writeFile(wb, 'reports.xlsx');
+}
 }
 
