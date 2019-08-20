@@ -1,0 +1,103 @@
+
+
+
+    <div ng-controller="dispatchNewSample">
+        <h1 class="main_header">Isolate Transfer App</h1>
+                
+        <div class="side-bar">
+            <ul class="side-bar-list">
+                <li class="active" ng-click="dispatchnewSample()"> Dispatch New Sample</li>
+                <li  ng-click="sampleSentForQualityCheck()"> Sample Sent for Quality Check</li>
+            </ul>
+                <div>   
+                    <div id="orgUnitTree">
+                        <ul>
+                        </ul>
+                     </div>
+                </div>
+                     
+        </div>
+                <div class="main">
+                    <table class="main-tei-data">
+                        <thead>
+                            <tr style="text-align: center">
+                                <td colspan="5"></td>
+                                <td><button class="button" ng-click="createNewTransfer()"> Add New </button></td>  
+                            </tr>
+                                
+                            <tr>
+                                <th colspan="6" >Lab: {{selectedOrgUnit.name}}</th>
+                            </tr>
+                            <tr style="text-align: center">
+                                <th>Batch No.</th>
+                                <th>AMR Ids</th>
+                                <th>Organism</th>
+                                <th>Created Date</th>
+                                <th>Edit</th>
+                                <th>print</th>
+                            </tr>
+                        </thead>
+                        <tbody style="text-align: center">
+                            <tr ng-repeat="dataValues in allTeiDataValues" ng-if='dataValues.status  == "CREATE"'>                   
+                                    <td>{{dataValues.BatchNo}}</td>
+                                    
+                                    <td><p ng-repeat="amrId in dataValues.rows.selectedArray">{{amrId.amrid}}<p></td>
+                                    
+                                        <td>{{dataValues.program.displayName}}</td>    
+                                        <td>{{dataValues.createdDate}}</td>
+                                    <td> <button class="button" ng-click="editTransfer(dataValues)"> Edit </button> </td>
+                                    <td><button class="button" ng-click="showToggle(dataValues)"> Print </button> </td>
+                                </tr>
+                        </tbody>
+                      
+                    </table>
+                    <modal-dialog>
+                            <div id="table-print">
+                                    <table class="display-print-data" style="width:90%;margin:0 auto;font-family:arial;">
+                                        <thead>
+                                            <tr style="text-align:center;padding-top:2%;font-weight:400;">
+                                                <td colspan="4">ICMR AMR Surveillance Network</td>
+                                            </tr>
+                                            <tr style="text-align:center;padding-top:2%;font-weight:400;">
+                                                <td colspan="4">Sample Transfer Regional Center to Nodal Center<br/>(Draft List)</td>
+                                            </tr>
+                                            <tr style="padding-top:2%;font-weight:400;">
+                                           </tr>
+                                            <tr style="padding-top:2%;font-weight:400;">
+                                                <th colspan="4"> Name of Regional Center :  {{selectedOrgUnit.name}}</th>
+                                            </tr>
+                                            <tr  style="padding-top:2%;font-weight:400;">
+                                                <th colspan="4"> Name of Nodal Center : {{storePrintValues.program.displayName}}</th>
+                                            </tr>
+                                            <tr style="padding-top:2%;font-weight:400;">
+                                                <th  colspan="4">Total sample count : {{storePrintValues.totalSelectedArray}}</th>
+                                            </tr>
+                                            <tr style="padding-top:2%;font-weight:400;">
+                                                <th  colspan="4">Batch No. : {{storePrintValues.BatchNo}}</th>
+                                            </tr>
+                                            <tr style="padding-top:2%;" >
+                                                <td >Serial Number</td>
+                                                <td>AMR ID</td>
+                                                <td>Organism</td>
+                                                <td>Sample Type</td>
+                                            </tr>
+                                            <tr style="padding-top:2%;" ng-repeat="amr in storePrintValues.rows.selectedArray">
+                                                <td>{{$index+1}}</td>
+                                                <td>{{amr.amrid}}</td>
+                                                <td>{{showTypes[amr.eventuid]["Organism"]}}</td>
+                                                <td>{{showTypes[amr.eventuid]["Sample Type"]}}</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody> 
+                                        </tbody>
+                                        
+                                        
+                                    </table>
+                            
+                            </div>
+                            <button class="button" id="print-amr-button" ng-click="printAMR('table-print')">Print</button>
+                    </modal-dialog>
+                    </div>
+                </div>
+                
+                </div>

@@ -1,0 +1,59 @@
+
+<div>   
+        
+         <div class="main">                         
+            <h1 class="main_header">Isolate Transfer App</h1>
+            <table class="selectFields">
+                <tr>
+                <td>Lab </td>
+                <td>
+                    <input type="text" ng-model="selectedOrgUnit.name" disabled></td>
+                </tr>
+                <tr>
+                    <td> Organism Group </td>
+                    <td>
+                        <input type="text" ng-model="selectedProgram" disabled>   
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="startDate"> Start Date: </label>                                      
+                    </td>
+                    <td>
+                        <input calendar ng-model='selectedStartDate' id="startDate" disabled />                    
+                    </td>
+                    <td>
+                        <label for="endDate"> End Date: </label>                                      
+                    </td>
+                    <td>
+                        <input calendar ng-model='selectedEndDate' id="endDate" disabled />                    
+                    </td>
+                </tr>
+            </table>
+
+            <div id="content" >   
+            <div id="container">
+                <div class="container-all" id="container-first" >
+                
+                <select class="dataList" multiple ng-dblclick="shiftRight()"  ng-model="selectedContinerLeft" ng-options="dataValue.amrid for dataValue in teiDataValue.availableArray"></select>
+                </div>
+                <div id="container-middle">
+                <button class="cointainer-button" ng-click="buttonRight()"> <span>&#8594;</span></button><br/>
+                <button class="cointainer-button" ng-click="buttonLeft()" >  <span>&#8592; </span> </button><br/>
+                <button class="cointainer-button" ng-click="buttonBoth()" > <span>&#8596;</span>  </button>
+                </div>
+                <div class="container-all" id="container-last">
+                     <select class="dataList" multiple ng-dblclick="shiftLeft()" ng-model="selectedContinerRight" ng-options="dataValue.amrid for dataValue in teiDataValue.selectedArray"></select>
+               
+                </div>
+            </div>
+        
+            <div id="container-footer">
+            <button class="button" ng-click="transferTeiDataValue()"> Dispatch </button>               
+            <button class="button" id="button-danger" ng-click="cancelTeiDataValue()"> Cancel </button>               
+            </div>  
+        </div>          
+    </div>
+ 
+       </div>
