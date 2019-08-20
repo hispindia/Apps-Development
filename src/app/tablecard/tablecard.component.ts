@@ -26,6 +26,7 @@ export class TablecardComponent {
     // method service which gets selectedDataset from datasetstab
     this.callingBridge.dataSetServiceMethod.subscribe(
       (ds) => {
+        console.log('here is dataset', ds);
         if (typeof ds == "object") {
           this.selectedDatasets = ds;
           for (let k in this.selectedDatasets) {
@@ -70,6 +71,7 @@ export class TablecardComponent {
 
   displayReport(ou, pe, ds) {
     this.ajax.getDatasetHTML(ou, pe, ds).subscribe(res => {
+      console.log("here is res to display data on table", res);
       setTimeout(() => {
         $("#loader-table").fadeOut(500);
         $(".ex-element-main").show();
