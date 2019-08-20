@@ -1,66 +1,58 @@
 isolateTransferApp.controller('sampleSentForQualityCheck', function ($scope, $location, $timeout, MetadataService, dataStoreService) {
-
-
     $scope.selectedOrgUnit = {
-        id:"",
+        id: "",
         name: "",
         code: ""
     }
-    
     $scope.storePrintValues = [];
-    
-    $scope.showModal = false;
-    $scope.allTeiDataValues =  []; 
-    $scope.selectedEventUID = {};
+    $scope.allTeiDataValues = [];
     $scope.amrIds = [];
-    $scope.dispatchnewSample = function () {    
+    $scope.selectedEventUID = {};
+    $scope.showModal = false;
+    $scope.dispatchnewSample = function () {
         $location.path('/').search();
     }
     $scope.sampleSentForQualityCheck = function () {
         $location.path('/sample-sent-for-quality-check').search();
     }
-    $scope.showToggle = function(data) {
+    $scope.showToggle = function (data) {
         var optionValue = [];
         $scope.showTypes = [];
-          $scope.storePrintValues = data;
-          if(data == undefined) {
-              
-            $scope.showModal = !$scope.showModal;
-          }
-          if(data != undefined) {
-            data.rows.selectedArray.forEach( child => {
-                $scope.selectedEventUID[child["amrid"]] = child["eventuid"] 
-            })
-          
-          $scope.storePrintValues["totalSelectedArray"] =  data.rows.selectedArray.length;
-          MetadataService.getSQLView("p4HF5bVuL6x","").then(function(data) {
-              data.listGrid.rows.forEach(child => {
-                  if(child[1] == null) child[1] = ""
-                  optionValue[child[0]] = [];
-                  optionValue[child[0]][child[1]] = child[2];
-              })
-          }).then(function() {
-              for(let key in $scope.selectedEventUID) {
-                  var params = "var=eventID:" + $scope.selectedEventUID[key];
-                  MetadataService.getSQLView("Qxf3P0JENJT",params).then(function(data) {
-                    data.listGrid.rows.forEach(child=> {
-                        if($scope.showTypes[child[0]] == undefined) $scope.showTypes[child[0]] = [];
-                        if(child[1] == "Organism")$scope.showTypes[child[0]]["Organism"] = optionValue[child["2"]][child["3"]]
-                        if(child[1] == "Sample type")$scope.showTypes[child[0]]["Sample Type"] = optionValue[child["2"]][child["3"]]
-                    })
-                  })
-              }
-              $timeout(function() {
-                $scope.showModal = !$scope.showModal;
-              },1000)
-            
-          })
+        $scope.storePrintValues = data;
+        if (data == undefined) {
 
+            $scope.showModal = !$scope.showModal;
         }
-          
-          
+        if (data != undefined) {
+            data.rows.selectedArray.forEach(child => {
+                $scope.selectedEventUID[child["amrid"]] = child["eventuid"]
+            })
+
+            $scope.storePrintValues["totalSelectedArray"] = data.rows.selectedArray.length;
+            MetadataService.getSQLView("p4HF5bVuL6x", "").then(function (data) {
+                data.listGrid.rows.forEach(child => {
+                    if (child[1] == null) child[1] = ""
+                    optionValue[child[0]] = [];
+                    optionValue[child[0]][child[1]] = child[2];
+                })
+            }).then(function () {
+                for (let key in $scope.selectedEventUID) {
+                    var params = "var=eventID:" + $scope.selectedEventUID[key];
+                    MetadataService.getSQLView("Qxf3P0JENJT", params).then(function (data) {
+                        data.listGrid.rows.forEach(child => {
+                            if ($scope.showTypes[child[0]] == undefined) $scope.showTypes[child[0]] = [];
+                            if (child[1] == "Organism") $scope.showTypes[child[0]]["Organism"] = optionValue[child["2"]][child["3"]]
+                            if (child[1] == "Sample type") $scope.showTypes[child[0]]["Sample Type"] = optionValue[child["2"]][child["3"]]
+                        })
+                    })
+                }
+                $timeout(function () {
+                    $scope.showModal = !$scope.showModal;
+                }, 1000)
+            })
+        }
     }
-    $scope.printAMR = function printContent(el) {    
+    $scope.printAMR = function printContent(el) {
         var printcontent = document.getElementById(el).innerHTML;
         document.body.innerHTML = printcontent;
         window.print();
@@ -75,35 +67,32 @@ isolateTransferApp.controller('sampleSentForQualityCheck', function ($scope, $lo
         loadOrgUnit();
     }, false);
     loadOrgUnit = function () {
-        MetadataService.getOrgUnit($scope.selectedOrgUnit.id).then(function(orgUnit) {
-           $timeout(function() {
+        MetadataService.getOrgUnit($scope.selectedOrgUnit.id).then(function (orgUnit) {
+            $timeout(function () {
                 $scope.selectedOrgUnit.name = orgUnit.name;
-                $scope.selectedOrgUnit.code  = orgUnit.code;
+                $scope.selectedOrgUnit.code = orgUnit.code;
 
-                dataStoreService.get($scope.selectedOrgUnit.code).then(function(response) {
+                dataStoreService.get($scope.selectedOrgUnit.code).then(function (response) {
                     $scope.allTeiDataValues = response;
-                    $scope.allTeiDataValues.forEach(child=> {
+                    $scope.allTeiDataValues.forEach(child => {
                         var id = [];
                         var count = 0;
                         $scope.amrIds[child.BatchNo] = [];
                         id[count] = []
-                        child.rows.selectedArray.forEach( (data, index)=> {
-                            if((index+1)%6 == 0) {
+                        child.rows.selectedArray.forEach((data, index) => {
+                            if ((index + 1) % 6 == 0) {
                                 count++;
                                 id[count] = []
                             }
                             id[count].push(data.amrid);
                         })
                         var ar = id.map(ids => {
-                           return  ids.join(",")
+                            return ids.join(",")
                         })
                         $scope.amrIds[child.BatchNo] = ar;
                     })
                 })
-           }) 
+            })
         })
     }
-  
-
-
 });
