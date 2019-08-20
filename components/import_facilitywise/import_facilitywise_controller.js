@@ -1134,16 +1134,21 @@ excelUpload.controller('ImportFacilitywiseController',
                     $scope.h.orgUnits[index].stats.upc = tem.data.importCount.updated;
                     $scope.h.stats.imc += tem.data.importCount.imported;
                     $scope.h.orgUnits[index].stats.imc = tem.data.importCount.imported;
-                    $scope.h.stats.igc += tem.data.importCount.ignored;
+                    //$scope.h.stats.igc += tem.data.importCount.ignored;
+                    //$scope.h.orgUnits[index].stats.igc = tem.data.importCount.ignored;
 
                     if( tem.data.conflicts === undefined )
                     {
                         $("#conflictDetails").html("No Conflicts");
+                        $scope.h.stats.igc += 0;
+                        $scope.h.orgUnits[index].stats.igc = 0;
                     }
                     else {
                         $("#conflictDetails").html(JSON.stringify(tem.data.conflicts));
+                        $scope.h.stats.igc += tem.data.importCount.ignored;
+                        $scope.h.orgUnits[index].stats.igc = tem.data.importCount.ignored;
                     }
-                    $scope.h.orgUnits[index].stats.igc = tem.data.importCount.ignored;
+
 
                     $scope.history.history.push($scope.h);
                     $scope.storeHistory();
