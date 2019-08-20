@@ -6,6 +6,9 @@
     margin-top:4%;
 }
 
+.ui-widget-content {
+    border: none !important;
+}
 .side-bar {
     width:20%;
     border-right: 5px solid #E2E2DD;

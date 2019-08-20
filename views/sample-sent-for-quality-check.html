@@ -19,25 +19,27 @@
                           <table class="main-tei-data">
                             <thead>
                                 <tr>
-                                    <th colspan="5" >Lab: {{selectedOrgUnit.name}}</th>
+                                    <th colspan="6" >Lab: {{selectedOrgUnit.name}}</th>
                                 </tr>
                                 <tr style="text-align: center">
                                     <th>Batch No.</th>
                                     <th>AMR Ids</th>
-                                    <th>Organism</th>
+                                    <th>Organism Group</th>
                                     <th>Dispatched Date</th>
-                                    <th>print</th>
+                                    <th>Print</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
-                            <tbody style="text-align: center">
+                            <tbody>
                                 <tr ng-repeat="dataValues in allTeiDataValues" ng-if='dataValues.status  == "DISPATCH"'>                   
-                                        <td>{{dataValues.BatchNo}}</td>
-                                        
-                                        <td><p ng-repeat="amrId in dataValues.rows.selectedArray">{{amrId.amrid}}<p></td>
-                                        
-                                            <td>{{dataValues.program.displayName}}</td>    
-                                            <td>{{dataValues.dispatchDate}}</td>
+                                        <td>{{dataValues.BatchNo}}</td>                                        
+                                        <td><p ng-repeat="amr in amrIds[dataValues.BatchNo]">{{amr}}<p></td>
+                                        <td>{{dataValues.program.displayName}}</td>    
+                                        <td>{{dataValues.dispatchDate}}</td>
                                         <td><button class="button" ng-click="showToggle(dataValues)"> Print </button> </td>
+                                        <td> {{dataValues.disptachStatus.received}}<br/>
+                                            {{dataValues.disptachStatus.receivedDate}}
+                                        </td>
                                 </tr>
                             </tbody>
                           

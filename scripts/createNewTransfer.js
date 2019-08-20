@@ -56,7 +56,6 @@ isolateTransferApp.controller("createNewTransfer", function($scope, $location, $
     })
 
     $scope.cancelTeiDataValue = function() {
-        //window.history.back();
         $location.path('/').search();
     }
 

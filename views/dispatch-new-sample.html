@@ -31,21 +31,19 @@
                             <tr style="text-align: center">
                                 <th>Batch No.</th>
                                 <th>AMR Ids</th>
-                                <th>Organism</th>
+                                <th>Organism Group</th>
                                 <th>Created Date</th>
-                                <th>Edit</th>
-                                <th>print</th>
+                                <th>Edit/Dispatch</th>
+                                <th>Print</th>
                             </tr>
                         </thead>
-                        <tbody style="text-align: center">
+                        <tbody>
                             <tr ng-repeat="dataValues in allTeiDataValues" ng-if='dataValues.status  == "CREATE"'>                   
                                     <td>{{dataValues.BatchNo}}</td>
-                                    
-                                    <td><p ng-repeat="amrId in dataValues.rows.selectedArray">{{amrId.amrid}}<p></td>
-                                    
-                                        <td>{{dataValues.program.displayName}}</td>    
-                                        <td>{{dataValues.createdDate}}</td>
-                                    <td> <button class="button" ng-click="editTransfer(dataValues)"> Edit </button> </td>
+                                    <td><p ng-repeat="amr in amrIds[dataValues.BatchNo]">{{amr}}<p></td>
+                                    <td>{{dataValues.program.displayName}}</td>    
+                                     <td>{{dataValues.createdDate}}</td>
+                                    <td> <button class="button" ng-click="editTransfer(dataValues)"> Edit/Dispatch </button> </td>
                                     <td><button class="button" ng-click="showToggle(dataValues)"> Print </button> </td>
                                 </tr>
                         </tbody>

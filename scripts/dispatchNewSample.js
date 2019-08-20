@@ -12,6 +12,7 @@ isolateTransferApp.controller('dispatchNewSample',
     $scope.storePrintValues = [];
     
     $scope.selectedEventUID = {};
+    $scope.amrIds = [];
     $scope.dispatchNewSample = function () {
         $location.path('/').search();
     }
@@ -87,6 +88,24 @@ isolateTransferApp.controller('dispatchNewSample',
 
             dataStoreService.get($scope.selectedOrgUnit.code).then(function(response) {
                 $scope.allTeiDataValues = response;
+
+                $scope.allTeiDataValues.forEach(child=> {
+                    var id = [];
+                    var count = 0;
+                    $scope.amrIds[child.BatchNo] = [];
+                    id[count] = []
+                    child.rows.selectedArray.forEach( (data, index)=> {
+                        if((index+1)%6 == 0) {
+                            count++;
+                            id[count] = []
+                        }
+                        id[count].push(data.amrid);
+                    })
+                    var ar = id.map(ids => {
+                       return  ids.join(",")
+                    })
+                    $scope.amrIds[child.BatchNo] = ar;
+                })
             })
 
            }) 

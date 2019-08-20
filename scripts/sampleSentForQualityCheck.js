@@ -12,6 +12,7 @@ isolateTransferApp.controller('sampleSentForQualityCheck', function ($scope, $lo
     $scope.showModal = false;
     $scope.allTeiDataValues =  []; 
     $scope.selectedEventUID = {};
+    $scope.amrIds = [];
     $scope.dispatchnewSample = function () {    
         $location.path('/').search();
     }
@@ -76,14 +77,29 @@ isolateTransferApp.controller('sampleSentForQualityCheck', function ($scope, $lo
     loadOrgUnit = function () {
         MetadataService.getOrgUnit($scope.selectedOrgUnit.id).then(function(orgUnit) {
            $timeout(function() {
-            $scope.selectedOrgUnit.name = orgUnit.name;
-            $scope.selectedOrgUnit.code  = orgUnit.code;
+                $scope.selectedOrgUnit.name = orgUnit.name;
+                $scope.selectedOrgUnit.code  = orgUnit.code;
 
-            dataStoreService.get($scope.selectedOrgUnit.code).then(function(response) {
-                $scope.allTeiDataValues = response;
-                
-            })
-
+                dataStoreService.get($scope.selectedOrgUnit.code).then(function(response) {
+                    $scope.allTeiDataValues = response;
+                    $scope.allTeiDataValues.forEach(child=> {
+                        var id = [];
+                        var count = 0;
+                        $scope.amrIds[child.BatchNo] = [];
+                        id[count] = []
+                        child.rows.selectedArray.forEach( (data, index)=> {
+                            if((index+1)%6 == 0) {
+                                count++;
+                                id[count] = []
+                            }
+                            id[count].push(data.amrid);
+                        })
+                        var ar = id.map(ids => {
+                           return  ids.join(",")
+                        })
+                        $scope.amrIds[child.BatchNo] = ar;
+                    })
+                })
            }) 
         })
     }
