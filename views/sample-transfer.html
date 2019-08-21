@@ -1,0 +1,38 @@
+<div ng-controller="sampleTransfer">
+    <h1 class="main_header">Sample Transfer App</h1>
+    <div class="side-bar">
+        <div id="orgUnitTree">
+            <ul>
+            </ul>
+        </div>
+    </div>
+    <div class="main">
+        <table class="main-tei-data">
+            <thead>
+                <tr>
+                    <th colspan="5">Lab: {{selectedOrgUnit.name}}</th>
+                </tr>
+                <tr >
+                    <th>Batch No.</th>
+                    <th>AMR Ids</th>
+                    <th>Organism Group</th>
+                    <th>Received Date</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="dataValues in allTeiDataValues" ng-if='dataValues.status  == "DISPATCH"'>
+                    <td>{{dataValues.BatchNo}}</td>
+                    <td>
+                        <p ng-repeat="amr in amrIds[dataValues.BatchNo]">{{amr}}<p>
+                    </td>
+                    <td>{{dataValues.program.displayName}}</td>
+                    <td> <input calendar ng-model="datavalues.disptachStatus.receivedDate" required /> </td>
+                    <td>
+                        <button class="button" ng-click="editTransfer(dataValues)"> Update </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

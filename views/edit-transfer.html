@@ -1,0 +1,38 @@
+<div>
+    <h1 class="main_header">Sample Transfer App</h1>
+    <div class="side-bar">
+        <div id="orgUnitTree">
+            <ul>
+            </ul>
+        </div>
+    </div>
+    <div class="main">
+        <table class="main-tei-data">
+            <thead>
+                <tr>
+                    <th colspan="3">Lab: {{selectedOrgUnit.name}}</th>
+                    <th colspan="2" style="text-align:right">Batch No: {{data.BatchNo}}</th>
+                </tr>
+                <tr>
+                    <th>AMR Ids</th>
+                    <th>de1</th>
+                    <th>de2</th>
+                    <th>de3</th>
+                    <th>de4</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="amr in teiDataValue.selectedArray">
+                    <td>{{amr.amrid}}</td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                    <td><input type="text"></td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="button" id="button-danger" ng-click="cancelTeiDataValue()"> Cancel </button>               
+            
+    </div>
+
+</div>
