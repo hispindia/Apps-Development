@@ -31,6 +31,10 @@ excelUpload.controller('ImportFacilitywiseController',
         // orgUnitMapping is not used for new requirement			$scope.orgUnitMapping = {};
         $scope.history = {};
 
+        var dataElementValueTypeMap = [];
+        var dataElementNameMap = [];
+
+        //loadDataElements();
         var cdsr = { completeDataSetRegistrations: [] };
 
         //data cells - this was put inside validateAll()
@@ -106,9 +110,18 @@ excelUpload.controller('ImportFacilitywiseController',
 
                             //dataelements
                             $("#templateProgress").html("Fetching all the data elements...");
-                            $.get('../../../api/dataElements.json?fields=id,name,shortName,categoryCombo[categoryOptionCombos[id,name]]&paging=false', function (ds) {
+                            $.get('../../../api/dataElements.json?fields=id,name,shortName,valueType,categoryCombo[categoryOptionCombos[id,name]]&paging=false', function (ds) {
                                 console.log(ds);
                                 $scope.dataElements = ds.dataElements;
+
+                                for (var i = 0; i < $scope.dataElements.length; i++) {
+
+                                    dataElementValueTypeMap[$scope.dataElements[i].id] = $scope.dataElements[i].valueType;
+                                    dataElementNameMap[$scope.dataElements[i].id] = $scope.dataElements[i].name;
+                                }
+
+                                console.log( dataElementValueTypeMap);
+                                console.log( dataElementNameMap);
 								/* is service is not used for new requirement, orgUnits are load using orgUnitTree
 								 //orgunits
 								 $("#templateProgress").html("Fetching all the organisation units...");
@@ -438,10 +451,8 @@ excelUpload.controller('ImportFacilitywiseController',
                 $scope.validatedMessage.push("Something wrong with " + orgUnit.name + " excel sheet.");
             }
 
-
-
-
-            /* *** */				var selectedTemp = $scope.getTemplate($scope.confirmedUploads.TempVal);
+            /* *** */
+            var selectedTemp = $scope.getTemplate($scope.confirmedUploads.TempVal);
             //Sheet length validation
             dataCells[dataCells.length-1].address.split("").forEach(val => {               
                 if(!isNaN(val)) {
@@ -449,8 +460,26 @@ excelUpload.controller('ImportFacilitywiseController',
                 }
             })
             if(numberCells != $scope.dataEndingCell) {
-                alert("Oops! Excel sheet not Correct");
-                window.history.back();
+                //alert("This Excel format is  incorrect, Please download the correct format from Excel Import Home Page Link");
+                //alert("This Excel format is  incorrect, Please download the correct format from link .." + '<a href="https://nrhm-mis.nic.in/SitePages/HMISFormats.aspx">Code Project</a>' );
+                //alert('<a href="https://nrhm-mis.nic.in/SitePages/HMISFormats.aspx">Code Project</a>');
+
+                //For HMIS: https://nrhm-mis.nic.in/SitePages/HMISFormats.aspx
+                // For UPHMIS: https://uphmis.in/uphmis/api/documents/MIretHLZPSE/data
+
+                var tempConfirm = confirm('This Excel format is  incorrect, Please download the correct format from Excel Import Home Page Link');
+                if ( tempConfirm )
+                {
+                    //window.location='https://nrhm-mis.nic.in/SitePages/HMISFormats.aspx';
+                    //window.location='https://uphmis.in/uphmis/api/documents/MIretHLZPSE/data';
+                    //window.open('https://nrhm-mis.nic.in/SitePages/HMISFormats.aspx', '_blank');
+                    //window.open('https://uphmis.in/uphmis/api/documents/MIretHLZPSE/data', '_blank');
+                    window.history.back();
+                }
+                else
+                {
+                    window.history.back();
+                }
             }
             if (selectedTemp != "") {
 
@@ -535,19 +564,19 @@ excelUpload.controller('ImportFacilitywiseController',
             console.log(" de : " + isDeFound + " coc : " + isCocFound);
 
             if (!isDeFound) {
-                
-                $.get("../../../api/dataElements/" + deId + ".json?fields=name", function (elementName) {
-                    $scope.validatedMessage.push("Data element: " + elementName.name +" (" + deId + ") not found");
-                });
+                //$.get("../../../api/dataElements/" + deId + ".json?fields=name", function (elementName) {
+                    $scope.validatedMessage.push("Data element: " + dataElementNameMap[deId] +" (" + deId + ") not found");
+                //});
                 return false;
             } else {
                 if (!isCocFound) {
-                    let deIdName = "";
-                    $.get("../../../api/dataElements/" + deId + ".json?fields=name", function (elementName) {
-                        deIdName = elementName.name;
-                    });
+                    var deIdName = "";
+                    //$.get("../../../api/dataElements/" + deId + ".json?fields=name", function (elementName) {
+                        //deIdName = elementName.name;
+                        deIdName = dataElementNameMap[deId];
+                    //});
                     $.get("../../../api/categoryCombos/" + deId + ".json?fields=name", function (COCName) {
-                    $scope.validatedMessage.push("COC: " + COCName.name + " ( "+ coc + ") of data element: " + deIdName + " (" + deId + ") is not found");
+                        $scope.validatedMessage.push("COC: " + COCName.name + " ( "+ coc + ") of data element: " + deIdName + " (" + deId + ") is not found");
                     });
                     return false;
                 } else
@@ -657,12 +686,14 @@ excelUpload.controller('ImportFacilitywiseController',
                         */
 
                         //Checking true false and date type
-                       $.get("../../../api/dataElements/" + dataValue.dataElement + ".json?fields=valueType", function (data) {
+                       //$.get("../../../api/dataElements/" + dataValue.dataElement + ".json?fields=valueType", function (data) {
 
-                        var deType = data.valueType;
+                        //var deType = data.valueType;
+                        var deType = dataElementValueTypeMap[ dataValue.dataElement ];
+
                         if(deType == "BOOLEAN") {
                             var tempBoolenValue = $scope.getImportDataByAddress(cellAddress, orgUnit);
-                            let convertToSmall = ($scope.getImportDataByAddress(cellAddress, orgUnit)).toLowerCase();
+                            var convertToSmall = ($scope.getImportDataByAddress(cellAddress, orgUnit)).toLowerCase();
                             if( tempBoolenValue === "TRUE" || tempBoolenValue === "YES" || tempBoolenValue === "True" || tempBoolenValue === "Yes" ||
                                 convertToSmall == "yes" || convertToSmall == "true" || convertToSmall == "t" || convertToSmall == "y") {
 
@@ -684,7 +715,7 @@ excelUpload.controller('ImportFacilitywiseController',
                             var date = yy + "-" + mm + "-" + dd;
                             dataValue.value = date;
                         }
-                    });
+                    //});
 
                         /************************************* FOR SC ************************************************************/
                         if (factype == "SC") {
@@ -734,6 +765,7 @@ excelUpload.controller('ImportFacilitywiseController',
                                         }
                                     }
                                     else if (value2 == undefined) {
+
                                         dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
                                         dataValue.orgUnit = orgUnit.id;
                                         dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
@@ -753,6 +785,7 @@ excelUpload.controller('ImportFacilitywiseController',
                             }
 
                             else {
+
                                 dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
                                 dataValue.orgUnit = orgUnit.id;
 
@@ -1026,12 +1059,14 @@ excelUpload.controller('ImportFacilitywiseController',
                             }
                         }
                     }
+                    /*
                     dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
                     dataValue.value = dataValue.value == "" ? "omit" : dataValue.value;
 
                     if (dataValue.orgUnit != "" && dataValue.value != "omit") {
                         dataValues.push(dataValue);
                     }
+                    */
                 }
             }
 
@@ -1134,12 +1169,13 @@ excelUpload.controller('ImportFacilitywiseController',
                     $scope.h.orgUnits[index].stats.upc = tem.data.importCount.updated;
                     $scope.h.stats.imc += tem.data.importCount.imported;
                     $scope.h.orgUnits[index].stats.imc = tem.data.importCount.imported;
+                    $scope.h.stats.responseDescription = tem.data.description;
                     //$scope.h.stats.igc += tem.data.importCount.ignored;
                     //$scope.h.orgUnits[index].stats.igc = tem.data.importCount.ignored;
 
                     if( tem.data.conflicts === undefined )
                     {
-                        $("#conflictDetails").html("No Conflicts");
+                        $("#conflictDetails").html("No Conflicts" );
                         $scope.h.stats.igc += 0;
                         $scope.h.orgUnits[index].stats.igc = 0;
                     }
@@ -1283,12 +1319,15 @@ excelUpload.controller('ImportFacilitywiseController',
             $scope.h.stats = {};
             $scope.h.stats.upc = 0;
             $scope.h.stats.imc = 0;
+            $scope.h.stats.responseDescription = "";
             $scope.h.stats.igc = 0;
 
             var callbackfunct = function () {
+                $("#responseDescription").html($scope.h.stats.responseDescription);
                 $("#upc").html($scope.h.stats.upc);
                 $("#imct").html($scope.h.stats.imc);
                 $("#igc").html($scope.h.stats.igc);
+
                 $("#stModal").modal('show');
 
                 $("#loader").fadeOut();
@@ -1304,5 +1343,25 @@ excelUpload.controller('ImportFacilitywiseController',
             },1000)
             });
 
+        };
+
+        function loadDataElements() {
+            $.ajax({
+                url: "../../../api/dataElements.json?fields=id,name,valueType&paging=false",
+                type: "GET",
+                dataType: "json",
+                contentType: "application/json",
+                async: false,
+                success: function (dataElementsResponse) {
+                    for (var i = 0; i < dataElementsResponse.dataElements.length; i++) {
+
+                        dataElementValueTypeMap[dataElementsResponse.dataElements[i].id] = dataElementsResponse.dataElements[i].valueType;
+                        dataElementNameMap[dataElementsResponse.dataElements[i].id] = dataElementsResponse.dataElements[i].name;
+                    }
+                },
+                error: function (err) {
+                    console.log("org error" + JSON.stringify(err));
+                }
+            });
         };
     });

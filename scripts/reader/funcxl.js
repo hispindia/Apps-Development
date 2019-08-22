@@ -182,7 +182,7 @@ function to_formulae(workbook) {
 
     resultArray = result;
 
-    console.log("result array is -- "+resultArray);
+    //console.log("result array is -- "+resultArray);
 
 
     //return result.join("\n");
