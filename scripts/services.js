@@ -102,12 +102,9 @@ isolateTransferApp.service('MetadataService', function ($http, $q) {
                     var values = {}
                     values[key] = value
                     var url = '../../../api/dataStore/id/' + key;
-                    $http.put(url, values).then(function (response) {
-                        alert("Received Date added");
-                        def.resolve(response.data);
-                    }).catch((err)=>def.resolve(err))
+                    return $http.put(url, values)
 
-                    return def.promise;
+                  
                 },
                 get: function (key) {
                     var promise = $http.get('../../../api/dataStore/id/' + key ).then(function (response) {

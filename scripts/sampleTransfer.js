@@ -14,20 +14,26 @@ isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $ti
     $scope.showModal = false;
 
     $scope.editTransfer = function (data) {
-        if(data.disptachStatus.receivedDate != "") {
+        if (data.disptachStatus.receivedDate != "" && data.disptachStatus.received != "Received") {
             data.disptachStatus.received = "Received"
-            dataStoreService.get($scope.selectedOrgUnit.code).then(function(response) {
-                $scope.dataValue = response.map(child => { 
-                    if(child.BatchNo == $scope.data.BatchNo) {           
+            dataStoreService.get($scope.selectedOrgUnit.code).then(function (response) {
+                $scope.dataValue = response.map(child => {
+                    if (child.BatchNo == data.BatchNo) {
                         child = data;
                     }
                     return child;
                 })
-                dataStoreService.updateInDataStore($scope.selectedOrgUnit.code,$scope.dataValue)
-            })   
+                dataStoreService.updateInDataStore($scope.selectedOrgUnit.code, $scope.dataValue).then(function(response) {    
+                    if(response.status == "200") {
+                        storeService.set(data)
+                        $location.path('/edit-transfer').search();
+                    }
+                })
+            })
+        } else {
+            storeService.set(data)
+            $location.path('/edit-transfer').search();
         }
-        storeService.set(data)
-        $location.path('/edit-transfer').search();
     }
     
     selection.load();

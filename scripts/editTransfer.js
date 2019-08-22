@@ -2,6 +2,7 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
 
     $scope.data = storeService.get();
     $scope.selectedProgram = $scope.data.program.displayName;
+    $scope.Ids = [];
     $scope.selectedOrgUnit = {
         id: $scope.data.key,
         name: "",
@@ -31,5 +32,14 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
     $scope.cancelTeiDataValue = function () {
         $location.path('/').search();
     };
+    
+    $scope.makeIds = function(rows, cols) {
+        for(var i = 0; i < rows.length; i++) {
+            for(var j = 0; j < cols.length; j++) {
+                $scope.Ids[rows[i]][cols[j]] = "";
+            }
+        }
+    }
+    //makeIds(teiDataValue.selectedArray,);
 
 })
