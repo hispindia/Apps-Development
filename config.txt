@@ -21,8 +21,9 @@ INNER JOIN optionset ops ON ops.optionsetid = de.optionsetid
 where de.uid in ( 'SaQe2REkGVw', 'mp5MeJ2dFQz') and psi.uid in ( 'YZzKLq03NLP', 'qYIwF6EFpB9') order by psi.uid;
 
 
+// SQL-Vew for AMR ISOLATE APP
 
-EFanvAXeCoj =  AMR App
+EFanvAXeCoj =  AMR_ISOLATE_APP_AMRID
 
 select tedv.value AS amrID, pi.uid AS enrollmentUID, psi.uid AS eventUID, psi.executiondate::date AS eventDate, prg.uid AS programUid, tei.uid AS teiUID, org.uid AS orgUID 
 from trackedentitydatavalue tedv
@@ -34,7 +35,8 @@ INNER JOIN organisationunit org on org.organisationunitid = psi.organisationunit
 INNER JOIN dataelement de on de.dataelementid = tedv.dataelementid
 where de.uid = 'lIkk661BLpG' and prg.uid = '${program}' and psi.executiondate between '${startdate}' and '${enddate}';
 
-Qxf3P0JENJT = tedv
+Qxf3P0JENJT = AMR_ISOLATE_APP_EDV
+
 select psi.uid,de.name as deName, tedv.value, de.optionsetid from trackedentitydatavalue tedv
 INNER JOIN programstageinstance psi ON psi.programstageinstanceid = tedv.programstageinstanceid
 INNER JOIN dataelement de ON de.dataelementid = tedv.dataelementid
@@ -42,5 +44,6 @@ INNER JOIN optionset ops ON ops.optionsetid = de.optionsetid
 where de.uid in ( 'SaQe2REkGVw', 'mp5MeJ2dFQz') and psi.uid =  '${eventID}' order by psi.uid;
 
 
-p4HF5bVuL6x = optionValue 
+p4HF5bVuL6x = AMR_ISOLATE_APP_OPTION_VALUE
+
 Select code, optionsetid, name from optionvalue; 
