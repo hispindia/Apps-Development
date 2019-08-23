@@ -1,18 +1,27 @@
-
-
 isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $timeout, MetadataService, storeService, dataStoreService) {
     $scope.selectedOrgUnit = {
         id: "",
         name: "",
         code: ""
     }
+    $scope.message = ""
     $scope.storePrintValues = [];
     $scope.allTeiDataValues = [];
     $scope.amrIds = [];
     $scope.datesamrIds = [];
     $scope.selectedEventUID = {};
     $scope.showModal = false;
-
+    $scope.currentData = [];
+    $scope.showToggle = function () {
+        $scope.showModal = !$scope.showModal;
+        if (!$scope.showModal) {
+            data = $scope.currentData;
+            if (data.length != 0) {
+                storeService.set(data["0"])
+                $location.path('/edit-transfer').search();
+            }
+        }
+    }
     $scope.editTransfer = function (data) {
         if (data.disptachStatus.receivedDate != "" && data.disptachStatus.received != "Received") {
             data.disptachStatus.received = "Received"
@@ -23,19 +32,24 @@ isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $ti
                     }
                     return child;
                 })
-                dataStoreService.updateInDataStore($scope.selectedOrgUnit.code, $scope.dataValue).then(function(response) {    
-                    if(response.status == "200") {
-                        storeService.set(data)
-                        $location.path('/edit-transfer').search();
+                dataStoreService.updateInDataStore($scope.selectedOrgUnit.code, $scope.dataValue).then(function (response) {
+                    if (response.status == "200") {
+                        $scope.message = "Received Date Added as " + data.disptachStatus.receivedDate;
+                        $scope.currentData.push(data);
+                        $scope.showToggle();
                     }
                 })
             })
+        } else if (data.disptachStatus.receivedDate == "") {
+            $scope.currentData = [];
+            $scope.message = "Please Fill The Received Date."
+            $scope.showToggle();
         } else {
             storeService.set(data)
             $location.path('/edit-transfer').search();
         }
     }
-    
+
     selection.load();
 
     // Listen for OU changes

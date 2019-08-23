@@ -20,7 +20,7 @@ var isolateTransferApp = angular.module("isolateTransferApp", ['ngRoute']).confi
             if (attrs.height)
                 scope.dialogStyle.height = attrs.height;
         },
-        template: '<div class="ng-modal" ng-show="showModal"><div class="ng-modal-overlay"><div class="ng-modal-dialog"><div class="ng-modal-close" ng-click="showToggle()">X</div><div class="ng-modal-dialog-content" ng-transclude></div></div></div></div>'
+        template: '<div class="ng-modal" ng-show="showModal"><div class="ng-modal-overlay"><div class="ng-modal-dialog"><div class="ng-modal-close" ng-click="showToggle()">Ok</div><div class="ng-modal-dialog-content" ng-transclude></div></div></div></div>'
 
     };
 }).directive('calendar', function () {

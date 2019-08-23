@@ -177,18 +177,18 @@
 }
 
 .ng-modal-overlay {
-    width: 100%;
-    height: 80%;
+    height: 20%;
     background: #eff1f3;
     font-family: Tahoma;
     position: fixed;
-    top: 13%;
+    top: 50%;
     z-index: 0;
     margin: auto;
-    width: 50%;
-    left: 25%;
+    width: 40%;
+    left: 50%;
     border: 2px solid rgb(63, 63, 63);
     border-radius: 5px;
+    transform: translate(-50%, -50%);
 }
 
 .ng-modal-dialog {
@@ -200,27 +200,27 @@
     height: 80%;
 }
 
-.ng-modal-close {
+.ng-modal-close {    
     position: fixed;
     background-color: rgb(41, 98, 158);
-    ;
-    border-radius: 50%;
-    width: 25px;
-    height: 25px;
+    border-radius: 5%;
+    width: 10%;
+    height: 22px;
     padding: 2px 8px;
     color: white;
     cursor: pointer;
-    right: 26%;
-    top: 14%;
+    right: 2%;
+    top: 80%;
     border: 1px solid black;
+    text-align: center;
 }
 
 .ng-modal-dialog-content {
-    margin-top: 7%;
+    margin-top: 10%;
     overflow: auto;
-    height: 80%;
-    width: 99%;
+    text-align: center;
 }
+
 
 .display-print-data {
     width: 90%;
