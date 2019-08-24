@@ -7,6 +7,9 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
         name: "",
         code: ""
     }
+    
+    $scope.showPopup = false;
+    $scope.checkReturn = false;
 
     selection.load();
 
@@ -65,7 +68,18 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
     $scope.cancelTeiDataValue = function () {
         $location.path('/').search();
     };
+    $scope.switch = function () {
+        $scope.showPopup = !$scope.showPopup;
+        if (!$scope.showPopup && $scope.checkReturn ) {
+            $location.path('/').search();
+        }
+    }
     $scope.transferTeiDataValue = function () {
+        if ($scope.teiDataValue.selectedArray == 0) {
+            $scope.message = "please select atleast one id";
+            $scope.switch();
+            return;
+        }
         var date = new Date();
         var month = date.getMonth() + 1;
         month = month >= 10 ? month : "0" + month;
@@ -82,8 +96,16 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
                 }
                 return data;
             })
-            dataStoreService.updateInDataStore($scope.selectedOrgUnit.code, $scope.dataValue).Then(function () {
-
+            dataStoreService.updateInDataStore($scope.selectedOrgUnit.code, $scope.dataValue).then(function (response) {
+                if (response.status == "200") {
+                    $scope.message = "Batch ID having " + $scope.data.BatchNo + " Dispatched."
+                    $scope.checkReturn = true;
+                    $scope.switch();
+                } else {
+                    $scope.message = "Something is wrong!";
+                    $scope.checkReturn = true;
+                    $scope.switch();
+                }
             })
         })
     }

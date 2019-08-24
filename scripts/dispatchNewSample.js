@@ -91,23 +91,27 @@ isolateTransferApp.controller('dispatchNewSample',
                     dataStoreService.get($scope.selectedOrgUnit.code).then(function (response) {
                         $scope.allTeiDataValues = response;
 
-                        $scope.allTeiDataValues.forEach(child => {
-                            var id = [];
-                            var count = 0;
-                            $scope.amrIds[child.BatchNo] = [];
-                            id[count] = []
-                            child.rows.selectedArray.forEach((data, index) => {
-                                if ((index + 1) % 6 == 0) {
-                                    count++;
-                                    id[count] = []
-                                }
-                                id[count].push(data.amrid);
+                        if ($scope.allTeiDataValues != "No value contains in the selected feild") {
+                            $scope.allTeiDataValues.forEach(child => {
+                                var id = [];
+                                var count = 0;
+                                $scope.amrIds[child.BatchNo] = [];
+                                id[count] = []
+                                child.rows.selectedArray.forEach((data, index) => {
+                                    id[count].push(data.amrid);
+                                    if ((index + 1) % 5 == 0) {
+                                        count++;
+                                        id[count] = []
+                                    }
+                                })
+                                var ar = id.map(ids => {
+                                    return ids.join(",")
+                                })
+                                $scope.amrIds[child.BatchNo] = ar;
                             })
-                            var ar = id.map(ids => {
-                                return ids.join(",")
-                            })
-                            $scope.amrIds[child.BatchNo] = ar;
-                        })
+                        } else {
+                            $scope.allTeiDataValues = ""
+                        }
                     })
                 })
             })

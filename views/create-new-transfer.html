@@ -16,7 +16,7 @@
             <tr>
                 <td> Organism Group </td>
                 <td>
-                    <select ng-model="selectedProgram"
+                    <select id="selectedFields-program" ng-model="selectedProgram"
                         ng-options="program.displayName for program in allPrograms | orderBy: displayName">
                     </select>
                 </td>
@@ -66,4 +66,7 @@
             </div>
         </div>
     </div>
+    <pop-up>
+        {{message}}
+    </pop-up>
 </div>

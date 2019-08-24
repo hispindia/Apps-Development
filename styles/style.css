@@ -25,6 +25,11 @@
     padding: 3px;
 }
 
+#selectedFields-program {
+    height: 1.7em;
+    width: 12.9em;
+}
+
 .main {
     padding-left: 2%;
     width: 75%;
@@ -220,6 +225,59 @@
     overflow: auto;
     height: 80%;
     width: 99%;
+}
+
+.popup-title {
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+    color: white;
+    padding: 1%;
+}
+
+.ng-popup-overlay {
+    height: 20%;
+    background: #eff1f3;
+    font-family: Tahoma;
+    position: fixed;
+    top: 50%;
+    z-index: 0;
+    margin: auto;
+    width: 40%;
+    left: 50%;
+    border: 2px solid rgb(63, 63, 63);
+    border-radius: 5px;
+    transform: translate(-50%, -50%);
+}
+
+.ng-popup-dialog {
+    display: block;
+    margin: auto;
+    position: fixed;
+    z-index: 2;
+    width: 100%;
+    height: 80%;
+}
+
+.ng-popup-close {    
+    position: fixed;
+    background-color: rgb(41, 98, 158);
+    border-radius: 5%;
+    width: 10%;
+    height: 22px;
+    padding: 2px 8px;
+    color: white;
+    cursor: pointer;
+    right: 2%;
+    top: 80%;
+    border: 1px solid black;
+    text-align: center;
+}
+
+.ng-popup-dialog-content {
+    margin-top: 10%;
+    overflow: auto;
+    text-align: center;
 }
 
 .display-print-data {

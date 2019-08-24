@@ -1,20 +1,3 @@
-isolateTransferApp.directive('calendar', function () {
-    return {
-        require: 'ngModel',
-        link: function (scope, el, attr, ngModel) {
-            $(el).datepicker({
-                dateFormat: 'yy-mm-dd',
-                onSelect: function (dateText) {
-                    scope.$apply(function () {
-                        ngModel.$setViewValue(dateText);
-                    });
-                }
-            });
-        }
-    };
-});
-
-
 isolateTransferApp.controller("createNewTransfer", function ($scope, $location, $timeout, MetadataService, dataStoreService) {
     $scope.allPrograms = '';
     $scope.selectedProgram = '';
@@ -31,7 +14,8 @@ isolateTransferApp.controller("createNewTransfer", function ($scope, $location, 
         availableArray: [],
         selectedArray: []
     }
-    $scope.checkList = true;
+    $scope.showPopup = false;
+    $scope.checkReturn = false;
 
     selection.load();
 
@@ -61,12 +45,14 @@ isolateTransferApp.controller("createNewTransfer", function ($scope, $location, 
 
 
     $scope.submitTeiDataValue = function () {
-        if (!$scope.selectedProgram.id || !$scope.selectedOrgUnit.id || !$scope.selectedStartDate || !$scope.selectedEndDate) {
-            alert("Please Select all Fields!");
+        if (!$scope.selectedProgram.id || !$scope.selectedOrgUnit.id || !$scope.selectedStartDate || !$scope.selectedEndDate) {   
+            $scope.message = "Please Select all Fields!";
+            $scope.switch();
             return;
         }
         if ($scope.selectedStartDate > $scope.selectedEndDate) {
-            alert("OOPS! Dates not Selected correctly");
+            $scope.message = "OOPS! Dates not Selected correctly";
+            $scope.switch();
             return;
         }
         var params = "var=program:" + $scope.selectedProgram.id + "&var=startdate:" + $scope.selectedStartDate + "&var=enddate:" + $scope.selectedEndDate;
@@ -92,7 +78,8 @@ isolateTransferApp.controller("createNewTransfer", function ($scope, $location, 
         })
         $timeout(function () {
             if ($scope.teiDataValue.availableArray.length == 0) {
-                alert("No data to display!");
+                $scope.message = "No data to display!";
+                $scope.switch();
                 return;
             }
 
@@ -132,10 +119,23 @@ isolateTransferApp.controller("createNewTransfer", function ($scope, $location, 
             $scope.teiDataValue.selectedArray.length = 0;
         }
     }
+    
+    $scope.switch = function () {
+        $scope.showPopup = !$scope.showPopup;
+        if (!$scope.showPopup && $scope.checkReturn ) {
+            $location.path('/').search();
+        }
+    }
 
     $scope.createTeiDataValue = function () {
         if ($scope.teiDataValue.selectedArray == 0) {
-            alert("please select atleast one id");
+            $scope.message = "please select atleast one id";
+            $scope.switch();
+            return;
+        }
+        if(!$scope.selectedOrgUnit.code) {
+            $scope.message = "Code doesn't exist";
+            $scope.switch();
             return;
         }
         var batchNo = $scope.selectedOrgUnit.code + "" + Math.floor(Math.random() * 100000);
@@ -161,7 +161,17 @@ isolateTransferApp.controller("createNewTransfer", function ($scope, $location, 
                 receivedDate: ""
             }
         }]
-        dataStoreService.saveInDataStore($scope.selectedOrgUnit.code, dataPush);
+        dataStoreService.saveInDataStore($scope.selectedOrgUnit.code, dataPush).then(function(response) {
+            if (response.status == "200"  || response.status == "201" ) {
+                $scope.message = "Created New Batch having ID as " + batchNo + ".";
+                $scope.checkReturn = true;
+                $scope.switch();
+            } else {
+                $scope.message = "Something is wrong!";
+                $scope.checkReturn = true;
+                $scope.switch();
+            }
+        });
 
 
     }
