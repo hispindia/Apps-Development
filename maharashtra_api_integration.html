@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .custom{
+            margin-top:50px;
+            width:100%;
+            padding:10px;
+        }
+        .custom-table{
+            width:75%;
+            font-size:16px;
+            margin:auto;
+            text-align:center;
+        }
+        .custom-drop{
+            text-align:center;
+        }
+    </style>
+    <style>
+        thead>tr>td {
+            font-weight: bold;
+        }
+        tbody>tr>td {
+            font-weight: bold;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            opacity: 1;
+        }
+
+        /* Center the loader  */
+        #loader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            width: 150px;
+            height: 150px;
+            margin: -75px 0 0 -75px;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #34B4DB;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        /* Add animation to "page content" */
+
+        .animate-bottom {
+            position: relative;
+            -webkit-animation-name: animatebottom;
+            -webkit-animation-duration: 1s;
+            animation-name: animatebottom;
+            animation-duration: 1s
+        }
+
+        @-webkit-keyframes animatebottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
+            to {
+                bottom: 0px;
+                opacity: 1
+            }
+        }
+
+        @keyframes animatebottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
+            to {
+                bottom: 0;
+                opacity: 1
+            }
+        }
+
+        #printing {
+
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div  id="importButton">
+            <br>
+            <button onClick="readAPI()" disabled id="Import" style="margin-left: 45%">Start Importing Data</button>
+        </div>
+
+        <div id="resultDiv">
+            <h4 id ="importMsg"></h4>
+        </div>
+
+        <!--<div id="loader"> <h4 id = "templateProgress"></h4></div>-->
+
+    </div>
+    <br><br>
+    <div id="loader"></div>
+</div>
+</body>
+<script type="text/javascript">
+    var finalOu = [];
+    var orgUnitMap = [];
+    var dataElementMap = [];
+    var impCount = "";
+    var upCount = "";
+    var igCount = "";
+    var conflictsDetails = [];
+    var regOrgUnitList = [];
+    var regPeriodList = [];
+    var dataSetUid = 'hxC8LQlCua5';
+    var cdsr = { completeDataSetRegistrations: [] };
+    var dataSetCompleteRegistration = "";
+    $(document).ready(function(){
+    document.getElementById("loader").style.display = "none";
+
+        /*
+        var dataElementsMapping = [
+            {
+                "dhis_name": "Calls registered for biomedical equipment",
+                "name": "Total_Calls",
+                "id": "Fsl1X9Oinoq",
+                "categorycombo": "HllvX50cXC0"
+            },
+            {
+                "dhis_name": "Open calls for biomedical equipment",
+                "name": "Open_Calls",
+                "id": "GTLgaz1UMo8",
+                "categorycombo": "HllvX50cXC0"
+            },
+            {
+                "dhis_name": "Closed calls for biomedical equipment",
+                "name": "Closed_Calls",
+                "id": "rfw2GJ8i4oY",
+                "categorycombo": "HllvX50cXC0"
+            },
+            {
+                "dhis_name": "Calls closed with biomedical equipment calibration",
+                "name": "Cal_Close_Calls",
+                "id": "KCQhRTzScd6",
+                "categorycombo": "HllvX50cXC0"
+            },
+            {
+                "dhis_name": "Calls closed with biomedical equipment calibration",
+                "name": "PPM_CLose_Calls",
+                "id": "cNXUo5pX7JY",
+                "categorycombo": "HllvX50cXC0"
+            },
+            {
+                "dhis_name": "Biomedical equipment",
+                "name": "Bio Equipment",
+                "id": "cpd8b6eEYjY",
+                "categorycombo": "HllvX50cXC0"
+            }
+        ];
+
+        for (var k = 0; k < dataElementsMapping.length; k++) {
+
+            dataElementMap[dataElementsMapping[k].name] = dataElementsMapping[k].id;
+        }
+
+        */
+
+        loadOrgUnits();
+        console.log( finalOu );
+        document.getElementById("Import").disabled = false;
+        //document.getElementById('importButton').style.display = 'block';
+        document.getElementById('resultDiv').style.display = 'none';
+
+        //console.log( dataElementsMapping );
+
+    });
+
+    function readAPI() {
+        //document.getElementById("loader").fadeIn();
+        //document.getElementById("templateProgress").html(" -> preparing data values to import");
+
+        document.getElementById("Import").disabled = true;
+        document.getElementById('importButton').style.display = 'none';
+        document.getElementById('resultDiv').style.display = 'block';
+        var strMsg = " Import Start.... ";
+        var resultMsg = strMsg.bold();
+        document.getElementById("importMsg").innerHTML = " Import Start.... ";
+        /*
+        showLoader();
+        lockScreen();
+        setTimeout(function(){ startImporting() }, 0);
+        */
+        $('#loader').show();
+        setTimeout(function () {
+            startImporting();
+        }, 1000);
+
+    }
+
+
+    //res.setHeader('Access-Control-Allow-Origin', '*');
+    function startImporting() {
+
+        /*
+        document.getElementById("Import").disabled = true;
+        document.getElementById('importButton').style.display = 'none';
+        document.getElementById('resultDiv').style.display = 'block';
+        document.getElementById("importMsg").textContent = " Import Start ";
+        */
+
+        //lockScreen();
+        var dataElementsMapping = [
+            {
+                "dhis_name": "Calls registered for biomedical equipment",
+                "name": "Total_Calls",
+                "id": "Fsl1X9Oinoq",
+                "categorycombo": "HllvX50cXC0"
+            },
+            {
+                "dhis_name": "Open calls for biomedical equipment",
+                "name": "Open_Calls",
+                "id": "GTLgaz1UMo8",
+                "categorycombo": "HllvX50cXC0"
+            },
+            {
+                "dhis_name": "Closed calls for biomedical equipment",
+                "name": "Closed_Calls",
+                "id": "rfw2GJ8i4oY",
+                "categorycombo": "HllvX50cXC0"
+            },
+            {
+                "dhis_name": "Calls closed with biomedical equipment calibration",
+                "name": "Cal_Close_Calls",
+                "id": "KCQhRTzScd6",
+                "categorycombo": "HllvX50cXC0"
+            },
+            {
+                "dhis_name": "Calls closed with biomedical equipment calibration",
+                "name": "PPM_CLose_Calls",
+                "id": "cNXUo5pX7JY",
+                "categorycombo": "HllvX50cXC0"
+            },
+            {
+                "dhis_name": "Biomedical equipment",
+                "name": "Bio_Equipment",
+                "id": "cpd8b6eEYjY",
+                "categorycombo": "HllvX50cXC0"
+            }
+        ];
+
+        //var total_count;
+        /*
+        $.ajax({
+            type: "GET",
+            url: "http://182.156.208.43:85/faber_maharashtra/services/service_phd2",
+            async: false,
+            crossDomain: true,
+            success: function (data) {
+                //var total_count1 = data.meta.total_count;
+                //total_count = total_count1 + 1000;
+                console.log( data );
+            },
+            error: function (request, textStatus, errorThrown) {
+                //def.resolve('error');
+            }
+        });
+        */
+    var dataValues = [];
+    var proxyURL = "https://cors-anywhere.herokuapp.com/";
+    $.ajax({
+
+        type: "GET",
+        url:  proxyURL+"http://182.156.208.43:85/faber_maharashtra/services/service_phd2",
+        /*
+        beforeSend: function (responseData) {
+            responseData.setHeader('Access-Control-Allow-Origin', '*');
+        },
+        */
+        //dataType: "jsonp",
+        async: false,
+        contentType: "application/json" ,
+        crossDomain: true,
+        /*
+        headers: {
+            "Access-Control-Allow-Origin": "*"
+        },
+        */
+
+        /*
+         headers: {
+         "Authorization": "Basic " + btoa(  ins.uname + ':' + ins.pword )
+         },
+        */
+        /*
+        headers: {
+            'Access-Control-Allow-Origin': '*'
+        },
+        */
+
+        success: function ( apiResponse )
+        {
+            //alert( apiResponse.length );
+            console.log( apiResponse.length );
+            for (var i = 0; i < apiResponse.length; i++) {
+                /*
+                console.log(  apiResponse[i].Cal_Close_Calls
+                + " - " + apiResponse[i].Closed_Calls  + " - " + apiResponse[i].District + " - " + orgUnitMap[apiResponse[i].District]
+                + " - " + apiResponse[i].Open_Calls  + " - " + apiResponse[i].PPM_CLose_Calls
+                + " - " + apiResponse[i].Total_Calls  + " - " + apiResponse[i].Year + " - " + apiResponse[i].month
+                + " -- " +  getISOPeriod ( apiResponse[i].Year, apiResponse[i].month ) );
+                */
+
+                if( apiResponse[i].Year === '2018-19' || apiResponse[i].Year === '2019-20' ){
+                    regOrgUnitList.push( orgUnitMap[apiResponse[i].District] );
+                    regPeriodList.push( getISOPeriod ( apiResponse[i].Year, apiResponse[i].month ) );
+
+                    for (var k = 0; k < dataElementsMapping.length; k++) {
+                      var dataValue = {};
+
+                      if(dataElementsMapping[k].name === "Closed_Calls" )
+                      {
+                          dataValue.period = getISOPeriod ( apiResponse[i].Year, apiResponse[i].month );
+                          dataValue.dataElement = dataElementsMapping[k].id;
+                          dataValue.categoryOptionCombo = dataElementsMapping[k].categorycombo;
+                          dataValue.orgUnit = orgUnitMap[apiResponse[i].District];
+                          dataValue.value = apiResponse[i].Closed_Calls;
+                          dataValues.push(dataValue);
+                      }
+                      else if(dataElementsMapping[k].name === "Open_Calls" )
+                      {
+                          dataValue.period = getISOPeriod ( apiResponse[i].Year, apiResponse[i].month );
+                          dataValue.dataElement = dataElementsMapping[k].id;
+                          dataValue.categoryOptionCombo = dataElementsMapping[k].categorycombo;
+                          dataValue.orgUnit = orgUnitMap[apiResponse[i].District];
+                          dataValue.value = apiResponse[i].Open_Calls;
+                          dataValues.push(dataValue);
+                      }
+                      else if(dataElementsMapping[k].name === "Total_Calls" )
+                      {
+                          dataValue.period = getISOPeriod ( apiResponse[i].Year, apiResponse[i].month );
+                          dataValue.dataElement = dataElementsMapping[k].id;
+                          dataValue.categoryOptionCombo = dataElementsMapping[k].categorycombo;
+                          dataValue.orgUnit = orgUnitMap[apiResponse[i].District];
+                          dataValue.value = apiResponse[i].Total_Calls;
+                          dataValues.push(dataValue);
+                      }
+                      /*
+                      else if(dataElementsMapping[k].name === "PPM_CLose_Calls" )
+                      {
+                          dataValue.period = getISOPeriod ( apiResponse[i].Year, apiResponse[i].month );
+                          dataValue.dataElement = dataElementsMapping[k].id;
+                          dataValue.categoryOptionCombo = dataElementsMapping[k].categorycombo;
+                          dataValue.orgUnit = orgUnitMap[apiResponse[i].District];
+                          dataValue.value = apiResponse[i].PPM_CLose_Calls;
+                          dataValues.push(dataValue);
+                      }
+
+                      else if( dataElementsMapping[k].name === "Cal_Close_Calls" )
+                       {
+                       dataValue.period = getISOPeriod ( apiResponse[i].Year, apiResponse[i].month );
+                       dataValue.dataElement = dataElementsMapping[k].id;
+                       dataValue.categoryOptionCombo = dataElementsMapping[k].categorycombo;
+                       dataValue.orgUnit = orgUnitMap[apiResponse[i].District];
+                       dataValue.value = apiResponse[i].Cal_Close_Calls;
+                       dataValues.push(dataValue);
+                       }
+
+                      else if(dataElementsMapping[k].name === "Bio_Equipment" )
+                      {
+                          dataValue.period = getISOPeriod ( apiResponse[i].Year, apiResponse[i].month );
+                          dataValue.dataElement = dataElementsMapping[k].id;
+                          dataValue.categoryOptionCombo = dataElementsMapping[k].categorycombo;
+                          dataValue.orgUnit = orgUnitMap[apiResponse[i].District];
+                          dataValue.value = apiResponse[i].Bio_Equipment;
+                          dataValues.push(dataValue);
+                      }
+                      */
+                  }
+                }
+            }
+
+            //console.log( apiResponse);
+
+
+        },
+        error: function (apiResponse)
+        {
+            console.log( "Error" );
+            //unLockScreen();
+        }
+    });
+
+        //console.log(" final dataValues : " + JSON.stringify(dataValues));
+        //console.log(" regOrgUnitList : " + regOrgUnitList.length + "-- " + getUnique( regOrgUnitList).length );
+        //console.log(" regPeriodList : " + regPeriodList.length + "-- " + getUnique( regOrgUnitList).length );
+
+        regOrgUnitList = getUnique( regOrgUnitList);
+        regPeriodList = getUnique( regPeriodList);
+
+        console.log(" final regOrgUnitList : " + regOrgUnitList );
+        console.log(" final regPeriodList : " + regPeriodList );
+
+        var dataValueSet = {};
+        dataValueSet.dataValues = dataValues;
+        /*
+        for (var i = 0; i < regOrgUnitList.length; i++) {
+            for (var j = 0; j < regPeriodList.length; j++) {
+                cdsr.completeDataSetRegistrations.push({
+                    'dataSet': dataSetUid,
+                    'period': regPeriodList[j],
+                    'organisationUnit': regOrgUnitList[i]
+                    // 'multiOu': false
+                });
+
+            }
+        }
+
+        console.log(cdsr);
+        console.log(JSON.stringify(cdsr));
+        */
+        console.log(" final dataValueSet : " + dataValueSet );
+        importData( dataValueSet );
+//        document.getElementById('importButton').style.display = 'block';
+//        document.getElementById("Import").disabled = false;
+//        document.getElementById('resultDiv').style.display = 'block';
+//        document.getElementById("importMsg").innerHTML = " Import Done.... ";
+        $('#loader').hide();
+
+  }
+
+function loadOrgUnits() {
+    $.ajax({
+        url: "../api/organisationUnits.json?fields=id,name,code,level,attributeValues[attribute[id,name,code],value]&filter=level:eq:4&sortOrder=ASC&paging=false",
+        dataType: "json",
+        async: false,
+        success: function (orgUnitResponse) {
+            for (var i = 0; i < orgUnitResponse.organisationUnits.length; i++) {
+                if (orgUnitResponse.organisationUnits[i].attributeValues.length != 0) {
+                    for (var j = 0; j < orgUnitResponse.organisationUnits[i].attributeValues.length; j++) {
+                        finalOu.push({
+                            'id': orgUnitResponse.organisationUnits[i].id,
+                            'value': orgUnitResponse.organisationUnits[i].attributeValues[j].value
+
+                        });
+                        orgUnitMap[orgUnitResponse.organisationUnits[i].attributeValues[j].value] = orgUnitResponse.organisationUnits[i].id;
+                    }
+                }
+            }
+        },
+        error: function (err) {
+            console.log("org error" + JSON.stringify(err));
+        }
+    });
+}
+
+var getISOPeriod = function ( financialYear, month ) {
+    var isoPeriod = "";
+    var startYear = financialYear.split("-")[0];
+    var endYear =  financialYear.split("-")[0].substring(0, 2) + financialYear.split("-")[1];
+
+    if ( month === "April") {
+        isoPeriod = startYear+"04";
+    }
+    else if (  month === "May" ){
+        isoPeriod = startYear+"05";
+    }
+    else if (  month === "June" ){
+        isoPeriod = startYear+"06";
+    }
+    else if (  month === "July" ){
+        isoPeriod = startYear+"07";
+    }
+    else if (  month === "August" ){
+        isoPeriod = startYear+"08";
+    }
+    else if (  month === "September" ){
+        isoPeriod = startYear+"09";
+    }
+    else if (  month === "October" ){
+        isoPeriod = startYear+"10";
+    }
+    else if (  month === "November" ){
+        isoPeriod = startYear+"11";
+    }
+    else if (  month === "December" ){
+        isoPeriod = startYear+"12";
+    }
+    else if (  month === "January" ){
+        isoPeriod = endYear+"01";
+    }
+    else if (  month === "February" ){
+        isoPeriod = endYear+"02";
+    }
+    else if (  month === "March" ){
+        isoPeriod = endYear+"03";
+    }
+    return isoPeriod;
+};
+
+
+var importData = function (dataValueSet) {
+    //var url = "../api/dataValueSets";
+
+    //var header = { 'Accept': 'application/json', 'Content-Type': 'application/json' };
+    var dataJSON = JSON.stringify(dataValueSet);
+    /*
+    var promise = $http({ method: 'post', url: url, headers: header, data: dataJSON })
+            .success(function (response) {
+                console.log("response : " + response);
+            })
+            .error(function (response) {
+                console.log("response : " + response);
+                console.log("Internal Error : " + response.description);
+            });
+    return promise;
+    */
+
+    if(dataValueSet.dataValues.length != 0){
+
+        $.ajax({
+            async: false,
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            url: '../api/dataValueSets/',
+            data: dataJSON,
+            success: function (response) {
+                console.log("response : " + response);
+                console.log("response : " + response.conflicts);
+
+                impCount = response.importCount.imported;
+                upCount = response.importCount.updated;
+                igCount = response.importCount.ignored;
+                conflictsDetails   = response.conflicts;
+
+                // dataSet complete registration
+
+                if ( response.importCount.updated > 0 || response.importCount.imported > 0) {
+                    for (var i = 0; i < regOrgUnitList.length; i++) {
+                        for (var j = 0; j < regPeriodList.length; j++) {
+                            cdsr.completeDataSetRegistrations.push({
+                                'dataSet': dataSetUid,
+                                'period': regPeriodList[j],
+                                'organisationUnit': regOrgUnitList[i]
+                                // 'multiOu': false
+                            });
+                            $.ajax({
+                                url: '../api/completeDataSetRegistrations',
+                                data: JSON.stringify(cdsr),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: 'json',
+                                type: 'POST',
+                                success: function (dataSetRegResponse) {
+                                    dataSetCompleteRegistration = "Registration Complete";
+                                    //console.log("Registration Complete");
+                                },
+                                error: function ( dataSetRegResponse) {
+                                    console.log("Error in Registration Complete");
+                                    dataSetCompleteRegistration = "IGNORED";
+                                }
+                            });
+                            //console.log(cdsr);
+                        }
+                    }
+                }
+                else {
+                    dataSetCompleteRegistration = "IGNORED";
+                }
+            },
+            error: function (response) {
+                console.log("Error in post");
+            }
+        });
+    }
+
+    console.log("conflicts : " + conflictsDetails );
+    console.log("importCount : " + impCount + " updateCount : " + upCount + " ignoreCount : " + igCount );
+
+    console.log("dataSetCompleteRegistration : " + dataSetCompleteRegistration );
+
+    if( conflictsDetails === undefined )
+    {
+        conflictsDetails = "No Conflicts";
+    }
+    if( dataSetCompleteRegistration === "" )
+    {
+        dataSetCompleteRegistration = "Registration Complete";
+    }
+    //unLockScreen();
+    var newLine = "\r\n";
+    var msg = "Data Imported Successfully With .";
+    msg += newLine;
+    msg += "Import Count - " + impCount + newLine + "Update Count " + upCount;
+    msg += newLine + "Ingore Count " + igCount + newLine ;
+    msg += "Conflicts Details - " + conflictsDetails ;
+    //msg+= newLine;
+    //alert(msg);
+    var resultMsg1 = msg;
+    var importMsg1 = resultMsg1.bold();
+
+    document.getElementById('importButton').style.display = 'block';
+    document.getElementById("Import").disabled = false;
+    document.getElementById('resultDiv').style.display = 'block';
+    //document.getElementById("importMsg").innerHTML = msg;
+
+    document.getElementById("importMsg").innerHTML = "";
+    document.getElementById("importMsg").innerHTML += "Data Imported Successfully With .";
+    document.getElementById("importMsg").innerHTML += "<br>";
+    document.getElementById("importMsg").innerHTML += "Import Count - " + impCount;
+    document.getElementById("importMsg").innerHTML += "<br>";
+    document.getElementById("importMsg").innerHTML += "Update Count - " + upCount;
+    document.getElementById("importMsg").innerHTML += "<br>";
+    document.getElementById("importMsg").innerHTML += "Ingore Count - " + igCount;
+    document.getElementById("importMsg").innerHTML += "<br>";
+    document.getElementById("importMsg").innerHTML += "Conflicts Details - " + JSON.stringify(conflictsDetails);
+    document.getElementById("importMsg").innerHTML += "<br>";
+    document.getElementById("importMsg").innerHTML += "DataSet Registrations Complete - " + dataSetCompleteRegistration;
+    document.getElementById("importMsg").innerHTML += "<br>";
+    //document.getElementById("importMsg").innerHTML += "dataValueSet - " + JSON.stringify(dataValueSet)  ;
+
+    unLockScreen();
+    hideLoader();
+};
+
+// Defining function to get unique values from an array
+function getUnique(array){
+    var uniqueArray = [];
+
+    // Loop through array values
+    for(i=0; i < array.length; i++){
+        if(uniqueArray.indexOf(array[i]) === -1) {
+            uniqueArray.push(array[i]);
+        }
+    }
+    return uniqueArray;
+}
+
+
+
+
+
+
+
+</script>
+</html>

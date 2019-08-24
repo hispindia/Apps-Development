@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .custom{
+            margin-top:50px;
+            width:100%;
+            padding:10px;
+        }
+        .custom-table{
+            width:75%;
+            font-size:16px;
+            margin:auto;
+            text-align:center;
+        }
+        .custom-drop{
+            text-align:center;
+        }
+    </style>
+    <style>
+        thead>tr>td {
+            font-weight: bold;
+        }
+        tbody>tr>td {
+            font-weight: bold;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            opacity: 1;
+        }
+
+        /* Center the loader  */
+        #loader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            width: 150px;
+            height: 150px;
+            margin: -75px 0 0 -75px;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #34B4DB;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        /* Add animation to "page content" */
+
+        .animate-bottom {
+            position: relative;
+            -webkit-animation-name: animatebottom;
+            -webkit-animation-duration: 1s;
+            animation-name: animatebottom;
+            animation-duration: 1s
+        }
+
+        @-webkit-keyframes animatebottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
+            to {
+                bottom: 0px;
+                opacity: 1
+            }
+        }
+
+        @keyframes animatebottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
+            to {
+                bottom: 0;
+                opacity: 1
+            }
+        }
+
+        #printing {
+
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div align="center">
+    <label>
+        <strong>Period : </strong>
+        <select class="form-control" style='width:150px;font-size:12px' id="importPeriod" readonly>
+            <option value="">Please Select</option>
+        </select>
+        <button onClick="readAPI()" disabled id="importButton" style="margin-left: 5%">Start Importing Data</button>
+    </label>
+</div>
+
+<div id="resultDiv">
+    <h4 id ="importMsg"></h4>
+</div>
+<!--<div id="loader"> <h4 id = "templateProgress"></h4></div>-->
+<br><br>
+<div id="loader"></div>
+
+
+</body>
+<script type="text/javascript">
+    var finalOu = [];
+    var orgUnitMap = [];
+    var apiResponseResult = [];
+    var dataElementMap = [];
+    var impCount = "";
+    var upCount = "";
+    var igCount = "";
+    var conflictsDetails = [];
+    var regOrgUnitList = [];
+    var regPeriodList = [];
+    var dataSetUid = 'hxC8LQlCua5';
+    var cdsr = { completeDataSetRegistrations: [] };
+    var dataSetCompleteRegistration = "";
+
+    $(document).ready(function(){
+        document.getElementById("loader").style.display = "none";
+        var today = new Date();
+        //var stDate = "01/01/" + today.getFullYear();
+        var stDate = "01/01/" + "2014";
+        var endDate = "01/01/" + (today.getFullYear() + 1);
+
+        loadOrgUnits();
+        loadPeriods( stDate, endDate );
+        console.log( finalOu );
+        document.getElementById("importButton").disabled = false;
+        //document.getElementById('importButton').style.display = 'block';
+        document.getElementById('resultDiv').style.display = 'none';
+
+        //console.log( dataElementsMapping );
+
+    });
+
+    function readAPI() {
+        //document.getElementById("loader").fadeIn();
+        //document.getElementById("templateProgress").html(" -> preparing data values to import");
+
+        if( document.getElementById("importPeriod").value === ""){
+            return alert("Please Select Period");
+        }
+        else{
+            var selectedPeriod = document.getElementById("importPeriod").value;
+            document.getElementById("importButton").disabled = true;
+            document.getElementById('importButton').style.display = 'none';
+            document.getElementById('importPeriod').style.display = 'none';
+            document.getElementById('resultDiv').style.display = 'block';
+            document.getElementById("importMsg").innerHTML = " Import Start.... ";
+            /*
+             showLoader();
+             lockScreen();
+             setTimeout(function(){ startImporting() }, 0);
+             */
+            $('#loader').show();
+            setTimeout(function () {
+                startImporting( selectedPeriod );
+            }, 1000);
+        }
+    }
+
+
+    //res.setHeader('Access-Control-Allow-Origin', '*');
+    function startImporting( selectedPeriod ) {
+
+        var dataElementsMapping = [
+            {
+                "dhis_name": "Calls registered for biomedical equipment",
+                "name": "TotalPatients",
+                "id": "Fsl1X9Oinoq",
+                "categorycombo": "HllvX50cXC0"
+            },
+            {
+                "dhis_name": "Open calls for biomedical equipment",
+                "name": "TATMET",
+                "id": "GTLgaz1UMo8",
+                "categorycombo": "HllvX50cXC0"
+            },
+            {
+                "dhis_name": "Closed calls for biomedical equipment",
+                "name": "TATFAIL",
+                "id": "rfw2GJ8i4oY",
+                "categorycombo": "HllvX50cXC0"
+            }
+        ];
+
+   //https://mahahindlabs.com/api/data_districtwise_patientdetails.php?month=05&year=2019
+    var selectedYear =  selectedPeriod.substring(0, 4);
+    var selectedMonth = selectedPeriod.substring(4, 6);
+    console.log( "selected Period " + selectedPeriod );
+    var dataValues = [];
+    var proxyURL = "https://cors-anywhere.herokuapp.com/";
+    var apiUrl = "https://mahahindlabs.com/api/data_districtwise_patientdetails.php?month=" + selectedMonth + "&year=" + selectedYear;
+   alert( "mh API - " + apiUrl + " -- " + selectedPeriod );
+    $.ajax({
+
+        type: "GET",
+        url:  proxyURL + apiUrl,
+        async: false,
+        contentType: "application/json" ,
+        crossDomain: true,
+
+        success: function ( result )
+        {
+            alert( result.length );
+            //apiResponseResult = result;
+
+            //Append extra an [ and ] to the beginning and end of the string
+            //As Luca indicated, add extra [] to your string and use the code below
+            apiResponseResult = eval('(' + result + ')');
+
+            console.log( apiResponseResult.result.length );
+            for (var i = 0; i < apiResponseResult.result.length; i++) {
+
+                console.log(  apiResponseResult.result[i].TotalPatients + " - " + apiResponseResult.result[i].TATMET + " - " + apiResponseResult.result[i].TATFAIL
+                        + " - " + apiResponseResult.result[i].DISTNAME + " - " + orgUnitMap[apiResponseResult.result[i].DISTNAME] );
+
+                regOrgUnitList.push( orgUnitMap[apiResponseResult.result[i].DISTNAME] );
+
+                for (var k = 0; k < dataElementsMapping.length; k++) {
+                    var dataValue = {};
+
+                    if(dataElementsMapping[k].name === "TotalPatients" )
+                    {
+                        dataValue.period = selectedPeriod;
+                        dataValue.dataElement = dataElementsMapping[k].id;
+                        dataValue.categoryOptionCombo = dataElementsMapping[k].categorycombo;
+                        dataValue.orgUnit = orgUnitMap[apiResponseResult.result[i].DISTNAME];
+                        dataValue.value = apiResponseResult.result[i].TotalPatients;
+                        dataValues.push(dataValue);
+                    }
+                    else if(dataElementsMapping[k].name === "TATMET" )
+                    {
+                        dataValue.period = selectedPeriod;
+                        dataValue.dataElement = dataElementsMapping[k].id;
+                        dataValue.categoryOptionCombo = dataElementsMapping[k].categorycombo;
+                        dataValue.orgUnit = orgUnitMap[apiResponseResult.result[i].DISTNAME];
+                        dataValue.value = apiResponseResult.result[i].TATMET;
+                        dataValues.push(dataValue);
+                    }
+                    else if(dataElementsMapping[k].name === "TATFAIL" )
+                    {
+                        dataValue.period = selectedPeriod;
+                        dataValue.dataElement = dataElementsMapping[k].id;
+                        dataValue.categoryOptionCombo = dataElementsMapping[k].categorycombo;
+                        dataValue.orgUnit = orgUnitMap[apiResponseResult.result[i].DISTNAME];
+                        dataValue.value = apiResponseResult.result[i].TATFAIL;
+                        dataValues.push(dataValue);
+                    }
+                }
+            }
+        },
+        error: function (apiResponse)
+        {
+            console.log( "Error" );
+            //unLockScreen();
+            $('#loader').hide();
+            document.getElementById('resultDiv').style.display = 'block';
+            document.getElementById('importPeriod').style.display = 'block';
+            document.getElementById('importButton').style.display = 'block';
+            document.getElementById("importButton").disabled = false;
+            document.getElementById("importMsg").innerHTML = "";
+            document.getElementById("importMsg").innerHTML += "<br>";
+            document.getElementById("importMsg").innerHTML += "Error in API.";
+        }
+    });
+
+    //console.log(" final dataValues : " + JSON.stringify(dataValues));
+    //console.log(" regOrgUnitList : " + regOrgUnitList.length + "-- " + getUnique( regOrgUnitList).length );
+    regOrgUnitList = getUnique( regOrgUnitList);
+
+    console.log(" final regOrgUnitList : " + regOrgUnitList );
+
+    var dataValueSet = {};
+    dataValueSet.dataValues = dataValues;
+    console.log(" final dataValueSet : " + dataValueSet );
+    console.log(" final dataValueSet : " + JSON.stringify(dataValueSet));
+    //importData( dataValueSet, selectedPeriod, regOrgUnitList );
+    $('#loader').hide();
+
+  }
+
+function loadOrgUnits() {
+    $.ajax({
+        url: "../api/organisationUnits.json?fields=id,name,code,level,attributeValues[attribute[id,name,code],value]&filter=level:eq:4&sortOrder=ASC&paging=false",
+        dataType: "json",
+        async: false,
+        success: function (orgUnitResponse) {
+            for (var i = 0; i < orgUnitResponse.organisationUnits.length; i++) {
+                if (orgUnitResponse.organisationUnits[i].attributeValues.length != 0) {
+                    for (var j = 0; j < orgUnitResponse.organisationUnits[i].attributeValues.length; j++) {
+                        finalOu.push({
+                            'id': orgUnitResponse.organisationUnits[i].id,
+                            'value': orgUnitResponse.organisationUnits[i].attributeValues[j].value
+
+                        });
+                        orgUnitMap[orgUnitResponse.organisationUnits[i].attributeValues[j].value] = orgUnitResponse.organisationUnits[i].id;
+                    }
+                }
+            }
+        },
+        error: function (err) {
+            console.log("org error" + JSON.stringify(err));
+        }
+    });
+}
+
+var getISOPeriod = function ( financialYear, month ) {
+    var isoPeriod = "";
+    var startYear = financialYear.split("-")[0];
+    var endYear =  financialYear.split("-")[0].substring(0, 2) + financialYear.split("-")[1];
+
+    if ( month === "April") {
+        isoPeriod = startYear+"04";
+    }
+    else if (  month === "May" ){
+        isoPeriod = startYear+"05";
+    }
+    else if (  month === "June" ){
+        isoPeriod = startYear+"06";
+    }
+    else if (  month === "July" ){
+        isoPeriod = startYear+"07";
+    }
+    else if (  month === "August" ){
+        isoPeriod = startYear+"08";
+    }
+    else if (  month === "September" ){
+        isoPeriod = startYear+"09";
+    }
+    else if (  month === "October" ){
+        isoPeriod = startYear+"10";
+    }
+    else if (  month === "November" ){
+        isoPeriod = startYear+"11";
+    }
+    else if (  month === "December" ){
+        isoPeriod = startYear+"12";
+    }
+    else if (  month === "January" ){
+        isoPeriod = endYear+"01";
+    }
+    else if (  month === "February" ){
+        isoPeriod = endYear+"02";
+    }
+    else if (  month === "March" ){
+        isoPeriod = endYear+"03";
+    }
+    return isoPeriod;
+};
+
+// import dataValueSet
+var importData = function ( dataValueSet, selectedPeriod, regOrgUnitList) {
+    //var url = "../api/dataValueSets";
+
+    //var header = { 'Accept': 'application/json', 'Content-Type': 'application/json' };
+    var dataJSON = JSON.stringify(dataValueSet);
+    /*
+    var promise = $http({ method: 'post', url: url, headers: header, data: dataJSON })
+            .success(function (response) {
+                console.log("response : " + response);
+            })
+            .error(function (response) {
+                console.log("response : " + response);
+                console.log("Internal Error : " + response.description);
+            });
+    return promise;
+    */
+
+    if(dataValueSet.dataValues.length != 0){
+
+        $.ajax({
+            async: false,
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            url: '../api/dataValueSets/',
+            data: dataJSON,
+            success: function (response) {
+                console.log("response : " + response);
+                console.log("response : " + response.conflicts);
+
+                impCount = response.importCount.imported;
+                upCount = response.importCount.updated;
+                igCount = response.importCount.ignored;
+                conflictsDetails   = response.conflicts;
+
+                dataSetComplete(regOrgUnitList, selectedPeriod, impCount, upCount, igCount, conflictsDetails);
+
+            },
+            error: function (response) {
+                console.log("Error in post");
+            }
+        });
+    }
+};
+
+// dataSet complete registration
+var dataSetComplete = function (regOrgUnitList, selectedPeriod, impCount, upCount, igCount, conflictsDetails) {
+
+    for (var j = 0; j < regOrgUnitList.length; j++) {
+        cdsr.completeDataSetRegistrations.push({
+            'dataSet': dataSetUid,
+            'period': selectedPeriod,
+            'organisationUnit': regOrgUnitList[j],
+            'multiOu': false
+        });
+        $.ajax({
+            url: '../api/completeDataSetRegistrations',
+            data: JSON.stringify(cdsr),
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            type: 'POST',
+            success: function (dataSetRegResponse) {
+                dataSetCompleteRegistration = "Registration Complete";
+                //console.log("Registration Complete");
+            },
+            error: function ( dataSetRegResponse) {
+                console.log("Error in Registration Complete");
+                dataSetCompleteRegistration = "IGNORED";
+            }
+        });
+        //console.log(cdsr);
+    }
+
+    console.log("conflicts : " + conflictsDetails );
+    console.log("importCount : " + impCount + " updateCount : " + upCount + " ignoreCount : " + igCount );
+
+    console.log("dataSetCompleteRegistration : " + dataSetCompleteRegistration );
+
+    if( conflictsDetails === undefined )
+    {
+        conflictsDetails = "No Conflicts";
+    }
+    if( dataSetCompleteRegistration === "" )
+    {
+        dataSetCompleteRegistration = "Registration Complete";
+    }
+    var newLine = "\r\n";
+    var msg = "Data Imported Successfully With .";
+    msg += newLine;
+    msg += "Import Count - " + impCount + newLine + "Update Count " + upCount;
+    msg += newLine + "Ingore Count " + igCount + newLine ;
+    msg += "Conflicts Details - " + conflictsDetails ;
+    //msg+= newLine;
+    //alert(msg);
+    var resultMsg1 = msg;
+    var importMsg1 = resultMsg1.bold();
+
+    document.getElementById('importPeriod').style.display = 'block';
+    document.getElementById('importButton').style.display = 'block';
+    document.getElementById("importButton").disabled = false;
+    document.getElementById('resultDiv').style.display = 'block';
+    document.getElementById("importMsg").innerHTML = "";
+    document.getElementById("importMsg").innerHTML += "Data Imported Successfully With .";
+    document.getElementById("importMsg").innerHTML += "<br>";
+    document.getElementById("importMsg").innerHTML += "Import Count - " + impCount;
+    document.getElementById("importMsg").innerHTML += "<br>";
+    document.getElementById("importMsg").innerHTML += "Update Count - " + upCount;
+    document.getElementById("importMsg").innerHTML += "<br>";
+    document.getElementById("importMsg").innerHTML += "Ingore Count - " + igCount;
+    document.getElementById("importMsg").innerHTML += "<br>";
+    document.getElementById("importMsg").innerHTML += "Conflicts Details - " + JSON.stringify(conflictsDetails);
+    document.getElementById("importMsg").innerHTML += "<br>";
+    document.getElementById("importMsg").innerHTML += "DataSet Registrations Complete - " + dataSetCompleteRegistration;
+    document.getElementById("importMsg").innerHTML += "<br>";
+    //document.getElementById("importMsg").innerHTML += "dataValueSet - " + JSON.stringify(dataValueSet)  ;
+
+};
+// Defining function to get unique values from an array
+function getUnique(array){
+    var uniqueArray = [];
+
+    // Loop through array values
+    for(i=0; i < array.length; i++){
+        if(uniqueArray.indexOf(array[i]) === -1) {
+            uniqueArray.push(array[i]);
+        }
+    }
+    return uniqueArray;
+}
+
+    //period type : monthly
+    function loadPeriods(sD , eD)
+    {
+        var sDate = new Date(sD);
+        sDate.setDate(1);
+        var eDate = new Date(eD);
+        eDate.setDate(1);
+
+        var dateString = "";
+
+        while( sDate <= eDate )
+        {
+            var month = ( sDate.getMonth() + 1 ) > 9 ? ( sDate.getMonth() + 1 ) : "0"+( sDate.getMonth() + 1 );
+            var dhis2Date = sDate.getFullYear() + "" + month;
+            dateString = ( dateString == "" ) ? dhis2Date : ( dateString + ";" + dhis2Date );
+            sDate.setMonth( sDate.getMonth() + 1 );
+        }
+
+        $("#importPeriod").html("");
+        dateString.split(";").forEach(function (isoPeriod) {
+            var periodString = monthString(isoPeriod);
+            var selectOption = "<option value='" + isoPeriod + "'>" + periodString + "</option>";
+            $("#importPeriod").append( selectOption );
+        });
+
+
+        return dateString;
+    }
+
+ var  monthString = function (isoPeriod) {
+        var month = isoPeriod.substring(4, 6);
+        var ms = "";
+
+        if (month == "01")
+            ms = "Jan";
+        else if (month == "02")
+            ms = "Feb";
+        else if (month == "03")
+            ms = "Mar";
+        else if (month == "04")
+            ms = "Apr";
+        else if (month == "05")
+            ms = "May";
+        else if (month == "06")
+            ms = "Jun";
+        else if (month == "07")
+            ms = "Jul";
+        else if (month == "08")
+            ms = "Aug";
+        else if (month == "09")
+            ms = "Sep";
+        else if (month == "10")
+            ms = "Oct";
+        else if (month == "11")
+            ms = "Nov";
+        else if (month == "12")
+            ms = "Dec";
+
+        return ms + " " + isoPeriod.substring(0, 4);
+    };
+
+</script>
+</html>

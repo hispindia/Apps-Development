@@ -1,0 +1,48 @@
+
+https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en-US
+chrome.exe --user-data-dir="C:/Chrome dev session" --disable-web-security
+
+C:\Windows\System32\cmd.exe
+API Link -- http://182.156.208.43:85/faber_maharashtra/services/service_phd2
+http://182.156.208.43:85/faber_maharashtra/services/service_phd2
+
+new API
+https://mahahindlabs.com/api/data_districtwise_patientdetails.php?month=05&year=2019
+https://mahahindlabs.com/api/data_districtwise_patientdetails.php?month=05&year=2019
+
+in side dhis2 cross
+http://182.156.208.43:85
+https://mahahindlabs.com
+
+
+const proxyurl = "https://cors-anywhere.herokuapp.com/";
+const url = "https://example.com"; // site that doesn’t send Access-Control-*
+fetch(proxyurl + url) // https://cors-anywhere.herokuapp.com/https://example.com
+.then(response => response.text())
+.then(contents => console.log(contents))
+.catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"))
+
+https://github.com/Rob--W/cors-anywhere/
+
+
+Year: "2016-17",
+District: "AKOLA",
+month: "December",
+
+Total_Calls: "16", - breakdown call - 4
+
+Open_Calls: "0", - 6
+
+Closed_Calls: "16", - 5
+
+Cal_Close_Calls: "0", - caliberation calls - 2
+
+PPM_CLose_Calls: "0", - 3
+
+Bio Equipment: "968" - 1
+
+APIS
+
+ http://172.104.45.148/mh
+http://88.80.191.115:29014/mh_revamping/api/organisationUnits.json?fields=id,name&filter=level:eq:4&sortOrder=ASC&paging=false
+../api/organisationUnits.json?fields=id,name,code,level,attributeValues[attribute[id,name,code],value]&filter=level:eq:4&sortOrder=ASC&paging=false
