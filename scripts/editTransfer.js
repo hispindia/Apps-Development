@@ -219,6 +219,26 @@ $scope.saveSingleTEIDataValue = function (eventUid, programUid, teiUid, deUid) {
     console.log( eventUid + " -- " + programUid + " -- " + teiUid + " -- " + deUid + " -- " + valueForUpdate );
     updateSingleTEIDataValue( teiUid, programUid, eventUid, deUid, valueForUpdate );
 
+    if( $scope.eventDataValue[eventUid][deUid] === 'Dead' ){
+        var arr = ["H4s7FuoY3Hm", "hQmS69HXStI", "qNmtxrjYccb"];
+        arr.forEach(id=> {
+            if($scope.eventDataValue[eventUid][id]) {
+                emptyString = $scope.eventDataValue[eventUid][id] = "";
+                updateSingleTEIDataValue( teiUid, programUid, eventUid, id, emptyString);
+    
+            }
+        })
+    }
+    else if($scope.eventDataValue[eventUid][deUid] === "Contaminated") {
+        var arr = ["hQmS69HXStI", "qNmtxrjYccb"];
+        arr.forEach(id=> {
+            if($scope.eventDataValue[eventUid][id]) {
+                emptyString = $scope.eventDataValue[eventUid][id] = "";
+                updateSingleTEIDataValue( teiUid, programUid, eventUid, id, emptyString);
+            }
+        })
+    }
+
 };
 
 
@@ -255,5 +275,8 @@ function updateSingleTEIDataValue( teiUid, programUid, eventUid, deUid, deValue 
     });
 
 }
+
+
+
 
 });

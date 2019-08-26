@@ -15,33 +15,56 @@
                 </tr>
                 <tr>
                     <th>AMR Ids</th>
-                    <th ng-repeat="deMapping in dataElementsMapping">{{deMapping.displayName}}</th>
-                    <!--
-                    <th>de1</th>
-                    <th>de2</th>
-                    <th>de3</th>
-                    <th>de4</th>
-                    -->
+                    <th>Isolate status</th>
+                    <th>Isolate condition</th>
+                    <th>Quality check date</th>
+                    <th>Molecular test date</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="amr in teiDataValue.selectedArray">
                     <td>{{amr.amrid}}</td>
-                    <td ng-repeat="deMapping in dataElementsMapping" >
-                        <input type="text" ng-model="eventDataValue[amr.eventuid][deMapping.id]"
-                         ng-blur="saveSingleTEIDataValue(amr.eventuid,amr.programuid,amr.teiuid,deMapping.id)"></td>
-
-                   <!--
-                    <td><input type="text"></td>
-                    <td><input type="text"></td>
-                    <td><input type="text"></td>
-                    <td><input type="text"></td>
-                    -->
+                    <td>
+                        <input  type="radio" 
+                               
+                                ng-model="eventDataValue[amr.eventuid]['KHHHMoiUsWZ']"
+                                ng-change="saveSingleTEIDataValue(amr.eventuid,amr.programuid,amr.teiuid,'KHHHMoiUsWZ')" value="Alive" >Alive
+                        
+                        <input  type="radio" 
+                                
+                                ng-model="eventDataValue[amr.eventuid]['KHHHMoiUsWZ']"
+                                ng-change="saveSingleTEIDataValue(amr.eventuid,amr.programuid,amr.teiuid,'KHHHMoiUsWZ')" value="Dead">Dead
+                    </td>
+                    
+                    <td>
+                        <input  type="radio" 
+                                ng-model="eventDataValue[amr.eventuid]['H4s7FuoY3Hm']"
+                                ng-change="saveSingleTEIDataValue(amr.eventuid,amr.programuid,amr.teiuid,'H4s7FuoY3Hm')" 
+                                ng-disabled= "eventDataValue[amr.eventuid]['KHHHMoiUsWZ'] == 'Dead'" value="Pure">Pure
+                        
+                        <input  type="radio" 
+                                ng-model="eventDataValue[amr.eventuid]['H4s7FuoY3Hm']"
+                                ng-change="saveSingleTEIDataValue(amr.eventuid,amr.programuid,amr.teiuid,'H4s7FuoY3Hm')"  
+                                ng-disabled= "eventDataValue[amr.eventuid]['KHHHMoiUsWZ'] == 'Dead'" value="Contaminated">Contaminated
+                    </td>
+                    <td>
+                        <input  calendar 
+                                ng-model="eventDataValue[amr.eventuid]['hQmS69HXStI']" 
+                                ng-change="saveSingleTEIDataValue(amr.eventuid,amr.programuid,amr.teiuid,'hQmS69HXStI')"
+                                ng-disabled= "eventDataValue[amr.eventuid]['H4s7FuoY3Hm'] == 'Contaminated' || !eventDataValue[amr.eventuid]['H4s7FuoY3Hm']" >
+                    </td>
+                    <td> 
+                        <input  calendar 
+                                ng-model="eventDataValue[amr.eventuid]['qNmtxrjYccb']"
+                                ng-change="saveSingleTEIDataValue(amr.eventuid,amr.programuid,amr.teiuid,'qNmtxrjYccb')"
+                                ng-disabled= "eventDataValue[amr.eventuid]['H4s7FuoY3Hm'] == 'Contaminated' || !eventDataValue[amr.eventuid]['H4s7FuoY3Hm']" >
+                    </td>
+                
                 </tr>
             </tbody>
         </table>
-        <button class="button" id="button-danger" ng-click="cancelTeiDataValue()"> Cancel </button>               
-            
+        <button class="button" id="button-danger" ng-click="cancelTeiDataValue()"> Cancel </button>
+
     </div>
 
 </div>

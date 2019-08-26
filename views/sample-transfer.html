@@ -27,7 +27,7 @@
                         <p ng-repeat="amr in amrIds[dataValues.BatchNo]">{{amr}}<p>
                     </td>
                     <td>{{dataValues.program.displayName}}</td>
-                    <td> <input calendar ng-model="allTeiDataValues[$index].disptachStatus.receivedDate" ng-disabled="dataValues.disptachStatus.receivedDate != ''" required /> </td>
+                    <td> <input calendar ng-model="checkDates[dataValues.BatchNo]" ng-disabled="dataValues.disptachStatus.receivedDate != ''" required /> </td>
                     <td>
                         <button class="button" ng-click="editTransfer(dataValues)"> Update </button>
                     </td>

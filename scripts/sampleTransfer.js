@@ -8,7 +8,7 @@ isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $ti
     $scope.storePrintValues = [];
     $scope.allTeiDataValues = [];
     $scope.amrIds = [];
-    $scope.datesamrIds = [];
+    $scope.checkDates = [];
     $scope.selectedEventUID = {};
     $scope.showModal = false;
     $scope.currentData = [];
@@ -23,6 +23,7 @@ isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $ti
         }
     }
     $scope.editTransfer = function (data) {
+        data.disptachStatus.receivedDate = $scope.checkDates[data.BatchNo]
         if (data.disptachStatus.receivedDate != "" && data.disptachStatus.received != "Received") {
             data.disptachStatus.received = "Received"
             dataStoreService.get($scope.selectedOrgUnit.code).then(function (response) {
@@ -70,7 +71,7 @@ isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $ti
                         var id = [];
                         var count = 0;
                         $scope.amrIds[child.BatchNo] = [];
-                        $scope.datesamrIds[child.BatchNo] = ""
+                        $scope.checkDates[child.BatchNo] = child.disptachStatus.receivedDate;
                         id[count] = []
                         child.rows.selectedArray.forEach((data, index) => {
                             if ((index + 1) % 6 == 0) {
