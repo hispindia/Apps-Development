@@ -1,5 +1,5 @@
 isolateTransferApp.controller("createNewTransfer", function ($scope, $location, $timeout, MetadataService, dataStoreService) {
-    $scope.allPrograms = '';
+    //$scope.allPrograms = [];
     $scope.selectedProgram = '';
     $scope.selectedStartDate = "";
     $scope.selectedEndDate = "";
@@ -22,8 +22,25 @@ isolateTransferApp.controller("createNewTransfer", function ($scope, $location, 
     // Listen for OU changes
     selection.setListenerFunction(function () {
         var selectedSelection = selection.getSelected();
+        $scope.allPrograms = [];
         $scope.selectedOrgUnit.id = selectedSelection["0"];
         loadOrgUnit();
+        //alert( $scope.selectedOrgUnit.id );
+        // lod programs based on selected orgUnit
+        //$timeout(function () {
+            var orgParam = "var=orgUid:" + $scope.selectedOrgUnit.id;
+            MetadataService.getSQLView("YqMvHMg8RKU", orgParam ).then(function (responsePrograms) {
+                if( responsePrograms.listGrid.rows.length > 0 ){
+                    for (var j = 0; j < responsePrograms.listGrid.rows.length; j++) {
+                        $scope.allPrograms.push({
+                            id: responsePrograms.listGrid.rows[j][0],
+                            displayName: responsePrograms.listGrid.rows[j][1]
+                        });
+                    }
+                }
+            });
+        //}, )
+
     }, false);
 
     loadOrgUnit = function () {
@@ -31,17 +48,20 @@ isolateTransferApp.controller("createNewTransfer", function ($scope, $location, 
             $timeout(function () {
                 $scope.selectedOrgUnit.name = orgUnit.name;
                 $scope.selectedOrgUnit.code = orgUnit.code;
-            })
-        })
-    }
+            });
+        });
+    };
 
+    /*
     MetadataService.getAllPrograms().then(function (program) {
         $scope.allPrograms = program.programs;
-    })
+    });
+    */
 
+    console.log( $scope.allPrograms );
     $scope.cancelTeiDataValue = function () {
         $location.path('/').search();
-    }
+    };
 
 
     $scope.submitTeiDataValue = function () {

@@ -96,6 +96,7 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
                     data.status = "DISPATCH";
                     data.rows = $scope.teiDataValue;
                     data.dispatchDate = dispatchDate;
+                    data.rows.availableArray = [];
                 }
                 return data;
             })

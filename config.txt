@@ -46,4 +46,17 @@ where de.uid in ( 'SaQe2REkGVw', 'mp5MeJ2dFQz') and psi.uid =  '${eventID}' orde
 
 p4HF5bVuL6x = AMR_ISOLATE_APP_OPTION_VALUE
 
-Select code, optionsetid, name from optionvalue; 
+Select code, optionsetid, name from optionvalue;
+
+
+YqMvHMg8RKU = AMR_ISOLATE_APP_PROGRAMS
+
+SELECT pg.uid pgUid, pg.name pgName,pg.programid,org.uid orgUid,org.name orgName,org.organisationunitid from program pg
+INNER JOIN program_organisationunits pgOrg ON pgOrg.programid = pg.programid
+INNER JOIN organisationunit org ON org.organisationunitid = pgOrg.organisationunitid
+where org.uid = '${orgUid}'  order by pg.name;
+
+
+// API Call
+
+http://127.0.0.1:8090/dhis/api/organisationUnits/ANGhR1pa8I5.json?fields=id,displayName,code&includeDescendants=true&paging=false
