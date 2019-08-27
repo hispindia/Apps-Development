@@ -71,8 +71,7 @@ isolateTransferApp.service("dataStoreService", function ($http, $q) {
                         if (data.data.indexOf(key) != -1) {
                             url = '../../../api/dataStore/id/' + key;
                             return $http.get(url).then(function (response) {
-                                var varlength = response.data[key].length;
-                                response.data[key][varlength] = val[key]["0"];
+                                response.data[key].unshift(val[key]["0"]);
                                 var vall = response.data;
                                 return $http.put(url, vall)
                             })

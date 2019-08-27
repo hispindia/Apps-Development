@@ -7,7 +7,7 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
         name: "",
         code: ""
     }
-    
+
     $scope.showPopup = false;
     $scope.checkReturn = false;
 
@@ -70,7 +70,7 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
     };
     $scope.switch = function () {
         $scope.showPopup = !$scope.showPopup;
-        if (!$scope.showPopup && $scope.checkReturn ) {
+        if (!$scope.showPopup && $scope.checkReturn) {
             $location.path('/').search();
         }
     }
@@ -88,14 +88,21 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
         var dispatchDate = year + "-" + month + "-" + day;
 
         dataStoreService.get($scope.selectedOrgUnit.code).then(function (response) {
-            $scope.dataValue = response.map(data => {
+            var temp = [];
+            var changedElementIndex = "";
+            $scope.dataValue = response.map((data, index) => {
                 if (data.BatchNo == $scope.data.BatchNo) {
-                    data.status = "DISPATCH",
-                        data.rows = $scope.teiDataValue,
-                        data.dispatchDate = dispatchDate
+                    changedElementIndex = index;
+                    data.status = "DISPATCH";
+                    data.rows = $scope.teiDataValue;
+                    data.dispatchDate = dispatchDate;
                 }
                 return data;
             })
+            temp =  $scope.dataValue[changedElementIndex];
+            $scope.dataValue.splice(changedElementIndex,1);
+            $scope.dataValue.unshift(temp);
+            
             dataStoreService.updateInDataStore($scope.selectedOrgUnit.code, $scope.dataValue).then(function (response) {
                 if (response.status == "200") {
                     $scope.message = "Batch ID having " + $scope.data.BatchNo + " Dispatched."
