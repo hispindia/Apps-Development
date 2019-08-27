@@ -723,6 +723,17 @@ excelUpload.controller('ImportFacilitywiseController',
                             if (dataValue.dataElement == "FIaGENXR3c5" || dataValue.dataElement == "fqM6fGLUqVD") {
 
                                 dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
+                                dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
+                                dataValue.orgUnit = orgUnit.id;
+
+                                dataValue.value = dataValue.value == "" ? "omit" : dataValue.value;
+
+                                if (dataValue.orgUnit != "" && dataValue.value != "omit") {
+                                    dataValues.push(dataValue);
+                                }
+
+
+                                //dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
                                 $scope.dp.push(dataValue.value);
 
                                 for (var i = 0; i < $scope.dp.length; i++) {
@@ -745,6 +756,7 @@ excelUpload.controller('ImportFacilitywiseController',
                                         break;
                                     }
                                     else {
+                                        /*
                                         dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
                                         dataValue.orgUnit = orgUnit.id;
                                         dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
@@ -752,10 +764,12 @@ excelUpload.controller('ImportFacilitywiseController',
                                         if (dataValue.orgUnit != "" && dataValue.value != "omit") {
                                             dataValues.push(dataValue);
                                         }
+                                        */
                                     }
                                 }
                                 if (value1 == "false") {
                                     if (value2 == "") {
+                                        /*
                                         dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
                                         dataValue.orgUnit = orgUnit.id;
                                         dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
@@ -763,9 +777,10 @@ excelUpload.controller('ImportFacilitywiseController',
                                         if (dataValue.orgUnit != "" && dataValue.value != "omit") {
                                             dataValues.push(dataValue);
                                         }
+                                        */
                                     }
                                     else if (value2 == undefined) {
-
+                                        /*
                                         dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
                                         dataValue.orgUnit = orgUnit.id;
                                         dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
@@ -773,6 +788,7 @@ excelUpload.controller('ImportFacilitywiseController',
                                         if (dataValue.orgUnit != "" && dataValue.value != "omit") {
                                             dataValues.push(dataValue);
                                         }
+                                        */
                                     }
                                     else {
                                         alert("For " + orgName + " If Delivery point value is false then Level of Delivery point should not be selected");
@@ -800,11 +816,22 @@ excelUpload.controller('ImportFacilitywiseController',
                         }
 
                         /********************************************************** FOR DH **************************************************/
-                        else if (factype == "DH" || factype == "DWH" || factype == "OTH" || factype == "DMH" || factype == "DCH" || factype == "MC" || factype == "DH_TB" || factype == "DH_EYE") {
+                        else if (factype == "DH" || factype == "DWH" || factype == "OTH" || factype == "DMH" || factype == "DCH"
+                            || factype == "MC" || factype == "DH_TB" || factype == "DH_EYE") {
 
                             if (dataValue.dataElement == "FIaGENXR3c5" || dataValue.dataElement == "fqM6fGLUqVD") {
 
                                 dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
+                                dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
+                                dataValue.orgUnit = orgUnit.id;
+
+                                dataValue.value = dataValue.value == "" ? "omit" : dataValue.value;
+
+                                if (dataValue.orgUnit != "" && dataValue.value != "omit") {
+                                    dataValues.push(dataValue);
+                                }
+
+                                //dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
                                 $scope.dp.push(dataValue.value);
 
                                 for (var i = 0; i < $scope.dp.length; i++) {
@@ -827,6 +854,7 @@ excelUpload.controller('ImportFacilitywiseController',
                                         break;
                                     }
                                     else {
+                                        /*
                                         dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
                                         dataValue.orgUnit = orgUnit.id;
                                         dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
@@ -834,10 +862,12 @@ excelUpload.controller('ImportFacilitywiseController',
                                         if (dataValue.orgUnit != "" && dataValue.value != "omit") {
                                             dataValues.push(dataValue);
                                         }
+                                        */
                                     }
                                 }
                                 if (value1 == "false") {
                                     if (value2 == "") {
+                                        /*
                                         dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
                                         dataValue.orgUnit = orgUnit.id;
                                         dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
@@ -845,8 +875,10 @@ excelUpload.controller('ImportFacilitywiseController',
                                         if (dataValue.orgUnit != "" && dataValue.value != "omit") {
                                             dataValues.push(dataValue);
                                         }
+                                        */
                                     }
                                     else if (value2 == undefined) {
+                                        /*
                                         dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
                                         dataValue.orgUnit = orgUnit.id;
                                         dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
@@ -854,6 +886,7 @@ excelUpload.controller('ImportFacilitywiseController',
                                         if (dataValue.orgUnit != "" && dataValue.value != "omit") {
                                             dataValues.push(dataValue);
                                         }
+                                        */
                                     }
                                     else {
                                         alert("For " + orgName + " If Delivery point value is false then Level of Delivery point should not be selected");
@@ -884,9 +917,20 @@ excelUpload.controller('ImportFacilitywiseController',
                         else if (factype == "CHC" || factype == "BCHC" || factype == "UCHC") {
 
 
-                            if (dataValue.dataElement == "FIaGENXR3c5" || dataValue.dataElement == "fqM6fGLUqVD" || dataValue.dataElement == "GpEwBknDwF9") {
+                            if (dataValue.dataElement == "FIaGENXR3c5" || dataValue.dataElement == "fqM6fGLUqVD"
+                                || dataValue.dataElement == "GpEwBknDwF9") {
 
                                 dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
+                                dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
+                                dataValue.orgUnit = orgUnit.id;
+
+                                dataValue.value = dataValue.value == "" ? "omit" : dataValue.value;
+
+                                if (dataValue.orgUnit != "" && dataValue.value != "omit") {
+                                    dataValues.push(dataValue);
+                                }
+
+
                                 $scope.dp.push(dataValue.value);
 
                                 for (var i = 0; i < $scope.dp.length; i++) {
@@ -913,6 +957,8 @@ excelUpload.controller('ImportFacilitywiseController',
                                         window.location.reload();
                                         break;
                                     }
+
+                                    /*
                                     else {
                                         dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
                                         dataValue.orgUnit = orgUnit.id;
@@ -922,9 +968,11 @@ excelUpload.controller('ImportFacilitywiseController',
                                             dataValues.push(dataValue);
                                         }
                                     }
+                                    */
                                 }
                                 if (value1 == "false") {
                                     if (value2 == "") {
+                                        /*
                                         dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
                                         dataValue.orgUnit = orgUnit.id;
                                         dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
@@ -932,8 +980,10 @@ excelUpload.controller('ImportFacilitywiseController',
                                         if (dataValue.orgUnit != "" && dataValue.value != "omit") {
                                             dataValues.push(dataValue);
                                         }
+                                        */
                                     }
                                     else if (value2 == undefined) {
+                                        /*
                                         dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
                                         dataValue.orgUnit = orgUnit.id;
                                         dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
@@ -941,6 +991,7 @@ excelUpload.controller('ImportFacilitywiseController',
                                         if (dataValue.orgUnit != "" && dataValue.value != "omit") {
                                             dataValues.push(dataValue);
                                         }
+                                        */
                                     }
                                     else {
                                         alert("For " + orgName + " If Delivery point value is false then Level of Delivery point should not be selected");
@@ -948,11 +999,10 @@ excelUpload.controller('ImportFacilitywiseController',
                                         break;
                                     }
                                 }
-
-
                             }
 
                             else {
+
                                 dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
                                 dataValue.orgUnit = orgUnit.id;
 
@@ -966,12 +1016,23 @@ excelUpload.controller('ImportFacilitywiseController',
                             }
                         }
                         /******************************************** FOR PHC ********************************************************/
-                        else if (factype == "PHC" || factype == "BPHC" || factype == "UPHC" || factype == "NPHC" || factype == "APHC") {
+                        else if (factype == "PHC" || factype == "BPHC" || factype == "UPHC" || factype == "NPHC"
+                            || factype == "APHC") {
 
 
                             if (dataValue.dataElement == "FIaGENXR3c5" || dataValue.dataElement == "fqM6fGLUqVD") {
 
                                 dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
+                                dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
+                                dataValue.orgUnit = orgUnit.id;
+
+                                dataValue.value = dataValue.value == "" ? "omit" : dataValue.value;
+
+                                if (dataValue.orgUnit != "" && dataValue.value != "omit") {
+                                    dataValues.push(dataValue);
+                                }
+
+                                //dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
                                 $scope.dp.push(dataValue.value);
 
                                 for (var i = 0; i < $scope.dp.length; i++) {
@@ -994,6 +1055,7 @@ excelUpload.controller('ImportFacilitywiseController',
                                         break;
                                     }
                                     else {
+                                        /*
                                         dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
                                         dataValue.orgUnit = orgUnit.id;
                                         dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
@@ -1001,10 +1063,12 @@ excelUpload.controller('ImportFacilitywiseController',
                                         if (dataValue.orgUnit != "" && dataValue.value != "omit") {
                                             dataValues.push(dataValue);
                                         }
+                                        */
                                     }
                                 }
                                 if (value1 == "false") {
                                     if (value2 == "") {
+                                        /*
                                         dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
                                         dataValue.orgUnit = orgUnit.id;
                                         dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
@@ -1012,8 +1076,10 @@ excelUpload.controller('ImportFacilitywiseController',
                                         if (dataValue.orgUnit != "" && dataValue.value != "omit") {
                                             dataValues.push(dataValue);
                                         }
+                                        */
                                     }
                                     else if (value2 == undefined) {
+                                        /*
                                         dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
                                         dataValue.orgUnit = orgUnit.id;
                                         dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
@@ -1021,6 +1087,7 @@ excelUpload.controller('ImportFacilitywiseController',
                                         if (dataValue.orgUnit != "" && dataValue.value != "omit") {
                                             dataValues.push(dataValue);
                                         }
+                                        */
                                     }
                                     else {
                                         alert("For " + orgName + " If Delivery point value is false then Level of Delivery point should not be selected");
@@ -1059,6 +1126,7 @@ excelUpload.controller('ImportFacilitywiseController',
                             }
                         }
                     }
+
                     /*
                     dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
                     dataValue.value = dataValue.value == "" ? "omit" : dataValue.value;
