@@ -65,27 +65,33 @@ isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $ti
                 $scope.selectedOrgUnit.name = orgUnit.name;
                 $scope.selectedOrgUnit.code = orgUnit.code;
 
-                dataStoreService.get($scope.selectedOrgUnit.code).then(function (response) {
-                    $scope.allTeiDataValues = response;
-                    $scope.allTeiDataValues.forEach(child => {
-                        var id = [];
-                        var count = 0;
-                        $scope.amrIds[child.BatchNo] = [];
-                        $scope.checkDates[child.BatchNo] = child.disptachStatus.receivedDate;
-                        id[count] = []
-                        child.rows.selectedArray.forEach((data, index) => {
-                            if ((index + 1) % 6 == 0) {
-                                count++;
+                if ($scope.selectedOrgUnit.code) {
+                    dataStoreService.get($scope.selectedOrgUnit.code).then(function (response) {
+                        $scope.allTeiDataValues = response;
+                        if ($scope.allTeiDataValues != "No value contains in the selected feild") {
+                            $scope.allTeiDataValues.forEach(child => {
+                                var id = [];
+                                var count = 0;
+                                $scope.amrIds[child.BatchNo] = [];
+                                $scope.checkDates[child.BatchNo] = child.disptachStatus.receivedDate;
                                 id[count] = []
-                            }
-                            id[count].push(data.amrid);
-                        })
-                        var ar = id.map(ids => {
-                            return ids.join(",")
-                        })
-                        $scope.amrIds[child.BatchNo] = ar;
+                                child.rows.selectedArray.forEach((data, index) => {
+                                    if ((index + 1) % 6 == 0) {
+                                        count++;
+                                        id[count] = []
+                                    }
+                                    id[count].push(data.amrid);
+                                })
+                                var ar = id.map(ids => {
+                                    return ids.join(",")
+                                })
+                                $scope.amrIds[child.BatchNo] = ar;
+                            })
+                        } else {
+                            $scope.allTeiDataValues = ""
+                        }
                     })
-                })
+                }
             })
         })
     }

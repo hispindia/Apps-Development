@@ -1,5 +1,4 @@
-isolateTransferApp.controller('editTransfer', function ($scope, $location, $timeout, storeService, MetadataService, dataStoreService)
-{
+isolateTransferApp.controller('editTransfer', function ($scope, $location, $timeout, storeService, MetadataService, dataStoreService) {
 
     $scope.data = storeService.get();
     $scope.selectedProgram = $scope.data.program.displayName;
@@ -18,8 +17,7 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
 
     selection.load();
     $scope.dataElementsMapping = [];
-    $scope.dataElementsMapping = [
-        {
+    $scope.dataElementsMapping = [{
             "displayName": "Isolate status",
             "id": "KHHHMoiUsWZ",
             "valueType": "TEXT"
@@ -64,7 +62,7 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
 
     ];
 
-    console.log( $scope.dataElementsMapping );
+    console.log($scope.dataElementsMapping);
 
     processEventDataValue();
 
@@ -89,192 +87,187 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
     $scope.cancelTeiDataValue = function () {
         $location.path('/').search();
     };
-    
-    $scope.makeIds = function(rows, cols) {
-        for(var i = 0; i < rows.length; i++) {
-            for(var j = 0; j < cols.length; j++) {
+
+    $scope.makeIds = function (rows, cols) {
+        for (var i = 0; i < rows.length; i++) {
+            for (var j = 0; j < cols.length; j++) {
                 $scope.Ids[rows[i]][cols[j]] = "";
             }
         }
     };
     //makeIds(teiDataValue.selectedArray,);
 
-// init methods
-function processEventDataValue() {
+    // init methods
+    function processEventDataValue() {
 
-    var batchNo = $scope.data.BatchNo;
-    var dispatchDate = $scope.data.dispatchDate;
-    var dispatchStatus = $scope.data.disptachStatus.received;
-    var receivedDate = $scope.data.disptachStatus.receivedDate;
+        var batchNo = $scope.data.BatchNo;
+        var dispatchDate = $scope.data.dispatchDate;
+        var dispatchStatus = $scope.data.disptachStatus.received;
+        var receivedDate = $scope.data.disptachStatus.receivedDate;
 
-    var eventDataElements =  [
-        {
-            dataElement: $scope.batchNoDeUid,
-            value: batchNo
-        },
-        {
-            dataElement: $scope.dispatchDateDeUid,
-            value: dispatchDate
-        },
-        {
-            dataElement: $scope.dispatchStatusDeUid,
-            value: dispatchStatus
-        },
-        {
-            dataElement: $scope.receivedDateDeUid,
-            value: receivedDate
-        }
-    ];
-
-    for( var j=0; j<$scope.data.rows.selectedArray.length; j++){
-
-        var eventUid = $scope.data.rows.selectedArray[j].eventuid;
-        var programUid = $scope.data.rows.selectedArray[j].programuid;
-        var teiUid = $scope.data.rows.selectedArray[j].teiuid;
-
-
-        if( eventDataElements.length != 0){
-            for( var i=0; i<eventDataElements.length; i++ ){
-                updateSingleTEIDataValue( teiUid, programUid, eventUid, eventDataElements[i].dataElement, eventDataElements[i].value );
-            }
-        }
-
-        //get events dataValue
-        $.ajax({
-            async:false,
-            type: "GET",
-            url: '../../../api/events/' +eventUid+ '.json?skipPaging=true',
-            success: function(eventResponse){
-
-                if( eventResponse.event != undefined && eventResponse.dataValues.length != 0 ){
-                    for( var k=0; k<eventResponse.dataValues.length; k++){
-
-                        if( !$scope.eventDataValue[eventResponse.event]) {
-                            $scope.eventDataValue[eventResponse.event] = [];
-                        }
-                        $scope.eventDataValue[eventResponse.event][eventResponse.dataValues[k].dataElement] = eventResponse.dataValues[k].value;
-                    }
-                }
+        var eventDataElements = [{
+                dataElement: $scope.batchNoDeUid,
+                value: batchNo
             },
-            error: function(response){
+            {
+                dataElement: $scope.dispatchDateDeUid,
+                value: dispatchDate
+            },
+            {
+                dataElement: $scope.dispatchStatusDeUid,
+                value: dispatchStatus
+            },
+            {
+                dataElement: $scope.receivedDateDeUid,
+                value: receivedDate
+            }
+        ];
+
+        for (var j = 0; j < $scope.data.rows.selectedArray.length; j++) {
+
+            var eventUid = $scope.data.rows.selectedArray[j].eventuid;
+            var programUid = $scope.data.rows.selectedArray[j].programuid;
+            var teiUid = $scope.data.rows.selectedArray[j].teiuid;
+
+
+            if (eventDataElements.length != 0) {
+                for (var i = 0; i < eventDataElements.length; i++) {
+                    updateSingleTEIDataValue(teiUid, programUid, eventUid, eventDataElements[i].dataElement, eventDataElements[i].value);
+                }
             }
 
-        });
-
-        console.log( "Get Events DataValue Map :" , $scope.eventDataValue );
-
-        // post method for savaEvent dataValue
-        //alert( $scope.eventDataValue );
-        /*
-        var eventDataValue = {
-            event: $scope.data.rows.selectedArray[j].eventuid,
-            orgUnit: $scope.data.rows.selectedArray[j].orguid,
-            program: $scope.data.rows.selectedArray[j].programuid,
-            trackedEntityInstance: $scope.data.rows.selectedArray[j].teiuid,
-            dataValues: [
-                {
-                    dataElement: $scope.batchNoDeUid,
-                    value: batchNo
-                },
-                {
-                    dataElement: $scope.dispatchDateDeUid,
-                    value: dispatchDate
-                },
-                {
-                    dataElement: $scope.dispatchStatusDeUid,
-                    value: dispatchStatus
-                },
-                {
-                    dataElement: $scope.receivedDateDeUid,
-                    value: receivedDate
-                }
-            ]
-        };
-
-        if( eventDataValue.dataValues.length != 0){
+            //get events dataValue
             $.ajax({
                 async: false,
-                type: "POST",
-                dataType: "json",
-                contentType: "application/json",
-                url: '../../../api/events/',
-                data: JSON.stringify(eventDataValue),
-                success: function (response) {
-                    console.log("Update Event with UID :",eventDataValue.event);
+                type: "GET",
+                url: '../../../api/events/' + eventUid + '.json?skipPaging=true',
+                success: function (eventResponse) {
+
+                    if (eventResponse.event != undefined && eventResponse.dataValues.length != 0) {
+                        for (var k = 0; k < eventResponse.dataValues.length; k++) {
+
+                            if (!$scope.eventDataValue[eventResponse.event]) {
+                                $scope.eventDataValue[eventResponse.event] = [];
+                            }
+                            $scope.eventDataValue[eventResponse.event][eventResponse.dataValues[k].dataElement] = eventResponse.dataValues[k].value;
+                        }
+                    }
                 },
-                error: function (response) {
-                    console.log("Not Update Event with UID:",eventDataValue.event);
-                }
+                error: function (response) {}
+
             });
+
+            console.log("Get Events DataValue Map :", $scope.eventDataValue);
+
+            // post method for savaEvent dataValue
+            //alert( $scope.eventDataValue );
+            /*
+            var eventDataValue = {
+                event: $scope.data.rows.selectedArray[j].eventuid,
+                orgUnit: $scope.data.rows.selectedArray[j].orguid,
+                program: $scope.data.rows.selectedArray[j].programuid,
+                trackedEntityInstance: $scope.data.rows.selectedArray[j].teiuid,
+                dataValues: [
+                    {
+                        dataElement: $scope.batchNoDeUid,
+                        value: batchNo
+                    },
+                    {
+                        dataElement: $scope.dispatchDateDeUid,
+                        value: dispatchDate
+                    },
+                    {
+                        dataElement: $scope.dispatchStatusDeUid,
+                        value: dispatchStatus
+                    },
+                    {
+                        dataElement: $scope.receivedDateDeUid,
+                        value: receivedDate
+                    }
+                ]
+            };
+
+            if( eventDataValue.dataValues.length != 0){
+                $.ajax({
+                    async: false,
+                    type: "POST",
+                    dataType: "json",
+                    contentType: "application/json",
+                    url: '../../../api/events/',
+                    data: JSON.stringify(eventDataValue),
+                    success: function (response) {
+                        console.log("Update Event with UID :",eventDataValue.event);
+                    },
+                    error: function (response) {
+                        console.log("Not Update Event with UID:",eventDataValue.event);
+                    }
+                });
+            }
+            */
+
         }
-        */
-
-    }
-}
-
-$scope.saveSingleTEIDataValue = function (eventUid, programUid, teiUid, deUid) {
-    //alert( eventUid + " -- " + programUid + " -- " + teiUid + " -- " + deUid);
-    //alert($scope.eventDataValue[eventUid][deUid]);
-    var valueForUpdate = $scope.eventDataValue[eventUid][deUid];
-    console.log( eventUid + " -- " + programUid + " -- " + teiUid + " -- " + deUid + " -- " + valueForUpdate );
-    updateSingleTEIDataValue( teiUid, programUid, eventUid, deUid, valueForUpdate );
-
-    if( $scope.eventDataValue[eventUid][deUid] === 'Dead' ){
-        var arr = ["H4s7FuoY3Hm", "hQmS69HXStI", "qNmtxrjYccb"];
-        arr.forEach(id=> {
-            if($scope.eventDataValue[eventUid][id]) {
-                emptyString = $scope.eventDataValue[eventUid][id] = "";
-                updateSingleTEIDataValue( teiUid, programUid, eventUid, id, emptyString);
-    
-            }
-        })
-    }
-    else if($scope.eventDataValue[eventUid][deUid] === "Contaminated") {
-        var arr = ["hQmS69HXStI", "qNmtxrjYccb"];
-        arr.forEach(id=> {
-            if($scope.eventDataValue[eventUid][id]) {
-                emptyString = $scope.eventDataValue[eventUid][id] = "";
-                updateSingleTEIDataValue( teiUid, programUid, eventUid, id, emptyString);
-            }
-        })
     }
 
-};
+    $scope.saveSingleTEIDataValue = function (eventUid, programUid, teiUid, deUid) {
+        //alert( eventUid + " -- " + programUid + " -- " + teiUid + " -- " + deUid);
+        //alert($scope.eventDataValue[eventUid][deUid]);
+        var valueForUpdate = $scope.eventDataValue[eventUid][deUid];
+        console.log(eventUid + " -- " + programUid + " -- " + teiUid + " -- " + deUid + " -- " + valueForUpdate);
+        updateSingleTEIDataValue(teiUid, programUid, eventUid, deUid, valueForUpdate);
 
+        if ($scope.eventDataValue[eventUid][deUid] === 'Dead') {
+            var arr = ["H4s7FuoY3Hm", "hQmS69HXStI", "qNmtxrjYccb"];
+            arr.forEach(id => {
+                if ($scope.eventDataValue[eventUid][id]) {
+                    emptyString = $scope.eventDataValue[eventUid][id] = "";
+                    updateSingleTEIDataValue(teiUid, programUid, eventUid, id, emptyString);
 
-// update single event dataValue
-function updateSingleTEIDataValue( teiUid, programUid, eventUid, deUid, deValue ) {
+                }
+            })
+        } else if ($scope.eventDataValue[eventUid][deUid] === "Contaminated") {
+            var arr = ["hQmS69HXStI", "qNmtxrjYccb"];
+            arr.forEach(id => {
+                if ($scope.eventDataValue[eventUid][id]) {
+                    emptyString = $scope.eventDataValue[eventUid][id] = "";
+                    updateSingleTEIDataValue(teiUid, programUid, eventUid, id, emptyString);
+                }
+            })
+        }
 
-    var updateEventDataValue = {
-        event: eventUid,
-        program: programUid,
-        trackedEntityInstance: teiUid,
-        dataValues: [
-            {
-                dataElement: deUid,
-                value: deValue
-            }
-        ]
     };
 
-    console.log( "Event DataValue fro Update :" , updateEventDataValue );
 
-    $.ajax({
-        async:false,
-        type: "PUT",
-        url: '../../../api/events/' +eventUid +  '/' + deUid,
-        dataType: "json",
-        contentType: "application/json",
-        data: JSON.stringify(updateEventDataValue),
-        success: function(updateEventResponse){
-            console.log("Update Event with UID :", updateEventResponse + "--" + updateEventDataValue.event + " -- " + deUid + " -- " +  deValue );
-        },
-        error: function(updateEventResponse){
-            console.log("Not Update Event with UID:", updateEventResponse + "--" + updateEventDataValue.event + " -- " + deUid + " -- " +  deValue );
-        }
-    });
+    // update single event dataValue
+    function updateSingleTEIDataValue(teiUid, programUid, eventUid, deUid, deValue) {
 
-}
+        var updateEventDataValue = {
+            event: eventUid,
+            program: programUid,
+            trackedEntityInstance: teiUid,
+            dataValues: [{
+                dataElement: deUid,
+                value: deValue
+            }]
+        };
+
+        console.log("Event DataValue fro Update :", updateEventDataValue);
+
+        $.ajax({
+            async: false,
+            type: "PUT",
+            url: '../../../api/events/' + eventUid + '/' + deUid,
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(updateEventDataValue),
+            success: function (updateEventResponse) {
+                console.log("Update Event with UID :", updateEventResponse + "--" + updateEventDataValue.event + " -- " + deUid + " -- " + deValue);
+            },
+            error: function (updateEventResponse) {
+                console.log("Not Update Event with UID:", updateEventResponse + "--" + updateEventDataValue.event + " -- " + deUid + " -- " + deValue);
+            }
+        });
+
+    }
 
 
 

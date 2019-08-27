@@ -110,7 +110,7 @@ isolateTransferApp.service('MetadataService', function ($http, $q) {
                     var promise = $http.get('../../../api/dataStore/id/' + key ).then(function (response) {
                         return response.data[key];
                     }, function () {
-                        return null;
+                        return "No value contains in the selected feild";
                     });
                     return promise;
                 },
