@@ -91,6 +91,8 @@ isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $ti
                             $scope.allTeiDataValues = ""
                         }
                     })
+                } else {
+                    $scope.allTeiDataValues = ""
                 }
             })
         })
