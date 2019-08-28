@@ -13,11 +13,12 @@ isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $ti
     $scope.userUid = "";
     $scope.noRecordMsg = "No Record Found";
     $scope.displayProgramList = "NO";
+    $scope.checkReturn = false;
 
 
     $scope.showToggle = function () {
         $scope.showModal = !$scope.showModal;
-        if (!$scope.showModal) {
+        if (!$scope.showModal && $scope.checkReturn) {
             data = $scope.currentData;
             if (data.length != 0) {
                 storeService.set(data["0"])
@@ -25,12 +26,24 @@ isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $ti
             }
         }
     };
+    
+    $scope.checkDate = function(passedDate, key) {
+        var givenDate = passedDate.split("-");
+        var date = new Date();
+        var month = date.getMonth() + 1;
+        month = month >= 10 ? month : "0" + month;
+        var year = date.getFullYear();
+        var day = date.getDate();
+        if(givenDate["0"] > year || givenDate["1"] > month || givenDate["2"] > day) {
+            $scope.checkDates[key] = ""
+            $scope.message = "Please select valid date.";
+            $scope.showToggle();
+            return;
+        }
+    }
 
 
     initializingApps();
-
-
-
 
     $scope.editTransfer = function (data,code) {
         data.disptachStatus.receivedDate = $scope.checkDates[data.BatchNo]
@@ -47,6 +60,7 @@ isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $ti
                     if (response.status == "200") {
                         $scope.message = "Received Date Added as " + data.disptachStatus.receivedDate;
                         $scope.currentData.push(data);
+                        $scope.checkReturn = true;
                         $scope.showToggle();
                     }
                 })

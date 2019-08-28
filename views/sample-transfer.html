@@ -1,5 +1,5 @@
 <div ng-controller="sampleTransfer">
-    <h1 class="main_header">Sample Transfer App</h1>
+    <h1 class="main_header">NC - Isolate Transfer</h1>
     <div class="side-bar">
         <div id="orgUnitTree">
             <ul>
@@ -29,7 +29,7 @@
                             <p ng-repeat="amr in amrIds[dataValues.BatchNo]">{{amr}}<p>
                         </td>
                         <td>{{dataValues.program.displayName}}</td>
-                        <td> <input calendar ng-model="checkDates[dataValues.BatchNo]" ng-disabled="dataValues.disptachStatus.receivedDate != ''" required /> </td>
+                        <td> <input calendar ng-model="checkDates[dataValues.BatchNo]" ng-change="checkDate(checkDates[dataValues.BatchNo], dataValues.BatchNo)" ng-disabled="dataValues.disptachStatus.receivedDate != ''" required /> </td>
                         <td>
                             <button class="button" ng-click="editTransfer(dataValues, orgUnitValues['OrgUnit'].code)"> Update </button>
                         </td>

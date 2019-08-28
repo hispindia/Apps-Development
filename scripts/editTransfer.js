@@ -83,6 +83,25 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
             $scope.selectedOrgUnit.code = orgUnit.code;
         })
     });
+    $scope.showToggle = function () {
+        $scope.showModal = !$scope.showModal;
+        
+    };
+
+    $scope.checkDate = function(passedDate, amrId, dateId) {
+        var givenDate = passedDate.split("-");
+        var date = new Date();
+        var month = date.getMonth() + 1;
+        month = month >= 10 ? month : "0" + month;
+        var year = date.getFullYear();
+        var day = date.getDate();
+        if(givenDate["0"] > year || givenDate["1"] > month || givenDate["2"] > day) {
+            $scope.eventDataValue[amrId][dateId] = ""
+            $scope.message = "Please select valid date.";
+            $scope.showToggle();
+            return;
+        }
+    }
 
     $scope.cancelTeiDataValue = function () {
         $location.path('/').search();

@@ -1,5 +1,5 @@
 <div>
-    <h1 class="main_header">Sample Transfer App</h1>
+    <h1 class="main_header">NC - Isolate Transfer</h1>
     <div class="side-bar">
         <div id="orgUnitTree">
             <ul>
@@ -50,13 +50,13 @@
                     <td>
                         <input  calendar 
                                 ng-model="eventDataValue[amr.eventuid]['hQmS69HXStI']" 
-                                ng-change="saveSingleTEIDataValue(amr.eventuid,amr.programuid,amr.teiuid,'hQmS69HXStI')"
+                                ng-change=" checkDate(eventDataValue[amr.eventuid]['hQmS69HXStI'], amr.eventuid, 'hQmS69HXStI');saveSingleTEIDataValue(amr.eventuid,amr.programuid,amr.teiuid,'hQmS69HXStI')"
                                 ng-disabled= "eventDataValue[amr.eventuid]['H4s7FuoY3Hm'] == 'Contaminated' || !eventDataValue[amr.eventuid]['H4s7FuoY3Hm']" >
                     </td>
                     <td> 
                         <input  calendar 
                                 ng-model="eventDataValue[amr.eventuid]['qNmtxrjYccb']"
-                                ng-change="saveSingleTEIDataValue(amr.eventuid,amr.programuid,amr.teiuid,'qNmtxrjYccb')"
+                                ng-change=" checkDate(eventDataValue[amr.eventuid]['qNmtxrjYccb'],  amr.eventuid, 'qNmtxrjYccb');saveSingleTEIDataValue(amr.eventuid,amr.programuid,amr.teiuid,'qNmtxrjYccb')"
                                 ng-disabled= "eventDataValue[amr.eventuid]['H4s7FuoY3Hm'] == 'Contaminated' || !eventDataValue[amr.eventuid]['H4s7FuoY3Hm']" >
                     </td>
                 
@@ -66,5 +66,10 @@
         <button class="button" id="button-danger" ng-click="cancelTeiDataValue()"> Cancel </button>
 
     </div>
+    <modal-dialog>
+        <div>
+            {{message}}
+        </div>
+    </modal-dialog>
 
 </div>
