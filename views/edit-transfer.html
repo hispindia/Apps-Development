@@ -1,5 +1,5 @@
 <div>
-    <h1 class="main_header">Isolate Transfer App</h1>
+    <h1 class="main_header">RC - Isolate transfer</h1>
     <div class="side-bar">
         <div id="orgUnitTree">
             <ul>
@@ -57,6 +57,8 @@
             <div id="container-footer">
                 <button class="button" ng-click="transferTeiDataValue()"> Dispatch </button>
                 <button class="button" id="button-danger" ng-click="cancelTeiDataValue()"> Cancel </button>
+                <label for="dispatch-date"> Dispatch Date: </label>
+                <input calendar ng-model='selectedDispatchDate' ng-change="checkDate(selectedDispatchDate, 'selectedDispatchDate')" id="dispatch-date" required />                
             </div>
         </div>
     </div>

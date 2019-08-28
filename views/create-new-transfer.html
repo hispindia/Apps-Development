@@ -1,5 +1,5 @@
 <div>
-    <h1 class="main_header">Isolate Transfer App</h1>
+    <h1 class="main_header">RC - Isolate transfer</h1>
     <div class="side-bar">
         <div id="orgUnitTree">
             <ul>
@@ -26,13 +26,13 @@
                     <label for="startDate"> Start Date: </label>
                 </td>
                 <td>
-                    <input calendar ng-model='selectedStartDate' id="startDate" required />
+                    <input calendar ng-model='selectedStartDate' ng-change="checkDate(selectedStartDate, 'selectedStartDate')" id="startDate" required />
                 </td>
                 <td>
                     <label for="endDate"> End Date: </label>
                 </td>
                 <td>
-                    <input calendar ng-model='selectedEndDate' id="endDate" required />
+                    <input calendar ng-model='selectedEndDate'  ng-change="checkDate(selectedEndDate, 'selectedEndDate')"  id="endDate" required />
                 </td>
             </tr>
             <tr>

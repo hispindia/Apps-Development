@@ -2,6 +2,7 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
 
     $scope.data = storeService.get();
     $scope.selectedProgram = $scope.data.program.displayName;
+    $scope.selectedDispatchDate = ""
     $scope.selectedOrgUnit = {
         id: $scope.data.key,
         name: "",
@@ -65,6 +66,21 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
         }
     }
 
+    $scope.checkDate = function(passedDate, scope) {
+        var givenDate = passedDate.split("-");
+        var date = new Date();
+        var month = date.getMonth() + 1;
+        month = month >= 10 ? month : "0" + month;
+        var year = date.getFullYear();
+        var day = date.getDate();
+        if(givenDate["0"] > year || givenDate["1"] > month || givenDate["2"] > day) {
+            $scope[scope] = ""
+            $scope.message = "Please select valid date.";
+            $scope.switch();
+            return;
+        }
+    }
+
     $scope.cancelTeiDataValue = function () {
         $location.path('/').search();
     };
@@ -76,17 +92,15 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
     }
     $scope.transferTeiDataValue = function () {
         if ($scope.teiDataValue.selectedArray == 0) {
-            $scope.message = "please select atleast one id";
+            $scope.message = "please select atleast one id.";
             $scope.switch();
             return;
         }
-        var date = new Date();
-        var month = date.getMonth() + 1;
-        month = month >= 10 ? month : "0" + month;
-        var year = date.getFullYear();
-        var day = date.getDate();
-        var dispatchDate = year + "-" + month + "-" + day;
-
+        if(!$scope.selectedDispatchDate) {
+            $scope.message = "please select the Dispatch Date.";
+            $scope.switch();
+            return;
+        }
         dataStoreService.get($scope.selectedOrgUnit.code).then(function (response) {
             var temp = [];
             var changedElementIndex = "";
@@ -95,7 +109,7 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
                     changedElementIndex = index;
                     data.status = "DISPATCH";
                     data.rows = $scope.teiDataValue;
-                    data.dispatchDate = dispatchDate;
+                    data.dispatchDate = $scope.selectedDispatchDate;
                     data.rows.availableArray = [];
                 }
                 return data;

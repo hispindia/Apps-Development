@@ -63,6 +63,20 @@ isolateTransferApp.controller("createNewTransfer", function ($scope, $location, 
         $location.path('/').search();
     };
 
+    $scope.checkDate = function(passedDate, scope) {
+        var givenDate = passedDate.split("-");
+        var date = new Date();
+        var month = date.getMonth() + 1;
+        month = month >= 10 ? month : "0" + month;
+        var year = date.getFullYear();
+        var day = date.getDate();
+        if(givenDate["0"] > year || givenDate["1"] > month || givenDate["2"] > day) {
+            $scope[scope] = ""
+            $scope.message = "Please select valid date.";
+            $scope.switch();
+            return;
+        }
+    }
 
     $scope.submitTeiDataValue = function () {
         if (!$scope.selectedProgram.id || !$scope.selectedOrgUnit.id || !$scope.selectedStartDate || !$scope.selectedEndDate) {   
@@ -71,9 +85,13 @@ isolateTransferApp.controller("createNewTransfer", function ($scope, $location, 
             return;
         }
         if ($scope.selectedStartDate > $scope.selectedEndDate) {
-            $scope.message = "OOPS! Dates not Selected correctly";
-            $scope.switch();
-            return;
+            let  startDate = $scope.selectedStartDate.split("-");
+            let  endDate = $scope.selectedEndDate.split("-");
+            if(startDate["0"] > endDate["0"] || startDate["1"] > endDate["1"] || startDate["2"] > endDate["2"] ) {
+                $scope.message = "OOPS! Dates not Selected correctly";
+                $scope.switch();
+                return;
+            }
         }
         var params = "var=program:" + $scope.selectedProgram.id + "&var=startdate:" + $scope.selectedStartDate + "&var=enddate:" + $scope.selectedEndDate;
 

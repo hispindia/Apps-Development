@@ -37,7 +37,6 @@
 }
 
 .main_header {
-    font-family: "Arial MT";
     text-align: center;
 }
 
@@ -125,7 +124,7 @@
 }
 
 #container-footer {
-    width: 46%;
+    width: 97%;
     float: right;
     margin: 1em;
 
