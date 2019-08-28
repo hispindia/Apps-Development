@@ -55,10 +55,10 @@
             </div>
 
             <div id="container-footer">
+                <label for="dispatch-date"> Dispatch Date: </label>
+                <input calendar ng-model='selectedDispatchDate' ng-change="checkDate(selectedDispatchDate, 'selectedDispatchDate')" id="dispatch-date" required />
                 <button class="button" ng-click="transferTeiDataValue()"> Dispatch </button>
                 <button class="button" id="button-danger" ng-click="cancelTeiDataValue()"> Cancel </button>
-                <label for="dispatch-date"> Dispatch Date: </label>
-                <input calendar ng-model='selectedDispatchDate' ng-change="checkDate(selectedDispatchDate, 'selectedDispatchDate')" id="dispatch-date" required />                
             </div>
         </div>
     </div>

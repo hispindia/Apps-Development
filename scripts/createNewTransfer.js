@@ -72,7 +72,7 @@ isolateTransferApp.controller("createNewTransfer", function ($scope, $location, 
         var day = date.getDate();
         if(givenDate["0"] > year || givenDate["1"] > month || givenDate["2"] > day) {
             $scope[scope] = ""
-            $scope.message = "Please select valid date.";
+            $scope.message = "Please select a valid date.";
             $scope.switch();
             return;
         }
@@ -201,7 +201,7 @@ isolateTransferApp.controller("createNewTransfer", function ($scope, $location, 
         }]
         dataStoreService.saveInDataStore($scope.selectedOrgUnit.code, dataPush).then(function(response) {
             if (response.status == "200"  || response.status == "201" ) {
-                $scope.message = "Created New Batch having ID as " + batchNo + ".";
+                $scope.message = "Batch No. " + batchNo + "created.";
                 $scope.checkReturn = true;
                 $scope.switch();
             } else {
