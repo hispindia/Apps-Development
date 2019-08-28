@@ -4,11 +4,17 @@ isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $ti
         name: "",
         code: ""
     }
-    $scope.message = ""
+    $scope.message = "";
     $scope.amrIds = [];
     $scope.checkDates = [];
     $scope.showModal = false;
     $scope.currentData = [];
+    $scope.programUidForDisplay = "";
+    $scope.userUid = "";
+    $scope.noRecordMsg = "No Record Found";
+    $scope.displayProgramList = "NO";
+
+
     $scope.showToggle = function () {
         $scope.showModal = !$scope.showModal;
         if (!$scope.showModal) {
@@ -18,7 +24,14 @@ isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $ti
                 $location.path('/edit-transfer').search();
             }
         }
-    }
+    };
+
+
+    initializingApps();
+
+
+
+
     $scope.editTransfer = function (data,code) {
         data.disptachStatus.receivedDate = $scope.checkDates[data.BatchNo]
         if (data.disptachStatus.receivedDate != "" && data.disptachStatus.received != "Received") {
@@ -105,4 +118,60 @@ isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $ti
             })
         })
     }
+
+
+// initializing Apps
+function initializingApps(teiUid, programUid, eventUid, deUid, deValue) {
+
+    $.ajax({
+        async: false,
+        type: "GET",
+        url: '../../../api/me.json?fields=id,name&paging=false',
+        success: function (meResponse) {
+
+            if ( meResponse.id != undefined ) {
+                $scope.userUid = meResponse.id;
+
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    url: '../../../api/programs.json?fields=id,name,userAccesses&paging=false',
+                    success: function (programResponse) {
+
+                        if (programResponse.programs != undefined && programResponse.programs.length != 0) {
+                            for (var j = 0; j < programResponse.programs.length; j++) {
+
+                                if( programResponse.programs[j].userAccesses != undefined &&
+                                    programResponse.programs[j].userAccesses.length != 0 ){
+
+                                    for (var k = 0; k < programResponse.programs[j].userAccesses.length; k++) {
+                                        if( programResponse.programs[j].userAccesses[k].userUid === $scope.userUid ){
+
+                                            $scope.programUidForDisplay = programResponse.programs[j].id;
+                                            $scope.displayProgramList = "YES";
+                                            return;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    error: function ( meResponse ) {
+                        console.log("Error in API:",meResponse);
+                    }
+                });
+            }
+        },
+        error: function ( meResponse ) {
+            console.log("Error in API:",meResponse);
+        }
+
+    });
+
+    console.log( $scope.userUid + " -- " + $scope.programUidForDisplay);
+
+
+}
+
+
 });

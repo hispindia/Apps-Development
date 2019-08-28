@@ -7,35 +7,48 @@
         </div>
     </div>
     <div class="main">
-        <span ng-repeat = "orgUnitValues in allOrgUnitValues" ng-if="orgUnitValues['allTeiDataValues']">
-        <table class="main-tei-data">
-            <thead>
-                <tr>
-                    <th colspan="5">Lab: {{orgUnitValues["OrgUnit"].name}}</th>
-                </tr>
-                <tr>
-                    <th>Batch No.</th>
-                    <th>AMR Ids</th>
-                    <th>Organism Group</th>
-                    <th>Received Date</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="dataValues in  orgUnitValues['allTeiDataValues']" ng-if='dataValues.status  == "DISPATCH"'>
-                    <td>{{dataValues.BatchNo}}</td>
-                    <td>
-                        <p ng-repeat="amr in amrIds[dataValues.BatchNo]">{{amr}}<p>
-                    </td>
-                    <td>{{dataValues.program.displayName}}</td>
-                    <td> <input calendar ng-model="checkDates[dataValues.BatchNo]" ng-disabled="dataValues.disptachStatus.receivedDate != ''" required /> </td>
-                    <td>
-                        <button class="button" ng-click="editTransfer(dataValues, orgUnitValues['OrgUnit'].code)"> Update </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </span>
+        <div ng-if="displayProgramList === 'YES'">
+            <span ng-repeat = "orgUnitValues in allOrgUnitValues" ng-if="orgUnitValues['allTeiDataValues'] && orgUnitValues.allTeiDataValues[0].program.id === programUidForDisplay">
+            <table class="main-tei-data">
+                <thead>
+                    <tr>
+                        <th colspan="5">Lab: {{orgUnitValues["OrgUnit"].name}}</th>
+                    </tr>
+                    <tr>
+                        <th>Batch No.</th>
+                        <th>AMR Ids</th>
+                        <th>Organism Group</th>
+                        <th>Received Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="dataValues in  orgUnitValues['allTeiDataValues']" ng-if='dataValues.status  == "DISPATCH" && dataValues.program.id === programUidForDisplay'>
+                        <td>{{dataValues.BatchNo}}</td>
+                        <td>
+                            <p ng-repeat="amr in amrIds[dataValues.BatchNo]">{{amr}}<p>
+                        </td>
+                        <td>{{dataValues.program.displayName}}</td>
+                        <td> <input calendar ng-model="checkDates[dataValues.BatchNo]" ng-disabled="dataValues.disptachStatus.receivedDate != ''" required /> </td>
+                        <td>
+                            <button class="button" ng-click="editTransfer(dataValues, orgUnitValues['OrgUnit'].code)"> Update </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </span>
+    </div>
+    <div ng-if="displayProgramList === 'NO'">
+       <table>
+           <thead>
+           <tr>
+               <th colspan="5">{{noRecordMsg}}</th>
+           </tr>
+           </thead>
+       </table>
+    </div>
+
+
     </div>
     <modal-dialog>
         <div>
