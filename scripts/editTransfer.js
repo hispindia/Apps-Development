@@ -67,13 +67,9 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
     }
 
     $scope.checkDate = function(passedDate, scope) {
-        var givenDate = passedDate.split("-");
+        var givenDate = new Date(passedDate);
         var date = new Date();
-        var month = date.getMonth() + 1;
-        month = month >= 10 ? month : "0" + month;
-        var year = date.getFullYear();
-        var day = date.getDate();
-        if(givenDate["0"] > year || givenDate["1"] > month || givenDate["2"] > day) {
+        if(givenDate > date) {
             $scope[scope] = ""
             $scope.message = "Please select a valid date.";
             $scope.switch();

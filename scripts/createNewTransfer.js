@@ -64,13 +64,9 @@ isolateTransferApp.controller("createNewTransfer", function ($scope, $location, 
     };
 
     $scope.checkDate = function(passedDate, scope) {
-        var givenDate = passedDate.split("-");
+        var givenDate = new Date(passedDate);
         var date = new Date();
-        var month = date.getMonth() + 1;
-        month = month >= 10 ? month : "0" + month;
-        var year = date.getFullYear();
-        var day = date.getDate();
-        if(givenDate["0"] > year || givenDate["1"] > month || givenDate["2"] > day) {
+        if(givenDate > date) {
             $scope[scope] = ""
             $scope.message = "Please select a valid date.";
             $scope.switch();
@@ -85,13 +81,10 @@ isolateTransferApp.controller("createNewTransfer", function ($scope, $location, 
             return;
         }
         if ($scope.selectedStartDate > $scope.selectedEndDate) {
-            let  startDate = $scope.selectedStartDate.split("-");
-            let  endDate = $scope.selectedEndDate.split("-");
-            if(startDate["0"] > endDate["0"] || startDate["1"] > endDate["1"] || startDate["2"] > endDate["2"] ) {
-                $scope.message = "OOPS! Dates not Selected correctly";
+               $scope.message = "OOPS! Dates not Selected correctly";
                 $scope.switch();
                 return;
-            }
+            
         }
         var params = "var=program:" + $scope.selectedProgram.id + "&var=orgUid:" + $scope.selectedOrgUnit.id + "&var=startdate:" + $scope.selectedStartDate + "&var=enddate:" + $scope.selectedEndDate;
 
