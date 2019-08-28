@@ -75,7 +75,7 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
         var day = date.getDate();
         if(givenDate["0"] > year || givenDate["1"] > month || givenDate["2"] > day) {
             $scope[scope] = ""
-            $scope.message = "Please select valid date.";
+            $scope.message = "Please select a valid date.";
             $scope.switch();
             return;
         }
@@ -120,7 +120,7 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
             
             dataStoreService.updateInDataStore($scope.selectedOrgUnit.code, $scope.dataValue).then(function (response) {
                 if (response.status == "200") {
-                    $scope.message = "Batch ID having " + $scope.data.BatchNo + " Dispatched."
+                    $scope.message = "Batch No. " + $scope.data.BatchNo + " dispatched."
                     $scope.checkReturn = true;
                     $scope.switch();
                 } else {
