@@ -7,10 +7,11 @@
         </div>
     </div>
     <div class="main">
+        <span ng-repeat = "orgUnitValues in allOrgUnitValues" ng-if="orgUnitValues['allTeiDataValues']">
         <table class="main-tei-data">
             <thead>
                 <tr>
-                    <th colspan="5">Lab: {{selectedOrgUnit.name}}</th>
+                    <th colspan="5">Lab: {{orgUnitValues["OrgUnit"].name}}</th>
                 </tr>
                 <tr>
                     <th>Batch No.</th>
@@ -21,7 +22,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="dataValues in allTeiDataValues" ng-if='dataValues.status  == "DISPATCH"'>
+                <tr ng-repeat="dataValues in  orgUnitValues['allTeiDataValues']" ng-if='dataValues.status  == "DISPATCH"'>
                     <td>{{dataValues.BatchNo}}</td>
                     <td>
                         <p ng-repeat="amr in amrIds[dataValues.BatchNo]">{{amr}}<p>
@@ -29,11 +30,12 @@
                     <td>{{dataValues.program.displayName}}</td>
                     <td> <input calendar ng-model="checkDates[dataValues.BatchNo]" ng-disabled="dataValues.disptachStatus.receivedDate != ''" required /> </td>
                     <td>
-                        <button class="button" ng-click="editTransfer(dataValues)"> Update </button>
+                        <button class="button" ng-click="editTransfer(dataValues, orgUnitValues['OrgUnit'].code)"> Update </button>
                     </td>
                 </tr>
             </tbody>
         </table>
+    </span>
     </div>
     <modal-dialog>
         <div>

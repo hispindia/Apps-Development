@@ -7,7 +7,7 @@ isolateTransferApp.service('MetadataService', function ($http, $q) {
                     type: "GET",
                     dataType: "json",
                     contentType: "application/json",
-                    url: '../../organisationUnits/' + id + ".json?fields=id,name,code&paging=false",
+                    url: '../../organisationUnits/' + id + ".json?fields=id,displayName,code&includeDescendants=true&paging=false",
                     success: function (data) {
                         def.resolve(data);
                     }
