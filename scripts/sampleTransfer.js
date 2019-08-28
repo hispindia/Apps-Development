@@ -4,7 +4,6 @@ isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $ti
         name: "",
         code: ""
     }
-    $scope.allOrgUnitValues = [];
     $scope.message = ""
     $scope.amrIds = [];
     $scope.checkDates = [];
@@ -60,6 +59,7 @@ isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $ti
     loadOrgUnit = function () {
         MetadataService.getOrgUnit($scope.selectedOrgUnit.id).then(function (orgUnit) {
             $timeout(function () {
+                $scope.allOrgUnitValues = [];
                 orgUnit.organisationUnits.forEach((orgUnitChildren,index) => {
                     
                     var currentOrgUnitCode = orgUnitChildren.code ? orgUnitChildren.code : "";
@@ -99,7 +99,7 @@ isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $ti
                             $scope.allOrgUnitValues[index]["allTeiDataValues"] = allTeiDataValues;
                         })
                     } else {
-                        $scope.allOrgUnitValues[index]["allTeiDataValues"] = ""
+                        $scope.allOrgUnitValues["allTeiDataValues"] = ""
                     }
                 })
             })
