@@ -33,7 +33,7 @@ INNER JOIN program prg on prg.programid = pi.programid
 INNER JOIN trackedentityinstance tei on tei.trackedentityinstanceid = pi.trackedentityinstanceid
 INNER JOIN organisationunit org on org.organisationunitid = psi.organisationunitid
 INNER JOIN dataelement de on de.dataelementid = tedv.dataelementid
-where de.uid = 'lIkk661BLpG' and prg.uid = '${program}' and psi.executiondate between '${startdate}' and '${enddate}';
+where de.uid = 'lIkk661BLpG' and org.uid = '${orgUid}' and prg.uid = '${program}' and psi.executiondate between '${startdate}' and '${enddate}';
 
 Qxf3P0JENJT = AMR_ISOLATE_APP_EDV
 

@@ -93,7 +93,7 @@ isolateTransferApp.controller("createNewTransfer", function ($scope, $location, 
                 return;
             }
         }
-        var params = "var=program:" + $scope.selectedProgram.id + "&var=startdate:" + $scope.selectedStartDate + "&var=enddate:" + $scope.selectedEndDate;
+        var params = "var=program:" + $scope.selectedProgram.id + "&var=orgUid:" + $scope.selectedOrgUnit.id + "&var=startdate:" + $scope.selectedStartDate + "&var=enddate:" + $scope.selectedEndDate;
 
         MetadataService.getSQLView("EFanvAXeCoj", params).then(function (response) {
             var dataKey = [];
