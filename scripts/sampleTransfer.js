@@ -58,7 +58,7 @@ isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $ti
                 })
                 dataStoreService.updateInDataStore(code, $scope.dataValue).then(function (response) {
                     if (response.status == "200") {
-                        $scope.message = "Received Date Added as " + data.disptachStatus.receivedDate;
+                        $scope.message = "Batch No - " + data.BatchNo +" Received on -  " + data.disptachStatus.receivedDate;
                         $scope.currentData.push(data);
                         $scope.checkReturn = true;
                         $scope.showToggle();
