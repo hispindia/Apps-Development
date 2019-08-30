@@ -24,21 +24,23 @@ isolateTransferApp.controller("createNewTransfer", function ($scope, $location, 
         var selectedSelection = selection.getSelected();
         $scope.allPrograms = [];
         $scope.selectedOrgUnit.id = selectedSelection["0"];
+
+        $("#loader").show();
         loadOrgUnit();
         //alert( $scope.selectedOrgUnit.id );
         // lod programs based on selected orgUnit
         //$timeout(function () {
-            var orgParam = "var=orgUid:" + $scope.selectedOrgUnit.id;
-            MetadataService.getSQLView("YqMvHMg8RKU", orgParam ).then(function (responsePrograms) {
-                if( responsePrograms.listGrid.rows.length > 0 ){
-                    for (var j = 0; j < responsePrograms.listGrid.rows.length; j++) {
-                        $scope.allPrograms.push({
-                            id: responsePrograms.listGrid.rows[j][0],
-                            displayName: responsePrograms.listGrid.rows[j][1]
-                        });
-                    }
+        var orgParam = "var=orgUid:" + $scope.selectedOrgUnit.id;
+        MetadataService.getSQLView("YqMvHMg8RKU", orgParam).then(function (responsePrograms) {
+            if (responsePrograms.listGrid.rows.length > 0) {
+                for (var j = 0; j < responsePrograms.listGrid.rows.length; j++) {
+                    $scope.allPrograms.push({
+                        id: responsePrograms.listGrid.rows[j][0],
+                        displayName: responsePrograms.listGrid.rows[j][1]
+                    });
                 }
-            });
+            }
+        });
         //}, )
 
     }, false);
@@ -48,6 +50,7 @@ isolateTransferApp.controller("createNewTransfer", function ($scope, $location, 
             $timeout(function () {
                 $scope.selectedOrgUnit.name = orgUnit.name;
                 $scope.selectedOrgUnit.code = orgUnit.code;
+                $("#loader").hide();
             });
         });
     };
@@ -58,15 +61,15 @@ isolateTransferApp.controller("createNewTransfer", function ($scope, $location, 
     });
     */
 
-    console.log( $scope.allPrograms );
+    console.log($scope.allPrograms);
     $scope.cancelTeiDataValue = function () {
         $location.path('/').search();
     };
 
-    $scope.checkDate = function(passedDate, scope) {
+    $scope.checkDate = function (passedDate, scope) {
         var givenDate = new Date(passedDate);
         var date = new Date();
-        if(givenDate > date) {
+        if (givenDate > date) {
             $scope[scope] = ""
             $scope.message = "Please select a valid date.";
             $scope.switch();
@@ -75,17 +78,19 @@ isolateTransferApp.controller("createNewTransfer", function ($scope, $location, 
     }
 
     $scope.submitTeiDataValue = function () {
-        if (!$scope.selectedProgram.id || !$scope.selectedOrgUnit.id || !$scope.selectedStartDate || !$scope.selectedEndDate) {   
+        if (!$scope.selectedProgram.id || !$scope.selectedOrgUnit.id || !$scope.selectedStartDate || !$scope.selectedEndDate) {
             $scope.message = "Please Select all Fields!";
             $scope.switch();
             return;
         }
         if ($scope.selectedStartDate > $scope.selectedEndDate) {
-               $scope.message = "OOPS! Dates not Selected correctly";
-                $scope.switch();
-                return;
-            
+            $scope.message = "OOPS! Dates not Selected correctly";
+            $scope.switch();
+            return;
+
         }
+
+        $("#loader").show();
         var params = "var=program:" + $scope.selectedProgram.id + "&var=orgUid:" + $scope.selectedOrgUnit.id + "&var=startdate:" + $scope.selectedStartDate + "&var=enddate:" + $scope.selectedEndDate;
 
         MetadataService.getSQLView("EFanvAXeCoj", params).then(function (response) {
@@ -105,6 +110,7 @@ isolateTransferApp.controller("createNewTransfer", function ($scope, $location, 
                     obj[dataKey[i]] = rows[i];
                 }
                 $scope.teiDataValue.availableArray.push(obj);
+                
             }
         })
         $timeout(function () {
@@ -113,7 +119,7 @@ isolateTransferApp.controller("createNewTransfer", function ($scope, $location, 
                 $scope.switch();
                 return;
             }
-
+            $("#loader").hide();
             $("#content").show();
 
         }, 1000)
@@ -150,10 +156,10 @@ isolateTransferApp.controller("createNewTransfer", function ($scope, $location, 
             $scope.teiDataValue.selectedArray.length = 0;
         }
     }
-    
+
     $scope.switch = function () {
         $scope.showPopup = !$scope.showPopup;
-        if (!$scope.showPopup && $scope.checkReturn ) {
+        if (!$scope.showPopup && $scope.checkReturn) {
             $location.path('/').search();
         }
     }
@@ -164,11 +170,12 @@ isolateTransferApp.controller("createNewTransfer", function ($scope, $location, 
             $scope.switch();
             return;
         }
-        if(!$scope.selectedOrgUnit.code) {
+        if (!$scope.selectedOrgUnit.code) {
             $scope.message = "Code doesn't exist";
             $scope.switch();
             return;
         }
+        $("#loader").show();
         var batchNo = $scope.selectedOrgUnit.code + "" + Math.floor(Math.random() * 100000);
         var date = new Date();
         var month = date.getMonth() + 1;
@@ -192,9 +199,10 @@ isolateTransferApp.controller("createNewTransfer", function ($scope, $location, 
                 receivedDate: ""
             }
         }]
-        dataStoreService.saveInDataStore($scope.selectedOrgUnit.code, dataPush).then(function(response) {
-            if (response.status == "200"  || response.status == "201" ) {
-                $scope.message = "Batch No. " + batchNo + "created.";
+        dataStoreService.saveInDataStore($scope.selectedOrgUnit.code, dataPush).then(function (response) {
+            $("#loader").hide();
+            if (response.status == "200" || response.status == "201") {
+                $scope.message = "Batch No. " + batchNo + " created.";
                 $scope.checkReturn = true;
                 $scope.switch();
             } else {

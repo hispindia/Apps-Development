@@ -21,6 +21,7 @@ isolateTransferApp.controller('dispatchNewSample',
             $location.path('/sample-sent-for-quality-check').search();
         }
         $scope.createNewTransfer = function () {
+            $("#loader").show();
             $location.path('/create-new-transfer').search();
         }
         $scope.editTransfer = function (data) {
@@ -35,6 +36,7 @@ isolateTransferApp.controller('dispatchNewSample',
                 $scope.showModal = !$scope.showModal;
             }
             if (data != undefined) {
+                $("#loader").show();
                 data.rows.selectedArray.forEach(child => {
                     $scope.selectedEventUID[child["amrid"]] = child["eventuid"]
                 })
@@ -59,7 +61,9 @@ isolateTransferApp.controller('dispatchNewSample',
                         })
                     }
 
+
                     $timeout(function () {
+                        $("#loader").hide();
                         $scope.showModal = !$scope.showModal;
                     }, 1000)
 
@@ -83,6 +87,7 @@ isolateTransferApp.controller('dispatchNewSample',
             loadOrgUnit();
         }, false);
         loadOrgUnit = function () {
+            $("#loader").show();
             MetadataService.getOrgUnit($scope.selectedOrgUnit.id).then(function (orgUnit) {
                 $timeout(function () {
                     $scope.selectedOrgUnit.name = orgUnit.name;
@@ -112,6 +117,7 @@ isolateTransferApp.controller('dispatchNewSample',
                         } else {
                             $scope.allTeiDataValues = ""
                         }
+                        $("#loader").hide();
                     })
                 })
             })

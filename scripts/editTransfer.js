@@ -1,6 +1,9 @@
 isolateTransferApp.controller('editTransfer', function ($scope, $location, $timeout, storeService, MetadataService, dataStoreService) {
 
     $scope.data = storeService.get();
+    if(!$scope.data.BatchNo) {
+        $location.path('/').search();
+    }
     $scope.selectedProgram = $scope.data.program.displayName;
     $scope.selectedDispatchDate = ""
     $scope.selectedOrgUnit = {
@@ -97,6 +100,7 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
             $scope.switch();
             return;
         }
+        $("#loader").show();
         dataStoreService.get($scope.selectedOrgUnit.code).then(function (response) {
             var temp = [];
             var changedElementIndex = "";
@@ -115,6 +119,7 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
             $scope.dataValue.unshift(temp);
             
             dataStoreService.updateInDataStore($scope.selectedOrgUnit.code, $scope.dataValue).then(function (response) {
+                $("#loader").hide();
                 if (response.status == "200") {
                     $scope.message = "Batch No. " + $scope.data.BatchNo + " dispatched."
                     $scope.checkReturn = true;
