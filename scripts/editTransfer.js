@@ -1,6 +1,9 @@
 isolateTransferApp.controller('editTransfer', function ($scope, $location, $timeout, storeService, MetadataService, dataStoreService) {
 
     $scope.data = storeService.get();
+    if(!$scope.data.BatchNo) {
+        $location.path('/').search();
+    }
     $scope.selectedProgram = $scope.data.program.displayName;
     $scope.Ids = [];
     $scope.selectedOrgUnit = {
@@ -70,7 +73,6 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
     selection.setListenerFunction(function () {
         var selectedSelection = selection.getSelected();
         $scope.selectedOrgUnit.id = selectedSelection["0"];
-        loadOrgUnit();
     }, false);
 
     $scope.teiDataValue = {
@@ -221,6 +223,8 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
             */
 
         }
+    
+        $("#loader").hide();
     }
 
     $scope.saveSingleTEIDataValue = function (eventUid, programUid, teiUid, deUid) {

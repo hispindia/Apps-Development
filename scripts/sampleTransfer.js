@@ -21,16 +21,19 @@ isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $ti
         if (!$scope.showModal && $scope.checkReturn) {
             data = $scope.currentData;
             if (data.length != 0) {
-                storeService.set(data["0"])
-                $location.path('/edit-transfer').search();
+                $("#loader").show();
+                $timeout(() => {
+                    storeService.set(data["0"])
+                    $location.path('/edit-transfer').search();
+                }, 1000);
             }
         }
     };
-    
-    $scope.checkDate = function(passedDate, key) {
+
+    $scope.checkDate = function (passedDate, key) {
         var givenDate = new Date(passedDate);
         var date = new Date();
-        if(givenDate > date) {
+        if (givenDate > date) {
             $scope.checkDates[key] = ""
             $scope.message = "Please select valid date.";
             $scope.showToggle();
@@ -41,9 +44,10 @@ isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $ti
 
     initializingApps();
 
-    $scope.editTransfer = function (data,code) {
+    $scope.editTransfer = function (data, code) {
         data.disptachStatus.receivedDate = $scope.checkDates[data.BatchNo]
         if (data.disptachStatus.receivedDate != "" && data.disptachStatus.received != "Received") {
+            $("#loader").show();
             data.disptachStatus.received = "Received"
             dataStoreService.get(code).then(function (response) {
                 $scope.dataValue = response.map(child => {
@@ -53,8 +57,9 @@ isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $ti
                     return child;
                 })
                 dataStoreService.updateInDataStore(code, $scope.dataValue).then(function (response) {
+                    $("#loader").hide();
                     if (response.status == "200") {
-                        $scope.message = "Batch No - " + data.BatchNo +" Received on -  " + data.disptachStatus.receivedDate;
+                        $scope.message = "Batch No - " + data.BatchNo + " Received on -  " + data.disptachStatus.receivedDate;
                         $scope.currentData.push(data);
                         $scope.checkReturn = true;
                         $scope.showToggle();
@@ -66,8 +71,11 @@ isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $ti
             $scope.message = "Please Fill The Received Date."
             $scope.showToggle();
         } else {
-            storeService.set(data)
-            $location.path('/edit-transfer').search();
+            $("#loader").show();
+            $timeout(() => {
+                storeService.set(data)
+                $location.path('/edit-transfer').search();
+            }, 1000)
         }
     }
 
@@ -78,20 +86,21 @@ isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $ti
         var selectedSelection = selection.getSelected();
         $scope.selectedOrgUnit.id = selectedSelection["0"];
         loadOrgUnit();
+        
     }, false);
     loadOrgUnit = function () {
         MetadataService.getOrgUnit($scope.selectedOrgUnit.id).then(function (orgUnit) {
             $timeout(function () {
                 $scope.allOrgUnitValues = [];
-                orgUnit.organisationUnits.forEach((orgUnitChildren,index) => {
-                    
+                orgUnit.organisationUnits.forEach((orgUnitChildren, index) => {
+
                     var currentOrgUnitCode = orgUnitChildren.code ? orgUnitChildren.code : "";
-    
+
                     $scope.allOrgUnitValues[index] = [];
                     $scope.allOrgUnitValues[index]["OrgUnit"] = {
-                        "id" : orgUnitChildren.id, 
-                        "name" : orgUnitChildren.displayName, 
-                        "code" : currentOrgUnitCode
+                        "id": orgUnitChildren.id,
+                        "name": orgUnitChildren.displayName,
+                        "code": currentOrgUnitCode
                     }
 
                     if (currentOrgUnitCode) {
@@ -120,9 +129,12 @@ isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $ti
                                 allTeiDataValues = ""
                             }
                             $scope.allOrgUnitValues[index]["allTeiDataValues"] = allTeiDataValues;
+
                         })
+
                     } else {
-                        $scope.allOrgUnitValues["allTeiDataValues"] = ""
+                        $scope.allOrgUnitValues["allTeiDataValues"] = "";
+
                     }
                 })
             })
@@ -130,58 +142,58 @@ isolateTransferApp.controller('sampleTransfer', function ($scope, $location, $ti
     }
 
 
-// initializing Apps
-function initializingApps(teiUid, programUid, eventUid, deUid, deValue) {
+    // initializing Apps
+    function initializingApps(teiUid, programUid, eventUid, deUid, deValue) {
 
-    $.ajax({
-        async: false,
-        type: "GET",
-        url: '../../../api/me.json?fields=id,name&paging=false',
-        success: function (meResponse) {
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: '../../../api/me.json?fields=id,name&paging=false',
+            success: function (meResponse) {
 
-            if ( meResponse.id != undefined ) {
-                $scope.userUid = meResponse.id;
+                if (meResponse.id != undefined) {
+                    $scope.userUid = meResponse.id;
 
-                $.ajax({
-                    async: false,
-                    type: "GET",
-                    url: '../../../api/programs.json?fields=id,name,userAccesses&paging=false',
-                    success: function (programResponse) {
+                    $.ajax({
+                        async: false,
+                        type: "GET",
+                        url: '../../../api/programs.json?fields=id,name,userAccesses&paging=false',
+                        success: function (programResponse) {
 
-                        if (programResponse.programs != undefined && programResponse.programs.length != 0) {
-                            for (var j = 0; j < programResponse.programs.length; j++) {
+                            if (programResponse.programs != undefined && programResponse.programs.length != 0) {
+                                for (var j = 0; j < programResponse.programs.length; j++) {
 
-                                if( programResponse.programs[j].userAccesses != undefined &&
-                                    programResponse.programs[j].userAccesses.length != 0 ){
+                                    if (programResponse.programs[j].userAccesses != undefined &&
+                                        programResponse.programs[j].userAccesses.length != 0) {
 
-                                    for (var k = 0; k < programResponse.programs[j].userAccesses.length; k++) {
-                                        if( programResponse.programs[j].userAccesses[k].userUid === $scope.userUid ){
+                                        for (var k = 0; k < programResponse.programs[j].userAccesses.length; k++) {
+                                            if (programResponse.programs[j].userAccesses[k].userUid === $scope.userUid) {
 
-                                            $scope.programUidForDisplay = programResponse.programs[j].id;
-                                            $scope.displayProgramList = "YES";
-                                            return;
+                                                $scope.programUidForDisplay = programResponse.programs[j].id;
+                                                $scope.displayProgramList = "YES";
+                                                return;
+                                            }
                                         }
                                     }
                                 }
                             }
+                        },
+                        error: function (meResponse) {
+                            console.log("Error in API:", meResponse);
                         }
-                    },
-                    error: function ( meResponse ) {
-                        console.log("Error in API:",meResponse);
-                    }
-                });
+                    });
+                }
+            },
+            error: function (meResponse) {
+                console.log("Error in API:", meResponse);
             }
-        },
-        error: function ( meResponse ) {
-            console.log("Error in API:",meResponse);
-        }
 
-    });
+        });
 
-    console.log( $scope.userUid + " -- " + $scope.programUidForDisplay);
+        console.log($scope.userUid + " -- " + $scope.programUidForDisplay);
 
 
-}
+    }
 
 
 });
