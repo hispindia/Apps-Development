@@ -115,6 +115,7 @@ isolateTransferApp.controller("createNewTransfer", function ($scope, $location, 
         })
         $timeout(function () {
             if ($scope.teiDataValue.availableArray.length == 0) {
+                $("#loader").hide();
                 $scope.message = "No data to display!";
                 $scope.switch();
                 return;
