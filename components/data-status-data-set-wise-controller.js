@@ -4,6 +4,8 @@ function ($rootScope,$scope, $http, $location,periodService,$window,organisation
           userService,DataSetService,$timeout,OrganisationUnitService,ReportConfigurationService,MetadataService)
 {
 
+	//initially load tree
+    selection.load();
     $scope.selOrgUnit = selection.getSelected();
     $scope.filteredOrgUnitList=[];
         OrganisationUnitService.getAllChildrenOfSelectedOrgUnit( $scope.selOrgUnit[0] ).then(function(orgUnitList){
@@ -17,7 +19,8 @@ function ($rootScope,$scope, $http, $location,periodService,$window,organisation
         
    
 $scope.basicUrl = "../../sqlViews/";
-    
+
+
 sqlviewservice.getAll().then(function(data)
 {
     $scope.sqlViews = data.sqlViews;
@@ -1145,12 +1148,12 @@ sqlviewservice.getAll().then(function(data)
 
     $scope.showDataStatusScreen = function () {
         $location.path('/data-status');
-        window.location.reload();
+        //window.location.reload();
     };
 
     $scope.showDataStatusScreen2 = function () {
         $location.path('/data-status-data-set-wise');
-        window.location.reload();
+        //window.location.reload();
     };
     
 });

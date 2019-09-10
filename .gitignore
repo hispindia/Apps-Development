@@ -30,4 +30,5 @@ overlays/
 dhis-2/projectFilesBackup
 coverage
 node_modules
+.zip
 **/rebel.xml
