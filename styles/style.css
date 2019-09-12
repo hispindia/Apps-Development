@@ -11,6 +11,11 @@ html, body {
     display: none !important;
 }
 
+#mainPage {    
+    margin: -50px 10px 10px 270px !important;
+
+}
+
 @media print {
 
     body, html {
