@@ -79,12 +79,14 @@ isolateTransferApp.controller('editTransfer', function ($scope, $location, $time
         availableArray: $scope.data.rows.availableArray,
         selectedArray: $scope.data.rows.selectedArray
     };
+
     MetadataService.getOrgUnit($scope.selectedOrgUnit.id).then(function (orgUnit) {
         $timeout(function () {
             $scope.selectedOrgUnit.name = orgUnit.name;
             $scope.selectedOrgUnit.code = orgUnit.code;
         })
     });
+
     $scope.showToggle = function () {
         $scope.showModal = !$scope.showModal;
         

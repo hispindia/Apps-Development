@@ -23,15 +23,16 @@
             </thead>
             <tbody>
                 <tr ng-repeat="amr in teiDataValue.selectedArray">
-                    <td>{{amr.amrid}}</td>
+                    <td>
+                        <a ng-href="../Isolate-Transfer/#/event/{{amr.eventuid}}" target="_blank">{{amr.amrid}}</a>
+                    </td>
+
                     <td>
                         <input  type="radio" 
-                               
                                 ng-model="eventDataValue[amr.eventuid]['KHHHMoiUsWZ']"
                                 ng-change="saveSingleTEIDataValue(amr.eventuid,amr.programuid,amr.teiuid,'KHHHMoiUsWZ')" value="Alive" >Alive
                         
                         <input  type="radio" 
-                                
                                 ng-model="eventDataValue[amr.eventuid]['KHHHMoiUsWZ']"
                                 ng-change="saveSingleTEIDataValue(amr.eventuid,amr.programuid,amr.teiuid,'KHHHMoiUsWZ')" value="Dead">Dead
                     </td>
