@@ -725,10 +725,14 @@ excelUpload.controller('ImportFacilitywiseController',
                                 dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
                                 dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
                                 dataValue.orgUnit = orgUnit.id;
-
+                                /*
                                 dataValue.value = dataValue.value == "" ? "omit" : dataValue.value;
 
                                 if (dataValue.orgUnit != "" && dataValue.value != "omit") {
+                                    dataValues.push(dataValue);
+                                }
+                                */
+                                if (dataValue.orgUnit != "" && dataValue.value != "") {
                                     dataValues.push(dataValue);
                                 }
 
@@ -806,10 +810,15 @@ excelUpload.controller('ImportFacilitywiseController',
                                 dataValue.orgUnit = orgUnit.id;
 
                                 dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
-
+                                /*
                                 dataValue.value = dataValue.value == "" ? "omit" : dataValue.value;
 
                                 if (dataValue.orgUnit != "" && dataValue.value != "omit") {
+                                    dataValues.push(dataValue);
+                                }
+                                */
+
+                                if (dataValue.orgUnit != "" && dataValue.value != "") {
                                     dataValues.push(dataValue);
                                 }
                             }
@@ -825,9 +834,14 @@ excelUpload.controller('ImportFacilitywiseController',
                                 dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
                                 dataValue.orgUnit = orgUnit.id;
 
+                                /*
                                 dataValue.value = dataValue.value == "" ? "omit" : dataValue.value;
-
                                 if (dataValue.orgUnit != "" && dataValue.value != "omit") {
+                                    dataValues.push(dataValue);
+                                }
+                                */
+
+                                if (dataValue.orgUnit != "" && dataValue.value != "") {
                                     dataValues.push(dataValue);
                                 }
 
@@ -903,10 +917,13 @@ excelUpload.controller('ImportFacilitywiseController',
                                 dataValue.orgUnit = orgUnit.id;
 
                                 dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
-
+                                /*
                                 dataValue.value = dataValue.value == "" ? "omit" : dataValue.value;
-
                                 if (dataValue.orgUnit != "" && dataValue.value != "omit") {
+                                    dataValues.push(dataValue);
+                                }
+                                */
+                                if (dataValue.orgUnit != "" && dataValue.value != "") {
                                     dataValues.push(dataValue);
                                 }
                             }
@@ -923,13 +940,15 @@ excelUpload.controller('ImportFacilitywiseController',
                                 dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
                                 dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
                                 dataValue.orgUnit = orgUnit.id;
-
+                                /*
                                 dataValue.value = dataValue.value == "" ? "omit" : dataValue.value;
-
                                 if (dataValue.orgUnit != "" && dataValue.value != "omit") {
                                     dataValues.push(dataValue);
                                 }
-
+                                */
+                                if (dataValue.orgUnit != "" && dataValue.value != "") {
+                                    dataValues.push(dataValue);
+                                }
 
                                 $scope.dp.push(dataValue.value);
 
@@ -1007,10 +1026,14 @@ excelUpload.controller('ImportFacilitywiseController',
                                 dataValue.orgUnit = orgUnit.id;
 
                                 dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
-
+                                /*
                                 dataValue.value = dataValue.value == "" ? "omit" : dataValue.value;
-
                                 if (dataValue.orgUnit != "" && dataValue.value != "omit") {
+                                    dataValues.push(dataValue);
+                                }
+                                */
+
+                                if (dataValue.orgUnit != "" && dataValue.value != "") {
                                     dataValues.push(dataValue);
                                 }
                             }
@@ -1026,12 +1049,16 @@ excelUpload.controller('ImportFacilitywiseController',
                                 dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
                                 dataValue.orgUnit = orgUnit.id;
 
+                                /*
                                 dataValue.value = dataValue.value == "" ? "omit" : dataValue.value;
-
                                 if (dataValue.orgUnit != "" && dataValue.value != "omit") {
                                     dataValues.push(dataValue);
                                 }
+                                */
 
+                                if (dataValue.orgUnit != "" && dataValue.value != "") {
+                                    dataValues.push(dataValue);
+                                }
                                 //dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
                                 $scope.dp.push(dataValue.value);
 
@@ -1104,10 +1131,14 @@ excelUpload.controller('ImportFacilitywiseController',
                                 dataValue.orgUnit = orgUnit.id;
 
                                 dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
-
+                                /*
                                 dataValue.value = dataValue.value == "" ? "omit" : dataValue.value;
-
                                 if (dataValue.orgUnit != "" && dataValue.value != "omit") {
+                                    dataValues.push(dataValue);
+                                }
+                                */
+
+                                if (dataValue.orgUnit != "" && dataValue.value != "") {
                                     dataValues.push(dataValue);
                                 }
                             }
@@ -1118,10 +1149,14 @@ excelUpload.controller('ImportFacilitywiseController',
                             dataValue.orgUnit = orgUnit.id;
 
                             dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
-
+                            /*
                             dataValue.value = dataValue.value == "" ? "omit" : dataValue.value;
-
                             if (dataValue.orgUnit != "" && dataValue.value != "omit") {
+                                dataValues.push(dataValue);
+                            }
+                            */
+
+                            if (dataValue.orgUnit != "" && dataValue.value != "") {
                                 dataValues.push(dataValue);
                             }
                         }
