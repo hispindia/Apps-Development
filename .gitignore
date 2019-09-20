@@ -1,34 +1,44 @@
-target
-*.log
-*.log.*
-./taret
-./target
-./target/classes
-target/**
-*.settings
-.metadata
-build.sh
-.springBeans
-nbactions.xml
-.classpath
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/dist
+/dist-server
+/tmp
+/out-tsc
+proxy-config.json
+# dependencies
+/node_modules
+
+# IDEs and editors
+/.idea
 .project
-.mtj
-.idea
-.swp
-*.iml
-*.ipr
-*.ids
-*.iws
-overlays/
-./dhis-2/atlassian-ide-plugin.xml
-./atlassian-ide-plugin.xml
-./.git
-./.gitattributes
-./.gitignore
-./.travis.yml
-.DS_Store
-dhis-2/projectFilesBackup
-coverage
-dist
-node_modules
-**/rebel.xml
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+testem.log
+/typings
+
+# e2e
+/e2e/*.js
+/e2e/*.map
+
+# System Files
+Thumbs.db
+/proxy-config.json
+upload.sh

@@ -50,7 +50,6 @@ export class HttpClientService {
             observer.complete();
           },
           error => {
-            console.log(this._handleError(error));
             observer.error(this._handleError(error));
           }
         );
@@ -71,7 +70,6 @@ export class HttpClientService {
             observer.complete();
           },
           error => {
-            console.log(this._handleError(error));
             observer.error(this._handleError(error));
           }
         );
@@ -92,7 +90,7 @@ export class HttpClientService {
             observer.complete();
           },
           error => {
-            console.log(this._handleError(error));
+            
             observer.error(this._handleError(error));
           }
         );
