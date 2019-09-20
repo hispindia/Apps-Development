@@ -130,10 +130,10 @@ export class CoordinateComponent implements OnInit {
   }
 
   public collapsed(event: any): void {
-    console.log(event);
+   // console.log(event);
   }
 
   public expanded(event: any): void {
-    console.log(event);
+  //  console.log(event);
   }
 }
