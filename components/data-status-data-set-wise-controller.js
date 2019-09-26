@@ -18,6 +18,20 @@ DataStatusApp.controller('DataStatusDataSetWiseController',
 
 
         $scope.basicUrl = "../../sqlViews/";
+        
+
+
+
+        // for period type
+
+        $scope.dsId = []; // Selected data set id
+        $scope.dataSetArray = [];
+        $scope.arrayds = "";
+        $scope.returnValue = [];
+        $scope.peType = "";
+        $scope.dataSets1 = [];
+        $scope.dataArray = [];
+
 
 
         sqlviewservice.getAll().then(function (data) {
@@ -104,6 +118,7 @@ DataStatusApp.controller('DataStatusDataSetWiseController',
 
             $scope.peType = document.getElementById("periodtype").value;
             console.log("petype=" + $scope.peType);
+            $scope.dataSetArray  = [];
             $scope.dataSetReport(currentSelectedOU, $scope.peType);
 
         }
@@ -152,24 +167,11 @@ DataStatusApp.controller('DataStatusDataSetWiseController',
 
 
 
-
-        // for period type
-
-        $scope.dsId = []; // Selected data set id
-        $scope.dataSetArray = [];
-        $scope.arrayds = "";
-        $scope.returnValue = [];
-        $scope.peType = "";
-        $scope.dataSets1 = [];
-        $scope.dataArray = [];
-
-
-
         $scope.buttonRight = function () { // selected id
 
             // console.log("$scope.currentSelection.orgUnit" + $scope.currentSelection.orgUnit);
 
-            // var dataSetidString = arraystring;
+            // dataSetidString = arraystring;
             // console.log("aa" + dataSetidString);
 
 
@@ -339,8 +341,8 @@ DataStatusApp.controller('DataStatusDataSetWiseController',
                 );
                 url = $scope.basicUrl + $scope.orgUnitSV + "/data.json?var=orgUnitId:" + $scope.selectedOrgUnit + "";
                 $.get(url, function (data) {
-
-                    $scope.organisationunitid_1 = data.listGrid.rows[0];
+                    data = data.listGrid;
+                    $scope.organisationunitid_1 = data.rows[0];
 
                 });
 
@@ -443,6 +445,8 @@ DataStatusApp.controller('DataStatusDataSetWiseController',
                 url += "var=dataSetUid:" + selDataSetUid[j] + ",orgUnitUid:" + selOrgUnit + ",startDate:" + selStartPeriod + ",endDate:" + selEndPeriod;
 
                 $.get(url, function (data) {
+
+                    data = data.listGrid;
 
                     if (data.rows.length > 0) {
                         var summaryData = data.rows[0];
@@ -557,6 +561,7 @@ DataStatusApp.controller('DataStatusDataSetWiseController',
                 newurl1 = $scope.basicUrl + $scope.getDataSetid + "/data.json?var=dataSetID:" + selDataSetUid[j] + "";
                 $.get(newurl1, function (data) {
 
+                    data = data.listGrid;
                     $scope.dataSetID = data.rows[0];
 
 
@@ -564,7 +569,8 @@ DataStatusApp.controller('DataStatusDataSetWiseController',
                 var newurl = $scope.basicUrl + $scope.CategoryComboId + "/data.json?var=datasetelementid:" + $scope.dataSetID[0] + "";
                 $.get(newurl, function (json) {
 
-                    $scope.compulsoryDECount = json.height;
+                    data = json.listGrid;
+                    $scope.compulsoryDECount = data.height;
 
 
                 });
@@ -575,8 +581,10 @@ DataStatusApp.controller('DataStatusDataSetWiseController',
                 url += "var=dataSetUid:" + selDataSetUid[j] + ",orgUnitUid:" + selOrgUnit + ",startDate:" + selStartPeriod + ",endDate:" + selEndPeriod;;
 
                 $.get(url, function (data) {
+                    
+                    data = data.listGrid;
                     if (data.rows.length > 0) {
-                        var summaryData = data.rows[0];
+                        var summaryData = data.listGrid.rows[0];
 
 
 
@@ -670,6 +678,8 @@ DataStatusApp.controller('DataStatusDataSetWiseController',
                 $scope.dsPeriodType = dp.periodType;
             });
             $.get(url, function (data) {
+                
+                data = data.listGrid;
                 var summaryData = data.rows;
 
                 var currentPeriodId = -1;
@@ -821,7 +831,8 @@ DataStatusApp.controller('DataStatusDataSetWiseController',
                 $scope.currentSelection.startPeriodMonth &&
                 $scope.currentSelection.startPeriodYear &&
                 $scope.currentSelection.endPeriodMonth &&
-                $scope.currentSelection.endPeriodYear
+                $scope.currentSelection.endPeriodYear &&
+                $scope.dataSetArray.length
             ) {
                 $.get("../../organisationUnits/" + selection.getSelected() + ".json?fields=id,name,level,children[id,name,level,children[id,name,level,children[id,name,level,children[id,name,level,children[id,name,level,children[id,name,level,children[id,name,level,children[id,name,level]]]]]", function (data) {
                     $scope.extractOrgUnits(data);
@@ -840,7 +851,7 @@ DataStatusApp.controller('DataStatusDataSetWiseController',
                         var selEndPeriod = $scope.currentSelection.endPeriodYear + "" + $scope.currentSelection.endPeriodMonth + "01";
 
                         $.get("../../sqlViews/" + $scope.periodsSV + "/data.json?var=startDate:" + selStartPeriod + ",endDate:" + selEndPeriod + ",dataSetUidForLevel:Ri1mp3YgF3s", function (pr) {
-                            $scope.allPeriods = pr.rows;
+                            $scope.allPeriods = pr.listGrid.rows;
 
                             $("#btn1").fadeIn();
                             $("#btn2").fadeIn();

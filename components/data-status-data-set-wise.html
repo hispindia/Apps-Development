@@ -27,7 +27,7 @@
     
             <table class="table">
                 <tr>
-                    <td class="col-md-2" style="vertical-align: middle;"><h3 style="color:#8A0868; font-size:125%;font-family:arial;" align="left"><strong>{{'Organisation Unit' | translate}}</strong></h3></td>
+                    <td class="col-md-2" style="vertical-align: middle;"><h3 style="color:#8A0868; font-size:125%;font-family:arial;" align="left"><strong>Organisation Unit</strong></h3></td>
                     
                     <td class="col-md-3">
                         <div  class="col-md-12" >
@@ -40,10 +40,10 @@
                         </div>
                     </td>
 
-                    <td class="col-md-2" style="vertical-align: middle;"><h3 style="color:#8A0868; font-size:125%;font-family:arial;" align="left"><strong>{{'Period Type' | translate}}</strong></h3></td>
+                    <td class="col-md-2" style="vertical-align: middle;"><h3 style="color:#8A0868; font-size:125%;font-family:arial;" align="left"><strong>Period Type</strong></h3></td>
                     
                     <td  class="col-md-3" >
-                        <select ng-model="selectedGroup" ng-change="petypeValue()"   class="form-control margin-base-vertical input-small" id="periodtype"   >
+                        <select ng-model="selectedGroup" ng-change="petypeValue();showHideButtons()"   class="form-control margin-base-vertical input-small" id="periodtype"   >
                             <option value ="Monthly">Monthly</option>
                             <option value ="Yearly">Yearly</option>
                             <option value ="Quarterly">Quarterly</option>
@@ -53,7 +53,7 @@
                 </tr>
     
                 <tr>
-                    <td class="col-md-2" style="vertical-align: middle;"><h3 style="color:#8A0868; font-size:125%;font-family:arial;" align="left"><strong>{{'Data Set' | translate}}</strong></h3></td>
+                    <td class="col-md-2" style="vertical-align: middle;"><h3 style="color:#8A0868; font-size:125%;font-family:arial;" align="left"><strong>Data Set</strong></h3></td>
                     <td class="col-md-3">
                         <select  class="form-control margin-base-vertical input-small" style="width:100%" ng-required="true" ng-model="currentSelection.dataSet"
                              ng-options="dataSet.name for dataSet in dataSets" id ="dataSetId" ng-change = "showHideButtons()" multiple>
@@ -78,7 +78,7 @@
                 </tr>
 
                 <tr>
-                    <td class="col-md-2" style="vertical-align: middle;"><h3 style="color:#8A0868; font-size:125%;font-family:arial;" align="left"><strong>{{'Start Period' | translate}}</strong></h3></td>
+                    <td class="col-md-2" style="vertical-align: middle;"><h3 style="color:#8A0868; font-size:125%;font-family:arial;" align="left"><strong>Start Period</strong></h3></td>
                     <td class="col-md-3">
                         <div  class="col-md-6" >
                             <select class="form-control input-small" style="width:100%" ng-model="currentSelection.startPeriodMonth" ng-change = "showHideButtons()" placeholder="{{'please_select_month' | translate}}"
@@ -93,7 +93,7 @@
                         </div>
                     </td>
 
-                    <td class="col-md-2" style="vertical-align: middle;"><h3 style="color:#8A0868; font-size:125%;font-family:arial;" align="left"><strong>{{'End Period' | translate}}</strong></h3></td>
+                    <td class="col-md-2" style="vertical-align: middle;"><h3 style="color:#8A0868; font-size:125%;font-family:arial;" align="left"><strong>End Period</strong></h3></td>
                     
                     <td class="col-md-3">
                         <div class="col-md-6">
