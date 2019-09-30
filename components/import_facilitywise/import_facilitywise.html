@@ -125,6 +125,7 @@
 
 	</div>
 </div>
+<a id="dlink" style="display:none;"></a>
 
 <!--  Status modal -->
 <div id="stModal" class="modal fade" role="dialog">
@@ -137,16 +138,11 @@
 				<h4 class="modal-title" id="sth">Data Count</h4>
 			</div>
 			<div class="modal-body" style="max-height:300px;overflow-y:auto" id="stb">
-				<table class="table">
-					<tr class="info"><td> Description </td><td id="responseDescription"></td>&nbsp;<td></td></tr>
-					<tr class="success"><td> Imported </td><td id="imct"></td>&nbsp;<td></td></tr>
-					<tr class="info"><td> Updated </td><td id="upc"></td>&nbsp;<td></td></tr>
-					<tr class="danger"><td> Ignored/Conflict Details </td><td id="igc"></td>&nbsp;<td id="conflictDetails"></td></tr>
-					<!--<tr class="danger"><td> ConflictDetails </td><td id="conflictDetails"></td></tr>-->
-					<tr class="success"><td> DataSet Registrations Complete </td><td id="dataSetRegistrationsComplete"></td>&nbsp;<td></td></tr>
-				</table>
+				<table class="table" id="modal-table"></table>
+				</table >
 			</div>
 			<div class="modal-footer">
+				<button class="btn btn-success" style="width:100px" ng-click="tableToExcel('modal-table', 'report', 'reports.xls')">Download</button>
 				<button type="button" class="btn btn-info"  style="width:100px" onclick="window.location.reload()">Ok</button>
 			</div>
 		</div>
