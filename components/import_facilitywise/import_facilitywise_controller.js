@@ -17,6 +17,7 @@ excelUpload.controller('ImportFacilitywiseController',
         $route,
         $filter,
         ExcelMappingService,
+        $http,
         ValidationRuleService,
         CurrentSelection,
         ExcelReaderService,
@@ -45,6 +46,48 @@ excelUpload.controller('ImportFacilitywiseController',
         $scope.confirmedUploads = [];
 
         $scope.dataEndingCell = 0;
+
+        // for hide buttons
+        $scope.userCredentials = [];
+        $scope.superUserAccessAuthority = 'NO';
+        $scope.userName = '';
+        $scope.userRoleName = '';
+        //http://127.0.0.1:8090/uphmis/api/me.json?fields=userCredentials[userRoles[id,name,authorities]]&paging=false
+
+
+        //http://127.0.0.1:8090/uphmis/api/me.json?fields=id,displayName,userCredentials[username,userRoles[id,displayName,programs,authorities]]&skipPaging=true
+        $http.get('../../../api/me.json?fields=id,displayName,userCredentials[username,userRoles[id,displayName,programs,authorities]]&skipPaging=true')
+            .then(function(responseUser) {
+                $scope.userName = responseUser.data.userCredentials.username;
+
+                for (var j = 0; j < responseUser.data.userCredentials.userRoles.length; j++) {
+
+                    $scope.userRoleName = responseUser.data.userCredentials.userRoles[j].displayName;
+
+                    for (var k = 0; k < responseUser.data.userCredentials.userRoles[j].authorities.length; k++) {
+
+                        if( responseUser.data.userCredentials.userRoles[j].displayName === 'Superuser'
+                            || responseUser.data.userCredentials.userRoles[j].authorities[k] === 'ALL'){
+
+                            $scope.superUserAccessAuthority = 'YES';
+                            return;
+                        }
+                    }
+                }
+            });
+        $scope.showStyle = function() {
+            var style = {};
+            if($scope.superUserAccessAuthority==="YES") {
+                style.width = '250px'; style.margin_top = '10px'; style.margin_bottom = '20px'; style.box_shadow = '0 0 3px #ccc'; style.height = '30px'; style.font_size = '13px'; style.padding_top = '5px';
+            }
+            else if($scope.superUserAccessAuthority != "YES") {
+                style.display = "none";
+            }
+            return style;
+        };
+            // end hide buttons
+
+
 
 		/* **************************************************************************************
 		 **** RETRIEVING ROOT JSON AND NEEDED DATA ***********************************************
@@ -591,7 +634,7 @@ excelUpload.controller('ImportFacilitywiseController',
                            
                                     }
                                     else {
-                                        errorMsg = "For " + orgName + " If Delivery point value is false then Level of Delivery point should not be selected";
+                                        errorMsg = "For " + orgName + " Delivery point value is false";
                                         break;
                                     }
                                 }
@@ -852,6 +895,7 @@ excelUpload.controller('ImportFacilitywiseController',
 
             //console.log( dataValues );
             var dataValueSet = {};
+            dataValueSet.dataSet =  $("#imDataSetId").val();
             dataValueSet.dataValues = dataValues;
 
             //making ready to import data
@@ -938,7 +982,8 @@ excelUpload.controller('ImportFacilitywiseController',
                     else {
                         tem.data.conflicts.forEach((child,index) => errElement += (index+1) + ". value: " + child.object + "<br/>Reason: " + child.value + ".<br/>");
                         $scope.h.stats.igc = tem.data.importCount.ignored;
-                        $scope.h.orgUnits[index].stats.igc = tem.data.importCount.ignored;
+                        //$scope.h.orgUnits[index].stats.igc = tem.data.importCount.ignored;
+                        $scope.h.orgUnits[index].stats.igc = tem.data.conflicts.length;
                     }
 
 
@@ -1124,7 +1169,7 @@ excelUpload.controller('ImportFacilitywiseController',
                 document.getElementById("dlink").download = filename;
                 document.getElementById("dlink").click();
             }
-        })() 
+        })();
 
         function loadDataElements() {
             $.ajax({
