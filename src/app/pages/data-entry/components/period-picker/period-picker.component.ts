@@ -99,7 +99,6 @@ export class PeriodPickerComponent implements OnInit {
       }
     });
     if (this.list.length == 0) {
-      console.log(this.currentDate);
       this.currentDate = new Date(this.currentDate.getFullYear() - 1, this.currentDate.getMonth(), this.currentDate.getDate());
       console.log(this.currentDate);
       this.populateList();

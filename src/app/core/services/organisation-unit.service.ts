@@ -105,7 +105,6 @@ export class OrganisationUnitService {
     const startDate = `${periodYear}-${periodMonth}-1`;
     const endDate = `${endPeriod.getFullYear()}-${endPeriod.getMonth() +
       1}-${endPeriod.getDate()}`;
-
     return this.httpClient
       .get(
         `sqlViews/bKQbaD3L5Tb/data.json?var=organisationunit:${orgUnitId}&var=startdate:${startDate}&var=enddate:${endDate}`

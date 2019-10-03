@@ -6,11 +6,16 @@ import { Event } from '../models/event.model';
 
 @Injectable()
 export class EventService {
+  public dataFound: any;
   constructor(private httpClient: HttpClientService) {}
   loadEvent(programId: string, orgUnitId: string, startDate: string, endDate: string): Observable<Event> {
-    return this.httpClient.get(
+    this.dataFound = this.httpClient.get(
       `events.json?program=${programId}&startDate=${startDate}&endDate=${endDate}&orgUnit=${orgUnitId}&paging=false`
     );
+    return this.dataFound;
+  }
+  loadedData(): Observable<any>{
+    return this.dataFound;
   }
   updateEventDataElement(eventID: string, dataElementID: string, payload: any): Observable<any> {
     return this.httpClient.put(`events/${eventID}/${dataElementID}`, payload);

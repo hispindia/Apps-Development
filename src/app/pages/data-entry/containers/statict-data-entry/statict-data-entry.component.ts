@@ -52,7 +52,6 @@ export class StatictDataEntryComponent implements OnInit {
   }
 
   ngOnInit() {
-    debugger
     if (
       this.authorities &&
       (this.authorities.indexOf('ALL') > -1 ||
@@ -73,17 +72,14 @@ export class StatictDataEntryComponent implements OnInit {
   }
 
   onViewDistributionRendered(event) {
-    debugger
     this.hasViewRendered.emit(event);
   }
 
   onAddOrUpdateDitributionPoint(event) {
-    debugger
     this.addOrUpdateDitributionPoint.emit(event);
   }
 
   onDeleteDistributionPoint(distributionPoint) {
-    debugger
     this.deleteDitributionPoint.emit(distributionPoint);
   }
 
@@ -91,7 +87,6 @@ export class StatictDataEntryComponent implements OnInit {
     this.cancelEditForm.emit(event);
   }
   getDefaultOrganisationUnit() {
-    debugger
     const date = new Date();
     return {
       id: 'new',

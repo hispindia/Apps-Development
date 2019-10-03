@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { HttpClientService } from '../../../../core';
+import { HttpClientService, EventService } from '../../../../core';
 
 @Component({
   selector: 'app-input',
@@ -32,8 +32,11 @@ export class InputComponent implements OnInit {
   isInvalid = false;
   attributtNew;
   errorMessage: string;
-
-  constructor(private http: HttpClientService) {
+public dataValues:any;
+public totalWater:any;
+public totalPop:any;
+public subVillageName:any;
+  constructor(private http: HttpClientService, private eventService: EventService) {
     this.showPicker = false;
   }
 

@@ -10,7 +10,7 @@ import {
   AttributeValuesModel
 } from '../../../../core/models/statict-data-entry.model';
 import * as _ from 'lodash';
-import { OrganisationUnitService, MaintenanceService } from '../../../../core';
+import { OrganisationUnitService, MaintenanceService, EventService } from '../../../../core';
 
 @Component({
   selector: 'app-statict-data-entry-view',
@@ -27,6 +27,7 @@ export class StatictDataEntryViewComponent implements OnInit {
   isDeletingActive: boolean;
   isDeleteNotAllowed: boolean;
   isEditAllowed: boolean;
+  public dataValues: any;
 
   @Output() hasViewRendered = new EventEmitter();
   @Output() addOrUpdateDitributionPoint = new EventEmitter();
@@ -34,7 +35,8 @@ export class StatictDataEntryViewComponent implements OnInit {
   constructor(
     private store: Store<AppState>,
     private organisationUnitService: OrganisationUnitService,
-    private maintenanceService: MaintenanceService
+    private maintenanceService: MaintenanceService,
+    private eventService: EventService
   ) {
     this.isLoading = true;
     this.isEditable = false;
@@ -62,13 +64,37 @@ export class StatictDataEntryViewComponent implements OnInit {
     }
     if (this.organisationUnit) {
       this.organisationUnitObject = this.getOganisationUnitObject();
+      console.log('here is me at ng oninit', this.organisationUnitObject);
+      let attributeValues = this.organisationUnitObject.attributeValues;
+      //  attributeValues.forEach(element => {
+      //   this.eventService.loadedData().subscribe( res => {
+      //     this.dataValues = res.events["0"].dataValues;
+      //     this.dataValues.forEach(element => {
+      //       if(element.dataElement === 'w12NcYUbw0h') {
+      //         attributeValues['9']['value']=element.value;
+      //       } else if(element.dataElement === 'XJRt4P9JgLQ') {
+      //       attributeValues['10']['value']=element.value;
+      //       }
+      //       else if(element.dataElement === 'cQTEBsID9do') {
+      //         attributeValues['4']['value']=element.value;
+      //         }
+            
+      //           else if(element.dataElement === 'oonnSZRwJG4') {
+      //             attributeValues['7']['value']=element.value;
+      //             }
+      //     });
+      //   }); 
+      // });
+     // console.log('here is arr before splice', attributeValues)
+        //attributeValues.splice(5,1);
+     // this.organisationUnitObject['attributeValues'] = attributeValues;
+     // console.log('here is me at test for org obj', this.organisationUnitObject);
       this.isLoading = false;
       this.hasViewRendered.emit({ data: true });
     }
   }
 
   onDeleteDistributionPoint() {
-    debugger
     if (confirm('Are you sure you want to delete this distribution point?')) {
       this.isDeletingActive = true;
       const { id } = this.organisationUnitObject;
@@ -164,15 +190,11 @@ export class StatictDataEntryViewComponent implements OnInit {
   }
 
   editDistributionPoint() {
-    debugger;
-    console.log("here is me");
     this.store.dispatch(new ResetMessageObjectOnOrganisationUnitAction());
     this.isEditable = true;
   }
 
   onAddOrUpdateDitributionPoint(event) {
-    console.log('here is update value');
-    debugger;
     this.addOrUpdateDitributionPoint.emit(event);
     this.cancelEditDistributionPoint(event);
   }
@@ -186,9 +208,8 @@ export class StatictDataEntryViewComponent implements OnInit {
   }
 
   getOganisationUnitObject() {
-    debugger;
-    console.log('here  is OU get');
     const { attributeValues } = this.organisationUnit;
+    console.log('here is attribute values', attributeValues)
     const organisationUnitObject = Object.assign({}, this.organisationUnit);
     delete organisationUnitObject.attributeValues;
     const newAttributeValues = [];
@@ -201,11 +222,30 @@ export class StatictDataEntryViewComponent implements OnInit {
         }
       );
       if (matchAttributes) {
+        console.log('here is data' ,matchAttributes)
         attributeObject.value = matchAttributes.value;
       }
       newAttributeValues.push(attributeObject);
     });
+      this.eventService.loadedData().subscribe( res => {
+        this.dataValues = res.events["0"].dataValues;
+        this.dataValues.forEach(element => {
+          if(element.dataElement === 'w12NcYUbw0h') {
+            newAttributeValues['9']['value']=element.value;
+          } else if(element.dataElement === 'XJRt4P9JgLQ') {
+            newAttributeValues['10']['value']=element.value;
+          }
+          else if(element.dataElement === 'cQTEBsID9do') {
+            newAttributeValues['4']['value']=element.value;
+            }
+          
+              else if(element.dataElement === 'oonnSZRwJG4') {
+                newAttributeValues['7']['value']=element.value;
+                }
+        });
+      }); 
     organisationUnitObject['attributeValues'] = newAttributeValues;
+    console.log('here is me at end arr', organisationUnitObject)
     return organisationUnitObject;
   }
 }

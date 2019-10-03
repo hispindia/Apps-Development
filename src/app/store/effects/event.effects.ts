@@ -27,7 +27,6 @@ import {
 @Injectable()
 export class EventEffects {
   constructor(private actions$: Actions, private eventService: EventService, private store$: Store<AppState>) {}
-
   @Effect()
   loadOrgUnitEvent$ = this.actions$.pipe(
     ofType(EventActionTypes.LOAD),
@@ -193,3 +192,4 @@ export class EventEffects {
     })
   );
 }
+

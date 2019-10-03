@@ -104,7 +104,6 @@ export class EventCaptureComponent implements OnChanges, OnInit {
     const objectProps = Object.keys(this.dataObject || {}).map(prop => {
       return Object.assign({}, { key: prop }, this.dataObject[prop]);
     });
-
     this.filteredObjectProps = objectProps.filter(
       ({ code }) =>
         !code ||
@@ -120,7 +119,6 @@ export class EventCaptureComponent implements OnChanges, OnInit {
   }
 
   createFormControls(arayProps) {
-    debugger;
     this.objectProps = arayProps;
     const formGroup = {};
     for (const objectProp of arayProps) {
@@ -131,7 +129,6 @@ export class EventCaptureComponent implements OnChanges, OnInit {
     this.form = new FormGroup(formGroup, { updateOn: 'blur' });
     const oldData = this.dataValues;
     if (this.dataValues) {
-      debugger
       this.objectProps = arayProps.map(item => ({
         ...item,
         value: this.dataValues[item.key]
@@ -145,7 +142,6 @@ export class EventCaptureComponent implements OnChanges, OnInit {
   }
 
   private mapValidators(validators) {
-    debugger
     const formValidators = [];
 
     if (validators) {
@@ -157,17 +153,14 @@ export class EventCaptureComponent implements OnChanges, OnInit {
         }
       }
     }
-
     return formValidators;
   }
 
   isFieldValid(field: string) {
-    debugger
     return !this.form.get(field).valid && this.form.get(field).touched;
   }
 
   displayFieldCss(field: string) {
-    debugger;
     return {
       'has-error': this.isFieldValid(field),
       'has-feedback': this.isFieldValid(field)
@@ -181,7 +174,6 @@ export class EventCaptureComponent implements OnChanges, OnInit {
   }
 
   validateAllFormFields(formGroup: FormGroup) {
-    debugger;
     (Object.keys(formGroup.controls) || []).forEach(field => {
       const control = formGroup.get(field);
       if (control instanceof FormControl) {
@@ -197,7 +189,6 @@ export class EventCaptureComponent implements OnChanges, OnInit {
   }
 
   onFormChanges(): void {
-    debugger
     const eventResponse = this.currentEvent;
     this.form.valueChanges.subscribe(formData => {
       this.skipLogicImplementation({ ...this.dataValues, ...formData });
@@ -206,7 +197,6 @@ export class EventCaptureComponent implements OnChanges, OnInit {
   }
 
   updateEventOnChange(values) {
-    debugger
     const dataValues = this.formatDataValuesFromForm({ ...values });
     const eventResponse = this.currentEvent;
     const { userCredentials } = this.currentUser;
@@ -228,7 +218,6 @@ export class EventCaptureComponent implements OnChanges, OnInit {
   }
 
   skipLogicImplementation(formData?, onComplete = false) {
-    debugger
     const { programRuleVariables, programRules } = this.programInfo;
 
     let filteredPropsEntities = this.filteredObjectProps.reduce((entities, obj) => {
@@ -261,7 +250,6 @@ export class EventCaptureComponent implements OnChanges, OnInit {
         }
 
         if (evalCondition !== condition) {
-          debugger
           try {
             // tslint:disable-next-line
             const evaluated = eval(`(${evalCondition})`);
@@ -326,6 +314,7 @@ export class EventCaptureComponent implements OnChanges, OnInit {
     }
     const filteredPropsArray = Object.keys(filteredPropsEntities).map(key => filteredPropsEntities[key]);
     this.objectProps = filteredPropsArray.filter(filteredPropsEntity => filteredPropsEntity.show);
+    // console.log('here is props', this.objectProps);
     this.hiddenFields = filteredPropsArray
       .filter(filteredPropsEntity => !filteredPropsEntity.show)
       .map(({ key }) => key);

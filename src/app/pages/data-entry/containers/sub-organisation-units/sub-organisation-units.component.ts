@@ -12,6 +12,8 @@ import { Store } from "@ngrx/store";
 import { OrgUnitService } from "../../../../shared/modules/org-unit-filter/org-unit.service";
 import { GlobalFilterUpdateAction } from "../../../../store/actions/global-filter.actions";
 import { getPopulationDataForCurrentOrgUnit } from "../../../../store/selectors/";
+import { Compiler } from '@angular/core';
+import { from } from 'rxjs';
 
 declare var $: any;
 declare var document: any;
@@ -68,12 +70,14 @@ export class SubOrganisationUnitsComponent implements OnInit {
     private router: Router,
     private changeService: ChangeService,
     private userService: UserService,
-    private orgUnitService: OrgUnitService
+    private orgUnitService: OrgUnitService,
+    private compiler: Compiler
   ) {
     this.globalFilter$ = store.select(getCurrentGlobalFilter);
     this.population$ = store.select(getPopulationDataForCurrentOrgUnit);
     this.getInfo();
-    setTimeout(this.getInfo, 300000);
+    setTimeout(this.getInfo, 8000);
+   this.compiler.clearCache();
   }
 
   getInfo() {
@@ -407,6 +411,7 @@ export class SubOrganisationUnitsComponent implements OnInit {
   }
   periodStatus;
   changeOrder(field) {
+    console.log('here is field', field);
     if (this.selectedOrder.endsWith(field)) {
       if (this.selectedOrder.startsWith("-")) {
         this.selectedOrder = field;
@@ -416,7 +421,7 @@ export class SubOrganisationUnitsComponent implements OnInit {
     } else {
       this.selectedOrder = field;
     }
-  }
+  } 
 
   calculateCompletenessStatus() {
     var ouIds = [];
@@ -430,8 +435,9 @@ export class SubOrganisationUnitsComponent implements OnInit {
     let orgUnitMaxLevelUrl = "sqlViews/hhbUrZZTUC4/data.json";
 
     this.http.get(orgUnitMaxLevelUrl).subscribe(data => {
-      this.orgUnitMaxLevel = data.rows["0"]["0"];
+    this.orgUnitMaxLevel = data.rows["0"]["0"];
     });
+   // console.log("fetching orgunit children");
     const orgUnitChildren =
       this.organisationUnit && this.organisationUnit.children
         ? this.organisationUnit.children
@@ -449,49 +455,53 @@ export class SubOrganisationUnitsComponent implements OnInit {
       let startDate = year.concat("-", month, "-", "01");
       let apiUrl = "sqlViews/yYBVSmcfSTy/data.json?var=startdate:" + startDate;
       apiUrl += "&var=enddate:" + endDate + "&var=orgunit:" + child.id;
-      this.http.get(apiUrl).subscribe(responseData => {
-        let tot = responseData.rows[0][0];
-        let OrgUnitLevel ="sqlViews/au9MSVJOcI1/data.json?var=selOrgUnit:" + child.id;
-        this.http.get(OrgUnitLevel).subscribe(levelCount => {
-          let currentLevel = levelCount.rows[0][0];
-          let childUrls = 'organisationUnits/' + child.id +'.json?fields=id&includeDescendants=true&paging=false';
-          this.http.get(childUrls).subscribe( childCount => {
-            this.childCount =childCount.organisationUnits.length-1;
-            if (this.orgUnitMaxLevel === currentLevel) {
-              this.tempTotalWaterPoint = 1;
-            } else {
-              this.tempTotalWaterPoint = this.childCount;
-            }
-            this.Percantage = (tot / this.tempTotalWaterPoint) * 100;
-            if (this.Percantage === 0) {
-              child.completeness = -1;
-              child.status = "loaded";
-            } else {
-              child.completeness = parseFloat(this.Percantage);
-              child.status = "loaded";
-            }    
-          })
+        this.http.get(apiUrl).subscribe(responseData => {
           
+          let tot = responseData.rows[0][0];
+          let OrgUnitLevel ="sqlViews/au9MSVJOcI1/data.json?var=selOrgUnit:" + child.id;
+            this.http.get(OrgUnitLevel).subscribe(levelCount => {
+              let currentLevel = levelCount.rows[0][0];
+              let childUrls = 'organisationUnits/' + child.id +'.json?fields=id&includeDescendants=true&paging=false';
+              this.http.get(childUrls).subscribe( childCount => {
+                this.childCount =childCount.organisationUnits.length-1;
+                if (this.orgUnitMaxLevel === currentLevel) {
+                  this.tempTotalWaterPoint = 1;
+                } else {
+                  this.tempTotalWaterPoint = this.childCount;
+                }
+                this.Percantage = (tot / this.tempTotalWaterPoint) * 100;
+                if (this.Percantage === 0) {
+                  child.completeness = -1;
+                  child.status = "loaded";
+                } else {
+                  child.completeness = parseFloat(this.Percantage);
+                  child.status = "loaded";
+                }    
+              })
+             
+            });
+         
         });
-      });
     });
     this.organisationUnit.children.forEach((child: any) => {
       child.completeness = undefined;
       child.status = undefined;
     });
   }
-  ngOnInit() {
+  ngOnInit() {    
     this.globalFilter$.subscribe(globalFilter => {
       this.globalFilter = globalFilter;
-      if (globalFilter) {
+      if (globalFilter) {      
         if (
           this.id === globalFilter.ou.id &&
           this.periodStatus !== globalFilter.pe.id &&
           !this.loadPaging
         ) {
           this.periodStatus = globalFilter.pe.id;
-          this.calculateCompletenessStatus();
+        //  console.info("geting inside calulate completeness status");
+         // this.calculateCompletenessStatus();        
         } else {
+          
           this.level = undefined;
           this.init(globalFilter);
         }

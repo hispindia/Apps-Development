@@ -53,6 +53,8 @@ export class HttpClientService {
       const rootUrlPromise = useRootUrl ? this._getRootUrl() : this._getApiRootUrl();
 
       rootUrlPromise.subscribe((rootUrl: string) => {
+        console.log('http client service', data);
+
         this.httpClient.put(rootUrl + url, data).subscribe(
           (response: any) => {
             observer.next(response);

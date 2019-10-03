@@ -10,6 +10,5 @@ export class LoaderComponent implements OnInit {
   @Input() imgHeight: string;
   @Input() showInline: boolean;
   constructor() {}
-
   ngOnInit() {}
 }

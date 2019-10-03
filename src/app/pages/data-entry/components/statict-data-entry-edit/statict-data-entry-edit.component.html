@@ -132,13 +132,13 @@
                 >*</span
               >
             </th>
-            <td>
+            <td>             
               <app-input
                 [editing]="isEditable"
                 [attributeValue]="attributeValue"
                 [(objectRefference)]="organisationUnitObject"
-                (valueUpdate)="onValueUpdate($event)"
-              ></app-input>
+                (valueUpdate)=" ($event)"
+              ></app-input>            
               <div
                 *ngIf="
                   isSavingActionTriggered &&

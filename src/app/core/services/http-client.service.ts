@@ -23,7 +23,6 @@ export class HttpClientService {
     const rootUrlPromise = useRootUrl
       ? this._getRootUrl()
       : this._getApiRootUrl();
-
     return useExternalUrl
       ? this.httpClient
           .get(url)

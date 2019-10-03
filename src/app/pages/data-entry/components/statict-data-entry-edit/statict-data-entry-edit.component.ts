@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as _ from 'lodash';
 
-import { MaintenanceService, OrganisationUnitService } from '../../../../core';
+import { MaintenanceService, OrganisationUnitService, EventService } from '../../../../core';
 import {
   AttributeValuesModel,
   OrganisationUnitModel
@@ -33,11 +33,21 @@ export class StatictDataEntryEditComponent implements OnInit {
   isCodeGenerationActive: boolean;
   isCreationOfDistributtionFailed: boolean;
   isUniqueCodeMissing: boolean;
+  public dataValues: any;
+
+  // new api call 
+  public dataElement: any = [  
+    'Total Water Points',
+    'Technology',
+    'Village Population',
+  ]
+  public programId = 'lg2nRxyEtiH'; 
   constructor(
     private store: Store<AppState>,
     private organisationUnitService: OrganisationUnitService,
     private userService: UserService,
-    private maintenanceService: MaintenanceService
+    private maintenanceService: MaintenanceService,
+    private eventService: EventService
   ) {
     this.isEditable = true;
     this.isSaving = false;
@@ -48,9 +58,9 @@ export class StatictDataEntryEditComponent implements OnInit {
   }
   ngOnInit() {
     this.organisationUnitObject = this.getOganisationUnitObject();
+    console.log('here is new data',this.organisationUnitObject)
     this.organisationUnitObjectBackup = this.getOganisationUnitObject();
   }
-
   getOganisationUnitObject() {
     const organisationUnitObject = Object.assign({}, this.organisationUnit);
     delete organisationUnitObject.attributeValues;
@@ -386,6 +396,8 @@ export class StatictDataEntryEditComponent implements OnInit {
                 );
               })
             : [];
+            console.log('here is me123 ',attributeValue);
+
         const operationResult = eval(
           operationResultArray.join('' + rule.conditionSet.joinOperator + '')
         );
@@ -425,7 +437,7 @@ export class StatictDataEntryEditComponent implements OnInit {
     if (attributeObject) {
       const attributeValuesToUpdate = this.getAttributeValuesWithRuleActions(
         attributeObject.rules,
-        attributeValue
+        attributeValue,
       );
 
       if (attributeValuesToUpdate.length > 0) {
@@ -488,7 +500,6 @@ export class StatictDataEntryEditComponent implements OnInit {
                 attributeValue.attribute.id === orgUnitAttributeId
                   ? attributeValue.value
                   : orgUnitAttributeValue.value;
-
               return {
                 ...orgUnitAttributeValue,
                 value

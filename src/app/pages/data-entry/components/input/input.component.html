@@ -2,7 +2,7 @@
   <div *ngIf="!editing">
     <div *ngIf="valueType == 'TEXT'">
       {{ objectRefference[valueAttribute] }}
-      <!--<i class="fa fa-pencil" aria-hidden="true" (click)="editing = true"></i>-->
+    
     </div>
     <div *ngIf="attributeValue">
       <span *ngIf="attributeValue.attribute.valueType != 'DATE'">{{
