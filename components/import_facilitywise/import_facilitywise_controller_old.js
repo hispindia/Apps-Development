@@ -747,7 +747,7 @@ excelUpload.controller('ImportFacilitywiseController',
 
                                 }
                                 if (value1 == "") {
-                                    alert("For " + orgName + " organisation Delivery Point value is empty");
+                                    alert("For " + orgName + " organisation Delivery Point value is empty, Data not imported , please import again.");
                                     window.location.reload();
                                     break;
 
@@ -755,7 +755,7 @@ excelUpload.controller('ImportFacilitywiseController',
 
                                 if (value1 == "true") {
                                     if (value2 == "") {
-                                        alert("For " + orgName + " If Delivery point value is true then please select Level of Delivery point");
+                                        alert("For " + orgName + " If Delivery point value is true then please select Level of Delivery point and import again and import again");
                                         window.location.reload();
                                         break;
                                     }
@@ -855,7 +855,7 @@ excelUpload.controller('ImportFacilitywiseController',
                                 }
 
                                 if (value1 == "") {
-                                    alert("For " + orgName + " organisation Delivery Point value is empty");
+                                    alert("For " + orgName + " organisation Delivery Point value is empty, Data not imported , please import again.");
                                     window.location.reload();
                                     break;
 
@@ -863,7 +863,7 @@ excelUpload.controller('ImportFacilitywiseController',
 
                                 if (value1 == "true") {
                                     if (value2 == "") {
-                                        alert("For " + orgName + " If Delivery point value is true then please select Level of Delivery point");
+                                        alert("For " + orgName + " If Delivery point value is true then please select Level of Delivery point and import again");
                                         window.location.reload();
                                         break;
                                     }
@@ -959,12 +959,12 @@ excelUpload.controller('ImportFacilitywiseController',
                                     value3 = $scope.dp[0];
                                 }
                                 if (value3 == "") {
-                                    alert("For " + orgName + " organisation FRU value is empty");
+                                    alert("For " + orgName + " organisation FRU value is empty,please fill and import again");
                                     window.location.reload();
                                     break;
                                 }
                                 if (value1 == "") {
-                                    alert("For " + orgName + " organisation Delivery Point value is empty");
+                                    alert("For " + orgName + " organisation Delivery Point value is empty, Data not imported , please import again.");
                                     window.location.reload();
                                     break;
 
@@ -972,7 +972,7 @@ excelUpload.controller('ImportFacilitywiseController',
 
                                 if (value1 == "true") {
                                     if (value2 == "") {
-                                        alert("For " + orgName + " If Delivery point value is true then please select Level of Delivery point");
+                                        alert("For " + orgName + " If Delivery point value is true then please select Level of Delivery point and import again");
                                         window.location.reload();
                                         break;
                                     }
@@ -1069,7 +1069,7 @@ excelUpload.controller('ImportFacilitywiseController',
                                 }
 
                                 if (value1 == "") {
-                                    alert("For " + orgName + " organisation Delivery Point value is empty");
+                                    alert("For " + orgName + " organisation Delivery Point value is empty, Data not imported , please import again.");
                                     window.location.reload();
                                     break;
 
@@ -1077,7 +1077,7 @@ excelUpload.controller('ImportFacilitywiseController',
 
                                 if (value1 == "true") {
                                     if (value2 == "") {
-                                        alert("For " + orgName + " If Delivery point value is true then please select Level of Delivery point");
+                                        alert("For " + orgName + " If Delivery point value is true then please select Level of Delivery point and import again");
                                         window.location.reload();
                                         break;
                                     }

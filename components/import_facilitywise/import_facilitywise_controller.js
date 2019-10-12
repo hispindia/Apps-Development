@@ -613,13 +613,13 @@ excelUpload.controller('ImportFacilitywiseController',
 
                                 }
                                 if (value1 == "") {
-                                    errorMsg = "For " + orgName + " organisation Delivery Point value is empty";
+                                    errorMsg = "For " + orgName + " organisation Delivery Point value is empty, Data not imported , please import again.";
                                     break;
                                 }
 
                                 if (value1 == "true") {
                                     if (value2 == "") {
-                                        errorMsg = "For " + orgName + " If Delivery point value is true then please select Level of Delivery point";   
+                                        errorMsg = "For " + orgName + " If Delivery point value is true then please select Level of Delivery point and import again";
                                         break;
                                     }
                                     else {
@@ -682,13 +682,13 @@ excelUpload.controller('ImportFacilitywiseController',
                                 }
 
                                 if (value1 == "") {
-                                    errorMsg = "For " + orgName + " organisation Delivery Point value is empty"
+                                    errorMsg = "For " + orgName + " organisation Delivery Point value is empty, Data not imported , please import again."
                                     break;
                                 }
 
                                 if (value1 == "true") {
                                     if (value2 == "") {
-                                        errorMsg = "For " + orgName + " If Delivery point value is true then please select Level of Delivery point";
+                                        errorMsg = "For " + orgName + " If Delivery point value is true then please select Level of Delivery point and import again";
                                         break;
                                     }
                                     else {
@@ -748,17 +748,17 @@ excelUpload.controller('ImportFacilitywiseController',
                                     value3 = $scope.dp[0];
                                 }
                                 if (value3 == "") {
-                                    errorMsg = "For " + orgName + " organisation FRU value is empty";
+                                    errorMsg = "For " + orgName + " organisation FRU value is empty,please fill and import again";
                                     break;
                                 }
                                 if (value1 == "") {
-                                    errorMsg = "For " + orgName + " organisation Delivery Point value is empty";
+                                    errorMsg = "For " + orgName + " organisation Delivery Point value is empty, Data not imported , please import again.";
                                     break;
                                 }
 
                                 if (value1 == "true") {
                                     if (value2 == "") {
-                                        errorMsg = "For " + orgName + " If Delivery point value is true then please select Level of Delivery point";
+                                        errorMsg = "For " + orgName + " If Delivery point value is true then please select Level of Delivery point and import again";
                                         break;
                                     }
 
@@ -815,13 +815,13 @@ excelUpload.controller('ImportFacilitywiseController',
                                 }
 
                                 if (value1 == "") {
-                                    errorMsg = "For " + orgName + " organisation Delivery Point value is empty";                        
+                                    errorMsg = "For " + orgName + " organisation Delivery Point value is empty, Data not imported , please import again.";                        
                                     break;
                                 }
 
                                 if (value1 == "true") {
                                     if (value2 == "") {
-                                        errorMsg = "For " + orgName + " If Delivery point value is true then please select Level of Delivery point";
+                                        errorMsg = "For " + orgName + " If Delivery point value is true then please select Level of Delivery point and import again";
                                         break;
                                     }
                                     else {
