@@ -10,6 +10,7 @@ export interface EventState {
   notification: any;
   loading: boolean;
   isSubmiting: boolean;
+ 
 }
 
 export const initialState: EventState = {
@@ -21,6 +22,7 @@ export const initialState: EventState = {
   loaded: false,
   loading: false,
   isSubmiting: false
+ 
 };
 
 export function reducer(state: EventState = initialState, action: EventAction): EventState {

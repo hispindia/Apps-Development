@@ -262,6 +262,7 @@ export class StatictDataEntryEditComponent implements OnInit {
           .join('-_bclose_-');
         this.userService.getUser().subscribe(
           (user: any) => {
+            console.log('here is user', user);
             this.organisationUnitService
               .addOrUpdateOranisationUnit(
                 name,
@@ -274,6 +275,7 @@ export class StatictDataEntryEditComponent implements OnInit {
               )
               .subscribe(
                 (response: any) => {
+                  console.log('here is resasssssss', response);
                   const { rows } = response;
                   const organisationUnitId = rows[0][0];
                   if (organisationUnitId.length !== 11) {

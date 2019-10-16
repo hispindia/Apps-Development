@@ -64,7 +64,6 @@ export class StatictDataEntryViewComponent implements OnInit {
     }
     if (this.organisationUnit) {
       this.organisationUnitObject = this.getOganisationUnitObject();
-      console.log('here is me at ng oninit', this.organisationUnitObject);
       let attributeValues = this.organisationUnitObject.attributeValues;
       //  attributeValues.forEach(element => {
       //   this.eventService.loadedData().subscribe( res => {
@@ -188,10 +187,9 @@ export class StatictDataEntryViewComponent implements OnInit {
       );
     }
   }
-
   editDistributionPoint() {
     this.store.dispatch(new ResetMessageObjectOnOrganisationUnitAction());
-    this.isEditable = true;
+    this.isEditable = true;    
   }
 
   onAddOrUpdateDitributionPoint(event) {
@@ -209,7 +207,6 @@ export class StatictDataEntryViewComponent implements OnInit {
 
   getOganisationUnitObject() {
     const { attributeValues } = this.organisationUnit;
-    console.log('here is attribute values', attributeValues)
     const organisationUnitObject = Object.assign({}, this.organisationUnit);
     delete organisationUnitObject.attributeValues;
     const newAttributeValues = [];
@@ -222,7 +219,6 @@ export class StatictDataEntryViewComponent implements OnInit {
         }
       );
       if (matchAttributes) {
-        console.log('here is data' ,matchAttributes)
         attributeObject.value = matchAttributes.value;
       }
       newAttributeValues.push(attributeObject);
@@ -245,7 +241,6 @@ export class StatictDataEntryViewComponent implements OnInit {
         });
       }); 
     organisationUnitObject['attributeValues'] = newAttributeValues;
-    console.log('here is me at end arr', organisationUnitObject)
     return organisationUnitObject;
   }
 }

@@ -30,7 +30,6 @@ export class ResetMessageObjectOnOrganisationUnitAction implements Action {
   readonly type =
     OrganisationUnitActions.RESET_MESSAGE_OBJECT_ON_ORGANISATION_UNIT;
 }
-
 export class LoadPopulationDataAction implements Action {
   readonly type = OrganisationUnitActions.LOAD_POPULATION_DATA;
   constructor(public orgUnit: string, public period: string) {}
@@ -47,4 +46,5 @@ export type OrganisationUnitActionsTypes =
   | UpdateMessageObjectOnOrganisationUnitAction
   | ResetMessageObjectOnOrganisationUnitAction
   | LoadPopulationDataAction
-  | LoadPopulationDataSuccessAction;
+  | LoadPopulationDataSuccessAction
+  |ResetMessageObjectOnOrganisationUnitAction;

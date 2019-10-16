@@ -42,6 +42,7 @@ export class EventContainerComponent implements OnInit {
     this.isEventLoading$ = this.store.select(getEventLoading);
     this.isEventSubmitting$ = this.store.select(getEventIsSubmitting);
     this.currentUser$ = this.store.select(getCurrentUser);
+    
   }
 
   ngOnInit() {

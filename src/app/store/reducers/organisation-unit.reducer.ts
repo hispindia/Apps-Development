@@ -63,6 +63,7 @@ export function reducer(
         loaded: false,
         loading: false
       };
+      
     case OrganisationUnitActions.LOAD_POPULATION_DATA_SUCCESS: {
       return {
         ...state,

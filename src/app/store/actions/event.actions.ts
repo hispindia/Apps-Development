@@ -6,6 +6,7 @@ export enum EventActionTypes {
   LOAD_SUCCESS = '[Event] Load Event success',
   LOAD_FAIL = '[Event] Load Event fail',
   UPDATE_EVENT_ATTRIBUTES = '[Event] Update DataElement value event',
+  UPDATE_EVENT_ATTRIBUTES1 = '[Event] Update DataElement value event',
   UPDATE_EVENT = '[Event] Update Event',
   CREATE_EVENT = '[Event] Create Event',
   CREATE_EVENT_SUCCESS = '[Event] Create Event Success',
@@ -43,7 +44,10 @@ export class UpdateEventDataElementAction implements Action {
   readonly type = EventActionTypes.UPDATE_EVENT_ATTRIBUTES;
   constructor(public payload: any) {}
 }
-
+export class UpdateEventDataElementAction1 implements Action {
+  readonly type = EventActionTypes.UPDATE_EVENT_ATTRIBUTES1;
+  constructor(public payload: any) {}
+}
 export class UpdateEventSuccessAction implements Action {
   readonly type = EventActionTypes.UPDATE_EVENT_SUCCESS;
   constructor(public payload: any) {}
@@ -89,4 +93,5 @@ export type EventAction =
   | CreateEventAction
   | UpdateEventAction
   | UpdateEventDataElementAction
+  | UpdateEventDataElementAction1
   | NotifyEventCompleteAction;

@@ -8,8 +8,7 @@
   [showInline]="showErrorInline"
   *ngIf="isEventLoading && (currentEvent || isNewDistributionPointCreated)"
 ></app-loader>
-
-<div class="eventForm" *ngIf="currentEvent || isNewDistributionPointCreated">
+<div class="eventForm" >
   <form class="col-12" novalidate (ngSubmit)="toggleComplete(form.value)" [formGroup]="form">
     <div *ngFor="let prop of objectProps">
       <label [attr.for]="prop">{{ prop.label }}</label>

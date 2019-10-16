@@ -432,7 +432,7 @@ export class SubOrganisationUnitsComponent implements OnInit {
       return;
     }
    
-    let orgUnitMaxLevelUrl = "sqlViews/hhbUrZZTUC4/data.json";
+    let orgUnitMaxLevelUrl = "sqlViews/xYnvMQEe8xz/data.json";
 
     this.http.get(orgUnitMaxLevelUrl).subscribe(data => {
     this.orgUnitMaxLevel = data.rows["0"]["0"];
@@ -453,12 +453,12 @@ export class SubOrganisationUnitsComponent implements OnInit {
       let LastDay = new Date(year, month, 0).getDate();
       let endDate = year.concat("-", month, "-", LastDay);
       let startDate = year.concat("-", month, "-", "01");
-      let apiUrl = "sqlViews/yYBVSmcfSTy/data.json?var=startdate:" + startDate;
+      let apiUrl = "sqlViews/nA1ysPd8osA/data.json?var=startdate:" + startDate;
       apiUrl += "&var=enddate:" + endDate + "&var=orgunit:" + child.id;
         this.http.get(apiUrl).subscribe(responseData => {
           
           let tot = responseData.rows[0][0];
-          let OrgUnitLevel ="sqlViews/au9MSVJOcI1/data.json?var=selOrgUnit:" + child.id;
+          let OrgUnitLevel ="sqlViews/KncpFVmybMA/data.json?var=selOrgUnit:" + child.id;
             this.http.get(OrgUnitLevel).subscribe(levelCount => {
               let currentLevel = levelCount.rows[0][0];
               let childUrls = 'organisationUnits/' + child.id +'.json?fields=id&includeDescendants=true&paging=false';

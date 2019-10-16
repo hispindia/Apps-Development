@@ -6,6 +6,7 @@ import { AppState } from '../../../../store';
 import { interval } from 'rxjs/observable/interval';
 import swal from 'sweetalert';
 import { arrayify } from 'tslint/lib/utils';
+import { EventService, AttributesService } from '../../../../core';
 
 const HIDE_FIELD = 'HIDEFIELD';
 const SHOW_WARNING = 'SHOWWARNING';
@@ -39,6 +40,7 @@ export class EventCaptureComponent implements OnChanges, OnInit {
   objectProps;
   filteredObjectProps;
   today;
+  public editEvent:any;
   savingMessage: string;
   imgHeight: string;
   selectedField;
@@ -49,17 +51,17 @@ export class EventCaptureComponent implements OnChanges, OnInit {
   };
   errorInSubmiting = false;
   showErrorInline = true;
-  constructor(private store: Store<AppState>) {
+  constructor(private store: Store<AppState>, private attributeService: AttributesService) {
     this.today = new Date();
     this.hiddenFields = [];
     this.changedField = {};
+    
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this.imgHeight = '60px';
     this.savingMessage = 'Saving current Event(dynamic data)...';
     const { currentEvent, eventMessageObject } = changes;
-
     if (currentEvent) {
       this.currentEvent = currentEvent.currentValue;
       this.drawEventsForm();
@@ -71,15 +73,12 @@ export class EventCaptureComponent implements OnChanges, OnInit {
         .subscribe(() => {
           this._eventMessageObject = null;
         });
-    }
+    }    
   }
-
   ngOnInit() {
-  
     this.drawEventsForm();
     this.selectedField = null;
   }
-
   customValueSelected(value, key) {
     this.changedField = { [key]: true };
     this.form.patchValue({ [key]: value });
@@ -100,7 +99,6 @@ export class EventCaptureComponent implements OnChanges, OnInit {
         return acc;
       }, {});
     }
-
     const objectProps = Object.keys(this.dataObject || {}).map(prop => {
       return Object.assign({}, { key: prop }, this.dataObject[prop]);
     });
@@ -312,14 +310,14 @@ export class EventCaptureComponent implements OnChanges, OnInit {
         }
       }
     }
-    const filteredPropsArray = Object.keys(filteredPropsEntities).map(key => filteredPropsEntities[key]);
+   
+     const filteredPropsArray = Object.keys(filteredPropsEntities).map(key => filteredPropsEntities[key]);
     this.objectProps = filteredPropsArray.filter(filteredPropsEntity => filteredPropsEntity.show);
-    // console.log('here is props', this.objectProps);
+    this.editEvent = this.objectProps;
     this.hiddenFields = filteredPropsArray
       .filter(filteredPropsEntity => !filteredPropsEntity.show)
       .map(({ key }) => key);
   }
-
   formatDataValuesFromForm(formData) {
     return Object.keys(formData).reduce((accumulator, dataElement) => {
       const value = formData[dataElement];

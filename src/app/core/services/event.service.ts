@@ -35,4 +35,8 @@ export class EventService {
     }
     return this.updateEvent(eventID, payload);
   }
-}
+  editing(name): Observable<any>{
+  console.log('here is event at edit');
+    return name;
+  }
+ }

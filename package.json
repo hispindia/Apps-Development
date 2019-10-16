@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --aot",
-    "build": "ng build --prod --aot --output-hashing all --named-chunks false --build-optimizer --vendor-chunk  && cp .\\dist\\ C:\\DHIS2_HOME\\files\\apps\\dist",
+    "build": "ng build --prod --aot --output-hashing all --named-chunks false --build-optimizer --vendor-chunk",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
