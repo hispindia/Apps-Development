@@ -442,7 +442,7 @@ DataStatusApp.controller('DataStatusDataSetWiseController',
 
                 var url = $scope.basicUrl + $scope.dataSummarySV + "/data.json?";
 
-                url += "var=dataSetUid:" + selDataSetUid[j] + ",orgUnitUid:" + selOrgUnit + ",startDate:" + selStartPeriod + ",endDate:" + selEndPeriod;
+                url += "var=dataSetUid:" + selDataSetUid[j] + ",orgUnitUid:" + selOrgUnit + ",startDate:" + selStartPeriod + ",endDate:" + selEndPeriod + "&skipPaging=true";
 
                 $.get(url, function (data) {
 
@@ -463,11 +463,6 @@ DataStatusApp.controller('DataStatusDataSetWiseController',
                         htmlString += "<tr><td style='padding:0 15px'>" + summaryData[5] + "</td>";
 
                         $scope.allPeriods.forEach(function (pr) {
-
-                            currentStatus = 0;
-                            statusText = "";
-                            currentColor = "#FFCCCC";//light purple
-                            currentText = "Not Entered";
 
                             currentStatus = 0;
                             currentColor = "#FFCCCC";//pink
@@ -671,7 +666,7 @@ DataStatusApp.controller('DataStatusDataSetWiseController',
 
             var url = $scope.basicUrl + $scope.userDetailsSV + "/data.json?";
 
-            url += "var=dataSetUid:" + selDataSetUid + ",orgUnitUid:" + selOrgUnit + ",startDate:" + selStartPeriod + ",endDate:" + selEndPeriod;;
+            url += "var=dataSetUid:" + selDataSetUid + ",orgUnitUid:" + selOrgUnit + ",startDate:" + selStartPeriod + ",endDate:" + selEndPeriod + "&skipPaging=true";
 
             var url1 = "../../dataSets/" + selDataSetUid + ".json?fields=periodType";
             $.get(url1, function (dp) {
@@ -850,7 +845,7 @@ DataStatusApp.controller('DataStatusDataSetWiseController',
                         var selStartPeriod = $scope.currentSelection.startPeriodYear + "" + $scope.currentSelection.startPeriodMonth + "01";
                         var selEndPeriod = $scope.currentSelection.endPeriodYear + "" + $scope.currentSelection.endPeriodMonth + "01";
 
-                        $.get("../../sqlViews/" + $scope.periodsSV + "/data.json?var=startDate:" + selStartPeriod + ",endDate:" + selEndPeriod + ",dataSetUidForLevel:Ri1mp3YgF3s", function (pr) {
+                        $.get("../../sqlViews/" + $scope.periodsSV + "/data.json?var=startDate:" + selStartPeriod + ",endDate:" + selEndPeriod + ",dataSetUidForLevel:Ri1mp3YgF3s&skipPaging=true", function (pr) {
                             $scope.allPeriods = pr.listGrid.rows;
 
                             $("#btn1").fadeIn();

@@ -308,7 +308,7 @@ DataStatusApp.controller('DataStatusController',
 					
 				var url = $scope.basicUrl + $scope.dataSummarySV + "/data.json?";
 		
-            url+= "var=compulsoryDECount:" + $scope.compulsoryDECount + ",dataSetUid:" + selDataSetUid + ",orgUnitUid:" + selOrgUnit + ",startDate:" + selStartPeriod + ",endDate:" + selEndPeriod + ",orgUnitUids:" +$scope.organisationunitid_1[0] ;
+            url+= "var=compulsoryDECount:" + $scope.compulsoryDECount + ",dataSetUid:" + selDataSetUid + ",orgUnitUid:" + selOrgUnit + ",startDate:" + selStartPeriod + ",endDate:" + selEndPeriod + ",orgUnitUids:" +$scope.organisationunitid_1[0] + "&skipPaging=true"; 
 			
 			$.get(url, function(data){
 				var summaryData = data.listGrid.rows;
@@ -523,7 +523,7 @@ DataStatusApp.controller('DataStatusController',
 				$scope.OrgUnit_uid	=$scope.filteredOrgUnitList.toString();
 				var url = $scope.basicUrl + $scope.dataStatusSV + "/data.json?";
 				
-			url+= "var=compulsoryDECount:" + $scope.compulsoryDECount + ",dataSetUid:" + selDataSetUid + ",orgUnitUids:" +$scope.organisationunitid_1[0] + ",startDate:" + selStartPeriod + ",endDate:" + selEndPeriod;	;	
+			url+= "var=compulsoryDECount:" + $scope.compulsoryDECount + ",dataSetUid:" + selDataSetUid + ",orgUnitUids:" +$scope.organisationunitid_1[0] + ",startDate:" + selStartPeriod + ",endDate:" + selEndPeriod + "&skipPaging=true";	
 						
 			$.get(url, function(data){
 				var summaryData = data.listGrid.rows;
@@ -701,7 +701,7 @@ DataStatusApp.controller('DataStatusController',
 			
 				var url = $scope.basicUrl + $scope.userDetailsSV + "/data.json?";
 					
-			url+= "var=dataSetUid:" + selDataSetUid + ",orgUnitUid:" + selOrgUnit  + ",startDate:" + selStartPeriod + ",endDate:" + selEndPeriod;	;	
+			url+= "var=dataSetUid:" + selDataSetUid + ",orgUnitUid:" + selOrgUnit  + ",startDate:" + selStartPeriod + ",endDate:" + selEndPeriod + "&skipPaging=true";
 
 			var url1 = "../../dataSets/"+ selDataSetUid +".json?fields=periodType";			
 			$.get(url1 , function(dp)
