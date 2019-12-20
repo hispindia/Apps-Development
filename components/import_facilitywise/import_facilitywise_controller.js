@@ -580,12 +580,12 @@ excelUpload.controller('ImportFacilitywiseController',
                         else if (deType === "DATE") {
                             var temp = $scope.getImportDataByAddress(cellAddress, orgUnit);
                             
-                            var dd = temp.substring(0, 2);
-                            var mm = temp.substring(2, 4);
-                            var yy = temp.substring(4, 8);
+                            var dd = temp.split("/")[0];
+                            var mm = temp.split("/")[1];
+                            var yyyy = temp.split("/")[2];
 
-                            var date = yy + "-" + mm + "-" + dd;
-                            dataValue.value = date;
+                            var dhis2DateFormat = yyyy + "-" + mm + "-" + dd;
+                            dataValue.value = dhis2DateFormat;
                         }
                     //});
 
@@ -647,8 +647,20 @@ excelUpload.controller('ImportFacilitywiseController',
                                 dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
                                 dataValue.orgUnit = orgUnit.id;
 
-                                dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
-                           
+                                if (deType === "DATE") {
+                                    var temp = $scope.getImportDataByAddress(cellAddress, orgUnit);
+
+                                    var dd = temp.split("/")[0];
+                                    var mm = temp.split("/")[1];
+                                    var yyyy = temp.split("/")[2];
+
+                                    var dhis2DateFormat = yyyy + "-" + mm + "-" + dd;
+                                    dataValue.value = dhis2DateFormat;
+                                }
+
+                                else{
+                                    dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
+                                }
 
                                 if (dataValue.orgUnit != "" && dataValue.value != "") {
                                     dataValues.push(dataValue);
@@ -715,7 +727,21 @@ excelUpload.controller('ImportFacilitywiseController',
                                 dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
                                 dataValue.orgUnit = orgUnit.id;
 
-                                dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
+                                //dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
+                                if (deType === "DATE") {
+                                    var temp = $scope.getImportDataByAddress(cellAddress, orgUnit);
+
+                                    var dd = temp.split("/")[0];
+                                    var mm = temp.split("/")[1];
+                                    var yyyy = temp.split("/")[2];
+
+                                    var dhis2DateFormat = yyyy + "-" + mm + "-" + dd;
+                                    dataValue.value = dhis2DateFormat;
+                                }
+
+                                else{
+                                    dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
+                                }
                                
                                 if (dataValue.orgUnit != "" && dataValue.value != "") {
                                     dataValues.push(dataValue);
@@ -782,7 +808,21 @@ excelUpload.controller('ImportFacilitywiseController',
                                 dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
                                 dataValue.orgUnit = orgUnit.id;
 
-                                dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
+                                //dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
+                                if (deType === "DATE") {
+                                    var temp = $scope.getImportDataByAddress(cellAddress, orgUnit);
+
+                                    var dd = temp.split("/")[0];
+                                    var mm = temp.split("/")[1];
+                                    var yyyy = temp.split("/")[2];
+
+                                    var dhis2DateFormat = yyyy + "-" + mm + "-" + dd;
+                                    dataValue.value = dhis2DateFormat;
+                                }
+
+                                else{
+                                    dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
+                                }
                               
 
                                 if (dataValue.orgUnit != "" && dataValue.value != "") {
@@ -848,8 +888,21 @@ excelUpload.controller('ImportFacilitywiseController',
                                 dataValue.categoryOptionCombo = selectedTemp.DEMappings[x].metadata.split("-")[1];
                                 dataValue.orgUnit = orgUnit.id;
 
-                                dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
-                        
+                                //dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
+                                if (deType === "DATE") {
+                                    var temp = $scope.getImportDataByAddress(cellAddress, orgUnit);
+
+                                    var dd = temp.split("/")[0];
+                                    var mm = temp.split("/")[1];
+                                    var yyyy = temp.split("/")[2];
+
+                                    var dhis2DateFormat = yyyy + "-" + mm + "-" + dd;
+                                    dataValue.value = dhis2DateFormat;
+                                }
+
+                                else{
+                                    dataValue.value = $scope.getImportDataByAddress(cellAddress, orgUnit);
+                                }
 
                                 if (dataValue.orgUnit != "" && dataValue.value != "") {
                                     dataValues.push(dataValue);
