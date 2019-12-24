@@ -34,6 +34,7 @@ excelUpload.controller('ImportFacilitywiseController',
 
         var dataElementValueTypeMap = [];
         var dataElementNameMap = [];
+        var dataSetSourceList = [];
 
         //loadDataElements();
         var cdsr = { completeDataSetRegistrations: [] };
@@ -116,17 +117,32 @@ excelUpload.controller('ImportFacilitywiseController',
 
                     //org unit group
                     $("#templateProgress").html("Fetching organisation unit groups...");
-                    $.get('../../../api/organisationUnitGroups.json?paging=false', function (ou) {
-                        console.log(ou);
-                        $scope.orgUnitGroups = ou.organisationUnitGroups;
+                    $.get('../../../api/organisationUnitGroups.json?fields=id,displayName,attributeValues[value,attribute[id,name,code]]&paging=false', function (orgGroup) {
+                        console.log(orgGroup);
+                        var orgUnitGrps =[];
+                        for(var j=0;j<orgGroup.organisationUnitGroups.length;j++){
+                            var val=orgGroup.organisationUnitGroups[j].attributeValues.length;
+                            for (var i=0;i<val;i++)
+                            {  var val1=orgGroup.organisationUnitGroups[j].attributeValues[i].attribute.code;
+                                if( orgGroup.organisationUnitGroups[j].attributeValues.length!=0)
+                                {
+                                    if (orgGroup.organisationUnitGroups[j].attributeValues[i].attribute.code == 'Excel_Import_OrgUnitGrp_Filter' && orgGroup.organisationUnitGroups[j].attributeValues[i].value == "true")
+                                    {
+                                        orgUnitGrps.push(orgGroup.organisationUnitGroups[j]);
+                                    }
+                                }
+                            }
+                        }
 
+                        //$scope.orgUnitGroups = orgGroup.organisationUnitGroups;
+                        $scope.orgUnitGroups = orgUnitGrps;
                        
                         //datasets whith attributevalues="Excel_Import_DataSet_Filter"
                          $("#templateProgress").html("Fetching all the data sets...");
                          var datets =[];
 			$.get('../../../api/dataSets.json?fields=id,name,attributeValues[value,attribute[id,name,code]]&paging=false', function(ds){
-				 for(var j=0;j<ds.dataSets.length;j++)
-                           {var val=ds.dataSets[j].attributeValues.length;
+				 for(var j=0;j<ds.dataSets.length;j++){
+                     var val=ds.dataSets[j].attributeValues.length;
                                 for (var i=0;i<val;i++)
 								{  var val1=ds.dataSets[j].attributeValues[i].attribute.code;
 									if( ds.dataSets[j].attributeValues.length!=0)
@@ -200,9 +216,13 @@ excelUpload.controller('ImportFacilitywiseController',
         $scope.generatePeriods = function () {
 
             if ($("#imDataSetId").val() != "") {
-                var url = "../../../api/dataSets/" + $("#imDataSetId").val() + ".json?fields=periodType";
+                var url = "../../../api/dataSets/" + $("#imDataSetId").val() + ".json?fields=periodType,organisationUnits[id,name]&paging=false";
                 $.get(url, function (d) {
+                    $scope.dataSetOrganisationUnits = d.organisationUnits;
 
+                    for (var i = 0; i < $scope.dataSetOrganisationUnits.length; i++) {
+                        dataSetSourceList.push($scope.dataSetOrganisationUnits[i].id);
+                    }
                     //printing periods ------------------
                     var periodType = d.periodType;
                     var today = new Date();
@@ -270,23 +290,28 @@ excelUpload.controller('ImportFacilitywiseController',
                 if (ous.organisationUnits.length) {
                     var htmlString = '<tr><td colspan="2" align="center"> Browse Files</td></tr>';
                     $.each(ous.organisationUnits, function (i, ou) {
+
+                        if( dataSetSourceList.indexOf( ou.id ) !== -1 ){
+                            var importID = ou.id;
+                            htmlString += '<tr> <td>' + ou.name + '</td> <td align="right"><input class="" style="width:75px;font-size:12px" id="' + ou.id + '" type="file" accept=".xls,.xlsx"/></td> </tr>';
+
+                        }
                         //var importID = "orgUnit-"+i+"-file" ;
-                        var importID = ou.id;
-                        htmlString += '<tr> <td>' + ou.name + '</td> <td align="right"><input class="" style="width:75px;font-size:12px" id="' + ou.id + '" type="file" accept=".xls,.xlsx"/></td> </tr>';
                     });
                     //						console.log("String : " + htmlString);
                     $("#confirmedUploadsContent").html(htmlString);
                     $("#confirmedUploadsDiv").attr("style", "width:300px;display:inline-block;float:right;max-height:500px;overflow-y:auto;padding:30px 10px 30px 10px");
                     $.each(ous.organisationUnits, function (i, ou) {
-                       
-                        //console.log("doneee");
-                        var elementID = ou.id;
-                        //console.log("elementID : " + elementID);
-                        var fileID = document.getElementById(elementID);
-                        fileID.addEventListener('change', function (e) {
-                            handleInputFile(e, ou);
-                            $("#loader").fadeOut();
-                        }, false);
+                        if( dataSetSourceList.indexOf( ou.id ) !== -1 ) {
+                            //console.log("doneee");
+                            var elementID = ou.id;
+                            //console.log("elementID : " + elementID);
+                            var fileID = document.getElementById(elementID);
+                            fileID.addEventListener('change', function (e) {
+                                handleInputFile(e, ou);
+                                $("#loader").fadeOut();
+                            }, false);
+                        }
                     });
                 } else {
                     var htmlString = '<tr><td colspan="2" align="center"> No OrgUnits found</td></tr>';
