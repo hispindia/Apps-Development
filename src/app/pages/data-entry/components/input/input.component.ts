@@ -74,6 +74,7 @@ public subVillageName:any;
     dataObject[this.valueAttribute] = this.objectRefference[
       this.valueAttribute
     ];
+    console.log("here is input comp", dataObject, this.valueAttribute, dataObject[this.valueAttribute]);
     this.http
       .put(
         'organisationUnits/' +

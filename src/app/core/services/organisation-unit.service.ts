@@ -77,6 +77,7 @@ export class OrganisationUnitService {
     code: string,
     coordinates: any
   ): Observable<any> {
+    console.log("here is  orgunit",name, userId, attributesString, distributionPointId, parentId, code, coordinates);
     code = code.split('.').join('dot');
     coordinates = coordinates
       .split('.')
@@ -84,6 +85,7 @@ export class OrganisationUnitService {
       .replace('[', '')
       .replace(']', '')
       .replace(',', 'comma');
+      
     let apiUrl = 'sqlViews/FRUcnTzKfzm/data.json?var=name:' + name;
     apiUrl += '&var=parent:' + parentId + '&var=userid:' + userId;
     apiUrl += '&var=attributes:' + attributesString;

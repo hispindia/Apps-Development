@@ -32,7 +32,6 @@ export class IndexDbService {
         const transaction = db.transaction(schema.name, 'readwrite');
         const store = transaction.objectStore(schema.name);
         store.put(data);
-
         transaction.oncomplete = () => {
           observer.next(data);
           db.close();

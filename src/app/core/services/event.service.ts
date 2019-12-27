@@ -18,25 +18,29 @@ export class EventService {
     return this.dataFound;
   }
   updateEventDataElement(eventID: string, dataElementID: string, payload: any): Observable<any> {
+    console.log('here is event at updated events at service', eventID, dataElementID, payload);
     return this.httpClient.put(`events/${eventID}/${dataElementID}`, payload);
   }
   updateEvent(eventID: string, payload: any): Observable<any> {
+    console.log('here is event at updated event', eventID, payload);
     return this.httpClient.put(`events/${eventID}`, payload);
   }
   deleteEvent(eventID: string): Observable<any> {
     return this.httpClient.delete(`events/${eventID}`);
   }
   createEvent(payload: any): Observable<any> {
+    console.log('here is event at created event', payload);
     return this.httpClient.post(`events`, payload);
   }
   createOrUpdateEVentFromAttributes(isNewEvent: boolean, payload: any, eventID?: string) {
     if (isNewEvent) {
+      console.log('here is event at new Event', isNewEvent, payload);
       return this.createEvent(payload);
     }
     return this.updateEvent(eventID, payload);
   }
   editing(name): Observable<any>{
-  console.log('here is event at edit');
+  console.log('here is event at edit', name);
     return name;
   }
  }

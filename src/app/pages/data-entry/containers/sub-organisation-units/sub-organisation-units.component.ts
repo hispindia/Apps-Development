@@ -7,13 +7,15 @@ import { UserService } from "../../providers/user.service";
 import { HttpClientService } from "../../../../core/services/http-client.service";
 import { GlobalFilter } from "../../../../core/models/global-filter.model";
 import { getCurrentGlobalFilter } from "../../../../store/selectors/global-filter.selectors";
-import { AppState } from "../../../../store";
+import { AppState, UpdateEventDataElementAction } from "../../../../store";
 import { Store } from "@ngrx/store";
 import { OrgUnitService } from "../../../../shared/modules/org-unit-filter/org-unit.service";
 import { GlobalFilterUpdateAction } from "../../../../store/actions/global-filter.actions";
 import { getPopulationDataForCurrentOrgUnit } from "../../../../store/selectors/";
 import { Compiler } from '@angular/core';
 import { from } from 'rxjs';
+import { element } from 'protractor';
+import { EventService } from "../../../../core/services/event.service";
 
 declare var $: any;
 declare var document: any;
@@ -28,6 +30,14 @@ export class SubOrganisationUnitsComponent implements OnInit {
   public Percantage: any;
   public childCount: any;
   public children: any;
+  public sDate: any;
+  public eDate: any;
+  public childID:  any;
+  public orgUnit: any;
+  public dataElement: any;
+  public attrVal = [];
+  public dataVal = [];
+  public eventDataValueMap:any =[];
   loading = true;
   loadingError;
   id;
@@ -71,7 +81,8 @@ export class SubOrganisationUnitsComponent implements OnInit {
     private changeService: ChangeService,
     private userService: UserService,
     private orgUnitService: OrgUnitService,
-    private compiler: Compiler
+    private compiler: Compiler,
+    private  eventService:EventService
   ) {
     this.globalFilter$ = store.select(getCurrentGlobalFilter);
     this.population$ = store.select(getPopulationDataForCurrentOrgUnit);
@@ -409,9 +420,8 @@ export class SubOrganisationUnitsComponent implements OnInit {
     );
     // }
   }
-  periodStatus;
+  public periodStatus;
   changeOrder(field) {
-    console.log('here is field', field);
     if (this.selectedOrder.endsWith(field)) {
       if (this.selectedOrder.startsWith("-")) {
         this.selectedOrder = field;
@@ -432,12 +442,12 @@ export class SubOrganisationUnitsComponent implements OnInit {
       return;
     }
    
-    let orgUnitMaxLevelUrl = "sqlViews/xYnvMQEe8xz/data.json";
+   // let orgUnitMaxLevelUrl = "sqlViews/zIbgcUxumM9/data.json"; // for local
+    let orgUnitMaxLevelUrl = "sqlViews/xYnvMQEe8xz/data.json"; // for instance 
 
     this.http.get(orgUnitMaxLevelUrl).subscribe(data => {
     this.orgUnitMaxLevel = data.rows["0"]["0"];
     });
-   // console.log("fetching orgunit children");
     const orgUnitChildren =
       this.organisationUnit && this.organisationUnit.children
         ? this.organisationUnit.children
@@ -453,12 +463,16 @@ export class SubOrganisationUnitsComponent implements OnInit {
       let LastDay = new Date(year, month, 0).getDate();
       let endDate = year.concat("-", month, "-", LastDay);
       let startDate = year.concat("-", month, "-", "01");
-      let apiUrl = "sqlViews/nA1ysPd8osA/data.json?var=startdate:" + startDate;
+      this.sDate = startDate;
+      this.eDate = endDate;
+      this.childID = child.id;
+      // let apiUrl = "sqlViews/U9iYrb6FfbB/data.json?var=startdate:" + startDate; // for local
+      let apiUrl = "sqlViews/nA1ysPd8osA/data.json?var=startdate:" + startDate; // for instances
       apiUrl += "&var=enddate:" + endDate + "&var=orgunit:" + child.id;
         this.http.get(apiUrl).subscribe(responseData => {
-          
           let tot = responseData.rows[0][0];
-          let OrgUnitLevel ="sqlViews/KncpFVmybMA/data.json?var=selOrgUnit:" + child.id;
+         // let OrgUnitLevel ="sqlViews/ihqFXH2x3zK/data.json?var=selOrgUnit:" + child.id; // for local
+           let OrgUnitLevel ="sqlViews/KncpFVmybMA/data.json?var=selOrgUnit:" + child.id; // for instance
             this.http.get(OrgUnitLevel).subscribe(levelCount => {
               let currentLevel = levelCount.rows[0][0];
               let childUrls = 'organisationUnits/' + child.id +'.json?fields=id&includeDescendants=true&paging=false';
@@ -491,6 +505,8 @@ export class SubOrganisationUnitsComponent implements OnInit {
   ngOnInit() {    
     this.globalFilter$.subscribe(globalFilter => {
       this.globalFilter = globalFilter;
+    //  this.monthlyEventData();
+     // console.log("here is global filter", this.globalFilter)
       if (globalFilter) {      
         if (
           this.id === globalFilter.ou.id &&
@@ -498,7 +514,6 @@ export class SubOrganisationUnitsComponent implements OnInit {
           !this.loadPaging
         ) {
           this.periodStatus = globalFilter.pe.id;
-        //  console.info("geting inside calulate completeness status");
          // this.calculateCompletenessStatus();        
         } else {
           
@@ -515,38 +530,80 @@ export class SubOrganisationUnitsComponent implements OnInit {
         }
       }
     });
-  }
+    var date = new Date();             
+    var firstDay =date.getFullYear() + "-" + Number(date.getMonth()+1) + "-" + new Date(date.getFullYear(), date.getMonth(), 1).getDate();         
+    var lastDay =date.getFullYear() + "-" + Number(date.getMonth()+1) + "-" +new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+    var urls = window.location.href;
+    var params = urls.split('/');
+    var ou = params[10];
+    // console.log("here is ou", ou, params);
+      let eventUrl = "events.json?program=lg2nRxyEtiH&startDate="+firstDay+"&endDate="+lastDay+"&orgUnit="+ou+"&ouMode=DESCENDANTS&paging=false";
+      this.http.get(eventUrl).subscribe( data => {
+      //  console.log("here is EVENT data", data);
+        let eventData = data.events;
+        for( let i=0; i<eventData.length; i++ ) {
+          let eventDataValue = eventData[i].dataValues;
+            for( let j=0;j< eventDataValue.length; j++ ) {
+              if (!this.eventDataValueMap[ eventData[i].orgUnit]) {
+                this.eventDataValueMap[ eventData[i].orgUnit] = [];
+            } 
+            this.eventDataValueMap[eventData[i].orgUnit][eventDataValue[j].dataElement] = eventDataValue[j].value;
+            }
+        }
+         //   console.log("here is eventDataValueMap", this.eventDataValueMap);
 
+      });
+      
+  }
+ 
+  // monthlyEventData(){
+  // var urls = window.location.href;
+  // var params = urls.split('/');
+  // var ou = params[6];
+  // let globalDate
+  //   if(this.globalFilter === undefined){
+  //     var date = new Date();             
+  //      globalDate =date.getFullYear() + "-" + Number(date.getMonth()+1); 
+  //   } else {
+  //       globalDate = this.globalFilter.id
+  //   }
+  //   let eventUrls = "events.json?program=lg2nRxyEtiH&period="+globalDate+"&orgUnit="+ou+"&ouMode=DESCENDANTS&paging=false";
+  //     this.http.get(eventUrls).subscribe( data => {
+  //     //  console.log("here is EVENT data", data);
+  //     });
+    // }
   downloadLoad;
   downloadError;
-
   download() {
     this.downloadLoad = true;
     this.downloadError = false;
     this.ConvertToCSV(this.organisationUnit.children).subscribe(
       results => {
-        const a = document.createElement("a");
-        a.setAttribute("style", "display:none;");
-        document.body.appendChild(a);
-        const blob = new Blob([results], { type: "text/csv" });
-        const url = window.URL.createObjectURL(blob);
-        a.href = url;
-        const date = new Date();
-        a.download =
-          this.organisationUnit.name +
-          " " +
-          this.monthNames[parseInt(this.periodStatus.substr(4), 10) - 1] +
-          " " +
-          parseInt(this.periodStatus.substr(0, 4), 10) +
-          "_generated_on_" +
-          date.getDate() +
-          "/" +
-          (date.getMonth() + 1) +
-          "/" +
-          date.getFullYear() +
-          ".csv";
-        a.click();
-        this.downloadLoad = false;
+        setTimeout(() => {
+          const a = document.createElement("a");
+        //  console.log("here is a", a)
+          a.setAttribute("style", "display:none;");
+          document.body.appendChild(a);
+          const blob = new Blob([results], { type: "text/csv" });
+          const url = window.URL.createObjectURL(blob);
+          a.href = url;
+          const date = new Date();
+          a.download =
+            this.organisationUnit.name +
+            " " +
+            this.monthNames[parseInt(this.periodStatus.substr(4), 10) - 1] +
+            " " +
+            parseInt(this.periodStatus.substr(0, 4), 10) +
+            "_generated_on_" +
+            date.getDate() +
+            "/" +
+            (date.getMonth() + 1) +
+            "/" +
+            date.getFullYear() +
+            ".csv";
+          a.click();
+          this.downloadLoad = false;
+       }, 60000);
       },
       error => {
         this.downloadLoad = false;
@@ -569,6 +626,7 @@ export class SubOrganisationUnitsComponent implements OnInit {
   }
 
   getCSVURL() {
+  //  console.log("here is me for CSV");
     if (this.periodStatus) {
       const ndate = new Date(
         parseInt(this.periodStatus.substr(0, 4), 10),
@@ -583,7 +641,7 @@ export class SubOrganisationUnitsComponent implements OnInit {
       return "?var=ou:" + this.id + "&var=date:" + this.getISODate(date);
     }
   }
-  getGroupCSVURL(id) {
+  getGroupCSVURL(id) { 
     let groupId = "";
     id.split(";").forEach(theid => {
       const ids = theid.split("-");
@@ -623,8 +681,20 @@ export class SubOrganisationUnitsComponent implements OnInit {
       );
     }
   }
+ 
   ConvertToCSV(objArray): any {
-    return new Observable(observer => {
+     return  new Observable(observer => {
+      let headerUrl = "programStages/jqfBs67adS7.json?fields=id,name,programStageDataElements[dataElement[id,name]]&paging=false";
+      this.http.get(headerUrl).subscribe( header => {
+        //  console.log("here is header", header)
+        let headers = header.programStageDataElements;
+        headers.forEach(element => {
+          let dataEle = element.dataElement.name;
+          let dataEleId = element.dataElement.id;
+         this.attrVal.push(dataEle);  
+          this.dataVal.push( dataEle + ":" + dataEleId );
+        });
+      });
       let url =
         "organisationUnits.json?paging=false&fields=id,name,code,ancestors[name],attributeValues[value,attribute[id,name]]&filter=path:like:" +
         this.id +
@@ -646,6 +716,7 @@ export class SubOrganisationUnitsComponent implements OnInit {
             typeof data.organisationUnits !== "object"
               ? JSON.parse(data.organisationUnits)
               : data.organisationUnits;
+            this.orgUnit = array
           let str = "";
           this.http
             .get("organisationUnitLevels.json?fields=name,level")
@@ -681,58 +752,12 @@ export class SubOrganisationUnitsComponent implements OnInit {
                     }
                   }
                 );
-                str += "Code";
-                const headers = [
-                  "Project",
-                  "Basin",
-                  "Year of Construction",
-                  "Source",
-                  "Technology",
-                  "Old Code",
-                  "Extraction System",
-                  "Village Population",
-                  "Distribution Point Management"
-                ];
+                str += "Code"; 
+                const headers = this.attrVal;
                 if (this.level === this.waterPointParentLevel) {
                   str += "," + headers.join(",");
-                }
-                str += ",Completeness Status";
-                const dx = [
-                  "sJE2ASymgbu",
-                  "DIC1UYnqUf7",
-                  "OXHW0r8lrdk",
-                  "WteCqFCRv7H",
-                  "d8MNkGPyADo",
-                  "kMeKnrbm9UV",
-                  "yFLFPloToNW"
-                ];
-                this.http
-                  .get(
-                    "analytics.json?dimension=dx:" +
-                      dx.join(";") +
-                      "&filter=pe:" +
-                      this.periodStatus +
-                      "&dimension=ou:LEVEL-" +
-                      this.level +
-                      ";" +
-                      this.organisationUnit.id +
-                      "&displayProperty=NAME&skipMeta=false"
-                  )
-                  .subscribe(
-                    (analyticsData: any) => {
-                      const analyticsDataJSON = analyticsData;
-                      const orgUnitsObject = {};
-                      analyticsDataJSON.rows.forEach(row => {
-                        if (!orgUnitsObject[row[1]]) {
-                          orgUnitsObject[row[1]] = {};
-                        }
-                        orgUnitsObject[row[1]][row[0]] = row[2];
-                      });
-                      dx.forEach(d => {
-                        str += "," + analyticsDataJSON.metaData.items[d].name;
-                      });
-                      str += "\r\n";
-
+                }                  
+                    str += "\r\n";
                       array.forEach(orgUnit => {
                         let line = "";
                         orgUnit.ancestors.forEach((ancestor, index) => {
@@ -754,38 +779,22 @@ export class SubOrganisationUnitsComponent implements OnInit {
                           "," +
                           (orgUnit.code ? orgUnit.code : "");
                         if (this.level === this.waterPointParentLevel) {
-                          headers.forEach(key => {
-                            if (key) {
-                              line += "," + this.getAttribute(key, orgUnit);
-                            }
-                          });
+                          let counter = -1;
+                            headers.forEach(key => {
+                              if (key) {
+                                line += "," + this.getAttribute(key, orgUnit, ++counter);
+                              }
+                             }); 
                         }
                         // line += ',' + orgUnit.completeness;
-                        dx.forEach(d => {
-                          if (orgUnitsObject[orgUnit.id]) {
-                            if (orgUnitsObject[orgUnit.id][d]) {
-                              line += "," + orgUnitsObject[orgUnit.id][d];
-                            } else {
-                              line += ",";
-                            }
-                          } else {
-                            line += ",";
-                          }
-                        });
                         str += line + "\r\n";
                       });
                       observer.next(str);
                       observer.complete();
-                    },
-                    error => {
-                      observer.error(error);
-                    }
-                  );
               },
               error => {
                 observer.error(error);
-              }
-            );
+              });
         },
         error => {
           observer.error(error);
@@ -793,9 +802,21 @@ export class SubOrganisationUnitsComponent implements OnInit {
       );
     });
   }
-
-  getAttribute(name, orgUnit) {
-    let value = "";
+  getAttribute(name, orgUnit, counter) {
+  let value = " ";
+  // console.log("here is call me",  this.eventDataValueMap, orgUnit, this.dataVal);
+   for( var key in this.eventDataValueMap){
+     if(key  ===  orgUnit.id){
+      let deId = this.dataVal[counter].split(":")[1];
+      if (this.eventDataValueMap) {
+        if(this.eventDataValueMap[orgUnit.id][deId]){
+          value = this.eventDataValueMap[orgUnit.id][deId];
+           return value;
+        }
+      }
+     }
+   }
+  
     orgUnit.attributeValues.forEach(attributeValue => {
       if (attributeValue.attribute.name === name) {
         value = attributeValue.value;
@@ -803,7 +824,7 @@ export class SubOrganisationUnitsComponent implements OnInit {
     });
     return value;
   }
-
+  
   fetchRequest: any;
 
   search(event) {

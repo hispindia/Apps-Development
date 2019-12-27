@@ -136,12 +136,10 @@
                     >
                       <li *ngIf="nextLevel.level == 6">
                         <a
+                         (click)="download()"
                           target="downloadIframe"
                           download="download thing"
                           class="dropdown-item"
-                          href="../../../api/sqlViews/xKIPYHtyMZ2/data.csv{{
-                            getCSVURL()
-                          }}"
                           >Download Distribution Points in
                           <b>{{ (globalFilter$ | async).ou.name }}</b> in
                           {{ (globalFilter$ | async).pe.name }}
@@ -159,7 +157,7 @@
                           href="../../../api/sqlViews/xKIPYHtyMZ2/data.csv{{
                             getCSVURL()
                           }}"
-                          >Download
+                          >Download 
                           <b>{{ (globalFilter$ | async).ou.name }}</b> in
                           {{ (globalFilter$ | async).pe.name }}
                         </a>

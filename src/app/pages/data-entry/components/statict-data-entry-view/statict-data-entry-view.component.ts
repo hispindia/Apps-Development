@@ -223,24 +223,25 @@ export class StatictDataEntryViewComponent implements OnInit {
       }
       newAttributeValues.push(attributeObject);
     });
-      this.eventService.loadedData().subscribe( res => {
-        this.dataValues = res.events["0"].dataValues;
-        this.dataValues.forEach(element => {
-          if(element.dataElement === 'w12NcYUbw0h') {
-            newAttributeValues['9']['value']=element.value;
-          } else if(element.dataElement === 'XJRt4P9JgLQ') {
-            newAttributeValues['10']['value']=element.value;
-          }
-          else if(element.dataElement === 'cQTEBsID9do') {
-            newAttributeValues['4']['value']=element.value;
-            }
-          
-              else if(element.dataElement === 'oonnSZRwJG4') {
-                newAttributeValues['7']['value']=element.value;
-                }
-        });
-      }); 
+    console.log("here is attributes", attributes, "attributesValues", newAttributeValues);
+      // this.eventService.loadedData().subscribe( res => {
+      //   this.dataValues = res.events["0"].dataValues;
+      //   this.dataValues.forEach(element => {
+      //     if(element.dataElement === 'w12NcYUbw0h') {
+      //       newAttributeValues['9']['value']=element.value;
+      //     } else if(element.dataElement === 'XJRt4P9JgLQ') {
+      //       newAttributeValues['10']['value']=element.value;
+      //     }
+      //     else if(element.dataElement === 'cQTEBsID9do') {
+      //       newAttributeValues['4']['value']=element.value;
+      //       }
+      //         else if(element.dataElement === 'oonnSZRwJG4') {
+      //           newAttributeValues['7']['value']=element.value;
+      //           }
+      //   });
+      // }); 
     organisationUnitObject['attributeValues'] = newAttributeValues;
+    console.log("here is orgAObj", organisationUnitObject)
     return organisationUnitObject;
   }
 }

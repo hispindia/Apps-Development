@@ -215,6 +215,7 @@ export class StatictDataEntryEditComponent implements OnInit {
       this.isSavingActionTriggered = true;
       this.isCreationOfDistributtionFailed = false;
       this.isSaving = true;
+      console.log("here is orgsObj",this.organisationUnitObject);
       const { attributeValues } = this.organisationUnitObject;
       const { parent } = this.organisationUnitObject;
       const { code } = this.organisationUnitObject;
@@ -304,7 +305,7 @@ export class StatictDataEntryEditComponent implements OnInit {
                     });
                     this.store.dispatch(
                       new SuccessToOrganisationUnitAction(
-                        this.organisationUnitObject
+                      this.organisationUnitObject
                       )
                     );
 

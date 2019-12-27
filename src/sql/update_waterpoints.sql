@@ -7,7 +7,6 @@ DECLARE
 	results VARCHAR := 'success';
 BEGIN
 	BEGIN
-
     SELECT count(*) INTO exist FROM organisationunitattributevalues
     INNER JOIN attributevalue av using(attributevalueid)
     INNER JOIN attribute a using(attributeid)
