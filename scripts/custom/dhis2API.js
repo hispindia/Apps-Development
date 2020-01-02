@@ -332,23 +332,13 @@ dhis2API.event = function(){
 }
 
 dhis2API.event.prototype.excelImportPopulator = function(header,data,tei){
-///console.log('here is me at event check', header);
-//console.log('here is me at event check', data);
-var name;
-var openingDate;
-var shortName
-var eventDate = data['Inspection Date (yyyy-mm-dd)'];
+var eventDate = data['Inspection Date'];
 var date = eventDate.split("/");
 var reqDate = date.join("-");
-this.eventDate = reqDate;
-// console.log( codeId);
-    codeId.forEach( element => {
-        if( element[0] == data['DP CODE']){
-         // console.log('here is element of data', element[1]);
+ this.eventDate = reqDate;
+    codeId.forEach( (element, index) => {
+        if( element[0] === data['Code']){
             this.orgUnit = element[1];
-
-
-
         }
     });
     if (tei){
@@ -360,13 +350,13 @@ this.eventDate = reqDate;
 
     for (var i=0;i<header.length;i++){
         switch(header[i].field){
-            case FIELD_ORG_UNIT :
-                if (header[i].args){
-                    this.orgUnit = header[i].args;
-                }else{
-                    this.orgUnit = data[header[i].key];
-                }
-                break
+            // case FIELD_ORG_UNIT :
+            //     if (header[i].args){
+            //         this.orgUnit = header[i].args;
+            //     }else{
+            //         this.orgUnit = data[header[i].key];
+            //     }
+            //     break
             case FIELD_PROGRAM:
                 if (header[i].args){
                     this.program = header[i].args;
@@ -494,7 +484,7 @@ dhis2API.event.prototype.remove = function(id,index,callback){
 
 }
 dhis2API.event.prototype.getAPIObject = function(){
-    console.log('here is me!!');
+    console.log('here is me!!', this.orgUnit);
     var ent = {
         orgUnit : this.orgUnit,
         trackedEntityInstance : this.tei,

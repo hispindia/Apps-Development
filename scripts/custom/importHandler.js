@@ -409,9 +409,7 @@ function importHandler(headers,importData,notificationCallback) {
         if (index == data.length) {
             return
         }
-
         var ou = new dhis2API.organisationUnit();
-
         ou.excelImportPopulator(header, data[index]);//console.log(ou.uid)
         ou.remove(index, callback);
 
