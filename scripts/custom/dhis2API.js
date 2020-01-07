@@ -7,8 +7,6 @@ $.ajax({
     dataType: "json",
     async : true,
     contentType: "application/json",
-   // url: "../../sqlViews/sbRasv9eHmQ/data.json",
-    // url: "../../sqlViews/wislpJbGXSA/data.json",  // for local 
     url: "../../sqlViews/V27PvKt5mqh/data.json", // for testing instance
     success: function(response){
         codeId = response.rows;
@@ -332,7 +330,7 @@ dhis2API.event = function(){
 }
 
 dhis2API.event.prototype.excelImportPopulator = function(header,data,tei){
-var eventDate = data['Inspection Date'];
+var eventDate = data['Inspection Date (yyyy-mm-dd)'];
 var date = eventDate.split("/");
 var reqDate = date.join("-");
  this.eventDate = reqDate;
