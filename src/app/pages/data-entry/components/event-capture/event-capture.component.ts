@@ -62,7 +62,7 @@ export class EventCaptureComponent implements OnChanges, OnInit {
     this.imgHeight = '60px';
     this.savingMessage = 'Saving current Event(dynamic data)...';
     const { currentEvent, eventMessageObject } = changes;
-    console.log('here is event at event capture', currentEvent, eventMessageObject);
+ //   console.log('here is event at event capture', currentEvent, eventMessageObject);
     if (currentEvent) {
       this.currentEvent = currentEvent.currentValue;
       this.drawEventsForm();
@@ -81,7 +81,7 @@ export class EventCaptureComponent implements OnChanges, OnInit {
     this.selectedField = null;
   }
   customValueSelected(value, key) {
-    console.log('here is value', value, key);
+   // console.log('here is value', value, key);
     this.changedField = { [key]: true };
     this.form.patchValue({ [key]: value });
   }
@@ -120,6 +120,7 @@ export class EventCaptureComponent implements OnChanges, OnInit {
 
   createFormControls(arayProps) {
     this.objectProps = arayProps;
+   // console.log("here is obj", this.objectProps);
     const formGroup = {};
     for (const objectProp of arayProps) {
       const { value, validation, code, key } = objectProp;
@@ -161,7 +162,7 @@ export class EventCaptureComponent implements OnChanges, OnInit {
   }
 
   displayFieldCss(field: string) {
-    console.log('here is field ', field);
+ //   console.log('here is field ', field);
     return {
       'has-error': this.isFieldValid(field),
       'has-feedback': this.isFieldValid(field)
@@ -169,7 +170,7 @@ export class EventCaptureComponent implements OnChanges, OnInit {
   }
 
   showChangedFieldCss(field: string) {
-    // console.log('here is changed css', field);
+     //console.log('here is changed css', field);
     return {
       'has-changed': this.changedField[field]
     };
@@ -187,16 +188,16 @@ export class EventCaptureComponent implements OnChanges, OnInit {
   }
 
   changedInput(key) {
-    console.log('here is key', key);
+  //  console.log('here is key', key);
     this.changedField = { [key]: true };
-    console.log('here is value', this.changedField);
+  //  console.log('here is value', this.changedField);
   }
 
   onFormChanges(): void {
 
     const eventResponse = this.currentEvent;
     this.form.valueChanges.subscribe(formData => {
-      console.log('here is formData', formData);
+    //  console.log('here is formData', formData);
       this.skipLogicImplementation({ ...this.dataValues, ...formData });
       this.updateEventOnChange({ ...this.dataValues, ...formData });
     });

@@ -223,7 +223,7 @@ export class StatictDataEntryViewComponent implements OnInit {
       }
       newAttributeValues.push(attributeObject);
     });
-    console.log("here is attributes", attributes, "attributesValues", newAttributeValues);
+   // console.log("here is attributes", attributes, "attributesValues", newAttributeValues);
       // this.eventService.loadedData().subscribe( res => {
       //   this.dataValues = res.events["0"].dataValues;
       //   this.dataValues.forEach(element => {
@@ -241,7 +241,7 @@ export class StatictDataEntryViewComponent implements OnInit {
       //   });
       // }); 
     organisationUnitObject['attributeValues'] = newAttributeValues;
-    console.log("here is orgAObj", organisationUnitObject)
+  //  console.log("here is orgAObj", organisationUnitObject)
     return organisationUnitObject;
   }
 }

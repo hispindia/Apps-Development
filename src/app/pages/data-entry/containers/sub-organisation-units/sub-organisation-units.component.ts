@@ -16,6 +16,7 @@ import { Compiler } from '@angular/core';
 import { from } from 'rxjs';
 import { element } from 'protractor';
 import { EventService } from "../../../../core/services/event.service";
+import { OrganisationUnitService } from "../../../../core/services/organisation-unit.service";
 
 declare var $: any;
 declare var document: any;
@@ -82,7 +83,8 @@ export class SubOrganisationUnitsComponent implements OnInit {
     private userService: UserService,
     private orgUnitService: OrgUnitService,
     private compiler: Compiler,
-    private  eventService:EventService
+    private  eventService:EventService,
+    private organisationUnitService: OrganisationUnitService
   ) {
     this.globalFilter$ = store.select(getCurrentGlobalFilter);
     this.population$ = store.select(getPopulationDataForCurrentOrgUnit);
@@ -440,11 +442,8 @@ export class SubOrganisationUnitsComponent implements OnInit {
     });
     if (ouIds.length === 0) {
       return;
-    }
-   
-   // let orgUnitMaxLevelUrl = "sqlViews/zIbgcUxumM9/data.json"; // for local
+    }   
     let orgUnitMaxLevelUrl = "sqlViews/xYnvMQEe8xz/data.json"; // for instance 
-
     this.http.get(orgUnitMaxLevelUrl).subscribe(data => {
     this.orgUnitMaxLevel = data.rows["0"]["0"];
     });
@@ -466,35 +465,136 @@ export class SubOrganisationUnitsComponent implements OnInit {
       this.sDate = startDate;
       this.eDate = endDate;
       this.childID = child.id;
-      // let apiUrl = "sqlViews/U9iYrb6FfbB/data.json?var=startdate:" + startDate; // for local
       let apiUrl = "sqlViews/nA1ysPd8osA/data.json?var=startdate:" + startDate; // for instances
       apiUrl += "&var=enddate:" + endDate + "&var=orgunit:" + child.id;
         this.http.get(apiUrl).subscribe(responseData => {
           let tot = responseData.rows[0][0];
-         // let OrgUnitLevel ="sqlViews/ihqFXH2x3zK/data.json?var=selOrgUnit:" + child.id; // for local
            let OrgUnitLevel ="sqlViews/KncpFVmybMA/data.json?var=selOrgUnit:" + child.id; // for instance
             this.http.get(OrgUnitLevel).subscribe(levelCount => {
               let currentLevel = levelCount.rows[0][0];
-              let childUrls = 'organisationUnits/' + child.id +'.json?fields=id&includeDescendants=true&paging=false';
-              this.http.get(childUrls).subscribe( childCount => {
-                this.childCount =childCount.organisationUnits.length-1;
-                if (this.orgUnitMaxLevel === currentLevel) {
-                  this.tempTotalWaterPoint = 1;
-                } else {
-                  this.tempTotalWaterPoint = this.childCount;
-                }
+              let level = currentLevel;
+              if(level ==1){
+                let url = 'organisationUnits/'+child.id+'.json?fields=id,name,level,children[id,name,level,children[id,name,level,children[id,name,level,children[id,name,level,children[id,name,level]]]]]&paging=false';
+                this.http.get(url).subscribe( data => {
+                })
+              }
+              if(level ==2){
+                let len =0;
+                 this.http.get('organisationUnits/'+child.id+'.json?fields=id,name,level,children[id,name,level,children[id,name,level,children[id,name,level,children[id,name,level]]]]&paging=false').subscribe( data => {
+                  let children = data.children;
+                  children.forEach(element => {
+                    let child = element.children;
+                      child.forEach( ele => {
+                        let childs = ele.children;
+                        childs.forEach( element => {
+                          let child =element.children
+                          len = child.length+len;
+                        })
+                      })
+                  });
+                  this.tempTotalWaterPoint = len;
+                  this.Percantage = (tot / this.tempTotalWaterPoint) * 100;
+                   if (this.Percantage === 0) {
+                     child.completeness = -1;
+                     child.status = "loaded";
+                   } else {
+                     child.completeness = parseFloat(this.Percantage);
+                     child.status = "loaded";
+                   }    
+                })
+              }
+              if(level ==3){
+               this.http.get('organisationUnits/'+child.id+'.json?fields=id,name,level,children[id,name,level,children[id,name,level,children[id,name,level]]]&paging=false').subscribe( data => {
+                let children = data.children;
+                let len = 0
+                children.forEach(element => {
+                  let child = element.children;
+                    child.forEach( ele => {
+                      let child = ele.children;
+                    len = child.length+len;
+                    })
+                });
+                this.tempTotalWaterPoint = len;
                 this.Percantage = (tot / this.tempTotalWaterPoint) * 100;
-                if (this.Percantage === 0) {
-                  child.completeness = -1;
-                  child.status = "loaded";
-                } else {
-                  child.completeness = parseFloat(this.Percantage);
-                  child.status = "loaded";
-                }    
+                 if (this.Percantage === 0) {
+                   child.completeness = -1;
+                   child.status = "loaded";
+                 } else {
+                   child.completeness = parseFloat(this.Percantage);
+                   child.status = "loaded";
+                 }    
               })
-             
-            });
-         
+              }
+              if(level ==4){
+               this.http.get('organisationUnits/'+child.id+'.json?fields=id,name,level,children[id,name,level,children[id,name,level]]&paging=false').subscribe( data => {
+                let children = data.children;
+                let totLength = 0;
+                children.forEach(element => {
+                  let child = element.children;
+                  totLength = child.length+totLength;
+                });
+                this.tempTotalWaterPoint = totLength;
+                this.Percantage = (tot / this.tempTotalWaterPoint) * 100;
+                 if (this.Percantage === 0) {
+                   child.completeness = -1;
+                   child.status = "loaded";
+                 } else {
+                   child.completeness = parseFloat(this.Percantage);
+                   child.status = "loaded";
+                 }    
+              })
+              }
+              if(level ==5){
+                this.http.get('organisationUnits/'+child.id+'.json?fields=id,name,level,children[id,name,level]&paging=false').subscribe( data => {
+                let l = data.children.length;
+                this.tempTotalWaterPoint = l;
+                this.Percantage = (tot / this.tempTotalWaterPoint) * 100;
+                 if (this.Percantage === 0) {
+                   child.completeness = -1;
+                   child.status = "loaded";
+                 } else {
+                   child.completeness = parseFloat(this.Percantage);
+                   child.status = "loaded";
+                 }    
+                })
+              }
+              if(level ==6){
+               this.http.get('organisationUnits/'+child.id+'.json?fields=id,name,level&paging=false').subscribe( data => {
+                if ( this.orgUnitMaxLevel == currentLevel) {
+                      this.tempTotalWaterPoint = 1;
+                     this.Percantage = (tot / this.tempTotalWaterPoint) * 100;
+                      if (this.Percantage === 0) {
+                        child.completeness = -1;
+                        child.status = "loaded";
+                      } else {
+                        child.completeness = parseFloat(this.Percantage);
+                        child.status = "loaded";
+                      }    
+                 }
+              })
+            }
+              // let childUrls = 'organisationUnits/' + child.id +'.json?fields=id&includeDescendants=true&paging=false';
+              // this.http.get(childUrls).subscribe( childCount => {
+              //   let childs =childCount.organisationUnits.length;
+              //   this.childCount = childs-1;
+              //  // console.log("here is tot", tot, this.tempTotalWaterPoint);
+              //   if ( this.orgUnitMaxLevel == currentLevel) {
+              //     this.tempTotalWaterPoint = 1;
+              //    // console.log("here is tot", tot, this.tempTotalWaterPoint);
+              //   } else {
+              //     this.tempTotalWaterPoint = this.childCount;
+              //   }
+              //   this.Percantage = (tot / this.tempTotalWaterPoint) * 100;
+              //  // console.log("here is tot", tot, this.tempTotalWaterPoint, this.Percantage);
+              //   if (this.Percantage === 0) {
+              //     child.completeness = -1;
+              //     child.status = "loaded";
+              //   } else {
+              //     child.completeness = parseFloat(this.Percantage);
+              //     child.status = "loaded";
+              //   }    
+              // })             
+            });         
         });
     });
     this.organisationUnit.children.forEach((child: any) => {
@@ -516,7 +616,6 @@ export class SubOrganisationUnitsComponent implements OnInit {
           this.periodStatus = globalFilter.pe.id;
          // this.calculateCompletenessStatus();        
         } else {
-          
           this.level = undefined;
           this.init(globalFilter);
         }
@@ -536,10 +635,9 @@ export class SubOrganisationUnitsComponent implements OnInit {
     var urls = window.location.href;
     var params = urls.split('/');
     var ou = params[10];
-    // console.log("here is ou", ou, params);
       let eventUrl = "events.json?program=lg2nRxyEtiH&startDate="+firstDay+"&endDate="+lastDay+"&orgUnit="+ou+"&ouMode=DESCENDANTS&paging=false";
       this.http.get(eventUrl).subscribe( data => {
-      //  console.log("here is EVENT data", data);
+       // console.log("here is EVENT data", data);
         let eventData = data.events;
         for( let i=0; i<eventData.length; i++ ) {
           let eventDataValue = eventData[i].dataValues;
@@ -551,7 +649,6 @@ export class SubOrganisationUnitsComponent implements OnInit {
             }
         }
          //   console.log("here is eventDataValueMap", this.eventDataValueMap);
-
       });
       
   }

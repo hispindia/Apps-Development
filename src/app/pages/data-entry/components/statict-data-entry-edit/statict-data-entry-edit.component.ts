@@ -58,7 +58,6 @@ export class StatictDataEntryEditComponent implements OnInit {
   }
   ngOnInit() {
     this.organisationUnitObject = this.getOganisationUnitObject();
-    console.log('here is new data',this.organisationUnitObject)
     this.organisationUnitObjectBackup = this.getOganisationUnitObject();
   }
   getOganisationUnitObject() {
@@ -215,7 +214,6 @@ export class StatictDataEntryEditComponent implements OnInit {
       this.isSavingActionTriggered = true;
       this.isCreationOfDistributtionFailed = false;
       this.isSaving = true;
-      console.log("here is orgsObj",this.organisationUnitObject);
       const { attributeValues } = this.organisationUnitObject;
       const { parent } = this.organisationUnitObject;
       const { code } = this.organisationUnitObject;
@@ -263,7 +261,6 @@ export class StatictDataEntryEditComponent implements OnInit {
           .join('-_bclose_-');
         this.userService.getUser().subscribe(
           (user: any) => {
-            console.log('here is user', user);
             this.organisationUnitService
               .addOrUpdateOranisationUnit(
                 name,
@@ -276,7 +273,6 @@ export class StatictDataEntryEditComponent implements OnInit {
               )
               .subscribe(
                 (response: any) => {
-                  console.log('here is resasssssss', response);
                   const { rows } = response;
                   const organisationUnitId = rows[0][0];
                   if (organisationUnitId.length !== 11) {
@@ -399,7 +395,6 @@ export class StatictDataEntryEditComponent implements OnInit {
                 );
               })
             : [];
-            console.log('here is me123 ',attributeValue);
 
         const operationResult = eval(
           operationResultArray.join('' + rule.conditionSet.joinOperator + '')

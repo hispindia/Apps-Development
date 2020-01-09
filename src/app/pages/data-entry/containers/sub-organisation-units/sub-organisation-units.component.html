@@ -255,7 +255,7 @@
                   <td>{{ child.code }}</td>
                   <td>{{ child | attribute: 'Project Name' }}</td>
                   <td>{{ child | attribute: 'Basin' }}</td>
-                  <td
+                  <td 
                     [ngClass]="{
                       red: child.completeness < 40 || child.status == 'error',
                       yellow:

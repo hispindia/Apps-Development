@@ -125,7 +125,7 @@ export class WaterPointComponent implements OnInit {
       payload: distributionPoint,
       programID: PROGRAM_ID
     };
-    console.log('here is me34343',payload);
+   // console.log('here is me34343',payload);
     this.store.dispatch(new eventsActions.UpdateEventDataElementAction(payload));
     this.addOrUpdateDitributionPoint.emit(event);
   }

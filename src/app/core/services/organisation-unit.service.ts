@@ -77,7 +77,6 @@ export class OrganisationUnitService {
     code: string,
     coordinates: any
   ): Observable<any> {
-    console.log("here is  orgunit",name, userId, attributesString, distributionPointId, parentId, code, coordinates);
     code = code.split('.').join('dot');
     coordinates = coordinates
       .split('.')
@@ -101,9 +100,7 @@ export class OrganisationUnitService {
     if (isNaN(periodYear) || isNaN(periodMonth)) {
       return of(0);
     }
-
     const endPeriod = new Date(periodYear, periodMonth, 0);
-
     const startDate = `${periodYear}-${periodMonth}-1`;
     const endDate = `${endPeriod.getFullYear()}-${endPeriod.getMonth() +
       1}-${endPeriod.getDate()}`;
