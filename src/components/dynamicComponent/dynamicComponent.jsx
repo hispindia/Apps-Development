@@ -3,15 +3,15 @@ import onSelect from '../homeComponent/homeComponent'
 import './dynamicComponent.css'
 import { Button,Col, Row, form, formGroup, Label, Input, formText } from 'reactstrap';
 import DatePicker from 'react-date-picker';
-import data from '../homeComponent/homeComponent'
-function  RenderProgram(params) {
-     console.log("here is program", params)
-  return (<> 
-         <ul>
-             here is me 
-            </ul>
-    </>)
-}
+import ProgramData from '../LoadedComponent/programComponent'
+// function  RenderProgram(params) {
+//      console.log("here is program", params)
+//   return (<> 
+//          <ul>
+//              here is me 
+//             </ul>
+//     </>)
+// }
 
 class Dynamic extends React.Component {
     constructor(props) {
@@ -52,11 +52,7 @@ class Dynamic extends React.Component {
                       <br />
                       <Row form>
                           <Col md="auto">Program : </Col>
-                          <Col>
-                          <Input type="select" name="select" id="exampleSelect">
-                          <RenderProgram program={this.props.data.program} />
-                           </Input>
-                           </Col>
+                          <ProgramData program={this.props.data.program} />
                            </Row>
                            <br/>
                            <Row form>

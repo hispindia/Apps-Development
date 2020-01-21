@@ -12,8 +12,7 @@ class Home extends React.Component {
         super();
         this.state={
             orgUnit:"",
-            program: "",
-            programStage: ""
+            program: ""
         }
          this.onSelect = this.onSelect.bind(this)
     }
@@ -24,18 +23,18 @@ class Home extends React.Component {
         this.setState({orgUnit: selected})
     }
     componentDidMount(id) {
-       console.log("here is seleted", id);
+    //    console.log("here is seleted", id);
      fetch(BaseUrl +'/api/organisationUnits/'+id+'.json?fields=id,name,programs[id,name,code]&paging=false')
       .then(res => res.json())
       .then(
         (result) => {
-       console.log("here is seleted", result);
+    //    console.log("here is seleted", result);
        this.setState({
            program: result.programs
        })
         },
         (error) => {
-            console.log("here is seleted", error);
+             console.log("here is seleted", error);
         }
       )
 
