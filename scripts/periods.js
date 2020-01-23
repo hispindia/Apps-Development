@@ -101,7 +101,9 @@
 			dateString = ( dateString == "" ) ? dhisDate : ( dateString + ";" + dhisDate );
 			sDate.setMonth( sDate.getMonth() + 1 );	
 		}
-		
+
+		dateString = dateString.split(";").reverse().join(";");
+
 		return dateString;
 	}
 	
