@@ -7,7 +7,7 @@ import {
 } from "reactstrap";
 import { BrowserRouter as Router, Link, history, withRouter, NavLink } from 'react-router-dom';
 import { ApiService } from '../../services/apiService';
-import { PlayloadService } from '../../services/dataService'
+import { payloadService } from '../../services/dataService'
 import { useHistory } from 'react-router-dom';
 class DataElement extends React.Component {
   constructor(props) {
@@ -19,7 +19,9 @@ class DataElement extends React.Component {
       eventDate: '',
       status: "ACTIVE",
       dataValues: [],
-      goStatus: false
+      goStatus: true,
+      payload: '',
+      tei: ''
     }
     this.EventPass = this.EventPass.bind(this);
   }
@@ -27,28 +29,30 @@ class DataElement extends React.Component {
     //  console.log(index1, index2, e.target.value)
     let dataValues = this.state.dataValues;
     dataValues[index1]["dataElements"][index2]["value"] = e.target.value;
-
     //  console.log("here is state", this.state)
   }
   static getDerivedStateFromProps(props) {
-    //  console.log("ok")
+      // console.log("ok")
     return {
       dataValues: props.allTreeData.programStageSections,
       orgUnitId: props.allTreeData.orgUnitId,
       programStageId: props.allTreeData.programStageId,
       programId: props.allTreeData.programId,
       eventDate: props.allTreeData.date,
+      tei: props.allTreeData.tei,
     }
   }
   EventPass() {
-    // let date = JSON.stringify(this.state.eventDate);
-    // console.log('here is date', date)
-    let playload = {
+     let date = JSON.stringify(this.state.eventDate);
+     let fdate =date.substring(1, date.length-1);
+    //  console.log('here is date', fdate)
+    let payload = {
       orgUnitId: this.state.orgUnitId,
       programStageId: this.state.programStageId,
       programId: this.state.programId,
-      eventDate: JSON.stringify(this.state.eventDate),
+      eventDate: fdate,
       status: "ACTIVE",
+      tei: this.state.tei
     }
     let data = [];
     let event = this.state.dataValues
@@ -63,16 +67,13 @@ class DataElement extends React.Component {
         // console.log('here is me', data)
       })
     })
-    playload['dataValues'] = data;
-   
-    PlayloadService.passPlayload(playload);
-
+    payload['dataValues'] = data;
+  payloadService.passpayload(payload);
   }
- 
+
   render() {
     // var programStageSections  = this.props.programStageSections.programStageSections
-
-    console.log("here props for ps sec", this.props)
+    // console.log("here props for ps sec", this.props, this.state)
     const sectionHeader = () => {
       if (this.props.allTreeData.programStageSections === undefined) {
         let val = ['']
@@ -107,7 +108,8 @@ class DataElement extends React.Component {
         </Row>
          <Col sm={{ size: 10, offset: 11 }}>
           <NavLink className="nav-link" to="/eventDetailPage">
-            <Button color="primary" onClick={this.EventPass}>Go</Button>
+            {this.state.goStatus ? <Button color="primary" onClick={this.EventPass}>Go</Button> : null }
+            
           </NavLink>
         </Col>
       </>);

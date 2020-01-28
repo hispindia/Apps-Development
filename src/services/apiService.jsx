@@ -3,10 +3,9 @@ export const ApiService = {
     getProgram,
     getProgramStage,
     getDataElements,
-    getTrackedEntityInstance
-    // postEvent
+    getTrackedEntityInstance,
+    postEvent
 };
-
 function getProgram(id) {
     const requestOptions = { method: 'GET' };
     return fetch(BaseUrl + '/api/organisationUnits/' + id + '.json?fields=id,name,programs[id,name,code]&paging=false', requestOptions).then(res => res.json());
@@ -23,12 +22,16 @@ function getDataElements(id) {
 }
 
 function getTrackedEntityInstance(data) {
-    
     const requestOptions = { method: 'GET' };
     return fetch( BaseUrl + '/api/trackedEntityInstances.json?program=' + data.program + '&ou=' + data.ou + '', requestOptions).then(res => res.json());
 }
 
-// function postEvent() {
-//     const requestOptions = { method: 'PUT' };
-//     return fetch( BaseUrl + '/api/trackedEntityInstances.json?program=y6lXVg8TdOj&ou=qaKyG3zWNO4', requestOptions).then(res => res.json());
-// }
+function postEvent(event) {
+    const requestOptions = { 
+         method: 'POST',
+         body: JSON.stringify(event), 
+         headers: {
+                'Content-Type': 'application/json'}
+                };
+    return fetch( BaseUrl + '/api/events', requestOptions).then(res => res.json());
+}

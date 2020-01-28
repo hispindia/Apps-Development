@@ -18,7 +18,9 @@ class Home extends React.Component {
                 path: ''
             },
             program: "",
-            orgUnitId: ''
+            orgUnitId: '',
+            programStage: '',
+            programSection: ''
         }
         this.onSelect = this.onSelect.bind(this)
         this.getPrograms = this.getPrograms.bind(this)
@@ -41,16 +43,34 @@ class Home extends React.Component {
                 this.setState({
                     program: result.programs
                 })
+                console.log("here is result at pId com", this.state.program)
+                 if(this.state.program > 0){
+                let programId = this.state.program[0].id;
+                    ApiService.getProgramStage(programId).then( result => {
+                        this.setState({
+                            programStage: result.programStages 
+                            })
+                        //  console.log("here is reuslt of ps", result.programStages)
+                        console.log("here is result at pdId com", this.state.programStage[0].id)
+                        if(this.state.programStage > 0){
+                            let programStageId = this.state.programStage[0].id; 
+                                ApiService.getDataElements(programStageId).then( result => {
+                                    this.setState({programSection: result.programStageSections})
+                                    // console.log("here is DE",  result.programStageSections)
+                                    console.log("here is set state", this.state)
+                                })
+                            }
+                    })
+                }
             },
             (error) => {
                 console.log("here is error", error);
             }
         )
-
     }
 
     render() {
-        // console.log("here is state at home", this.state);
+         console.log("here is state at home", this.state);
         return (<>
             <div className="row">
                 <div className="sidebar font">

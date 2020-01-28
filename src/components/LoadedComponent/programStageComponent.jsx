@@ -15,6 +15,7 @@ class ProgramStage extends React.Component {
       programId: '',
       programStageId: '',
       goStatus: false,
+      tei: ''
     }
     this.handleChange =this.handleChange.bind(this)
   }
@@ -37,6 +38,44 @@ class ProgramStage extends React.Component {
     }
    
     // console.log("here id ps id", id)
+    let datas = {
+      program: this.state.programId,
+      ou: this.state.orgUnitId
+    }
+    var arr = [];
+  ApiService.getTrackedEntityInstance(datas).then(
+      (response) => { 
+          response.trackedEntityInstances.forEach(tei => {
+              let obj = {
+                  tei: "",
+                  Name: "",
+                  Gender: "",
+                  checked: false
+              };
+              obj["Project Donor"] = ""
+              obj["tei"] = tei.trackedEntityInstance
+              var neededAttr = [];
+              neededAttr["N48JExn2s73"] = true; //Gender
+              neededAttr["KLSVjftH2xS"] = true; //Project Donor
+              neededAttr["L2doMQ7OtUB"] = true; //Beneficiary ID
+              neededAttr["gJ7mFiFa0dU"] = true; //first Name
+              neededAttr["t67rLuGIQmZ"] = true; //Last Name
+              tei.attributes.forEach(attr => {
+                  if (neededAttr[attr.attribute]) obj[attr.displayName] = attr.value;
+
+              })
+              obj["Name"] = (obj["First name"] ? obj["First name"] : "") + " " + (obj["Last name"] ? obj["Last name"] : "");
+              arr.push(obj);
+
+          })
+           this.setState({ tei: arr })
+          //  console.log(this.state)
+      },
+      (error) => {
+          console.log("here is seleted", error);
+      }
+  )
+  console.log("here is state at ps com", this.state)
   }
   static getDerivedStateFromProps(props) {
     return {

@@ -11,6 +11,7 @@ class ProgramData extends React.Component {
       orgUnit: '',
       orgUnitId: '',
       programId: '',
+      goStatus: false,
       programStage: ""
     };
     this.handleChange = this.handleChange.bind(this);
@@ -39,7 +40,7 @@ class ProgramData extends React.Component {
     }
   }
   render() {
-    //  console.log("here is program Com", this.props.programs);
+     console.log("here is program Com", this.props);
     const optionVal = () => {
       if (this.props.programs.program === undefined) {
         let val = [""];
