@@ -106,7 +106,7 @@ export class OrganisationUnitService {
       1}-${endPeriod.getDate()}`;
     return this.httpClient
       .get(
-        `sqlViews/bKQbaD3L5Tb/data.json?var=organisationunit:${orgUnitId}&var=startdate:${startDate}&var=enddate:${endDate}`
+        `sqlViews/aWN81uM1hfC/data.json?var=organisationunit:${orgUnitId}&var=startdate:${startDate}&var=enddate:${endDate}`
       )
       .pipe(
         map((res: any) => {
