@@ -246,9 +246,9 @@
             for (var i = 0; i < apiResponseResult.result.length; i++) {
 
                 console.log(  apiResponseResult.result[i].TotalPatients + " - " + apiResponseResult.result[i].TATMET + " - " + apiResponseResult.result[i].TATFAIL
-                        + " - " + apiResponseResult.result[i].DISTNAME + " - " + orgUnitMap[apiResponseResult.result[i].DISTNAME] );
+                        + " - " + (apiResponseResult.result[i].DISTNAME).toUpperCase() + " - " + orgUnitMap[(apiResponseResult.result[i].DISTNAME).toUpperCase()] );
 
-                regOrgUnitList.push( orgUnitMap[apiResponseResult.result[i].DISTNAME] );
+                regOrgUnitList.push( orgUnitMap[(apiResponseResult.result[i].DISTNAME).toUpperCase()] );
 
 
                 for (var k = 0; k < dataElementsMapping.length; k++) {
@@ -259,7 +259,7 @@
                         dataValue.period = selectedPeriod;
                         dataValue.dataElement = dataElementsMapping[k].id;
                         dataValue.categoryOptionCombo = dataElementsMapping[k].categorycombo;
-                        dataValue.orgUnit = orgUnitMap[apiResponseResult.result[i].DISTNAME];
+                        dataValue.orgUnit = orgUnitMap[(apiResponseResult.result[i].DISTNAME).toUpperCase()];
                         dataValue.value = apiResponseResult.result[i].TotalPatients;
                         dataValues.push(dataValue);
                     }
@@ -268,7 +268,7 @@
                         dataValue.period = selectedPeriod;
                         dataValue.dataElement = dataElementsMapping[k].id;
                         dataValue.categoryOptionCombo = dataElementsMapping[k].categorycombo;
-                        dataValue.orgUnit = orgUnitMap[apiResponseResult.result[i].DISTNAME];
+                        dataValue.orgUnit = orgUnitMap[(apiResponseResult.result[i].DISTNAME).toUpperCase()];
                         dataValue.value = apiResponseResult.result[i].TATMET;
                         dataValues.push(dataValue);
                     }
@@ -277,7 +277,7 @@
                         dataValue.period = selectedPeriod;
                         dataValue.dataElement = dataElementsMapping[k].id;
                         dataValue.categoryOptionCombo = dataElementsMapping[k].categorycombo;
-                        dataValue.orgUnit = orgUnitMap[apiResponseResult.result[i].DISTNAME];
+                        dataValue.orgUnit = orgUnitMap[(apiResponseResult.result[i].DISTNAME).toUpperCase()];
                         dataValue.value = apiResponseResult.result[i].TATFAIL;
                         dataValues.push(dataValue);
                     }

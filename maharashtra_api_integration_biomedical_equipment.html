@@ -331,7 +331,7 @@
                 */
 
                 if( apiResponse[i].Year === '2018-19' || apiResponse[i].Year === '2019-20' ){
-                    regOrgUnitList.push( orgUnitMap[apiResponse[i].District] );
+                    regOrgUnitList.push( orgUnitMap[(apiResponse[i].District).toUpperCase()] );
                     regPeriodList.push( getISOPeriod ( apiResponse[i].Year, apiResponse[i].month ) );
 
                     for (var k = 0; k < dataElementsMapping.length; k++) {
@@ -342,7 +342,7 @@
                           dataValue.period = getISOPeriod ( apiResponse[i].Year, apiResponse[i].month );
                           dataValue.dataElement = dataElementsMapping[k].id;
                           dataValue.categoryOptionCombo = dataElementsMapping[k].categorycombo;
-                          dataValue.orgUnit = orgUnitMap[apiResponse[i].District];
+                          dataValue.orgUnit = orgUnitMap[(apiResponse[i].District).toUpperCase()];
                           dataValue.value = apiResponse[i].Closed_Calls;
                           dataValues.push(dataValue);
                       }
@@ -351,7 +351,7 @@
                           dataValue.period = getISOPeriod ( apiResponse[i].Year, apiResponse[i].month );
                           dataValue.dataElement = dataElementsMapping[k].id;
                           dataValue.categoryOptionCombo = dataElementsMapping[k].categorycombo;
-                          dataValue.orgUnit = orgUnitMap[apiResponse[i].District];
+                          dataValue.orgUnit = orgUnitMap[(apiResponse[i].District).toUpperCase()];
                           dataValue.value = apiResponse[i].Open_Calls;
                           dataValues.push(dataValue);
                       }
@@ -360,7 +360,7 @@
                           dataValue.period = getISOPeriod ( apiResponse[i].Year, apiResponse[i].month );
                           dataValue.dataElement = dataElementsMapping[k].id;
                           dataValue.categoryOptionCombo = dataElementsMapping[k].categorycombo;
-                          dataValue.orgUnit = orgUnitMap[apiResponse[i].District];
+                          dataValue.orgUnit = orgUnitMap[(apiResponse[i].District).toUpperCase()];
                           dataValue.value = apiResponse[i].Total_Calls;
                           dataValues.push(dataValue);
                       }
@@ -370,7 +370,7 @@
                           dataValue.period = getISOPeriod ( apiResponse[i].Year, apiResponse[i].month );
                           dataValue.dataElement = dataElementsMapping[k].id;
                           dataValue.categoryOptionCombo = dataElementsMapping[k].categorycombo;
-                          dataValue.orgUnit = orgUnitMap[apiResponse[i].District];
+                          dataValue.orgUnit = orgUnitMap[(apiResponse[i].District).toUpperCase()];
                           dataValue.value = apiResponse[i].PPM_CLose_Calls;
                           dataValues.push(dataValue);
                       }
@@ -380,7 +380,7 @@
                        dataValue.period = getISOPeriod ( apiResponse[i].Year, apiResponse[i].month );
                        dataValue.dataElement = dataElementsMapping[k].id;
                        dataValue.categoryOptionCombo = dataElementsMapping[k].categorycombo;
-                       dataValue.orgUnit = orgUnitMap[apiResponse[i].District];
+                       dataValue.orgUnit = orgUnitMap[(apiResponse[i].District).toUpperCase()];
                        dataValue.value = apiResponse[i].Cal_Close_Calls;
                        dataValues.push(dataValue);
                        }
@@ -390,7 +390,7 @@
                           dataValue.period = getISOPeriod ( apiResponse[i].Year, apiResponse[i].month );
                           dataValue.dataElement = dataElementsMapping[k].id;
                           dataValue.categoryOptionCombo = dataElementsMapping[k].categorycombo;
-                          dataValue.orgUnit = orgUnitMap[apiResponse[i].District];
+                          dataValue.orgUnit = orgUnitMap[(apiResponse[i].District).toUpperCase()];
                           dataValue.value = apiResponse[i].Bio_Equipment;
                           dataValues.push(dataValue);
                       }
