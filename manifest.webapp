@@ -16,9 +16,9 @@
     },
     "folderName": null,
     "icons": {
-        "128": "/img/excel-icon.png",
-        "16": "/img/excel-icon.png",
-        "48": "/img/excel-icon.png"
+        "128": "img/excel-icon.png",
+        "16": "img/excel-icon.png",
+        "48": "img/excel-icon.png"
     },
     "installs_allowed_from": null,
     "key": null,
