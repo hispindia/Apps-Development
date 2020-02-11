@@ -32,3 +32,4 @@ coverage
 dist
 node_modules
 **/rebel.xml
+.zip
