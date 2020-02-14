@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import SweetAlert from 'react-bootstrap-sweetalert';
 class Alert extends Component {
-    state = {  }
+    constructor(props) {
+        super(props)
+        state = {  }
+    }
     render() { 
+     console.log("here is props", this.props)
         return ( 
             <>
            <SweetAlert

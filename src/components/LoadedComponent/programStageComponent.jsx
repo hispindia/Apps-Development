@@ -15,7 +15,8 @@ class ProgramStage extends React.Component {
       programId: '',
       programStageId: '',
       goStatus: false,
-      tei: ''
+      tei: '',
+      loadingData: ''
     }
     this.handleChange =this.handleChange.bind(this)
   }
@@ -28,7 +29,7 @@ class ProgramStage extends React.Component {
         result => {
           // console.log("here is seleted", result.programStageSections);
           this.setState({
-            programStageSections: result.programStageSections
+            programStageSections: result.programStageSections,
           });
         },
         error => {
@@ -38,11 +39,11 @@ class ProgramStage extends React.Component {
     }
    
     // console.log("here id ps id", id)
-    let datas = {
+  let datas = {
       program: this.state.programId,
       ou: this.state.orgUnitId
     }
-    var arr = [];
+  var arr = [];
   ApiService.getTrackedEntityInstance(datas).then(
       (response) => { 
           response.trackedEntityInstances.forEach(tei => {
@@ -82,16 +83,17 @@ class ProgramStage extends React.Component {
       orgUnit: props.allData,
       orgUnitId: props.allData.orgUnitId,
       programId: props.allData.programId,
+      loadingData: props.allData.orgUnit
     }
   }
   render() {
-    // console.log("here is ps com", this.props)
+    console.log("here is ps com", this.props.allData.orgUnit.programStage)
     const optionVal = () => {
-      if (this.props.allData.programStage === undefined) {
+      if (this.props.allData.orgUnit.programStage === undefined) {
         let val = ['']
         return val
       } else {
-        let a = [...this.props.allData.programStage]
+        let a = [...this.props.allData.orgUnit.programStage]
         let b = a.map((val, index) => <option key={index} value={val.id}> {val.name} </option>)
         return b;
       }

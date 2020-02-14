@@ -1,16 +1,15 @@
 import React, { PureComponent } from 'react';
-import Dynamic from '../dynamicComponent/dynamicComponent'
+import Dynamic from '../dynamicComponent/dynamicComp'
 import { OrgUnitTree } from '@hisp-amr/org-unit-tree'
 import { Col, Row, } from 'reactstrap';
-import { BaseUrl } from '../../services/EventService'
 import { ApiService } from '../../services/apiService'
-import { Link, NavLink } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 
 import './homeComponent.css'
 const onError = error => console.error(error)
 class Home extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             orgUnit: {
                 id: '',
@@ -20,6 +19,7 @@ class Home extends React.Component {
             program: "",
             orgUnitId: '',
             programStage: '',
+            programStageId: '',
             programSection: ''
         }
         this.onSelect = this.onSelect.bind(this)
@@ -34,53 +34,68 @@ class Home extends React.Component {
                 orgUnit: selected,
                 orgUnitId: selected.id
              })
+             this.props.history.push(`/plan${selected.path}`)
         }
+        // console.log('here is props at home', this.props)
+
+        ApiService.getMetaData().then( res => {
+            console.log("here is metadata", res)
+        })
+
     }
     getPrograms(id) {
+        var id =id;
         ApiService.getProgram(id).then(
             (result) => {
                 //    console.log("here is seleted", result);
-                this.setState({
-                    program: result.programs
-                })
-                console.log("here is result at pId com", this.state.program)
-                 if(this.state.program > 0){
-                let programId = this.state.program[0].id;
+                // this.setState({
+                //     program: result.programs
+                // })
+                var program =result.programs
+                // console.log("here is result at pId com", program)
+                 if(program.length > 0){
+                var programId = program[0].id;
                     ApiService.getProgramStage(programId).then( result => {
-                        this.setState({
-                            programStage: result.programStages 
-                            })
+                        // this.setState({
+                        //     programStage: result.programStages 
+                        //     })
+                    var programStage =result.programStages
                         //  console.log("here is reuslt of ps", result.programStages)
-                        console.log("here is result at pdId com", this.state.programStage[0].id)
-                        if(this.state.programStage > 0){
-                            let programStageId = this.state.programStage[0].id; 
+                        if(programStage.length > 0){
+                            var programStageId = programStage[0].id; 
                                 ApiService.getDataElements(programStageId).then( result => {
-                                    this.setState({programSection: result.programStageSections})
+                                     this.setState({
+                                         orgUnitId: id,
+                                         program: program,
+                                         programId: programId,
+                                         programStage: programStage,
+                                         programStageId: programStageId,
+                                         programSection: result.programStageSections
+                                        })
                                     // console.log("here is DE",  result.programStageSections)
-                                    console.log("here is set state", this.state)
+                                    // console.log("here is set state", this.state)
                                 })
                             }
                     })
-                }
+                 }
             },
             (error) => {
                 console.log("here is error", error);
             }
         )
     }
-
     render() {
-         console.log("here is state at home", this.state);
+        //  console.log("here is state at home", this.state);
         return (<>
             <div className="row">
                 <div className="sidebar font">
                     {/* <Link to={`/plan${this.state.orgUnit.path}`}> */}
-                    <NavLink className="nav-link" to={`/plan${this.state.orgUnit.path}`}>
+                    {/* <NavLink className="nav-link" to={`/plan${this.state.orgUnit.path}`}> */}
                         <OrgUnitTree
                             onSelect={this.onSelect}
                             onError={onError}
                         />
-                    </NavLink>
+                    {/* </NavLink> */}
                 </div>
                 <div className="main-div p-5">
                     <Dynamic data={this.state} />
@@ -90,4 +105,4 @@ class Home extends React.Component {
         );
     }
 }
-export default Home;
+export default withRouter(Home);

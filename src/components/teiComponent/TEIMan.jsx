@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import ShowTEI from './ShowTEI'
-import { BaseUrl } from '../../services/EventService'
 import { ApiService } from '../../services/apiService';
 import { payloadService } from '../../services/dataService';
 class TEIMain extends React.Component {

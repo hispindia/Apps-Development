@@ -5,10 +5,8 @@ import {
   Row,
   Input,
 } from "reactstrap";
-import { BrowserRouter as Router, Link, history, withRouter, NavLink } from 'react-router-dom';
-import { ApiService } from '../../services/apiService';
+import { NavLink } from 'react-router-dom';
 import { payloadService } from '../../services/dataService'
-import { useHistory } from 'react-router-dom';
 class DataElement extends React.Component {
   constructor(props) {
     super(props)
@@ -73,13 +71,13 @@ class DataElement extends React.Component {
 
   render() {
     // var programStageSections  = this.props.programStageSections.programStageSections
-    // console.log("here props for ps sec", this.props, this.state)
+  //  console.log("here props for ps sec", this.props.allTreeData, )
     const sectionHeader = () => {
-      if (this.props.allTreeData.programStageSections === undefined) {
+      if (this.props.allTreeData.loadingData.programSection === undefined) {
         let val = ['']
         return val
       } else {
-        let a = [...this.props.allTreeData.programStageSections]
+        let a = [...this.props.allTreeData.loadingData.programSection]
         let b = a.map((val, index1) =>
           <>
             <h6 key={index1}>{val.name}</h6>

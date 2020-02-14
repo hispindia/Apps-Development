@@ -1,31 +1,54 @@
 import React, { Component } from "react";
 import { Col, Input, Row, form } from "reactstrap";
 import ProgramStageData from "../LoadedComponent/programStageComponent";
-import { BaseUrl } from "../../services/EventService";
 import { ApiService } from '../../services/apiService'
 
 class ProgramData extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      orgUnit: '',
-      orgUnitId: '',
-      programId: '',
       goStatus: false,
-      programStage: ""
     };
     this.handleChange = this.handleChange.bind(this);
   }
+  static getDerivedStateFromProps(props) {
+    return {
+      orgUnit: props.programs,
+      orgUnitId: props.programs.orgUnitId,
+      programId: props.programs.programId,
+      programStage: props.programs.programStage,
+      programStageId: props.programs.programStageId,
+      programSection: props.programs.programSection,
+      orgUnitId: props.programs.orgUnitId
+    }
+  }
   handleChange(e) {
-    let id = e.target.value;
+    var id = e.target.value;
     if (id !== undefined) {
       this.setState({programId: id})
       ApiService.getProgramStage(id).then(
         result => {
+          var programStage = result.programStages
           // console.log("here is seleted", result.programStages);
           this.setState({
             programStage: result.programStages
           });
+          if(programStage.length > 0){
+              var programStageId = programStage[0].id; 
+              ApiService.getDataElements(programStageId).then( result => {
+                console.log("ok", id)
+                        let obj = {
+                          programId: id,
+                          programStage: programStage,
+                          programStageId: programStageId,
+                          programSection: result.programStageSections
+                         }
+                       replaceState(obj)
+                      
+                      //  console.log("here is DE",  result.programStageSections)
+                      console.log("here is set stateddddd", this.state)
+                  })
+              }
         },
         error => {
           console.log("here is seleted", error);
@@ -33,14 +56,9 @@ class ProgramData extends React.Component {
       );
     }
   }
-  static getDerivedStateFromProps(props) {
-    return {
-      orgUnit: props.programs,
-      orgUnitId: props.programs.orgUnitId,
-    }
-  }
+ 
   render() {
-     console.log("here is program Com", this.props);
+     console.log("here is program Com", this.props, this.state);
     const optionVal = () => {
       if (this.props.programs.program === undefined) {
         let val = [""];

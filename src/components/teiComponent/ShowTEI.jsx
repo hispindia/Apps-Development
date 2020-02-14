@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Table , Input, Label, Button} from 'reactstrap';
 import { ApiService } from '../../services/apiService';
-import { Link, NavLink } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 import {Col,Row} from "reactstrap";
 import  Alert from '../LoadingComponent/LoadingComponent'
 
@@ -12,7 +12,8 @@ class ShowTEI extends React.Component {
             check: false,
             payload: '',
             tei: '',
-            statusAlert: false
+            statusAlert: false,
+            flag: false
         }
     }
     markCheck(index) {
@@ -57,6 +58,7 @@ class ShowTEI extends React.Component {
                 }
                console.log("res", result)
             }, error => {
+                // this.setState({ statusAlert: true, flag: true });
                console.log(error)
             });
         })
@@ -64,7 +66,7 @@ class ShowTEI extends React.Component {
     }
 
     static getDerivedStateFromProps(props) {
-        console.log('here is me!!')
+        // console.log('here is me!!')
         return { 
             tei: props.teis.payload.tei,
             payload: props.teis.payload
@@ -107,7 +109,7 @@ class ShowTEI extends React.Component {
                     </Table>
                     <Row>
                     <Col md="auto"  sm={{ size: 10, offset: 1}}><Button color="primary" onClick={() => this.sendEvents()}> Submit
-                    { this.state.statusAlert ? <Alert /> : null }
+                    { this.state.statusAlert ? <Alert  flag={this.state.flag}/> :null }
                     </Button></Col>
                    </Row>
                 </div>
@@ -123,10 +125,10 @@ class ShowTEI extends React.Component {
         } 
         // console.log("here is data for event push", tei());
         return (<>
-         <Col> <NavLink className="nav-link" to="/"><Button color="danger">Back</Button></NavLink></Col>
+         <Col> <NavLink className="nav-link" to="/plan/wnDm6jbp27v"><Button color="danger">Back</Button></NavLink></Col>
          <div>{tei()}</div>
         </>
         );
     }
 }
-export default ShowTEI;
+export default withRouter(ShowTEI);
