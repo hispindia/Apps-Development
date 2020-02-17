@@ -16,7 +16,7 @@ class TEIMain extends React.Component {
             test = payload
         });
         this.setState({payload: test.payload})
-        //  console.log("here is payloaddghdf", this.state, test.payload)
+        console.log("here is payloaddghdf", this.state)
     }
     componentWillUnmount() {
         this.subscription.unsubscribe();
