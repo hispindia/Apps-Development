@@ -24,6 +24,7 @@ class DynamicData extends React.Component {
       error: null,
       dataValues: [],
       tei: [],
+      dataElementStatus: true,
       loader: true,
       Error: false,
       // value2:""
@@ -42,6 +43,9 @@ class DynamicData extends React.Component {
     ApiService.getMetaData().then( data => {
       console.log('here is metadata', data)
     })
+    // ApiService.getDetials().then( data => {
+    //   console.log('here is data Detaildasda', data)
+    // })
   }
   onSelect(selected) {
     $(".loaderPosition").hide();
@@ -73,7 +77,7 @@ class DynamicData extends React.Component {
                 }
                   this.setState({programRules:pRules})
                   pRules.forEach( ele => {
-                    console.log(ele.condition)
+                    // console.log(ele.condition)
                   })
                 console.log('program rules', pRules)
               })
@@ -92,8 +96,19 @@ class DynamicData extends React.Component {
                     porgramStageDateElement.push(element) 
                     }
                   })
+                     for( let setion of programStageSection){
+                        for(let dataElement of setion.dataElements){
+                          porgramStageDateElement.forEach(ele => {
+                            if(ele.dataElement.id === dataElement.id){
+                              dataElement.com ='*';
+                             // console.log('here is de',ele)
+                            }
+                          })
+                         // console.log('here is All', dataElement)
+                        }
+                     }
                   this.setState({porgramStageDateElement: porgramStageDateElement})
-                  // console.log("here i s", programStageSection, porgramStageDateElement)
+                  // console.log("here programStageSection", programStageSection, porgramStageDateElement)
                   let datas = {
                     program: programId,
                     ou: id
@@ -260,7 +275,7 @@ class DynamicData extends React.Component {
               }
             )
             ApiService.getDataElements(programStageId).then(result => {
-              // console.log("ok", id,programStage, result.programStageSections)
+              // console.log("ok", result.programStageSections)
               this.setState({
                 programId: id,
                 programStage: programStage,
@@ -349,37 +364,88 @@ class DynamicData extends React.Component {
     arr.push(obj);
     let pVar = this.state.programRulesVariables;
     let pR = this.state.programRules;
+    let programSection = this.state.programSection;
+    console.log('here is program section',programSection)
     pVar.forEach( ele =>{
       if(ele.dataElement !== undefined){
         if(ele.dataElement.id === arr[0].id){
-           obj.proVarName = ele.dataElement.name;
+           let proVarName = ele.name;
+          //  console.log('here is proVarName',ele.name);
             arr.push(obj);
-          
+            pR.forEach(ele =>{
+              let condition =ele.condition;
+              const variableDuplicated = condition.match(/#\{.*?\}/g)
+              if(variableDuplicated !== null){
+                // console.log('variableDuplicated',variableDuplicated);
+                const variables = []
+                if (!variableDuplicated) console.log(condition);
+                variableDuplicated.forEach(duplicated => {
+                    if (variables.indexOf(duplicated) === -1)
+                        variables.push(duplicated)
+                })
+                variables.forEach( variable => {
+                    const name = variable.substring(2, variable.length - 1);
+                    if(name === proVarName ){
+                        let c = ele.condition;
+                        let val = c.split("'")
+                        val.forEach( el => {
+                          if(el === 'Formal'){
+                            let actions = ele.programRuleActions;
+                            for( let setion of programSection){
+                              for(let dataElement of setion.dataElements){
+                                actions.forEach( action =>{
+                                  if(action.programRuleActionType === "HIDEFIELD" ){
+                                    if(action.dataElement.id === dataElement.id){
+                                      dataElement = ''
+                                      console.log('here is el', action.dataElement.id)
+                                    }
+
+                                  }
+                                })
+                                // porgramStageDateElement.forEach(ele => {
+                                //   if(ele.dataElement.id === dataElement.id){
+                                //     console.log('here is de',ele)
+                                //   }
+                                // })
+                                // console.log('here is All', dataElement)
+                              }
+                           }
+
+                           console.log('here is All', programSection) 
+                          }
+                        })
+                      //  console.log('here is var',val);
+                      // console.log("here is ele of the sdfgasf", ele)
+                      }
+                     
+                })
+              }            
+            })
         }
       }
     })
-    pR.forEach(ele =>{
-      let condition =ele.condition;
-      const variableDuplicated = condition.match(/#\{.*?\}/g)
-      if(variableDuplicated !== null){
-        console.log(variableDuplicated);
-        const variables = []
-        if (!variableDuplicated) console.log(condition);
-        variableDuplicated.forEach(duplicated => {
-            if (variables.indexOf(duplicated) === -1)
-                variables.push(duplicated)
-        })
-        variables.forEach( variable => {
-            const name = variable.substring(2, variable.length - 1);
-            pVar.forEach( element => {
-              if(element.name === name ){
-              console.log('here is var',element.name, name );
-              console.log("here is ele of the sdfgasf", ele)
-              }
-            })
-        })
-      }            
-    })
+    // pR.forEach(ele =>{
+    //   let condition =ele.condition;
+    //   const variableDuplicated = condition.match(/#\{.*?\}/g)
+    //   if(variableDuplicated !== null){
+    //     console.log('variableDuplicated',variableDuplicated);
+    //     const variables = []
+    //     if (!variableDuplicated) console.log(condition);
+    //     variableDuplicated.forEach(duplicated => {
+    //         if (variables.indexOf(duplicated) === -1)
+    //             variables.push(duplicated)
+    //     })
+    //     variables.forEach( variable => {
+    //         const name = variable.substring(2, variable.length - 1);
+    //         pVar.forEach( element => {
+    //           if(element.name === name ){
+    //           console.log('here is var',element.name, name );
+    //           console.log("here is ele of the sdfgasf", ele)
+    //           }
+    //         })
+    //     })
+    //   }            
+    // })
     console.log('here is name', arr,pVar, pR )
 
   }
@@ -460,7 +526,13 @@ class DynamicData extends React.Component {
         let val = ['']
         return val
       } else {
-        let a = [...this.state.programSection]
+        let a = [...this.state.programSection];
+        // a.forEach( element => {
+        //   let id =element.id
+        //   ApiService.getDetials(id).then( data => {
+        //     console.log('here is data Detaildasda', data)
+        //   })
+        // })
         let b = a.map((val, index1) =>
           <>
           <div>
