@@ -1,0 +1,24 @@
+.font {
+    font-size: 14px;
+  }
+  .bg {
+        background-color: #d9edf7;
+  }
+  .box {
+    background-color: #1a78a7;
+  }
+  .loaderPosition{
+    text-align: center;
+    margin-top: 200px;
+  }
+  .help-block{
+    color: rgb(253, 13, 5);
+  }
+  /* .sidebars {
+    position: absolute;
+    padding: 10px;
+    background-color: #ccc;
+    height: 300px;
+    width: 100px;
+    float: left;
+} */
