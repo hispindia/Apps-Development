@@ -1,29 +1,50 @@
-# Apps-Development
-HISP INDIA External Apps Development
+# Apps and libs for the AMR Surveillance System
 
+## Apps
 
- # Link of other external Apps developed:
+-   [Data Entry](./apps/entry)
+-   [Isolate Transfer](./apps/isolate)
+-   [RC - Isolate Transfer](./apps/isolate-rc)
+-   [NC - Isolate Transfer](./apps/isolate-nc)
 
- 1# Tracker data approval app developed for UPHMIS
-    https://github.com/hispindia/dhis-tracker-data-approval-app
+## Libs
 
- 2# e-Aushadhi Stock Data Import App developed for malaria
-    https://github.com/hispindia/dhis-app-excel-import/tree/Aggrigate-Data-Excel-Import-App-Without-Mapping
-	
- 3# Aggregate data excel import app developed for maharashtra with multiple OU and multiple Data Element
-    https://github.com/hispindia/dhis-app-excel-import/tree/Aggregate-Data-Excel-Import-App-MultipleOU-MultipleDE
- 
- 4# Excel import app for multiple stages version 2.27
-    https://github.com/hispindia/dhis-app-excel-import/tree/2.27-MWMIS-Odisha-Multistage-Excel-Import 
-	
- 5# Excel import app for multiple stages version 2.26
-    https://github.com/hispindia/dhis-app-excel-import/tree/2.26-AES-Multistage-Excel-Import
-	
- 6# Excel import app for aggrigate & tracker data version 2.27
-    https://github.com/hispindia/dhis-app-excel-import/tree/csv-2.27
-    
- 7# Tracker and event data exporter app ( generic, msf, tibet branches )  
-    https://github.com/hispindia/tracker-data-exporter-app/
-	
- 8# Intractive Dashboard app ( For ICMR-GBD )  
-    https://github.com/hispindia/interactive-dashboard-vuejs
+-   [@hisp-amr/api](./libs/api) ([npm](https://www.npmjs.com/package/@hisp-amr/api))
+-   [@hisp-amr/app](./libs/app)
+-   [@hisp-amr/icons](./libs/icons)
+-   [@hisp-amr/inputs](./libs/inputs)
+-   [@hisp-amr/org-unit-tree](./libs/org-unit-tree) ([npm](https://www.npmjs.com/package/@hisp-amr/org-unit-tree))
+-   [@hisp-amr/rule-engine](./libs/rule-engine)
+
+## Installation
+
+```bash
+yarn install
+```
+
+## Development
+
+You need to log in to the test server: https://amrtest.icmr.org.in/amr
+
+```bash
+yarn start
+```
+
+You may have to F5 once.
+
+## Building
+
+```bash
+yarn build
+```
+
+## Versioning
+
+```bash
+yarn bump        # 1.1.1 -> 1.1.2
+yarn bump minor  # 1.1.1 -> 1.2.0
+yarn bump major  # 1.1.1 -> 2.0.0
+```
+
+## App icons
+App icons are in [/app-icons](./app-icons).
