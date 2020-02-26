@@ -17,6 +17,7 @@ export const setProgram = program => (dispatch, getState) => {
             organism: '',
             sampleDate: '',
             organisms,
+            defaultProgram:"",
             valid: false,
         })
     )
@@ -27,9 +28,13 @@ export const setPanelValue = (key, value) => (dispatch, getState) => {
         program,
         programStage,
         organism,
+        organisms,
         sampleDate,
     } = getState().data.panel
-    const values = { program, programStage, organism, sampleDate }
+
+    let organismValue = organisms ? organism : "noOrganismPresent";
+
+    const values = { program, programStage, organismValue, sampleDate }
 
     if (values[key] === value) return
     const valid = !Object.values({ ...values, [key]: value }).includes('')
