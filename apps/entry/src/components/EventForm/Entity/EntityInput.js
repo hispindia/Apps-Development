@@ -12,19 +12,30 @@ const Padding = styled.div`
  * Entity information section.
  */
 export const EntityInput = ({ attribute }) => {
+    console.log('here is attributes', attribute)
     const dispatch = useDispatch()
     const { optionSets } = useSelector(state => state.metadata)
     const { id: entityId, editing } = useSelector(state => state.data.entity)
     const id = attribute.trackedEntityAttribute.id
+    console.log('here is id', id)
+
     const value = useSelector(state => state.data.entity.values[id])
+    console.log('here is value', value)
+
     const unique = useSelector(state => state.data.entity.uniques[id])
+    console.log('here is unique', unique)
+
     const modal = useSelector(state => state.data.entity.modal)
+    console.log('here is modal', modal)
+
     const disabled = entityId && !editing ? true : false
+    console.log('here is disabled', disabled)
 
     /**
      * Called on every input field change.
      */
     const onChange = (n, v) => {
+        console.log('here is onchange input', n, v)
         if (v !== value) dispatch(setEntityValue(n, v))
     }
 

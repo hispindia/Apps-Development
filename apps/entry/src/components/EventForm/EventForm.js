@@ -15,6 +15,7 @@ import {
 } from '@hisp-amr/app'
 import { Entity } from './Entity'
 import { EventButtons } from './EventButtons'
+import Events from './Entity/EventList'
 
 export const EventForm = ({ history, match }) => {
     const [isFirstRender, setIsFirstRender] = useState(true)
@@ -22,11 +23,10 @@ export const EventForm = ({ history, match }) => {
     const error = useSelector(state => state.data.status) === ERROR
     const panelValid = useSelector(state => state.data.panel.valid)
     const orgUnit = match.params.orgUnit
-    const event = match.params.event
-
+    const teiId = match.params.teiId
     useEffect(() => {
         dispatch(resetData())
-        if (event) dispatch(getExistingEvent(orgUnit, event))
+        if (teiId) dispatch(getExistingEvent(orgUnit, teiId))
         else dispatch(initNewEvent(orgUnit))
         setIsFirstRender(false)
     }, [])
@@ -36,7 +36,7 @@ export const EventForm = ({ history, match }) => {
     }, [error])
 
     useEffect(() => {
-        if (!isFirstRender && panelValid && !event) dispatch(createNewEvent())
+        if (!isFirstRender && panelValid) dispatch(createNewEvent())
     }, [panelValid])
 
     const onDeleteSucccess = () => history.goBack()
@@ -48,11 +48,12 @@ export const EventForm = ({ history, match }) => {
             <DeleteModal type="record" onDeleteSucccess={onDeleteSucccess} />
             <TitleRow title="Record" history={history} />
             <form autoComplete="off">
-                <Entity showEdit={!event && !panelValid} />
-                <Panel showEdit={!event && panelValid} />
+                <Entity showEdit={!panelValid} />
+                <Events />
+                <Panel showEdit={panelValid} />
                 <Event />
             </form>
-            <EventButtons history={history} existingEvent={event} />
+            {/* <EventButtons history={history} existingEvent={event} /> */}
         </MainSection>
     )
 }

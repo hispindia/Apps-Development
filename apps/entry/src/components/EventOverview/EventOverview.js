@@ -35,8 +35,13 @@ export const EventOverview = ({ match, history }) => {
     /**
      * Called when table row is clicked.
      */
-    const onEventClick = row =>
-        history.push(`/orgUnit/${row[5]}/event/${row[6]}`)
+    // const onEventClick = row =>
+    //     history.push(`/orgUnit/${row[6]}/event/${row[7]}`)
+
+    const onEventClick = row => {
+        console.log(row)
+        history.push(`/orgUnit/${row[6]}/trackedEntityInstances/${row[7]}`)
+    }
 
     /**
      * On table add click.

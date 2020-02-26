@@ -14,6 +14,7 @@ import { entityRules } from 'helpers'
 export const getEntity = id => async (dispatch, getState) => {
     dispatch(createAction(SET_MODAL_LOADING, true))
     const optionSets = getState().metadata.optionSets
+    console.log('here is optionSetsssssss', optionSets)
     const { trackedEntityTypeAttributes, rules } = getState().metadata.person
     const uniques = getState().data.entity.uniques
     Object.keys(uniques).forEach(id => (uniques[id] = true))
@@ -47,8 +48,11 @@ export const getEntity = id => async (dispatch, getState) => {
 }
 
 export const setEntityValue = (key, value) => (dispatch, getState) => {
+    console.log('here is setEntityValue', key, value)
     const optionSets = getState().metadata.optionSets
+    console.log('here is optionSets', optionSets)
     const state = getState()
+    console.log('here is state', state)
     const [values, attributes, valid] = entityRules(
         { ...state.data.entity.values, [key]: value },
         state.data.entity.attributes,
@@ -58,6 +62,7 @@ export const setEntityValue = (key, value) => (dispatch, getState) => {
             uniques: state.data.entity.uniques,
         }
     )
+    console.log('here is stateedddd', values, attributes, valid)
     dispatch(createAction(SET_ENTITY_VALUE, { values, attributes, valid }))
 }
 

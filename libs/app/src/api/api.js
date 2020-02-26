@@ -1,5 +1,6 @@
 import { get, post, del, put, request, postEvent } from '@hisp-amr/api'
 import { getRecord } from './getRecord'
+import { getAllEvents, getPersonVal } from './getAllEvents'
 import {
     ORGANISM_ELEMENT,
     SAMPLE_ID_ELEMENT,
@@ -20,13 +21,15 @@ import * as DUPLICACY from 'constants/duplicacy'
  * @returns {boolean} - False if unique, tracked entity instance ID otherwise.
  */
 export const checkUnique = async (property, value, ou) => {
-    const entities = (await get(
-        request('trackedEntityInstances', {
-            fields: 'trackedEntityInstance',
-            filters: `${property}:eq:${value}`,
-            options: [`ou=${ou}`, `trackedEntityType=${PERSON_TYPE}`],
-        })
-    )).trackedEntityInstances
+    const entities = (
+        await get(
+            request('trackedEntityInstances', {
+                fields: 'trackedEntityInstance',
+                filters: `${property}:eq:${value}`,
+                options: [`ou=${ou}`, `trackedEntityType=${PERSON_TYPE}`],
+            })
+        )
+    ).trackedEntityInstances
     return !entities
         ? false
         : entities.length > 0
@@ -40,12 +43,15 @@ export const checkUnique = async (property, value, ou) => {
  * @returns {Object} Values.
  */
 export const getPersonValues = async entityId => {
-    const attributes = (await get(
-        request(`trackedEntityInstances/${entityId}`, {
-            fields: 'attributes[code,displayName,valueType,attribute,value]',
-            options: ['ouMode=ALL'],
-        })
-    )).attributes
+    const attributes = (
+        await get(
+            request(`trackedEntityInstances/${entityId}`, {
+                fields:
+                    'attributes[code,displayName,valueType,attribute,value]',
+                options: ['ouMode=ALL'],
+            })
+        )
+    ).attributes
 
     if (!attributes) return null
 
@@ -127,12 +133,29 @@ export const newRecord = async (
 
     return { programStage, eventValues, status, eventId, entityId }
 }
+// export const existingRecord = async (programs, ou, teiId) => {
+//     // const events = await getAllEvents(ou,teiId);
+//     // console.log("here is all events", events);
+//     const entityValues = await getPersonValues(teiId)
+//     console.log('here is entity values', entityValues);
+//     return {
+//          entityValues,
+//     }
+// }
 
-export const existingRecord = async (programs, eventId) => {
+export const existingRecord = async (programs, ou, teiId) => {
+    // console.log('here is id ou and teid',programs, ou, teiId)
+    const allEvents = await getAllEvents(ou, teiId)
+    console.log('here is all events', allEvents)
+    const eventList = allEvents.events
+    const eventId = allEvents.events[0].event
     const record = await getRecord(programs, eventId)
-    const entityValues = await getPersonValues(record.entityId)
-
+    console.log('here is entity values programs', record)
+    const entityValues = await getPersonValues(teiId)
+    // const entityVal = await getPersonVal(teiId);
+    // console.log('here is entity values', entityVal);
     return {
+        eventList,
         ...record,
         entityValues,
     }
@@ -213,11 +236,13 @@ export const addEvent = async (
 
     // Enrolling if not already enrolled.
     let enrollments = []
-    enrollments = (await get(
-        request(`trackedEntityInstances/${entityId}`, {
-            fields: 'enrollments[program]',
-        })
-    )).enrollments
+    enrollments = (
+        await get(
+            request(`trackedEntityInstances/${entityId}`, {
+                fields: 'enrollments[program]',
+            })
+        )
+    ).enrollments
     if (!enrollments.find(enrollment => enrollment.program === programId)) {
         await post('enrollments', {
             trackedEntityInstance: entityId,
@@ -270,14 +295,16 @@ export const isDuplicateRecord = async ({
     organism,
     sampleId,
 }) => {
-    let events = (await get(
-        request('events', {
-            order: 'created:asc',
-            fields: 'event,dataValues[dataElement,value]',
-            filters: `${SAMPLE_ID_ELEMENT}:eq:${sampleId}`,
-            options: [`trackedEntityInstance=${entity}`],
-        })
-    )).events
+    let events = (
+        await get(
+            request('events', {
+                order: 'created:asc',
+                fields: 'event,dataValues[dataElement,value]',
+                filters: `${SAMPLE_ID_ELEMENT}:eq:${sampleId}`,
+                options: [`trackedEntityInstance=${entity}`],
+            })
+        )
+    ).events
 
     if (!events) return false
     if (events.length < 1) return false

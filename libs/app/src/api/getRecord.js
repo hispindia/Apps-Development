@@ -2,6 +2,7 @@ import { getProgramStage } from './helpers'
 import { getEventValues } from './getEventValues'
 
 export const getRecord = async (programs, eventId, isIsolate) => {
+    console.log('here is id ou and teid', programs, eventId, isIsolate)
     const {
         eventValues: initialValues,
         programId: program,

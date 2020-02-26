@@ -61,6 +61,7 @@ const INITIAL_STATE = {
 }
 
 export const data = (state = INITIAL_STATE, { type, payload }) => {
+    console.log('here is data playload', payload, type)
     switch (type) {
         case SET_ENTITY:
             return {
@@ -180,6 +181,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
             return INITIAL_STATE
         case EXISTING_DATA_RECEIVED:
             return {
+                eventList: payload.eventList,
                 entity: {
                     values: payload.entityValues,
                     id: payload.entityId,

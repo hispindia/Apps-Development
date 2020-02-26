@@ -67,7 +67,8 @@ export const useEvents = status => {
     useEffect(() => {
         const getData = async () => {
             try {
-                const events = await getTEI(selected);
+                const events = await getTEI(selected)
+                console.log('here is tei Event', events, selected)
                 dispatcher({
                     type: NEW_ROWS,
                     rows: events,

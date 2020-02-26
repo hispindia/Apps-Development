@@ -82,7 +82,14 @@ const getCode = (orgUnit, orgUnits) => {
     }
 }
 
-export const getExistingEvent = (orgUnit, eventId) => async (
+// export const getExistingEvent = (orgUnit, tieId) => async (
+//         dispatch,
+//         getState
+//     )=>{
+
+//     }
+
+export const getExistingEvent = (orgUnit, tieId) => async (
     dispatch,
     getState
 ) => {
@@ -91,8 +98,8 @@ export const getExistingEvent = (orgUnit, eventId) => async (
     const optionSets = state.metadata.optionSets
     const { trackedEntityTypeAttributes, rules } = state.metadata.person
     try {
-        const data = await existingRecord(programs, eventId)
-
+        const data = await existingRecord(programs, orgUnit, tieId)
+        console.log('here is data from existing ', data)
         const [entityValues, attributes] = entityRules(
             { ...state.metadata.person.values, ...data.entityValues },
             trackedEntityTypeAttributes,
