@@ -634,7 +634,7 @@ export class SubOrganisationUnitsComponent implements OnInit {
     var lastDay =date.getFullYear() + "-" + Number(date.getMonth()+1) + "-" +new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
     var urls = window.location.href;
     var params = urls.split('/');
-    var ou = params[9];
+    var ou = params[10];
       let eventUrl = "events.json?program=lg2nRxyEtiH&startDate="+firstDay+"&endDate="+lastDay+"&orgUnit="+ou+"&ouMode=DESCENDANTS&paging=false";
       this.http.get(eventUrl).subscribe( data => {
        // console.log("here is EVENT data", data);
