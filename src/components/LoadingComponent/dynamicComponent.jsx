@@ -7,7 +7,8 @@ import { Col, Row, Input, Button } from "reactstrap";
 import { payloadService } from '../../services/dataService';
 import Loader from 'react-loader-spinner';
 import $ from "jquery";
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+// import StickyBox from "react-sticky-box/dist/esnext";
 import './loadingCom.css'
 const onError = error => console.error(error)
 class DynamicData extends React.Component {
@@ -391,27 +392,41 @@ class DynamicData extends React.Component {
                         val.forEach( el => {
                           if(el === 'Formal'){
                             let actions = ele.programRuleActions;
-                            for( let setion of programSection){
-                              for(let dataElement of setion.dataElements){
-                                actions.forEach( action =>{
+                            var newData =[];
+                            for( let section of programSection){
+                              // console.log('here is desdfasdfasdfsa', section.dataElements)
+                                for( let i=0; i<section.dataElements.length; i++){
+                                  console.log(section.dataElements[i].id)
+                                   for( let action of actions){
                                   if(action.programRuleActionType === "HIDEFIELD" ){
-                                    if(action.dataElement.id === dataElement.id){
-                                      dataElement = ''
-                                      console.log('here is el', action.dataElement.id)
+                                      // console.log(action)
+
+                                     if( section.dataElements[i].id === action.dataElement.id){
+                                        console.log('here is de', action.dataElement.id, section.dataElements[i].id)
+                                        section.dataElements[i]='';
+                                  //     }else {
+                                  //       // newData.push(dataElements)
+                                     }
                                     }
-
                                   }
-                                })
-                                // porgramStageDateElement.forEach(ele => {
-                                //   if(ele.dataElement.id === dataElement.id){
-                                //     console.log('here is de',ele)
-                                //   }
-                                // })
-                                // console.log('here is All', dataElement)
-                              }
-                           }
+                                }
 
-                           console.log('here is All', programSection) 
+
+                              // for(let dataElements of section.dataElements){
+                              //   for( let action of actions){
+                              //     if(action.programRuleActionType === "HIDEFIELD" ){
+                              //       if(action.dataElement.id === dataElements.id){
+                              //         console.log('here is de', action.dataElement.id, dataElements.id)
+                              //         dataElements='';
+                              //       }else {
+                              //         newData.push(dataElements)
+                              //       }
+                              //     }
+                              //   }
+                              // }
+                            }
+                            console.log('here is All', programSection) 
+
                           }
                         })
                       //  console.log('here is var',val);
@@ -566,9 +581,10 @@ class DynamicData extends React.Component {
                        return (
                         <>
                         <Col md={3}><div className="font">{ele.name}</div></Col>
-                        <Col md={3}>
+                        <Col md={3}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <Input type="radio" name="radio1" onChange={(e)=>changeRadioBtn(index1, index2, e)} /> Yes &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                         <Input type="radio" name="radio2" onChange={(e)=>changeRadioBtn(index1, index2, e)} />  No
+                         <br />
                          <br />
                          </Col>
                          </>
@@ -589,8 +605,9 @@ class DynamicData extends React.Component {
                   return (
                    <>
                    <Col md={3}><div className="font">{ele.name}</div></Col>
-                   <Col md={3}>
+                   <Col md={3}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                    <Input type="checkbox" onChange={(e)=>checkBoxStatus(index1, index2, e)}/>
+                    <br />
                     <br />
                    </Col>
                     </>
@@ -648,12 +665,16 @@ class DynamicData extends React.Component {
       />
       </div>
       <div className="row">
+     
         <div className="sidebar font sidebars">
           <OrgUnitTree
             onSelect={this.onSelect}
             onError={onError}
           />
         </div>
+        {/* <StickyBox className="p-5 shadow-lg p-5 mb-5 bg-white rounded box" offsetTop={10} offsetBottom={10}>
+         here is me for test!!!
+      </StickyBox> */}
         <div className="main-div">
           <div className="p-5 shadow-lg p-3 mb-3 bg-white rounded box">
             <Row form>

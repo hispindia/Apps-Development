@@ -1,2 +1,2 @@
 
- export const BaseUrl ='http://localhost:8090/plan'
+ export const BaseUrl ='https://fpanmis.org/fpanpro'
