@@ -1,12 +1,10 @@
 # Apps-Development
 HISP INDIA External Apps Development 
 
-
 Skeleton app base on react
 
 # Installation
    yarn global add @dhis2/cli
-
 
    yarn install
 # Development
