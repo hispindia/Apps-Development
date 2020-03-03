@@ -34,3 +34,4 @@ build
 .d2
 node_modules
 **/rebel.xml
+yarn.lock
