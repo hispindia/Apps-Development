@@ -125,7 +125,7 @@ class ShowTEI extends React.Component {
         } 
         // console.log("here is data for event push", tei());
         return (<>
-         <Col> <NavLink className="nav-link" to="/plan/wnDm6jbp27v"><Button color="danger">Back</Button></NavLink></Col>
+         <Col> <NavLink className="nav-link" to="/"><Button color="danger">Back</Button></NavLink></Col>
          <div>{tei()}</div>
         </>
         );

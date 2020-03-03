@@ -1,2 +1,2 @@
 
- export const BaseUrl ='https://fpanmis.org/fpanpro'
+ export const BaseUrl ='http://127.0.0.1:8090/ippf'

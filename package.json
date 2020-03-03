@@ -1,5 +1,5 @@
 {
-  "name": "event-push",
+  "name": "CSC-Dataentry",
   "version": "1.0.0",
   "description": "",
   "main": "App.js",
@@ -11,7 +11,7 @@
     "company": "HISP India"
   },
   "manifest.webapp": {
-    "name": "Event-Push",
+    "name": "CSC-Dataentry",
     "description": "Basic layout for react app develop.",
     "appType": "APP",
     "activities": {

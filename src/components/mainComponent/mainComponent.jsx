@@ -13,9 +13,11 @@ class Main extends Component {
                     {/* <Route  path="/loadedValue" component={ShowTEI} /> */}
                     <Route path = "/" component = {DynamicData} />
                     {/* <Route path="/:id" component={Home} /> */}
-                    <Route path="/plan/:id" component={DynamicData} />
+                    <Route path="/:id" component={DynamicData} />
+                    /*<Route path="/plan/:id" component={DynamicData} />
                     <Route exact path="/plan/wnDm6jbp27v" component={Home} />
                     <Redirect  to="/plan/wnDm6jbp27v" />
+                    */
                 </Switch>
         );
     }

@@ -54,8 +54,8 @@ class DynamicData extends React.Component {
     let id = selected.id;
     if (id != undefined) {
       this.getPrograms(selected);
-      // console.log("here is the data", selected);
-      this.props.history.push(`/plan${selected.path}`)
+      console.log("here is the data", selected);
+      //this.props.history.push(`${selected.path}`)
     }
   }
   getPrograms(selected) {
@@ -582,8 +582,8 @@ class DynamicData extends React.Component {
                         <>
                         <Col md={3}><div className="font">{ele.name}</div></Col>
                         <Col md={3}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <Input type="radio" name="radio1" onChange={(e)=>changeRadioBtn(index1, index2, e)} /> Yes &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                        <Input type="radio" name="radio2" onChange={(e)=>changeRadioBtn(index1, index2, e)} />  No
+                        <Input type="radio" name={ele.id} onChange={(e)=>changeRadioBtn(index1, index2, e)} /> Yes &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                        <Input type="radio" name={ele.id} onChange={(e)=>changeRadioBtn(index1, index2, e)} />  No
                          <br />
                          <br />
                          </Col>
