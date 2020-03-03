@@ -12,8 +12,6 @@ Skeleton app base on react
 # Development
  you need to log in server ( mention in .env.development) 
 
-
- 
  for eaxample  (http://localhost:3000/)
 
 
