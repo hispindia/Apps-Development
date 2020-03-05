@@ -333,12 +333,13 @@ dhis2API.event.prototype.excelImportPopulator = function(header,data,tei){
 var eventDate = data['Inspection Date (yyyy-mm-dd)'];
 var date = eventDate.split("/");
 var reqDate = date.join("-");
- this.eventDate = reqDate;
+this.eventDate = reqDate;
     codeId.forEach( (element, index) => {
         if( element[0] === data['Code']){
             this.orgUnit = element[1];
         }
     });
+
     if (tei){
         if (tei.length >0){
             this.tei = tei[0].trackedEntityInstance;
@@ -398,32 +399,69 @@ var reqDate = date.join("-");
 }
 
 dhis2API.event.prototype.POST = function(successCallback,errorCallback,index){
-    var event = this.getAPIObject()
-    var def = $.Deferred();
+    var event = this.getAPIObject();
+    var orgUnit = this.getAPIObject().orgUnit;
+    var eventDate = this.getAPIObject().eventDate;
+    var date =eventDate.split('-');
+    var year = date[0];
+    var month = date[1];
+    var lastday = getLstDayOfMonFnc(new Date(date[0], date[1],date[2]));
+    var firstday = 01;
+    var startDate = year + '-' + month + '-' +firstday;
+    var endDate= year + '-' + month + '-' +lastday;
+    function getLstDayOfMonFnc(date) {
+        return new Date(date.getFullYear(), date.getMonth(), 0).getDate()
+      }
+     var def = $.Deferred(); 
     $.ajax({
-        type: "POST",
+        type: "GET",
         dataType: "json",
         async : true,
         contentType: "application/json",
-        url: '../../events',
-        data: JSON.stringify(event),
+        url: '../../events.json?orgUnit='+orgUnit+'&startDate='+startDate+'&endDate='+endDate+'&fields=event,eventDate,dataValues&paging=false',
         success: function(response){
-            response.importStat = {};
-            response.importStat.index=index;
-            response.importStat.metadata = event;
-            response.importStat.domain = DOMAIN_EVENT;
-
-            successCallback(response);
+        var eventLength =response.events.length;
+        if(eventLength>0){
+          var response ={ importStat: {} }
+           response.status = "OK"
+           response.message= "Already exist Event.";
+           response.importStat.domain = 'ev';
+           successCallback(response)
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                async : true,
+                contentType: "application/json",
+                url: '../../events',
+                data: JSON.stringify(event),
+                success: function(response){
+                    response.importStat = {};
+                    response.importStat.index=index;
+                    response.importStat.metadata = event;
+                    response.importStat.domain = DOMAIN_EVENT;
+                    successCallback(response);
+                },
+                error: function(response){
+                    response.importStat = {};
+                    response.importStat.index=index;
+                    response.importStat.metadata = (event);
+                    response.importStat.domain = DOMAIN_EVENT;
+                    errorCallback(response);
+                }
+            });
+        }
         },
         error: function(response){
-            response.importStat = {};
-            response.importStat.index=index;
-            response.importStat.metadata = (event);
-            response.importStat.domain = DOMAIN_EVENT;
-
-            errorCallback(response);
+                response.importStat = {};
+                response.importStat.index=index;
+                response.importStat.metadata = (event);
+                response.importStat.domain = DOMAIN_EVENT;
+                errorCallback(response);
         }
     });
+   
 
     return def;
 }
@@ -572,6 +610,8 @@ dhis2API.dataElement.prototype.getAPIObject = function(){
 dhis2API.dataElement.prototype.POST = function(successCallback,errorCallback,index){
     var de = this.getAPIObject()
     var def = $.Deferred();
+
+    
 
     $.ajax({
         type: "POST",

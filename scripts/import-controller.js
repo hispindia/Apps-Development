@@ -118,8 +118,6 @@ MetadataService.getRootOrgUnit().then(function(orgUnits){
                     }
                 }
             }
-
-
             summaryItem.status = findStatus(response);
             summaryItem.row = importStat.index;
 
