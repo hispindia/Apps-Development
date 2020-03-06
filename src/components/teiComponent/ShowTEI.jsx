@@ -5,6 +5,7 @@ import { NavLink, withRouter } from "react-router-dom";
 import {Col,Row} from "reactstrap";
 import  Alert from '../LoadingComponent/LoadingComponent'
 
+
 class ShowTEI extends React.Component {
     constructor(props) {
         super(props);
@@ -13,17 +14,28 @@ class ShowTEI extends React.Component {
             payload: '',
             tei: '',
             statusAlert: false,
-            flag: false
+            flag: false,
+            buttonStatus:true,
+            teiAttributeHeader: []
         }
     }
     markCheck(index) {
+        //this.setState({buttonStatus : false});
         let changedTei = this.state.tei;
-        changedTei[index].checked = !changedTei[index].checked        
+        changedTei[index].checked = !changedTei[index].checked;
         document.querySelector("#checkbox-head").checked = false;
-        this.setState({ tei: changedTei, check:false })
+        this.setState({ tei: changedTei, check:false });
+
+        if( changedTei[index].checked ){
+            this.setState({buttonStatus : false});
+        }
+        else{
+            this.setState({buttonStatus : true});
+        }
         console.log("helo", changedTei)
     }
      markCheckll() {
+        //this.setState({buttonStatus : false});
         var headCheckBox = document.querySelector("#checkbox-head").checked;
         let changedTei = this.state.tei.map(teis => {
             teis.checked = headCheckBox;
@@ -34,8 +46,20 @@ class ShowTEI extends React.Component {
             box.checked = headCheckBox;
         })
         this.setState({ tei: changedTei, check: headCheckBox })
+
+        if( headCheckBox ){
+            this.setState({buttonStatus : false});
+        }
+         else{
+            this.setState({buttonStatus : true});
+        }
+    }
+    back(){
+        //this.props.history.goBack();
+        window.history.back();
     }
     sendEvents() {
+        console.log("state",this.props)
         let selectedTEI = this.state.tei.filter(tei => tei.checked);
         selectedTEI.forEach( ele => {
             let tei = ele.tei;
@@ -52,7 +76,7 @@ class ShowTEI extends React.Component {
                console.log("here is pay load", event)
             ApiService.postEvent(event).then(result => {
                 if(result.httpStatus == 'OK'){
-                    this.setState({ statusAlert: true });
+                    this.setState({ flag: true });
                 }
                console.log("res", result)
             }, error => {
@@ -67,11 +91,14 @@ class ShowTEI extends React.Component {
         // console.log('here is me!!')
         return { 
             tei: props.teis.payload.tei,
+            teiAttributeHeader: props.teis.payload.teiAttributeHeader,
             payload: props.teis.payload
+
         };
     }
 
     render() {
+        const { history } = this.props;
         // console.log('here is props at  showTEI', this.props.teis.payload.tei, this.state, this.state.payload.tei);
         let checkBoxHead = this.state.check ? "Unselect All" : "Select All";
         const tei =  () => {
@@ -84,10 +111,9 @@ class ShowTEI extends React.Component {
                         <thead>
                             <tr>
                                 <th>Sr. NO.</th>
-                                <th>Beneficiary Id</th>
-                                <th>Name</th>
-                                <th>Gender</th>
-                                <th>Project Donor</th>                           
+                                {this.state.teiAttributeHeader.map((teiAttrName, index) => (
+                                     <th>{teiAttrName}</th>
+                                  ))}
                                 <th><Label> <Input type="checkbox" id="checkbox-head" onClick={() => this.markCheckll()} />  {checkBoxHead}</Label></th>
                             </tr>
                         </thead>
@@ -95,10 +121,9 @@ class ShowTEI extends React.Component {
                             {this.state.tei.map((tei, index) => (
                                 <tr>
                                     <td>{index+1}</td>
-                                    <td> {tei["Beneficiary ID"]} </td>
-                                    <td> {tei.Name} </td>
-                                    <td> {tei.Gender} </td>
-                                    <td> {tei["Project Donor"]} </td>
+                                    {this.state.teiAttributeHeader.map((teiAttrName, index) => (
+                                        <td>{tei[teiAttrName]}</td>
+                                     ))}
                                     <td> <Input type="checkbox" onClick={() => this.markCheck(index)} /> </td>
                                 </tr>
                             ))}
@@ -106,8 +131,8 @@ class ShowTEI extends React.Component {
     
                     </Table>
                     <Row>
-                    <Col md="auto"  sm={{ size: 10, offset: 1}}><Button color="primary" onClick={() => this.sendEvents()}> Submit
-                    { this.state.statusAlert ? <Alert  flag={this.state.flag}/> :null }
+                    <Col md="auto"  sm={{ size: 10, offset: 1}}><Button color="primary" disabled={this.state.buttonStatus} onClick={() => this.sendEvents()}> Submit
+                    { this.state.flag ? <Alert  flag={this.state.flag} /> :null }
                     </Button></Col>
                    </Row>
                 </div>
@@ -115,15 +140,14 @@ class ShowTEI extends React.Component {
               } 
               if(this.state.tei.length === 0){
                 return ( <div className="float-center m-5 text-center" >
-                <div className="tei-element shadow-lg p-3 mb-3 bg-white rounded box">
+                <div className="shadow-lg p-3 mb-3 bg-white rounded box">
                 <h1>Tracked Entity Instance not available</h1>
               </div>
              </div>)
             }
         } 
-        // console.log("here is data for event push", tei());
+        // console.log("here is data for event push", tei());<Col><Button color="danger" onClick={() => {history.push("/");}}>Back</Button></Col>
         return (<>
-         <Col> <NavLink className="nav-link" to="/"><Button color="danger">Back</Button></NavLink></Col>
          <div>{tei()}</div>
         </>
         );

@@ -7,10 +7,10 @@ class Main extends Component {
         return (
                 <Switch>
                     <Route  path="/eventDetailPage" component={TEIMain} />
-                    <Route path = "/" component = {DynamicData} />
-                    <Route path="/:id" component={DynamicData} />
-                    <Route path="/:id" component={DynamicData} />
-                    <Redirect  to="/" />
+                    <Route path = "/" exact component = {DynamicData} />
+                    <Route path="/:id" exact component={DynamicData} />
+                    /*<Route path="/:id" component={DynamicData} />*/
+                    <Redirect exact to="/"  component={DynamicData} />
                 </Switch>
         );
     }
