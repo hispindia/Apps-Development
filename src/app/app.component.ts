@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from './store/reducers';
+import { ActivatedRoute, Router, NavigationStart } from "@angular/router";
 import { LoadCurrentUserAction } from './store/actions/current-user.actions';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
@@ -64,7 +65,7 @@ export class AppComponent {
   orgUnitFilter$: Observable<any>;
   currentPage$: Observable<string>;
 
-  constructor(private store: Store<AppState>) {
+  constructor(private store: Store<AppState>, private router: Router, private route: ActivatedRoute,) {
     this.showMobileMenu = false;
     store.dispatch(new LoadCurrentUserAction());
     this.globalFilter$ = store.select(getCurrentGlobalFilter);
@@ -83,6 +84,7 @@ export class AppComponent {
           new UpdateVisitedPageAction('dashboards', currentDashboard.id)
         );
       });
+      console.log('here is currnt value', this.globalFilter$, this.orgUnitFilter$,this.currentPage$ )
     this.title = 'Distribution Point Data Manager';
     this.pages = [
       {
@@ -213,7 +215,15 @@ export class AppComponent {
   }
 
   toggleMobileMenu(e) {
+    console.log('here is download', e)
     e.stopPropagation();
     this.showMobileMenu = !this.showMobileMenu;
+  }
+
+  toggleHeader(val){
+    if(val === "Download"){
+      localStorage.setItem("pageReload", "true")
+      this.router.navigate(['../../download/orgUnit/TANZANIA001'],{ relativeTo: this.route })
+    }
   }
 }

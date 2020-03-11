@@ -602,7 +602,12 @@ export class SubOrganisationUnitsComponent implements OnInit {
       child.status = undefined;
     });
   }
-  ngOnInit() {    
+  ngOnInit() {  
+    let val = localStorage.getItem('pageReload')
+    if( val === 'true'){
+      window.location.reload();
+    }
+    localStorage.removeItem('pageReload')
     this.globalFilter$.subscribe(globalFilter => {
       this.globalFilter = globalFilter;
     //  this.monthlyEventData();

@@ -41,14 +41,14 @@
             <a
               class="nav-link app-nav-link"
               [routerLink]="[page.link]"
-              [title]="page.tooltip"
+              [title]="page.tooltip" 
+              (click)="toggleHeader(page.name)"
               ><i class="fa fa-{{ page.icon }}"></i>&nbsp;{{ page.name }}</a
             >
           </li>
         </ul>
       </div>
     </nav>
-
     <!--Global filters-->
     <div class="row global-selection">
       <div class="col-12">
