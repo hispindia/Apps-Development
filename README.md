@@ -28,8 +28,16 @@ HISP INDIA External Apps Development
  8# Intractive Dashboard app ( For ICMR-GBD )  
     https://github.com/hispindia/interactive-dashboard-vuejs
 	
-	
- 9# This app build in Angular JS
+ 9# openimis-dhis2integration
+    https://github.com/hispindia/openimis-dhis2integration
+	https://github.com/hispindia/openimis-fhir-definitions
+	https://github.com/hispindia/openimis-be-api_fhir_py
+	https://github.com/openimis/openimis-be_py/tree/develop
+
+ 10# kenya-sms-alert 
+    https://github.com/hispindia/dhis-outlier-analysis/tree/kenya-sms-alert	
+
+ 11# This app build in Angular JS
  
 	After removing translation and trackedentitydatavalue table from 2.32 ownward
 
