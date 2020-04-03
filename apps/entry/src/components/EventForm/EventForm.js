@@ -87,8 +87,10 @@ export const EventForm = ({ history, match }) => {
     
     const  onCancel =(e) =>{
         e.preventDefault();
-          $("#popup").hide();
+        console.log('here is me',e)
           $("#panel").hide();
+          $("#popup").hide();
+         
     }
  
    const onConfirm=(e)=>{
@@ -120,7 +122,6 @@ export const EventForm = ({ history, match }) => {
     if (isFirstRender) return <TitleRow title="Record" history={history} />
     return (
         <MainSection padded>
-            {/* <DeleteModal type="record" onDeleteSucccess={onDeleteSucccess} /> */}
             <TitleRow title="Record" history={history} />
             <form autoComplete="off">
                 <Entity showEdit={!panelValid} />

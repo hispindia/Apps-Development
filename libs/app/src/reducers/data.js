@@ -28,6 +28,10 @@ import {
     DUPLICACY,
     EXIT,
     SET_BUTTON_LOADING,
+    SET_PREVIOUS_ENTITY,
+    RESET_PREVIOUS_ENTITY,
+    ADD_ENTITY,
+    PANEL_EDITABLE
 } from '../actions/types'
 
 const INITIAL_EVENT = {
@@ -69,23 +73,22 @@ const INITIAL_STATE = {
 
 export const data = (state = INITIAL_STATE, { type, payload }) => {
     switch (type) {
-        case "SET_PREVIOUS_ENTITY": 
+         case SET_PREVIOUS_ENTITY: 
         return {
             ...state,
             previousEntity: payload.entity
         }
-        case "RESET_PREVIOUS_ENTITY":
+        case RESET_PREVIOUS_ENTITY:
             return {
                 ...state,
                 previousEntity: {}
             }
-        case "ADD_ENTITY":
+        case ADD_ENTITY:
             return {
                 ...state,
                 entity: payload.previousEntity
             }
-
-        case SET_ENTITY:
+            case SET_ENTITY:
             return {
                 ...state,
                 entity: {
@@ -97,16 +100,16 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                     modal: null,
                 },
             }
-        case SET_ENTITY_VALUE:
-            return {
-                ...state,
-                entity: {
-                    ...state.entity,
-                    values: payload.values,
-                    attributes: payload.attributes,
-                    valid: payload.valid,
-                },
-            }
+            case SET_ENTITY_VALUE:
+                return {
+                    ...state,
+                    entity: {
+                        ...state.entity,
+                        values: payload.values,
+                        attributes: payload.attributes,
+                        valid: payload.valid,
+                    },
+                }
         case SET_UNIQUE:
             return {
                 ...state,
@@ -138,7 +141,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                     },
                 },
             }
-        case SET_EDITING:
+            case SET_EDITING:
             return {
                 ...state,
                 entity: {
@@ -226,8 +229,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                 event: INITIAL_EVENT,
                 buttonLoading: false,
             }
-
-        case "Editable":
+         case PANEL_EDITABLE:
             return {
                 ...state,
                 editable: true,

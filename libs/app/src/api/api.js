@@ -57,10 +57,8 @@ export const getPersonValues = async entityId => {
 
     const values = {}
     attributes.forEach(a => (values[a.attribute] = a.value))
-
     return values
 }
-
 /**
  * Adds a new person..
  * @param {Object} values - Values
@@ -222,9 +220,7 @@ export const addEvent = async (
         },
         eventValues
     )
-
     if (entityValues) await updatePerson(entityId, entityValues)
-
     // Enrolling if not already enrolled.
     let enrollments = []
     enrollments = (

@@ -35,7 +35,6 @@ const Events = ({match, history }) => {
     var orgUnit = match.params.orgUnit
     const onEdit = (ou, eventId, dataValues) => {
         localStorage.setItem('eventId', eventId) 
-        localStorage.setItem('Delete', 'true')
         let btnStatus= false
         for (let dataValue of dataValues) {
             let dataElement = dataValue.dataElement;
@@ -69,23 +68,45 @@ const Events = ({match, history }) => {
                             var name = program.name;
                         }
                     }
-
-                    var dataValues = ele.dataValues
-                    var deName;
-                    for (let dataValue of dataValues) {
-                        let dataElement = dataValue.dataElement;
-                        for (let i in dataElements) {
-                            if (dataElement == i) {
-                                deName = dataElements[i];
-                            }
+                    var dataValue= [];
+                    var dataValues = ele.dataValues;
+                    for( let value of dataValues){
+                        if(value.dataElement == 'B7XuDaXPv10'){
+                            dataValue['0'] =value;
+                        }
+                        if(value.dataElement == 'GpAu5HjWAEz'){
+                            dataValue['1'] =value;
+                        }
+                        if(value.dataElement == 'mp5MeJ2dFQz'){
+                            dataValue['2'] =value;
+                        }
+                        if((value.dataElement == 'SaQe2REkGVw') || (value.dataElement  =='u8VDCIwa3w4')){
+                            dataValue['3'] =value;
                         }
                     }
-                    return (
+                     for(let i=0; i<3; i++){
+                            if (!dataValue['0']){
+                              let data = [ {value: ''}]
+                              dataValue['0']=data
+                            } 
+                            if (!dataValue['1']){
+                                let data = [ {value: ''}]
+                                dataValue['1']=data
+                              } 
+                            if (!dataValue['2']){
+                                let data = [ {value: ''}]
+                                dataValue['2']=data
+                              } 
+                              if (!dataValue['3']){
+                                let data = [ {value: ''}]
+                                dataValue['3']=data
+                              } 
+                        } 
+                    return (  
                         <TableRow>
                             <TableCell>{name}</TableCell>
-                            <TableCell>{ele.orgUnitName}</TableCell>
-                            {dataValues.map( ele =>(<TableCell>{ele.value}</TableCell>))}
-                            <TableCell>{year}-{month}-{day}</TableCell>&emsp;&emsp;
+                            {dataValue.map(ele =>(<TableCell>{ele.value}</TableCell>))}
+                            <TableCell>{year}-{month}-{day}</TableCell>
                             <div className="btn">
                             <Button primary={true}  onClick={() => onEdit(ele.orgUnit, ele.event, dataValues)}>Edit</Button>
                             </div>
@@ -103,7 +124,14 @@ const Events = ({match, history }) => {
                  </div>
                 <div className='sidebar'>
                     <Table>
-                        <TableHead></TableHead>
+                    <TableRow>
+                    <TableCell><b>Program Name</b></TableCell> 
+                    <TableCell><b>Location</b></TableCell> 
+                    <TableCell><b>Lap Sample ID</b></TableCell> 
+                    <TableCell><b>Sample Type</b></TableCell> 
+                    <TableCell><b>Organism</b></TableCell> 
+                    <TableCell><b>Event Date</b></TableCell>
+                    </TableRow>
                         <TableBody>
                             {val()}
                         </TableBody>

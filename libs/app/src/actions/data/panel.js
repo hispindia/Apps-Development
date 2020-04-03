@@ -1,6 +1,10 @@
 import { createAction } from '../createAction'
-import { SET_PANEL, SET_PANEL_VALUE, RESET_PANEL } from '../types'
-
+import { SET_PANEL, SET_PANEL_VALUE, RESET_PANEL,PANEL_EDITABLE } from '../types'
+// export const panelEditable = () => dispatch => dispatch(createAction("Editable"))
+export const panelEditable = () => dispatch => dispatch(createAction(PANEL_EDITABLE))
+export const setPanel = () =>async(dispatch,getState) =>{
+    dispatch(createAction(RESET_PANEL_EVENT))
+}
 export const setProgram = program => (dispatch, getState) => {
     const { programOrganisms, optionSets, stageLists } = getState().metadata
     const organisms = []

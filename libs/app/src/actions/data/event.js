@@ -17,6 +17,7 @@ import {
     DUPLICACY,
     ENABLE_BUTTONS,
     EXIT,
+    PANEL_EDITABLE,
     SET_BUTTON_LOADING,
 } from '../types'
 import { deleteEvent } from '@hisp-amr/api'
@@ -34,13 +35,8 @@ import { LOADING, SUCCESS } from 'constants/statuses'
 import { SAMPLE_ID_ELEMENT, ORGANISM_SET } from 'constants/dhis2'
 import { showAlert } from '../alert'
 export const resetData = () => dispatch => dispatch(createAction(RESET_DATA))
-export const panelEditable = () => dispatch => dispatch(createAction("Editable"))
-export const setPanel = () =>async(dispatch,getState) =>{
-    dispatch(createAction(RESET_PANEL_EVENT))
-} 
 export const disableButtons = () => dispatch =>
-    dispatch(createAction(DISABLE_BUTTONS))
-
+   dispatch(createAction(DISABLE_BUTTONS))
 export const enableButtons = () => dispatch =>
     dispatch(createAction(ENABLE_BUTTONS))
 
@@ -217,7 +213,7 @@ export const submitEvent = addMore => async (dispatch, getState) => {
         if (addMore) dispatch(createAction(RESET_PANEL_EVENT))
         else {
             if (eventValues["u8VDCIwa3w4"] == "Detected") {
-                dispatch(createAction("Editable"))
+                dispatch(createAction(PANEL_EDITABLE))
                 dispatch(createAction(RESET_PANEL_EVENT))
             } else {
                 dispatch(createAction(EXIT))
