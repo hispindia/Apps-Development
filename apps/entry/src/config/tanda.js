@@ -1,8 +1,8 @@
 export const tanda = {
-    titles: {
-        complete: 'Completed records',
-        incomplete: 'Incomplete records',
-    },
+    // titles: {
+    //     complete: 'Completed records',
+    //     incomplete: 'Incomplete records',
+    // },
     headers: [
         {
             name: 'CR Number',

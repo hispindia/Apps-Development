@@ -7,7 +7,6 @@ const paths = [
     '/orgUnit/:orgUnit/event',
     '/orgUnit/:orgUnit/trackedEntityInstances/:teiId',
 ]
-
 export const Main = () => (
     <Switch>
         <Route

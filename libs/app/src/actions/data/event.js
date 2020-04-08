@@ -19,6 +19,7 @@ import {
     EXIT,
     PANEL_EDITABLE,
     SET_BUTTON_LOADING,
+    EXISTING_TEI_DATA_RECEIVED
 } from '../types'
 import { deleteEvent } from '@hisp-amr/api'
 import {
@@ -100,41 +101,55 @@ export const getExistingEvent = (orgUnit, tieId, eventId, editStatus, btnStatus)
                 uniques: [],
             }
         )
+        data.TeiID = tieId;
         data.btnStatus=btnStatus;
         data.editable = editStatus;
-        data.eventRules = getRules(
-            state.metadata.eventRules,
-            data.program,
-            data.programStage.id
-        )
-        const [eventValues, programStage, invalid] = eventRules(
-            data.eventValues,
-            data.programStage,
-            {
-                rules: data.eventRules,
-                optionSets,
-                pushChanges: !data.status.completed,
-                updateValue: (key, value) =>
-                updateEventValue(data.eventId, key, value),
+        if(data.eventList.length==0){
+            data.entityValues = entityValues
+            data.entityAttributes = attributes
+            data.orgUnit = {
+                id: orgUnit,
+                code: getCode(orgUnit, state.metadata.orgUnits),
             }
-        )
-        data.entityValues = entityValues
-        data.entityAttributes = attributes
-        data.eventValues = eventValues
-        data.programStage = programStage
-        data.orgUnit = {
-            id: orgUnit,
-            code: getCode(orgUnit, state.metadata.orgUnits),
-        }
-        data.programs = state.metadata.programList
-        data.organisms = optionSets[ORGANISM_SET]
-        data.invalid = invalid
-        data.rules = getRules(
-            state.metadata.eventRules,
-            data.program,
-            data.programStage.id
-        )
+            data.programs = state.metadata.programList
+            data.organisms = optionSets[ORGANISM_SET]
+            //  data.invalid = false
+            dispatch(createAction(EXISTING_TEI_DATA_RECEIVED, data))
+        } else{
+            data.eventRules = getRules(
+                state.metadata.eventRules,
+                data.program,
+                data.programStage.id
+            )
+            const [eventValues, programStage, invalid] = eventRules(
+                data.eventValues,
+                data.programStage,
+                {
+                    rules: data.eventRules,
+                    optionSets,
+                    pushChanges: !data.status.completed,
+                    updateValue: (key, value) =>
+                    updateEventValue(data.eventId, key, value),
+                }
+            )
+            data.entityValues = entityValues
+            data.entityAttributes = attributes
+            data.eventValues = eventValues
+            data.programStage = programStage
+            data.orgUnit = {
+                id: orgUnit,
+                code: getCode(orgUnit, state.metadata.orgUnits),
+            }
+            data.programs = state.metadata.programList
+            data.organisms = optionSets[ORGANISM_SET]
+            data.invalid = invalid
+            data.rules = getRules(
+                state.metadata.eventRules,
+                data.program,
+                data.programStage.id
+            )
         dispatch(createAction(EXISTING_DATA_RECEIVED, data))
+        } 
     } catch (error) {
         console.error(error)
         dispatch(showAlert('Failed to get record.', { critical: true }))

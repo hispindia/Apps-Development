@@ -128,7 +128,6 @@ export const newRecord = async (
         initialValues,
         { completed: false }
     )
-
     return { programStage, eventValues, status, eventId, entityId }
 }
 
@@ -136,8 +135,10 @@ export const existingRecord = async (programs, ou, teiId, evId) => {
     const allEvents = await getAllEvents(ou, teiId)
     var eventList = allEvents.events;
     if(evId === undefined) {
-        const eventId = allEvents.events[0].event
-        var record = await getRecord(programs, eventId)
+        if(allEvents.events.length >0){
+            var eventId = allEvents.events[0].event
+            var record = await getRecord(programs, eventId)
+        }
     } else {
         var record = await getRecord(programs, evId)
     }

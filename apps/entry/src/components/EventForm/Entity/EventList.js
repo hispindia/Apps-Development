@@ -1,37 +1,58 @@
 import React, { useEffect } from 'react'
-import { CardSection, LoadingSection } from '@hisp-amr/app'
+import { CardSection } from '@hisp-amr/app'
 import { useSelector, useDispatch } from 'react-redux'
 import {
     Table,
-    TableHead,
     TableBody,
     TableRow,
     TableCell,
     Button,
-    Modal
 } from '@dhis2/ui-core'
 import {
     getExistingEvent,
-    UpdateEvent,
-    resetPanel,
-    setPanel,
-    panelEditable,
-    createNewEvent,
     addPreviousEntity
 } from '@hisp-amr/app'
 import { withRouter } from 'react-router-dom'
 import './main.css'
 import $ from "jquery"
 import SweetAlert from 'react-bootstrap-sweetalert';
+import { deleteTEI } from '@hisp-amr/api'
 const Events = ({match, history }) => {
     var data = [];
     const dispatch = useDispatch()
     var events = useSelector(state => state.data.eventList);
     var metadata = useSelector(state => state.metadata);
-    var state = useSelector(state => state);
-    var dataElements = metadata.dataElements;
+    const eventList = useSelector(state => state.data.eventList)
+
+    if(eventList.length === 0){
+       $('#Dbtn').show()
+    }else (
+        $('#Dbtn').hide()
+    )
+    useEffect(() => {
+        $("#msg1").hide();
+        $('#succes1').hide();
+      });
+      const onConfirm=(e)=>{
+        e.preventDefault();
+        deleteTEI(teiId).then(res => {
+            if(res.httpStatus == 'OK')
+            {
+            $('#succes1').show();
+            }
+       })
+         $('#msg1').hide();
+        }
+    
+       const onNo =(e) =>{
+              e.preventDefault();
+              $('#msg1').hide();
+        }
+        const onYes =(e) =>{
+            history.goBack()
+      }
     var programs = metadata.programs
-    const teiId = match.params.teiId
+    var teiId = match.params.teiId
     var orgUnit = match.params.orgUnit
     const onEdit = (ou, eventId, dataValues) => {
         localStorage.setItem('eventId', eventId) 
@@ -53,6 +74,9 @@ const Events = ({match, history }) => {
      const onAddClick = () => {
         dispatch(addPreviousEntity());
         history.push(`/orgUnit/${orgUnit}/event/`)
+     }
+     const OnDelete =() => {
+         $('#msg1').show()         
      }
     var val = () => {
         if (events != undefined) {
@@ -120,6 +144,9 @@ const Events = ({match, history }) => {
     return (
             <CardSection heading="Event List">
                 <div  className="btn">
+                <span id="Dbtn">
+                <Button destructive={true} onClick={() => OnDelete()}>Delete TEI</Button>&nbsp;&nbsp;&nbsp;
+                </span>
                 <Button primary={true} onClick={() => onAddClick()}>Add Sample</Button>&nbsp;&nbsp;&nbsp;
                  </div>
                 <div className='sidebar'>
@@ -137,6 +164,33 @@ const Events = ({match, history }) => {
                         </TableBody>
                     </Table>
                 </div>
+                <div id="msg1">
+            <SweetAlert
+                warning
+                showCancel
+                confirmBtnText="Yes, delete it!"
+                confirmBtnBsStyle="danger"
+                title="Are you sure?"
+                customButtons={
+                    <React.Fragment>
+                      <Button primary={true} onClick={(e)=>onConfirm(e)}>Yes</Button>&emsp;&emsp;&emsp;
+                      <Button onClick={(e)=>onNo(e)}>No</Button>
+                    </React.Fragment>
+                  }
+                >
+                You will not able to recover this TEI Detail!
+                </SweetAlert>
+            </div>
+            <div id='succes1'>
+            <SweetAlert success title="TEI Delete success" 
+             customButtons={
+                <React.Fragment>
+                  <Button primary={true} onClick={(e)=>onYes(e)}>Ok</Button>&emsp;&emsp;&emsp;
+                </React.Fragment>
+              }
+            >
+            </SweetAlert>
+            </div>
             </CardSection>
     )
 }

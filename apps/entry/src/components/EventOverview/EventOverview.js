@@ -51,7 +51,7 @@ export const EventOverview = ({ match, history }) => {
     return (
         <MainSection>
             <TitleRow
-                title={titles[status]}
+                // title={titles[status]}
                 button={
                     <div title={title[addButtonDisabled]}>
                         <RichButton

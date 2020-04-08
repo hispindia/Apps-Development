@@ -23,6 +23,7 @@ export const EventButtons = ({ history, existingEvent }) => {
     const duplicate = useSelector(state => state.data.event.duplicate)
     const exit = useSelector(state => state.data.exit)
     const buttonLoading = useSelector(state => state.data.buttonLoading)
+    const pageFirst = useSelector(state => state.data.pageFirst)
 
     useEffect(() => {
         if (exit) history.goBack()
@@ -30,7 +31,14 @@ export const EventButtons = ({ history, existingEvent }) => {
 
     const onSubmit = async addMore => await dispatch(submitEvent(addMore))
 
-    const submitExit = async () => await onSubmit(false)
+    const submitExit = async () =>{
+        if(pageFirst){
+        await onSubmit(false)
+        } else{
+            window.location.reload(false)
+            await onSubmit(false)
+        }  
+    } 
 
     const submitAdd = async () => await onSubmit(true)
 

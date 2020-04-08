@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {
-    DeleteModal,
     MainSection,
     TitleRow,
     Event,
@@ -15,6 +14,9 @@ import {
     addEntity,
     resetPreviousEntity
 } from '@hisp-amr/app'
+import {
+    Button,
+} from '@dhis2/ui-core'
 import { Entity } from './Entity'
 import { EventButtons } from './EventButtons'
 import Events from './Entity/EventList'
@@ -30,14 +32,13 @@ export const EventForm = ({ history, match }) => {
     const eventList = useSelector(state => state.data.eventList)
     var eventEditable = useSelector(state => state.data.eventEditable)
     var editable = useSelector(state => state.data.editable)
-    var event = useSelector(state => state.data)
     const previousEntity = useSelector(state => state.data.previousEntity)
      if(eventList === undefined){l=1}
      else {var l =eventList.length;}
     var orgUnit = match.params.orgUnit
     const teiId = match.params.teiId;
     useEffect(() => {
-        if( l == 0 ){
+        if( pageFirst ){
             $("#a").hide(); 
         } else {
             $("#a").show(); 
@@ -87,7 +88,9 @@ export const EventForm = ({ history, match }) => {
     
     const  onCancel =(e) =>{
         e.preventDefault();
-        console.log('here is me',e)
+        if(pageFirst){
+            history.goBack()
+        }
           $("#panel").hide();
           $("#popup").hide();
          
@@ -137,16 +140,16 @@ export const EventForm = ({ history, match }) => {
                 closeAnim={{ name: 'hideSweetAlert', duration: 2000 }}
                 customButtons={
                     <React.Fragment>
+                         <EventButtons history={history} existingEvent={teiId} />&emsp;&emsp;&emsp;&emsp;&emsp;
                         <div id="btn">
-                        <button  primary={true} onClick={(e)=>onDelete(e)}>Delete</button>&emsp;&emsp;&emsp;&emsp;&emsp;
+                        <Button  destructive={true} onClick={(e)=>onDelete(e)}>Delete</Button>&emsp;&emsp;&emsp;&emsp;&emsp;
                         </div>
-                      <button onClick={(e)=>onCancel(e)}>Cancel</button>
+                      <Button onClick={(e)=>onCancel(e)}>Cancel</Button>
                     </React.Fragment>
                   }
                 >
                 <Panel />
                 <Event />
-                   <EventButtons history={history} existingEvent={teiId} />
                </SweetAlert> 
                 </div> :
                 <div id="panel"> 
@@ -164,8 +167,8 @@ export const EventForm = ({ history, match }) => {
                 title="Are you sure?"
                 customButtons={
                     <React.Fragment>
-                      <button  onClick={(e)=>onConfirm(e)}>Yes</button>&emsp;&emsp;&emsp;
-                      <button onClick={(e)=>onNo(e)}>No</button>
+                      <Button primary={true} onClick={(e)=>onConfirm(e)}>Yes</Button>&emsp;&emsp;&emsp;
+                      <Button onClick={(e)=>onNo(e)}>No</Button>
                     </React.Fragment>
                   }
                 >
@@ -173,7 +176,13 @@ export const EventForm = ({ history, match }) => {
                 </SweetAlert>
             </div>
             <div id='success'>
-            <SweetAlert success title="Event Delete Success" onConfirm={(e)=>onYes(e)} >
+            <SweetAlert success title="Event Delete Success"   
+             customButtons={
+                <React.Fragment>
+                  <Button primary={true} onClick={(e)=>onYes(e)}>Ok</Button>&emsp;&emsp;&emsp;
+                </React.Fragment>
+              }
+            >
             </SweetAlert>
             </div>
         </MainSection>

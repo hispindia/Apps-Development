@@ -31,7 +31,8 @@ import {
     SET_PREVIOUS_ENTITY,
     RESET_PREVIOUS_ENTITY,
     ADD_ENTITY,
-    PANEL_EDITABLE
+    PANEL_EDITABLE,
+    EXISTING_TEI_DATA_RECEIVED
 } from '../actions/types'
 
 const INITIAL_EVENT = {
@@ -233,6 +234,22 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
             return {
                 ...state,
                 editable: true,
+            }
+            case EXISTING_TEI_DATA_RECEIVED:
+            return {
+                ...state,
+                btnStatus: payload.btnStatus, 
+                eventEditable: payload.editable,
+                eventList: payload.eventList,
+                entity: {
+                    values: payload.entityValues,
+                    id: payload.TeiID,
+                    attributes: payload.entityAttributes,
+                    uniques: {},
+                    valid: true,
+                    modal: null,
+                },
+                orgUnit: payload.orgUnit,
             }
         case EXISTING_DATA_RECEIVED:
             return {
