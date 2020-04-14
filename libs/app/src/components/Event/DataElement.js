@@ -10,7 +10,7 @@ import {
     SwitchInput,
     DateInput,
 } from '@hisp-amr/inputs'
-import { setEventValue } from 'actions'
+import { setEventValue,AddAndSubmit } from 'actions'
 import * as DUPLICACY from 'constants/duplicacy'
 
 export const DataElement = ({ id }) => {
@@ -53,7 +53,20 @@ export const DataElement = ({ id }) => {
         id === SAMPLE_ID_ELEMENT &&
         useSelector(state => state.data.event.duplicate)
 
-    const onChange = (key, value) => dispatch(setEventValue(key, value))
+    const onChange = (key, value) => {
+        if((key == 'u8VDCIwa3w4') && (value == 'Detected'))
+        {
+         dispatch(AddAndSubmit(true))
+         dispatch(setEventValue(key, value))
+        }
+        else if((key == 'u8VDCIwa3w4') && (value == 'Sterile')) {
+         dispatch(AddAndSubmit(false))
+         dispatch(setEventValue(key, value))
+        }
+        else {
+            dispatch(setEventValue(key, value))
+        }
+    }
 
     if (hide) return null
 

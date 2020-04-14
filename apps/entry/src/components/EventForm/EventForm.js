@@ -6,13 +6,15 @@ import {
     TitleRow,
     Event,
     Panel,
+    addExistingEvent,
     getExistingEvent,
     initNewEvent,
     createNewEvent,
     resetData,
     ERROR,
     addEntity,
-    resetPreviousEntity
+    resetPreviousEntity,
+    setEventValue
 } from '@hisp-amr/app'
 import {
     Button,
@@ -29,12 +31,11 @@ export const EventForm = ({ history, match }) => {
     const error = useSelector(state => state.data.status) === ERROR
     const panelValid = useSelector(state => state.data.panel.valid)
     const pageFirst = useSelector(state => state.data.pageFirst)
-    const eventList = useSelector(state => state.data.eventList)
     var eventEditable = useSelector(state => state.data.eventEditable)
     var editable = useSelector(state => state.data.editable)
+    const event = useSelector(state => state.data.event)
+    const eventIDs = useSelector(state => state.data.event.id)
     const previousEntity = useSelector(state => state.data.previousEntity)
-     if(eventList === undefined){l=1}
-     else {var l =eventList.length;}
     var orgUnit = match.params.orgUnit
     const teiId = match.params.teiId;
     useEffect(() => {
@@ -67,6 +68,20 @@ export const EventForm = ({ history, match }) => {
         }
         setIsFirstRender(false)
     }, [])
+    useEffect(()=> {
+        if(eventIDs && editable) {
+            for(let eventValues in previousEntity) {
+                if(event["values"][eventValues] == "")  {
+                    dispatch(setEventValue(eventValues, previousEntity[eventValues]))
+                    event["values"][eventValues] = previousEntity[eventValues]
+                } 
+            }
+
+            dispatch(addExistingEvent(event))
+            dispatch(resetPreviousEntity())
+        }
+    }, [eventIDs])
+
     useEffect(() => {
         if (previousEntity.id) {
             dispatch(addEntity())
@@ -91,11 +106,9 @@ export const EventForm = ({ history, match }) => {
         if(pageFirst){
             history.goBack()
         }
-          $("#panel").hide();
-          $("#popup").hide();
-         
+           $("#panel").hide();
+           $("#popup").hide();       
     }
- 
    const onConfirm=(e)=>{
     e.preventDefault();
     let eventID =localStorage.getItem('eventId')
@@ -109,14 +122,12 @@ export const EventForm = ({ history, match }) => {
      $("#panel").hide();
      $('#msg').hide();
     }
-
    const onNo =(e) =>{
           e.preventDefault();
           $("#popup").hide();
           $("#panel").hide();
           $('#msg').hide();
     }
-
     const onYes =(e) =>{
         window.location.reload(false)
         $("#popup").hide();
@@ -131,7 +142,7 @@ export const EventForm = ({ history, match }) => {
                 <div id="a">
                 <Events />
                 </div>
-                { (eventEditable  || editable) ? <div id='popup'>
+                { (eventEditable || editable) ? <div id='popup'>
                 <SweetAlert
                 style={{
                     width: '90%'

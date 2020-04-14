@@ -19,9 +19,13 @@ import {
     EXIT,
     PANEL_EDITABLE,
     SET_BUTTON_LOADING,
-    EXISTING_TEI_DATA_RECEIVED
+    EXISTING_TEI_DATA_RECEIVED,
+    REMOVE_BUTTONS,
+    SET_PREVIOUS_EVENT,
+    SET_EVENT
 } from '../types'
 import { deleteEvent } from '@hisp-amr/api'
+
 import {
     existingRecord,
     newRecord,
@@ -33,17 +37,14 @@ import {
 import { entityRules, eventRules, getRules } from 'helpers'
 import { DUPLICATE_CHECKING } from 'constants/duplicacy'
 import { LOADING, SUCCESS } from 'constants/statuses'
-import { SAMPLE_ID_ELEMENT, ORGANISM_SET } from 'constants/dhis2'
-import { showAlert } from '../alert'
+import { SAMPLE_ID_ELEMENT, ORGANISM_SET , ORGANISM_DETECTED} from 'constants/dhis2'
+import { showAlert } from '../alert'  
 export const resetData = () => dispatch => dispatch(createAction(RESET_DATA))
-export const disableButtons = () => dispatch =>
-   dispatch(createAction(DISABLE_BUTTONS))
-export const enableButtons = () => dispatch =>
-    dispatch(createAction(ENABLE_BUTTONS))
-
-export const setButtonLoading = payload => dispatch =>
-    dispatch(createAction(SET_BUTTONS, payload))
-
+export const disableButtons = () => dispatch =>dispatch(createAction(DISABLE_BUTTONS))
+export const enableButtons = () => dispatch =>dispatch(createAction(ENABLE_BUTTONS))
+export const AddAndSubmit = val => dispatch =>dispatch(createAction(REMOVE_BUTTONS, val))
+export const setButtonLoading = payload => dispatch =>dispatch(createAction(SET_BUTTONS, payload))
+export const addExistingEvent = payload =>dispatch =>dispatch(createAction(SET_EVENT, payload))
 export const initNewEvent = orgUnit => (dispatch, getState) => {
     const entityMetadata = getState().metadata.person
     const optionSets = getState().metadata.optionSets
@@ -227,7 +228,8 @@ export const submitEvent = addMore => async (dispatch, getState) => {
         await setEventStatus(eventId, true)
         if (addMore) dispatch(createAction(RESET_PANEL_EVENT))
         else {
-            if (eventValues["u8VDCIwa3w4"] == "Detected") {
+            if (eventValues[ORGANISM_DETECTED] == "Detected") {
+                dispatch(createAction(SET_PREVIOUS_EVENT, { eventValues }))
                 dispatch(createAction(PANEL_EDITABLE))
                 dispatch(createAction(RESET_PANEL_EVENT))
             } else {

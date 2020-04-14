@@ -24,13 +24,11 @@ export const EventButtons = ({ history, existingEvent }) => {
     const exit = useSelector(state => state.data.exit)
     const buttonLoading = useSelector(state => state.data.buttonLoading)
     const pageFirst = useSelector(state => state.data.pageFirst)
-
+    const removeButtton = useSelector(state => state.data.removebtn)
     useEffect(() => {
         if (exit) history.goBack()
     }, [exit, history])
-
     const onSubmit = async addMore => await dispatch(submitEvent(addMore))
-
     const submitExit = async () =>{
         if(pageFirst){
         await onSubmit(false)
@@ -39,25 +37,8 @@ export const EventButtons = ({ history, existingEvent }) => {
             await onSubmit(false)
         }  
     } 
-
     const submitAdd = async () => await onSubmit(true)
-
     const onEdit = () => dispatch(editEvent())
-
-    const onDelete = () => dispatch(setDeletePrompt(true))
-
-    // const deleteButton = {
-    //     label: 'Delete',
-    //     onClick: onDelete,
-    //     disabled: buttonsDisabled || !status.deletable,
-    //     icon: 'delete',
-    //     destructive: true,
-    //     tooltip:
-    //         buttonsDisabled || !status.deletable
-    //             ? 'You cannot delete records with an approval status'
-    //             : 'Permanently delete record',
-    // }
-
     const editButton = {
         label: 'Edit',
         onClick: onEdit,
@@ -106,8 +87,6 @@ export const EventButtons = ({ history, existingEvent }) => {
             ? !eventId
                 ? []
                 : [status.completed ? editButton : submitButton]
-                // : [deleteButton, status.completed ? editButton : submitButton]
-            : [submitAddButton, submitButton]
-
+            : removeButtton ? [submitButton]: [submitAddButton, submitButton]
     return <StyledButtonRow buttons={buttons()} />
 }

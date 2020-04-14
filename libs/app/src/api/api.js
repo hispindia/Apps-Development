@@ -251,10 +251,8 @@ export const addEvent = async (
 
 export const setEventStatus = async (eventId, completed) => {
     const url = `events/${eventId}`
-
     let event = await get(url)
     event.status = completed ? 'COMPLETED' : 'ACTIVE'
-
     const values = {}
     event.dataValues.forEach(
         dataValue => (values[dataValue.dataElement] = dataValue.value)

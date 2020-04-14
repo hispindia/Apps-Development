@@ -1,17 +1,8 @@
 import React, { useEffect } from 'react'
 import { CardSection } from '@hisp-amr/app'
 import { useSelector, useDispatch } from 'react-redux'
-import {
-    Table,
-    TableBody,
-    TableRow,
-    TableCell,
-    Button,
-} from '@dhis2/ui-core'
-import {
-    getExistingEvent,
-    addPreviousEntity
-} from '@hisp-amr/app'
+import {Table,TableBody,TableRow,TableCell,Button} from '@dhis2/ui-core'
+import {getExistingEvent,addPreviousEntity} from '@hisp-amr/app'
 import { withRouter } from 'react-router-dom'
 import './main.css'
 import $ from "jquery"
@@ -21,10 +12,10 @@ const Events = ({match, history }) => {
     var data = [];
     const dispatch = useDispatch()
     var events = useSelector(state => state.data.eventList);
-    var metadata = useSelector(state => state.metadata);
-    const eventList = useSelector(state => state.data.eventList)
-
-    if(eventList.length === 0){
+    var programs = useSelector(state => state.metadata.programs);
+    var teiId = match.params.teiId
+    var orgUnit = match.params.orgUnit
+    if(events.length === 0){
        $('#Dbtn').show()
     }else (
         $('#Dbtn').hide()
@@ -51,23 +42,19 @@ const Events = ({match, history }) => {
         const onYes =(e) =>{
             history.goBack()
       }
-    var programs = metadata.programs
-    var teiId = match.params.teiId
-    var orgUnit = match.params.orgUnit
+  
     const onEdit = (ou, eventId, dataValues) => {
         localStorage.setItem('eventId', eventId) 
         let btnStatus= false
         for (let dataValue of dataValues) {
             let dataElement = dataValue.dataElement;
-            if( dataElement == 'u8VDCIwa3w4'){
+            if( dataElement == 'u8VDCIwa3w4'){  // id of organism detected data element in sample testing
                 btnStatus = true;
             }
         }
         let editStatus = true;
-        // dispatch(UpdateEvent(editStatus))
         dispatch(getExistingEvent(ou, teiId, eventId, editStatus, btnStatus))
     }
-
     if (events != undefined) {
         data = events
     }
@@ -82,59 +69,58 @@ const Events = ({match, history }) => {
         if (events != undefined) {
             const v = events.map((ele, index) => {
                 if (ele) {
-                    var d = new Date(ele.eventDate)
-                    var day = d.getDate();
-                    var year = d.getFullYear();
-                    var month = d.getMonth();
                     var proId = ele.program;
-                    for (let program of programs) {
+                    var name=[], dataValue= [], data= [], date =[];
+                     date['value'] =  JSON.stringify(new Date(ele.eventDate)).slice(1,11);
+                     for (let program of programs) {
                         if (program.id == proId) {
-                            var name = program.name;
+                             name['value'] = program.name;
                         }
                     }
-                    var dataValue= [];
-                    var dataValues = ele.dataValues;
-                    for( let value of dataValues){
+                    for( let value of ele.dataValues){
+                            dataValue['0']=name
                         if(value.dataElement == 'B7XuDaXPv10'){
-                            dataValue['0'] =value;
-                        }
-                        if(value.dataElement == 'GpAu5HjWAEz'){
                             dataValue['1'] =value;
                         }
-                        if(value.dataElement == 'mp5MeJ2dFQz'){
+                        if(value.dataElement == 'GpAu5HjWAEz'){
                             dataValue['2'] =value;
                         }
-                        if((value.dataElement == 'SaQe2REkGVw') || (value.dataElement  =='u8VDCIwa3w4')){
+                        if(value.dataElement == 'mp5MeJ2dFQz'){
                             dataValue['3'] =value;
                         }
-                    }
-                     for(let i=0; i<3; i++){
-                            if (!dataValue['0']){
-                              let data = [ {value: ''}]
-                              dataValue['0']=data
-                            } 
+                        if((value.dataElement == 'SaQe2REkGVw') || (value.dataElement  =='u8VDCIwa3w4')){  // id of organism detected data element in sample testing
+                            dataValue['4'] =value;
+                        }
+                        dataValue['5']=date
+                     }   
                             if (!dataValue['1']){
-                                let data = [ {value: ''}]
-                                dataValue['1']=data
-                              } 
+                              let data = [ {value: ''}]
+                              dataValue['1']=data
+                            } 
                             if (!dataValue['2']){
                                 let data = [ {value: ''}]
                                 dataValue['2']=data
                               } 
-                              if (!dataValue['3']){
+                            if (!dataValue['3']){
                                 let data = [ {value: ''}]
                                 dataValue['3']=data
                               } 
-                        } 
+                              if (!dataValue['4']){
+                                let data = [ {value: ''}]
+                                dataValue['4']=data
+                              }  
+                           if(dataValue['4'].value !== 'Detected'){
+                                data = dataValue;
+                        }
                     return (  
-                        <TableRow>
-                            <TableCell>{name}</TableCell>
-                            {dataValue.map(ele =>(<TableCell>{ele.value}</TableCell>))}
-                            <TableCell>{year}-{month}-{day}</TableCell>
-                            <div className="btn">
-                            <Button primary={true}  onClick={() => onEdit(ele.orgUnit, ele.event, dataValues)}>Edit</Button>
-                            </div>
-                        </TableRow>)
+                        <>
+                        { data.length ? 
+                         <TableRow >
+                            {data.map(ele =>(<TableCell>{ele.value}</TableCell>))}
+                            <Button primary={true} onClick={() => onEdit(ele.orgUnit, ele.event, ele.dataValues)}>Edit</Button>
+                        </TableRow> 
+                        : ''}
+                        </>)  
                 }
             })
             return v

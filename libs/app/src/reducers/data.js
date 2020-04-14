@@ -32,7 +32,10 @@ import {
     RESET_PREVIOUS_ENTITY,
     ADD_ENTITY,
     PANEL_EDITABLE,
-    EXISTING_TEI_DATA_RECEIVED
+    EXISTING_TEI_DATA_RECEIVED,
+    REMOVE_BUTTONS,
+    SET_PREVIOUS_EVENT,
+    SET_EVENT
 } from '../actions/types'
 
 const INITIAL_EVENT = {
@@ -50,6 +53,7 @@ const INITIAL_STATE = {
     btnStatus:false,
     editable: false,
     pageFirst:false,
+    removebtn: false,
     eventEditable: false,
     eventList:[],
     exit: false,
@@ -302,6 +306,23 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                 ...state,
                 buttonsDisabled: false,
             }
+       case REMOVE_BUTTONS:
+                return {
+                    ...state,
+                    removebtn: payload,
+                }
+        case SET_EVENT:
+                    return {
+                        ...state,
+                        event: payload
+                    }
+        case SET_PREVIOUS_EVENT: 
+                return {
+                    ...state,
+                    previousEntity: payload.eventValues
+                }
+        
+
         case RESET_PANEL_EVENT:
             return {
                 ...state,
