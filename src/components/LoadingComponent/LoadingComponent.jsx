@@ -3,10 +3,14 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 class Alert extends Component {
     constructor(props) {
         super(props)
-        state = {  }
+        this.state = {  }
     }
+    hideAlert(){
+        //this.props.history.goBack();
+        window.history.back();
+     }
     render() { 
-     console.log("here is props", this.props)
+     //console.log("here is props", this.props)
         return ( 
             <>
            <SweetAlert

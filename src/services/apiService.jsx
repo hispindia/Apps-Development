@@ -9,21 +9,22 @@ export const ApiService = {
     getMetaData,
     getProgramRules,
     getProgramDetials,
-    getDetials
+    getDetials,
+    getProgramTEIAttribute
 };
 function getProgram(id) {
     const requestOptions = { method: 'GET' };
-    return fetch(BaseUrl + '/api/organisationUnits/' + id + '.json?fields=id,name,programs[id,name,code]&paging=false', requestOptions).then(res => res.json());
+    return fetch(BaseUrl + '/api/organisationUnits/' + id + '.json?fields=id,name,displayName,programs[id,name,displayName,code]&paging=false', requestOptions).then(res => res.json());
 }
 
 function getProgramStage(id) {
     const requestOptions = { method: 'GET' };
-    return fetch(BaseUrl+"/api/programs/"+id +".json?fields=id,name,programStages[id,name,code]&paging=false", requestOptions).then(res => res.json());
+    return fetch(BaseUrl+"/api/programs/"+id +".json?fields=id,displayName,name,programStages[id,name,displayName,code]&paging=false", requestOptions).then(res => res.json());
 }
 
 function getDataElements(id) {
     const requestOptions = { method: 'GET' };
-    return fetch( BaseUrl+"/api/programStages/"+id+".json?fields=id,name,programStageSections[id,name,dataElements[id,name,formName,valueType]]&paging=false", requestOptions).then(res => res.json());
+    return fetch( BaseUrl+"/api/programStages/"+id+".json?fields=id,displayName,name,programStageSections[id,name,displayName,dataElements[id,name,valueType,displayFormName,optionSetValue,optionSet[id,name,valueType,options[id,name,code,valueType]]]]&paging=false", requestOptions).then(res => res.json());
 }
 
 function getTrackedEntityInstance(data) {
@@ -58,7 +59,7 @@ function getProgramRules() {
 
 function getProgramDetials(id) {
     const requestOptions = { method: 'GET'};
-    return fetch( BaseUrl + '/api/programs/'+id+'.json?fields=name,id,displayName,programRuleVariables[id,name,displayName,dataElement[id,name],program[id,name]],programStages[id,displayName,access,programStageDataElements[compulsory,dataElement[id,name,valueType]],programStageSections[id,name,displayName,dataElements[id,name,valueType,displayFormName,optionSetValue,optionSet[id,name,valueType,options[id,name,valueType]]]]&paging=false', requestOptions).then(res => res.json());
+    return fetch( BaseUrl + '/api/programs/'+id+'.json?fields=name,id,displayName,programRuleVariables[id,name,displayName,dataElement[id,name,displayName],program[id,name,displayName]],programStages[id,name,displayName,access,programStageDataElements[compulsory,dataElement[id,displayName,name,valueType]],programStageSections[id,name,displayName,dataElements[id,name,valueType,displayFormName,optionSetValue,optionSet[id,name,valueType,options[id,name,valueType]]]]&paging=false', requestOptions).then(res => res.json());
 }
   
 // get data using programStageSections id
@@ -68,3 +69,9 @@ function getDetials(id ) {
     return fetch( BaseUrl + '/api/programStageSections/'+id+'.json?fields=programStage[id,name,displayName,programStageDataElements[compulsory,dataElement[id,name,displayName]],program[id,name,programRuleVariables[id,name,displayName,dataElement[id,name,valueType,optionSet[id,name,displayName,options[id,name,displayName]]]]]],dataElements[optionSetValue,valueType,displayName,id,formName,optionSet[id,name,displayName,options[id,name,displayName]]]&paging=false', requestOptions).then(res => res.json());
 }
 
+// get data using programStageSections id
+function getProgramTEIAttribute(id ) {
+    console.log('here is id',id);
+    const requestOptions = { method: 'GET'};
+    return fetch( BaseUrl + '/api/programs/'+id+'.json?fields=id,displayName,programTrackedEntityAttributes[mandatory,displayInList,valueType,optionSetValue,optionSet[id,name,valueType,options[id,name,valueType]],trackedEntityAttribute[id,displayName]]&paging=false', requestOptions).then(res => res.json());
+}
