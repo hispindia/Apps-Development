@@ -10,16 +10,12 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import { deleteTEI } from '@hisp-amr/api'
 const Events = ({match, history }) => {
     var data = [];
+    var DetectedEventLength=0;
     const dispatch = useDispatch()
     var events = useSelector(state => state.data.eventList);
     var programs = useSelector(state => state.metadata.programs);
     var teiId = match.params.teiId
     var orgUnit = match.params.orgUnit
-    if(events.length === 0){
-       $('#Dbtn').show()
-    }else (
-        $('#Dbtn').hide()
-    )
     useEffect(() => {
         $("#msg1").hide();
         $('#succes1').hide();
@@ -130,9 +126,7 @@ const Events = ({match, history }) => {
     return (
             <CardSection heading="Event List">
                 <div  className="btn">
-                <span id="Dbtn">
-                <Button destructive={true} onClick={() => OnDelete()}>Delete TEI</Button>&nbsp;&nbsp;&nbsp;
-                </span>
+                <Button destructive={true} onClick={() => OnDelete()}>Delete Record</Button>&nbsp;&nbsp;&nbsp;
                 <Button primary={true} onClick={() => onAddClick()}>Add Sample</Button>&nbsp;&nbsp;&nbsp;
                  </div>
                 <div className='sidebar'>
