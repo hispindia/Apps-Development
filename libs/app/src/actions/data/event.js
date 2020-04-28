@@ -44,7 +44,7 @@ export const disableButtons = () => dispatch =>dispatch(createAction(DISABLE_BUT
 export const enableButtons = () => dispatch =>dispatch(createAction(ENABLE_BUTTONS))
 export const AddAndSubmit = val => dispatch =>dispatch(createAction(REMOVE_BUTTONS, val))
 export const setButtonLoading = payload => dispatch =>dispatch(createAction(SET_BUTTONS, payload))
-export const addExistingEvent = payload =>dispatch =>dispatch(createAction(SET_EVENT, payload))
+export const addExistingEvent = payload => dispatch =>dispatch(createAction(SET_EVENT, payload))
 export const initNewEvent = orgUnit => (dispatch, getState) => {
     const entityMetadata = getState().metadata.person
     const optionSets = getState().metadata.optionSets

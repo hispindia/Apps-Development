@@ -35,7 +35,7 @@ export const EventForm = ({ history, match }) => {
     var editable = useSelector(state => state.data.editable)
     const event = useSelector(state => state.data.event)
     const eventIDs = useSelector(state => state.data.event.id)
-    const previousEntity = useSelector(state => state.data.previousEntity)
+    const previousValues = useSelector(state => state.data.previousValues)
     var orgUnit = match.params.orgUnit
     const teiId = match.params.teiId;
     useEffect(() => {
@@ -70,10 +70,10 @@ export const EventForm = ({ history, match }) => {
     }, [])
     useEffect(()=> {
         if(eventIDs && editable) {
-            for(let eventValues in previousEntity) {
+            for(let eventValues in previousValues) {
                 if(event["values"][eventValues] == "")  {
-                    dispatch(setEventValue(eventValues, previousEntity[eventValues]))
-                    event["values"][eventValues] = previousEntity[eventValues]
+                    dispatch(setEventValue(eventValues, previousValues[eventValues]))
+                    event["values"][eventValues] = previousValues[eventValues]
                 } 
             }
 
@@ -83,11 +83,11 @@ export const EventForm = ({ history, match }) => {
     }, [eventIDs])
 
     useEffect(() => {
-        if (previousEntity.id) {
+        if (previousValues.id) {
             dispatch(addEntity())
             dispatch(resetPreviousEntity())
         }
-    }, [previousEntity])
+    }, [previousValues])
     useEffect(() => {
         if (error) history.goBack()
     }, [error])

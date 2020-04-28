@@ -49,7 +49,7 @@ const INITIAL_EVENT = {
 }
 
 const INITIAL_STATE = {
-    previousEntity: {},
+    previousValues: {},
     btnStatus:false,
     editable: false,
     pageFirst:false,
@@ -81,17 +81,17 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
          case SET_PREVIOUS_ENTITY: 
         return {
             ...state,
-            previousEntity: payload.entity
+            previousValues: payload.entity
         }
         case RESET_PREVIOUS_ENTITY:
             return {
                 ...state,
-                previousEntity: {}
+                previousValues: {}
             }
         case ADD_ENTITY:
             return {
                 ...state,
-                entity: payload.previousEntity
+                entity: payload.previousValues
             }
             case SET_ENTITY:
             return {
@@ -319,7 +319,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
         case SET_PREVIOUS_EVENT: 
                 return {
                     ...state,
-                    previousEntity: payload.eventValues
+                    previousValues: payload.eventValues
                 }
         
 

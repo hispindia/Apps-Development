@@ -28,8 +28,8 @@ export const addEntity = () =>  (
     getState
 ) => {
     const state = getState() 
-    const previousEntity = state.data.previousEntity;
-    dispatch(createAction(ADD_ENTITY, {previousEntity})) 
+    const previousValues = state.data.previousValues;
+    dispatch(createAction(ADD_ENTITY, {previousValues})) 
 }
 export const getEntity = id => async (dispatch, getState) => {
     dispatch(createAction(SET_MODAL_LOADING, true))
