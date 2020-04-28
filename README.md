@@ -43,5 +43,4 @@ HISP INDIA External Apps Development
 
     1) Used for import translation for 2.32
     2) Event-datavalue update/add for single-dataelement for 2.32
-
-	https://github.com/hispindia/Apps-Development/tree/excel-to-json-angular
+      https://github.com/hispindia/Apps-Development/tree/excel-to-json-angular
