@@ -34,13 +34,9 @@ export const setPanelValue = (key, value) => (dispatch, getState) => {
         organisms,
         sampleDate,
     } = getState().data.panel
-
-
     const values = { program, programStage, sampleDate }
-
     if (values[key] === value) return
     const valid = !Object.values({ ...values, [key]: value }).includes('')
-
     dispatch(
         createAction(SET_PANEL_VALUE, {
             key,

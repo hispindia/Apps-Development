@@ -14,7 +14,8 @@ import {
     ERROR,
     addEntity,
     resetPreviousEntity,
-    setEventValue
+    setEventValue,
+    PreValue
 } from '@hisp-amr/app'
 import {
     Button,
@@ -56,8 +57,7 @@ export const EventForm = ({ history, match }) => {
     useEffect(() => {
         let previousEvent = ""
         if(!pageFirst) {
-            previousEvent = "";
-            
+            previousEvent = "";  
         }
         dispatch(resetData())
         if (teiId) {
@@ -68,7 +68,10 @@ export const EventForm = ({ history, match }) => {
         }
         setIsFirstRender(false)
     }, [])
+
+    //for Previous event value 
     useEffect(()=> {
+        dispatch(PreValue(previousValues))
         if(eventIDs && editable) {
             for(let eventValues in previousValues) {
                 if(event["values"][eventValues] == "")  {
@@ -76,11 +79,12 @@ export const EventForm = ({ history, match }) => {
                     event["values"][eventValues] = previousValues[eventValues]
                 } 
             }
-
             dispatch(addExistingEvent(event))
             dispatch(resetPreviousEntity())
         }
     }, [eventIDs])
+    
+    // for previous entity values 
 
     useEffect(() => {
         if (previousValues.id) {

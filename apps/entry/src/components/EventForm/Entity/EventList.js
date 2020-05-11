@@ -2,15 +2,14 @@ import React, { useEffect } from 'react'
 import { CardSection } from '@hisp-amr/app'
 import { useSelector, useDispatch } from 'react-redux'
 import {Table,TableBody,TableRow,TableCell,Button} from '@dhis2/ui-core'
-import {getExistingEvent,addPreviousEntity} from '@hisp-amr/app'
+import {getExistingEvent,addPreviousEntity, PreValue} from '@hisp-amr/app'
 import { withRouter } from 'react-router-dom'
 import './main.css'
 import $ from "jquery"
 import SweetAlert from 'react-bootstrap-sweetalert';
-import { deleteTEI } from '@hisp-amr/api'
+import { deleteTEI, deleteEvent } from '@hisp-amr/api'
 const Events = ({match, history }) => {
     var data = [];
-    var DetectedEventLength=0;
     const dispatch = useDispatch()
     var events = useSelector(state => state.data.eventList);
     var programs = useSelector(state => state.metadata.programs);
@@ -22,6 +21,10 @@ const Events = ({match, history }) => {
       });
       const onConfirm=(e)=>{
         e.preventDefault();
+        events.forEach(element => {
+            deleteEvent(element.event).then( res =>{
+            })
+        });
         deleteTEI(teiId).then(res => {
             if(res.httpStatus == 'OK')
             {
@@ -174,4 +177,8 @@ const Events = ({match, history }) => {
             </CardSection>
     )
 }
+
+// DataElement.propTypes = {
+//     id: string.isRequired,
+// }
 export default withRouter(Events)

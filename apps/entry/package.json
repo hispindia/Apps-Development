@@ -6,7 +6,7 @@
     "license": "BSD-3-Clause",
     "homepage": ".",
     "developer": {
-        "name": "Terje Uglebakken",
+        "name": "Gyan Bahadur Tamang",
         "company": "HISP India"
     },
     "manifest.webapp": {
@@ -27,8 +27,8 @@
     "scripts": {
         "start": "cross-env REACT_APP_DHIS2_TABLE_CONFIG=tanda PORT=3001 react-scripts start",
         "build": "yarn build:icmr && yarn build:tanda",
-        "build:icmr": "cross-env REACT_APP_DHIS2_TABLE_CONFIG=icmr react-scripts build",
-        "build:tanda": "cross-env REACT_APP_DHIS2_TABLE_CONFIG=tanda react-scripts build",
+        "build:icmr": "env REACT_APP_DHIS2_TABLE_CONFIG=icmr react-scripts build",
+        "build:tanda": "env REACT_APP_DHIS2_TABLE_CONFIG=tanda react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "prebuild:icmr": "rimraf build ../../amr-entry-icmr.zip && d2-manifest package.json public/manifest.webapp",

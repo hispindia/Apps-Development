@@ -35,7 +35,8 @@ import {
     EXISTING_TEI_DATA_RECEIVED,
     REMOVE_BUTTONS,
     SET_PREVIOUS_EVENT,
-    SET_EVENT
+    SET_EVENT,
+    SET_PREVALUE
 } from '../actions/types'
 
 const INITIAL_EVENT = {
@@ -83,11 +84,16 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
             ...state,
             previousValues: payload.entity
         }
-        case RESET_PREVIOUS_ENTITY:
+        case SET_PREVALUE:
             return {
                 ...state,
-                previousValues: {}
+                preValues: payload
             }
+            case RESET_PREVIOUS_ENTITY:
+                return {
+                    ...state,
+                    previousValues: {}
+                }
         case ADD_ENTITY:
             return {
                 ...state,

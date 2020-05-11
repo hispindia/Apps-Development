@@ -240,9 +240,7 @@ export const addEvent = async (
             incidentDate: sampleDate,
         })
     }
-
     const eventId = await postEvent(event)
-
     return {
         entityId,
         eventId,
@@ -266,10 +264,8 @@ export const setEventStatus = async (eventId, completed) => {
         values[L2_REVISION_REASON] = ''
     }
     event = await setEventValues(event, values)
-
     await put(url, event)
 }
-
 export const updateEventValue = (eventId, dataElementId, value) =>
     put(`events/${eventId}/${dataElementId}`, {
         dataValues: [{ dataElement: dataElementId, value: value }],
@@ -286,7 +282,7 @@ export const isDuplicateRecord = async ({
             request('events', {
                 order: 'created:asc',
                 fields: 'event,dataValues[dataElement,value]',
-                filters: `${SAMPLE_ID_ELEMENT}:eq:${sampleId}`,
+                filters: `${SAMPLE_ID_ELEMENT}&eq:${sampleId}`,
                 options: [`trackedEntityInstance=${entity}`],
             })
         )
