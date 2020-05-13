@@ -3,7 +3,7 @@
  */
 excelImport
     .controller('importController', function ($rootScope, $http,
-        $scope
+                                              $scope
     ) {
 
         $scope.logs = [];
@@ -66,8 +66,132 @@ excelImport
                         });
 
                     }
-					
-					else{
+                    else if( sheetName === 'eventCoordinate' ){
+                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        var json_object = JSON.stringify(XL_row_object);
+                        var objectKeys = Object.keys(XL_row_object["0"]);
+                        var importCount = 1;
+                        XL_row_object.forEach(row => {
+                            //console.log( row );
+
+                            $.ajax({
+                                type: "GET",
+                                async: false,
+                                url: '../../events/' + row.event + ".json?paging=false",
+                                success: function (eventResponse) {
+                                    var updateEventDataValue = {
+                                        event: row.event,
+                                        program: row.program,
+                                        orgUnit: row.orgUnit,
+                                        coordinate: {
+                                            latitude: row.coordinates.split(",")[0],
+                                            longitude: row.coordinates.split(",")[1]
+                                        },
+                                        dataValues: [...eventResponse.dataValues]
+                                    };
+
+                                    $.ajax({
+                                        type: "PUT",
+                                        dataType: "json",
+                                        contentType: "application/json",
+                                        data: JSON.stringify(updateEventDataValue),
+                                        url: '../../events/' + row.event,
+
+                                        success: function (response) {
+                                            //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                            //console.log( JSON.stringify(row) + " updated value " + row.value + " response: " + JSON.stringify(response) );
+                                        },
+                                        error: function (response) {
+                                            console.log(  JSON.stringify(row) +  " not updated value " + row.uid + " response: " + JSON.stringify(response ));
+                                        },
+                                        warning: function (response) {
+                                            console.log( JSON.stringify(row ) +  " -- "+ "Warning!: " +  JSON.stringify(response ) );
+                                        }
+
+                                    });
+                                },
+                                error: function (eventResponse) {
+                                    console.log( JSON.stringify( row.event ) +  " -- "+ "Error!: " +  JSON.stringify( eventResponse ) );
+                                },
+                                warning: function (eventResponse) {
+                                    console.log( JSON.stringify( row.event ) +  " -- "+ "Error!: " +  JSON.stringify( eventResponse ) );
+                                }
+                            });
+                            importCount++;
+                            console.log( "Row - " + importCount + " update done for event " + row.event );
+                            if( importCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " update done ");
+
+                            }
+                        });
+
+                    }
+                    // organisationUnits coordinate update
+                    else if( sheetName === 'organisationUnits' ){
+                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        var json_object = JSON.stringify(XL_row_object);
+                        var objectKeys = Object.keys(XL_row_object["0"]);
+                        var importCount = 1;
+                        XL_row_object.forEach(row => {
+                            importCount++;
+                            //console.log( row );
+                            // for point coordinates: [row.coordinates.split(",")[0], row.coordinates.split(",")[1]]
+                            // for polygon coordinates: row.coordinates
+                            $.ajax({
+                                type: "GET",
+                                async: false,
+                                url: '../../organisationUnits/' + row.uid + ".json?paging=false",
+                                success: function (orgUnitResponse) {
+                                    var updateOrgUnitCoOrdinate = {
+                                        id: row.uid,
+                                        name:orgUnitResponse.name,
+                                        shortName:orgUnitResponse.shortName,
+                                        openingDate:orgUnitResponse.openingDate,
+                                        parent: orgUnitResponse.parent,
+                                        geometry: {
+                                            type: row.featureType,
+                                            coordinates: [row.coordinates.split(",")[0], row.coordinates.split(",")[1]]
+                                        }
+                                    };
+
+                                    $.ajax({
+                                        type: "PUT",
+                                        async: false,
+                                        dataType: "json",
+                                        contentType: "application/json",
+                                        data: JSON.stringify(updateOrgUnitCoOrdinate),
+                                        url: '../../organisationUnits/' + row.uid,
+
+                                        success: function (response) {
+                                            //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                            console.log(  "Row - " + importCount + " update done response: " + JSON.stringify(response) );
+                                        },
+                                        error: function (response) {
+                                            console.log(  "Row - " + importCount + " error response: " + JSON.stringify(response ));
+                                        },
+                                        warning: function (response) {
+                                            console.log( "Row - " + importCount + "Warning response : " +  JSON.stringify(response ) );
+                                        }
+
+                                    });
+                                },
+                                error: function (orgUnitResponse) {
+                                    console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( orgUnitResponse ) );
+                                },
+                                warning: function (orgUnitResponse) {
+                                    console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( orgUnitResponse ) );
+                                }
+                            });
+
+                            //console.log( "Row - " + importCount + " update done for organisationUnit " + row.uid );
+                            if( importCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " update complete ");
+
+                            }
+                        });
+
+                    }
+                    else{
                         var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
                         var json_object = JSON.stringify(XL_row_object);
 
