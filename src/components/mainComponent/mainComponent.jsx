@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import TEIMain from '../teiComponent/TEIMan';
-import { BrowserRouter as Router, Switch, Route, Redirect, withRouter } from "react-router-dom";
-import DynamicData from '../LoadingComponent/dynamicComponent'
+// import { BrowserRouter as Router, Route, Redirect, withRouter } from "react-router-dom";
+// import { BrowserRouter as Router,Switch, Route,withRouter, Redirect } from 'react-router-dom'
+import { BrowserRouter as Switch, Route, Redirect, withRouter } from "react-router-dom";
+import StaticData from '../Events/staticComponent'
+import TEIDetails from '../Events/TEI'
 class Main extends Component {
     render() {
         return (
-                <Switch>
-                    <Route  path="/eventDetailPage" component={TEIMain} />
-                    <Route path = "/" exact component = {DynamicData} />
-                    <Route path="/:id" exact component={DynamicData} />
-                    /*<Route path="/:id" component={DynamicData} />*/
-                    <Redirect exact to="/"  component={DynamicData} />
-                </Switch>
+            <Switch>
+            <Route  path="/trackedEntityInstances" component={TEIDetails} />
+            <Route path = "/"  component = {StaticData} />
+            <Redirect to="/"  component={StaticData} /> 
+        </Switch>
         );
     }
 }
