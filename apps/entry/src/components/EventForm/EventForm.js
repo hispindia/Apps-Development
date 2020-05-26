@@ -15,7 +15,7 @@ import {
     addEntity,
     resetPreviousEntity,
     setEventValue,
-    PreValue
+   
 } from '@hisp-amr/app'
 import {
     Button,
@@ -55,10 +55,10 @@ export const EventForm = ({ history, match }) => {
         $('#success').hide();
       });
     useEffect(() => {
-        let previousEvent = ""
-        if(!pageFirst) {
-            previousEvent = "";  
-        }
+        // let previousEvent = ""
+        // if(!pageFirst) {
+        //     previousEvent = "";  
+        // }
         dispatch(resetData())
         if (teiId) {
             dispatch(getExistingEvent(orgUnit, teiId))
@@ -71,16 +71,16 @@ export const EventForm = ({ history, match }) => {
 
     //for Previous event value 
     useEffect(()=> {
-        dispatch(PreValue(previousValues))
+        // dispatch(PreValue(previousValues))
         if(eventIDs && editable) {
             for(let eventValues in previousValues) {
                 if(event["values"][eventValues] == "")  {
                     dispatch(setEventValue(eventValues, previousValues[eventValues]))
-                    event["values"][eventValues] = previousValues[eventValues]
+                    // event["values"][eventValues] = previousValues[eventValues]
                 } 
             }
-            dispatch(addExistingEvent(event))
-            dispatch(resetPreviousEntity())
+            // dispatch(addExistingEvent(event))
+            // dispatch(resetPreviousEntity())
         }
     }, [eventIDs])
     

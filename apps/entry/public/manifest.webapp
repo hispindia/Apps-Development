@@ -7,7 +7,7 @@
     }
   },
   "appType": "APP",
-  "name": "AMR Data Entry Tanda ",
+  "name": "AMR Data Entry- Patient Overview",
   "version": "0.4.1",
   "description": "Enter AMR data.",
   "icons": {
@@ -16,8 +16,8 @@
     "48": "appicon-48x48.svg"
   },
   "developer": {
-    "name": "Terje Uglebakken",
+    "name": "Gyan Bahadur Tamang",
     "company": "HISP India"
   },
-  "manifest_generated_at": "Wed Apr 29 2020 22:48:24 GMT+0530 (India Standard Time)"
+  "manifest_generated_at": "Tue May 26 2020 08:58:44 GMT+0530 (India Standard Time)"
 }

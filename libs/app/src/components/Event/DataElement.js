@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { string, object } from 'prop-types'
 import { Padding } from '../Padding'
-import { SAMPLE_ID_ELEMENT } from 'constants/dhis2'
+import { SAMPLE_ID_ELEMENT, ORGANISM_DETECTED, SAMPLE_TESTING_PROGRAM} from 'constants/dhis2'
 import {
     TextInput,
     RadioInputs,
@@ -16,11 +16,12 @@ export const DataElement = ({ id }) => {
     const dispatch = useDispatch()
     const optionSets = useSelector(state => state.metadata.optionSets)
     const completed = useSelector(state => state.data.event.status.completed)
-    var value = useSelector(state => state.data.event.values[id])
-    const preValues = useSelector(state => state.data.preValues)
-    const objLength = Object.keys(preValues).length
-    if((id === 'GpAu5HjWAEz') && (objLength >0))
-      {value =preValues.GpAu5HjWAEz}
+    var value = useSelector(state => state.data.event.values[id])    
+    const programId = useSelector(state => state.data.panel.program)
+    // const preValues = useSelector(state => state.data.preValues)
+    // const objLength = Object.keys(preValues).length
+    // if((id === 'GpAu5HjWAEz') && (objLength >0))
+    //   {value =preValues.GpAu5HjWAEz}
     const color = useSelector(
         state => state.data.event.programStage.dataElements[id].color
     )
@@ -53,15 +54,16 @@ export const DataElement = ({ id }) => {
     )
 
     const duplicate =
-        id === SAMPLE_ID_ELEMENT &&
+        id === SAMPLE_ID_ELEMENT && SAMPLE_TESTING_PROGRAM["0"].value == programId &&
         useSelector(state => state.data.event.duplicate)
+
     const onChange = (key, value) => {
-        if((key == 'u8VDCIwa3w4') && (value == 'Detected'))
+        if((key == ORGANISM_DETECTED) && (value == 'Detected'))
         {
          dispatch(AddAndSubmit(true))
          dispatch(setEventValue(key, value))
         }
-        else if((key == 'u8VDCIwa3w4') && (value == 'Sterile')) {
+        else if((key == ORGANISM_DETECTED) && (value == 'Sterile')) {
          dispatch(AddAndSubmit(false))
          dispatch(setEventValue(key, value))
         }

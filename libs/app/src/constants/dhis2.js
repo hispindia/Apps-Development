@@ -15,4 +15,8 @@ export const L2_REVISION_REASON = 'fEnFVvEFKVc'
 export const DEO_GROUP = 'mYdK5QT4ndl'
 export const ORGANISM_SET = 'TUCsBvqwTUV'
 export const ORGANISM_DETECTED = 'u8VDCIwa3w4' // id of organism detected Data element in sample testing 
+export const SAMPLE_TESTING_PROGRAM = [{
+    value: "L7bu48EI54J", 
+    label: "Sample Testing"
+}]
 

@@ -283,7 +283,7 @@ export const isDuplicateRecord = async ({
                 order: 'created:asc',
                 fields: 'event,dataValues[dataElement,value]',
                 filters: `${SAMPLE_ID_ELEMENT}&eq:${sampleId}`,
-                options: [`trackedEntityInstance=${entity}`],
+                options: [`program=L7bu48EI54J`],
             })
         )
     ).events
@@ -295,9 +295,9 @@ export const isDuplicateRecord = async ({
     if (events.length < 1) return false
     return events.find(e =>
         e.dataValues.find(
-            dv => dv.dataElement === ORGANISM_ELEMENT && dv.value === organism
+            dv => dv.dataElement === SAMPLE_ID_ELEMENT && dv.value === sampleId
         )
     )
         ? DUPLICACY.DUPLICATE_ERROR
-        : DUPLICACY.DUPLICATE_WARNING
+        : ""
 }

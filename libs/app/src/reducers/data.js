@@ -1,6 +1,6 @@
 import { ERROR } from 'constants/statuses'
 import { REQUIRED_EMPTY } from 'constants/invalidReasons'
-import { ORGANISM_ELEMENT } from 'constants/dhis2'
+import { ORGANISM_ELEMENT, SAMPLE_TESTING_PROGRAM } from 'constants/dhis2'
 import {
     SET_ENTITY,
     SET_ENTITY_VALUE,
@@ -36,7 +36,8 @@ import {
     REMOVE_BUTTONS,
     SET_PREVIOUS_EVENT,
     SET_EVENT,
-    SET_PREVALUE
+    // SET_PREVALUE
+    PAGE_FIRST
 } from '../actions/types'
 
 const INITIAL_EVENT = {
@@ -70,7 +71,7 @@ const INITIAL_STATE = {
         programStage: '',
         organism: '',
         sampleDate: '',
-        defaultProgram: [{value: "L7bu48EI54J", label: "Sample Testing"}],
+        defaultProgram: SAMPLE_TESTING_PROGRAM,
         valid: false,
     },
     event: INITIAL_EVENT,
@@ -84,11 +85,11 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
             ...state,
             previousValues: payload.entity
         }
-        case SET_PREVALUE:
-            return {
-                ...state,
-                preValues: payload
-            }
+        // case SET_PREVALUE:
+        //     return {
+        //         ...state,
+        //         preValues: payload
+        //     }
             case RESET_PREVIOUS_ENTITY:
                 return {
                     ...state,
@@ -195,6 +196,13 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                     valid: false,
                 },
             }
+        
+            case PAGE_FIRST: {
+                return {
+                    ...state,
+                    pageFirst:payload
+                }
+            }
         case SET_ENTITY_AND_ORG_UNIT: {
             return {
                 ...state,
@@ -234,7 +242,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                     programStage: '',
                     organism: '',
                     sampleDate: '',
-                    defaultProgram: [{value: "L7bu48EI54J", label: "Sample Testing"}],
+                    defaultProgram: SAMPLE_TESTING_PROGRAM,
                     valid: false,
                 },
                 event: INITIAL_EVENT,
@@ -295,6 +303,8 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                     invalid: payload.invalid,
                 },
                 orgUnit: payload.orgUnit,
+                previousValues: {},
+                pageFirst:false
             }
         case EXISTING_DATA_ERRORED:
         case NEW_EVENT_ERRORED:

@@ -21,6 +21,7 @@ export const TextInput = props => {
 
     useEffect(() => {
         if (
+            debouncedValue !== "" &&
             debouncedValue !== null &&
             debouncedValue === value &&
             debouncedValue !== props.value

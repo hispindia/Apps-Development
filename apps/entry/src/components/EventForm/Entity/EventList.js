@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { CardSection } from '@hisp-amr/app'
 import { useSelector, useDispatch } from 'react-redux'
 import {Table,TableBody,TableRow,TableCell,Button} from '@dhis2/ui-core'
-import {getExistingEvent,addPreviousEntity, PreValue} from '@hisp-amr/app'
+import {getExistingEvent,addPreviousEntity} from '@hisp-amr/app'
 import { withRouter } from 'react-router-dom'
 import './main.css'
 import $ from "jquery"

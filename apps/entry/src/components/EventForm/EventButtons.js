@@ -29,14 +29,7 @@ export const EventButtons = ({ history, existingEvent }) => {
         if (exit) history.goBack()
     }, [exit, history])
     const onSubmit = async addMore => await dispatch(submitEvent(addMore))
-    const submitExit = async () =>{
-        if(pageFirst){
-        await onSubmit(false)
-        } else{
-            window.location.reload(false)
-            await onSubmit(false)
-        }  
-    } 
+    const submitExit = async () => await onSubmit(false)    
     const submitAdd = async () => await onSubmit(true)
     const onEdit = () => dispatch(editEvent())
     const editButton = {
@@ -83,7 +76,7 @@ export const EventButtons = ({ history, existingEvent }) => {
     }
 
     const buttons = () =>
-        existingEvent
+        existingEvent && !pageFirst
             ? !eventId
                 ? []
                 : [status.completed ? editButton : submitButton]
