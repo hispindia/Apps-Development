@@ -10,7 +10,7 @@ React
 Redux 
 Postgres 
 Java
-Basic of Node
+Basics of Node
 
 # Set up on Operating System   
 
