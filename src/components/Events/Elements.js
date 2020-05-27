@@ -58,6 +58,8 @@ export const Element = (props) => {
       } else dispatch(validation({ id: null, type: false }));
     }
     let value;
+   
+    if ((valueType != "DATE") && (valueType != "TRUE_ONLY")){
      if(e.target.value ==="true"){
        value=true
      } else if (e.target.value === "false"){
@@ -65,7 +67,13 @@ export const Element = (props) => {
      } else{
        value= e.target.value
      }
-    dataValues[key] = valueType == "DATE" ? e : value;
+    }
+    if (valueType == "TRUE_ONLY") { 
+      value = e.target.checked
+  } else if (valueType == "DATE") { 
+      value = e
+   }
+    dataValues[key] = value;
     dispatch(updateEventValues(dataValues)); 
     dispatch(
       getProgramRuleChecking(dataValues, programStageSection, programRules)
@@ -134,7 +142,7 @@ export const Element = (props) => {
                   type="text"
                   id={element.id}
                   className="form-control"
-                  placeholder={element.valueType}
+                  placeholder="Text value only"
                   onChange={(e) => onChange(element.id, e)}
                 />
                 {Error && errorDataElement === element.id ? (
@@ -245,9 +253,8 @@ export const Element = (props) => {
               <TableCell align="right">
                 <Checkbox
                   color="primary"
-                  value="true"
                   id={element.id}
-                  onChange={(e) => onChange(element.id, e)}
+                  onChange={(e) => onChange(element.id, e, element.valueType)}
                 />
               </TableCell>
             </>
@@ -277,7 +284,7 @@ export const Element = (props) => {
                   type="number"
                   id={element.id}
                   className="form-control"
-                  placeholder={element.valueType}
+                  placeholder="Number value only"
                   onChange={(e) => onChange(element.id, e, element.valueType)}
                 />
                 {Error && errorDataElement === element.id ? (
@@ -319,7 +326,7 @@ export const Element = (props) => {
                   type="number"
                   id={element.id}
                   className="form-control"
-                  placeholder={element.valueType}
+                  placeholder="Number value only"
                   onChange={(e) => onChange(element.id, e, element.valueType)}
                 />
                 {Error && errorDataElement === element.id ? (

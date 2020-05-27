@@ -4,7 +4,16 @@ import { eventRules } from '../../helpers/eventRules';
 export const LoadMetaData = payload => dispatch => {
   dispatch(createAction(METADATA_RECEIVED, payload))
 };
-export const setPayload = payload => dispatch => dispatch(createAction(SET_PAYLOAD, payload));
+export const setPayload = payload => (dispatch, getState) => {
+  const programs = getState().data.dynamicData.programs
+  const programStages = getState().data.dynamicData.programStages
+   let data= {
+    programs:programs,
+    programStages:programStages
+   }
+  dispatch(createAction(SET_PAYLOAD, payload));
+  dispatch(createAction(PROGRAMSTAGE_RECEIVED, data));
+}
 export const getOrgUnitDetail = payload => dispatch => dispatch(createAction(SET_PAYLOAD, payload));
 export const getProgramStageSections = payload => (dispatch, getState) => {
   

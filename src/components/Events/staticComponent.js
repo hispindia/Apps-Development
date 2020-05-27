@@ -11,7 +11,7 @@ import "./custom.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const StaticData = (props) => {
+export const StaticData = (props) => {
   const dispatch = useDispatch();
   const OrgUnit = useSelector(state => state.data.payload.orgUnit);
   const OrgUnitId = useSelector(state => state.data.payload.orgUnitId);
@@ -24,8 +24,6 @@ const StaticData = (props) => {
   const orgUnitStatus = useSelector(state => state.data.orgUnitStatus);
   const metaDataLoading = useSelector(state => state.data.metaDataLoading);
   const startDate = useSelector(state => state.data.payload.eventDate);
-  console.log("here is loading", programStages);
-
   if (programStages === undefined) {
     programStages = [{
       name: ""
@@ -36,6 +34,7 @@ const StaticData = (props) => {
 
   useEffect(() => {
    if( orgUnitStatus && !metaDataLoading){
+    // window.location.reload(false)
     let data = [];
     for (let program of metadata.programs) {
       for (let org of program.organisationUnits) {
@@ -61,7 +60,6 @@ const StaticData = (props) => {
       }
     }
 
-    console.log("here is program rules", programRules);
     let data = {
       programId: e.target.value,
       id: OrgUnitId,
@@ -88,6 +86,13 @@ const StaticData = (props) => {
       programStageId: e.target.value,
       eventDate: payload.eventDate
     };
+     let datas ={
+    orgUnitId: payload.orgUnitId ,
+    programStageId: e.target.value,
+    programsId: payload.programsId,
+    eventDate: payload.eventDate,
+    }
+    localStorage.setItem("payload", JSON.stringify(datas))
     dispatch(setPayload(data));
     dispatch(setDataValues(dataValues));
     dispatch(getProgramStageSections(ps[0].programStageSections));
@@ -115,7 +120,6 @@ const StaticData = (props) => {
   const onError = error => console.error(error);
 
   return (<>
-  
        {loading ? 
        <div>
           <Grid container spacing={2}>
@@ -188,5 +192,3 @@ const StaticData = (props) => {
         </div>}
      </>)
 };
-
-export default StaticData;

@@ -11,10 +11,10 @@ import {MetaData} from './components/Events/metadata'
 const MyApp = () => { 
     return <> 
      <Provider store ={store}>
-       <BrowserRouter>
+       {/* <BrowserRouter> */}
          <MetaData />
         <Main />
-      </BrowserRouter>
+      {/* </BrowserRouter> */}
       </Provider>
     </>   
 }

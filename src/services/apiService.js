@@ -1,4 +1,4 @@
-import { BaseUrl } from '../services/BaseUrlService';
+import { BaseUrl } from './BaseUrlService';
 export const ApiService = {
     getTrackedEntityInstance,
     postEvent,
@@ -31,7 +31,6 @@ function getMetaData() {
 
 // get data using programStageSections id
 function getProgramTEIAttribute(id ) {
-    console.log('here is id',id);
     const requestOptions = { method: 'GET'};
     return fetch( BaseUrl + '/api/programs/'+id+'.json?fields=id,displayName,programTrackedEntityAttributes[mandatory,displayInList,valueType,optionSetValue,optionSet[id,name,valueType,options[id,name,valueType]],trackedEntityAttribute[id,displayName]]&paging=false', requestOptions).then(res => res.json());
 }

@@ -5,7 +5,7 @@ import {
   Grid,
 } from "@material-ui/core";
 import { DataElement } from "./DataElement";
-import { NavLink,  } from "react-router-dom";
+import { NavLink  } from "react-router-dom";
 export const Sections = () => {
   const dispatch = useDispatch();
   const programStageSections = useSelector(

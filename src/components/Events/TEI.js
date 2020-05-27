@@ -5,13 +5,10 @@ import { getTEIAttribute, getTrackedEntityInstances, postingEvent,failureEvent }
 import { ApiService } from "../../services/apiService";
 import Loader from "react-loader-spinner";
 import SweetAlert from 'react-bootstrap-sweetalert';
-import { BrowserRouter as Router, Route,withRouter, NavLink,useHistory } from 'react-router-dom'
-import './custom.css';
-import $ from 'jquery';
-// import Loader from "react-loader-spinner";
+import { useHistory } from 'react-router-dom'
 
 
-const TEIDetails = () => {
+export const TEIDetails = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -25,11 +22,9 @@ const TEIDetails = () => {
   const failEvent = useSelector(state => state.data.failEvent);
 
   const tranckedEntityInstances = useSelector(state => state.data.tranckedEntityInstances);
-  console.log('here is aatt', teiAttributes, TEIRender, tranckedEntityInstances);
   useEffect(() => {
     if (TEIRender) {
         payload = JSON.parse(localStorage.getItem('payload'))
-       console.log('here is val', payload)
       let pram = {
         program: payload.programsId,
         ou: payload.orgUnitId
@@ -58,33 +53,27 @@ const TEIDetails = () => {
             });
             arr.push(obj);
           });
-          console.log("here is tt", arr);
           dispatch(getTrackedEntityInstances(arr));
         });
       }, error => {
         console.log(error);
       });
     }
-  });
+  },[]);
 
   const onHeadChecked = (e,checkboxName, box) => {
-    console.log('here is boxes1', checkboxName, box)
 
     var checkboxes = document.querySelectorAll('Checkbox');
-    console.log('here is boxes1', checkboxes)
     for (var i = 0; i < (checkboxes.length); i++) {   
          checkboxes[i].checked = true;
-         console.log('here is boxes', checkboxes)
         //   tranckedEntityInstances[i].checked = true;
         //   dispatch(getTrackedEntityInstances(tranckedEntityInstances));
 
     }
-    console.log('here is boxes22', checkboxes)
 
   };
 
   const onSelect = (e, i) => {
-    console.log('here is index', i);
     let hide = true;
     tranckedEntityInstances[i].checked = !tranckedEntityInstances[i].checked;
     tranckedEntityInstances.forEach(tei => {
@@ -97,9 +86,7 @@ const TEIDetails = () => {
 
   const onSubmit = e => {
      payload=JSON.parse(localStorage.getItem('payload'))
-     console.log('here is payload',payload)
     let selectedTEI = tranckedEntityInstances.filter(tei => tei.checked);
-    
     let dataValue = [];
     for(let dv in dataValues) {
       dataValue.push({dataElement:dv, value:dataValues[dv]})
@@ -120,27 +107,29 @@ const TEIDetails = () => {
             if(result.httpStatus == 'OK'){
               dispatch(postingEvent())
             }
+            if(result.httpStatusCode == "409"){
+              dispatch(failureEvent())
+            }
         }, error => {
           dispatch(failureEvent())
-           console.log('here is event',error)
         });
     }) 
   };
   const onConfirm =  () => {
-    history.push('/')
-    console.log('here is ok')
+    // window.location.reload(false)
+    history.goBack()
   }
  
   return <>  
       <Grid elevation={6}>
         <Card item xs={11}> {tranckedEntityInstances.length > 0 ? <CardContent>
-        <Table name="table">
+        <Table>
           <TableHead>
             <TableRow>
             <TableCell>S.N.</TableCell>
             {teiAttributes.map(header => <TableCell>{header}</TableCell>)}
             <TableCell> 
-               <Checkbox type="checkbox" name="check" color="primary" className="checkBox" onChange={e =>onHeadChecked(e, document.table.check, this)} />
+               {/* <Checkbox type="checkbox" name="check" color="primary" className="checkBox" onChange={e =>onHeadChecked(e, document.table.check, this)} /> */}
                {/* <Checkbox type="checkbox" name="check" color="primary" className="checkBox" onChange={e =>onHeadChecked(e)} /> */}
              </TableCell>
             </TableRow>
@@ -194,5 +183,3 @@ const TEIDetails = () => {
    }
     </>;
 };
-
-export default withRouter(TEIDetails);
