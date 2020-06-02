@@ -17,11 +17,7 @@ const MyApp = () => {
 
         <div className="container">
           <div className="row">
-            <a
-              className="link1"
-              href="http://172.104.45.148/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/PeiaxeKvmVd"
-              target="_blank"
-            >
+          
               <div class="flip-card ">
                 <div class="flip-card-inner">
                   <div class="flip-card-front">
@@ -35,22 +31,37 @@ const MyApp = () => {
                   <div class="flip-card-back">
                     <h6 className="text-center p-2 bold">NPCB - 1</h6>
                     <ol className="m-1">
+                      <a
+                        className="link1"
+                        href="http://172.104.45.148/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/PeiaxeKvmVd"
+                        target="_blank"
+                      >
                       <li className="bold">Screening of children</li>
+                      </a>
+                      <a
+                        className="link1"
+                        href="http://172.104.45.148/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/jltq3ohosJ1"
+                        target="_blank"
+                      >
                       <li className="bold">
                         Identification of refractive errors
                       </li>
+                    </a>
+
+                      <a
+                        className="link1"
+                        href="http://172.104.45.148/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/NC4l3hcTd3I"
+                        target="_blank"
+                      >
                       <li className="bold">Spectacle distribution</li>
+                    </a>
+
                     </ol>
                   </div>
                 </div>
               </div>
-            </a>
             {/* <div className="col card1 shadow-lg  p-2 mb-5"> */}
-            <a
-              className="link"
-              href="http://172.104.45.148/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/Pqtv894NZ7P"
-              target="_blank"
-            >
+          
               <div class="flip-card">
                 <div class="flip-card-inner">
                   <div class="flip-card-front">
@@ -64,14 +75,34 @@ const MyApp = () => {
                   <div class="flip-card-back">
                     <h6 className="text-center p-2 bold"> NPCB - 2</h6>
                     <ol className="m-1">
+                    <a
+                      className="link"
+                      href="http://172.104.45.148/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/Pqtv894NZ7P"
+                      target="_blank"
+                    >
                       <li className="bold">Cataract Surgeries</li>
+                   </a> 
+                   <a
+                      className="link"
+                      href="http://172.104.45.148/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/zly6E8JBW3M"
+                      target="_blank"
+                    >
                       <li className="bold">Eyeball collection</li>
+                   </a>
+                   <a
+                      className="link"
+                      href="http://172.104.45.148/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/VIpf21mKYq2"
+                      target="_blank"
+                    >
+
                       <li className="bold"> Keratoplasty surgeries</li>
+                   </a>
+
                     </ol>
+
                   </div>
                 </div>
               </div>
-            </a>
             <div class="flip-card">
               <div class="flip-card-inner">
                 <div class="flip-card-front"></div>
