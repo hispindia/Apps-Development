@@ -330,7 +330,7 @@
                 + " -- " +  getISOPeriod ( apiResponse[i].Year, apiResponse[i].month ) );
                 */
 
-                if( apiResponse[i].Year === '2018-19' || apiResponse[i].Year === '2019-20' ){
+                if( apiResponse[i].Year === '2018-19' || apiResponse[i].Year === '2019-20' || apiResponse[i].Year === '2020-21' ){
                     regOrgUnitList.push( orgUnitMap[(apiResponse[i].District).toUpperCase()] );
                     regPeriodList.push( getISOPeriod ( apiResponse[i].Year, apiResponse[i].month ) );
 
