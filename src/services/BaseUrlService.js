@@ -1,2 +1,2 @@
 
- export const BaseUrl ='http://localhost:8080/plan';
+ export const BaseUrl ='https://training.yesme.plan-yes.online/training';

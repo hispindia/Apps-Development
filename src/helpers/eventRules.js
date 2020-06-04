@@ -95,11 +95,12 @@ export const eventRules = (values, stage, rules // { rules, optionSets, pushChan
             break;
 
           case 'ASSIGN':
-            if (!cond) break; //   setColors(rule.condition, de, r.data); // Assigning value.
-            //   if (values[de.id] !== r.data) {
-            //     values[de.id] = r.data;
-            //     if (pushChanges) updateValue(de.id, r.data);
-            //   }
+            if (!cond) break; 
+            //   setColors(rule.condition, de, r.data); // Assigning value.
+              if (values[de.id] !== r.data) {
+                values[de.id] = r.data;
+                // if (pushChanges) updateValue(de.id, r.data);
+              }
             //   de.disabled = true;
 
             break;

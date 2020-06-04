@@ -11,8 +11,22 @@ useEffect(() => {
     ApiService.getMetaData().then(res => {
       if (res.programs.length) {
         res.programs.forEach(program => {
+          if(program.attributeValues.length){
+            let attribute = []
+            program.attributeValues.forEach( attr => {
+             attribute[attr.attribute.id]=Boolean(attr.value);
+            })
+            program.attributeValues = attribute; 
+          }
           if (program.programStages.length) {
             program.programStages.forEach(programStage => {
+              if(programStage.attributeValues.length){
+                let attribute = []
+                programStage.attributeValues.forEach( attr => {
+                 attribute[attr.attribute.id]=Boolean(attr.value);
+                })
+                programStage.attributeValues = attribute; 
+              }
               let programStageDataElements = [];
               let dataElementIndex = [];
               let eventValues = [];

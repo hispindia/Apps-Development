@@ -58,295 +58,295 @@ export const Element = (props) => {
       } else dispatch(validation({ id: null, type: false }));
     }
     let value;
-   
-    if ((valueType != "DATE") && (valueType != "TRUE_ONLY")){
-     if(e.target.value ==="true"){
-       value=true
-     } else if (e.target.value === "false"){
-       value=false
-     } else{
-       value= e.target.value
-     }
+
+    if (valueType != "DATE" && valueType != "TRUE_ONLY") {
+      if (e.target.value === "true") {
+        value = true;
+      } else if (e.target.value === "false") {
+        value = false;
+      } else {
+        value = e.target.value;
+      }
     }
-    if (valueType == "TRUE_ONLY") { 
-      value = e.target.checked
-  } else if (valueType == "DATE") { 
-      value = e
-   }
+    if (valueType == "TRUE_ONLY") {
+      value = e.target.checked;
+    } else if (valueType == "DATE") {
+      value = e;
+    }
     dataValues[key] = value;
-    dispatch(updateEventValues(dataValues)); 
+    dispatch(updateEventValues(dataValues));
     dispatch(
       getProgramRuleChecking(dataValues, programStageSection, programRules)
     );
   };
   if (hide) return null;
   return (
-    <Grid item xs={6}>
-      <Table>
-        <TableRow>
-          {element.optionSetValue && element.valueType === "TEXT" ? (
-            <>
-              <TableCell align="left">
-                {element.name}
-                {element.required ? (
-                  <span
-                    style={{
-                      color: "red",
-                    }}
-                  >
-                    {" "}
-                    *
-                  </span>
-                ) : (
-                  ""
-                )}
-              </TableCell>
-              <TableCell align="right">
-                <select
-                  className="form-control"
-                  id={element.id}
-                  onChange={(e) => onChange(element.id, e)}
+    <Grid spacing={2} item xs={6}>
+      {element.optionSetValue && element.valueType === "TEXT" ? (
+        <>
+          <div className="row">
+            <div className="col float-left m-2">
+              {element.name}
+              {element.required ? (
+                <span
+                  style={{
+                    color: "red",
+                  }}
                 >
-                  {element.optionSet.options.map((opt) => (
-                    <>
-                      <option selected hidden>
-                        Please Select Option
-                      </option>
-                      <option value={opt.code}>{opt.name}</option>
-                    </>
-                  ))}
-                </select>
-              </TableCell>
-            </>
-          ) : null}
-        </TableRow>
-        <TableRow>
-          {element.valueType === "TEXT" && !element.optionSetValue ? (
-            <>
-              <TableCell align="left">
-                {element.name}
-                {element.required ? (
-                  <span
-                    style={{
-                      color: "red",
-                    }}
-                  >
-                    *
-                  </span>
-                ) : (
-                  ""
-                )}
-              </TableCell>
-              <TableCell align="right">
-                <input
-                  type="text"
-                  id={element.id}
-                  className="form-control"
-                  placeholder="Text value only"
+                  {" "}
+                  *
+                </span>
+              ) : (
+                ""
+              )}
+            </div>
+            <div className="col m-2">
+              <select
+                className="form-control"
+                id={element.id}
+                onChange={(e) => onChange(element.id, e)}
+              >
+                {element.optionSet.options.map((opt) => (
+                  <>
+                    <option selected hidden>
+                      Please Select Option
+                    </option>
+                    <option value={opt.code}>{opt.name}</option>
+                  </>
+                ))}
+              </select>
+            </div>
+          </div>
+        </>
+      ) : null}
+      {element.valueType === "TEXT" && !element.optionSetValue ? (
+        <>
+          <div className="row">
+            <div className="col float-left m-2">
+              {element.name}
+              {element.required ? (
+                <span
+                  style={{
+                    color: "red",
+                  }}
+                >
+                  *
+                </span>
+              ) : (
+                ""
+              )}
+            </div>
+            <div className="col m-2">
+              <input
+                type="text"
+                id={element.id}
+                className="form-control"
+                placeholder="Text value only"
+                onChange={(e) => onChange(element.id, e)}
+              />
+              {Error && errorDataElement === element.id ? (
+                <span
+                  style={{
+                    color: "red",
+                  }}
+                >
+                  Please Enter text value Only
+                </span>
+              ) : (
+                ""
+              )}
+            </div>
+          </div>
+        </>
+      ) : null}
+      {element.valueType === "BOOLEAN" ? (
+        <>
+          <div className="row">
+            <div className="col float-left m-2">
+              {element.name}
+              {element.required ? (
+                <span
+                  style={{
+                    color: "red",
+                  }}
+                >
+                  {" "}
+                  *
+                </span>
+              ) : (
+                ""
+              )}
+            </div>
+            <div className="col m-2">
+              <RadioGroup row>
+                <FormControlLabel
+                  control={<Radio color="primary" />}
+                  label="Yes"
+                  value="true"
                   onChange={(e) => onChange(element.id, e)}
+                  id={element.id}
                 />
-                {Error && errorDataElement === element.id ? (
-                  <span
-                    style={{
-                      color: "red",
-                    }}
-                  >
-                    Please Enter text value Only
-                  </span>
-                ) : (
-                  ""
-                )}
-              </TableCell>
-            </>
-          ) : null}
-        </TableRow>
-        <TableRow>
-          {element.valueType === "BOOLEAN" ? (
-            <>
-              <TableCell align="left">
-                {element.name}
-                {element.required ? (
-                  <span
-                    style={{
-                      color: "red",
-                    }}
-                  >
-                    {" "}
-                    *
-                  </span>
-                ) : (
-                  ""
-                )}
-              </TableCell>
-              <TableCell align="right">
-                <RadioGroup row>
-                  <FormControlLabel
-                    control={<Radio color="primary" />}
-                    label="Yes"
-                    value="true"
-                    onChange={(e) => onChange(element.id, e)}
-                    id={element.id}
-                  />
-                  <FormControlLabel
-                    control={<Radio color="primary" />}
-                    label="No"
-                    value="false"
-                    onChange={(e) => onChange(element.id, e)}
-                    id={element.id}
-                  />
-                </RadioGroup>
-              </TableCell>
-            </>
-          ) : (
-            ""
-          )}
+                <FormControlLabel
+                  control={<Radio color="primary" />}
+                  label="No"
+                  value="false"
+                  onChange={(e) => onChange(element.id, e)}
+                  id={element.id}
+                />
+              </RadioGroup>
+            </div>
+          </div>
+        </>
+      ) : (
+        ""
+      )}
 
-          {element.valueType === "DATE" ? (
-            <>
-              <TableCell align="left">
-                {element.name}
-                {element.required ? (
-                  <span
-                    style={{
-                      color: "red",
-                    }}
-                  >
-                    {" "}
-                    *
-                  </span>
-                ) : (
-                  ""
-                )}
-              </TableCell>
-              <TableCell align="right">
-                <DatePicker
-                  selected={values}
-                  onChange={(date) =>
-                    onChange(element.id, date, element.valueType)
-                  }
-                  className="form-control"
-                />
-              </TableCell>
-            </>
-          ) : (
-            ""
-          )}
-        </TableRow>
-        <TableRow>
-          {element.valueType === "TRUE_ONLY" ? (
-            <>
-              <TableCell align="left">
-                {element.name}
-                {element.required ? (
-                  <span
-                    style={{
-                      color: "red",
-                    }}
-                  >
-                    {" "}
-                    *
-                  </span>
-                ) : (
-                  ""
-                )}
-              </TableCell>
-              <TableCell align="right">
-                <Checkbox
-                  color="primary"
-                  id={element.id}
-                  onChange={(e) => onChange(element.id, e, element.valueType)}
-                />
-              </TableCell>
-            </>
-          ) : (
-            ""
-          )}
-        </TableRow>
-        <TableRow>
-          {element.valueType === "NUMBER" ? (
-            <>
-              <TableCell align="left">
-                {element.name}
-                {element.required ? (
-                  <span
-                    style={{
-                      color: "red",
-                    }}
-                  >
-                    *
-                  </span>
-                ) : (
-                  ""
-                )}
-              </TableCell>
-              <TableCell align="right">
-                <input
-                  type="number"
-                  id={element.id}
-                  className="form-control"
-                  placeholder="Number value only"
-                  onChange={(e) => onChange(element.id, e, element.valueType)}
-                />
-                {Error && errorDataElement === element.id ? (
-                  <span
-                    style={{
-                      color: "red",
-                    }}
-                  >
-                    Please Enter number value Only
-                  </span>
-                ) : (
-                  ""
-                )}
-              </TableCell>
-            </>
-          ) : (
-            ""
-          )}
-        </TableRow>
-        <TableRow>
-          {element.valueType === "INTEGER_ZERO_OR_POSITIVE" ? (
-            <>
-              <TableCell align="left">
-                {element.name}
-                {element.required ? (
-                  <span
-                    style={{
-                      color: "red",
-                    }}
-                  >
-                    *
-                  </span>
-                ) : (
-                  ""
-                )}
-              </TableCell>
-              <TableCell align="right">
-                <input
-                  type="number"
-                  id={element.id}
-                  className="form-control"
-                  placeholder="Number value only"
-                  onChange={(e) => onChange(element.id, e, element.valueType)}
-                />
-                {Error && errorDataElement === element.id ? (
-                  <span
-                    style={{
-                      color: "red",
-                    }}
-                  >
-                    Please Enter number value Only
-                  </span>
-                ) : (
-                  ""
-                )}
-              </TableCell>
-            </>
-          ) : (
-            ""
-          )}
-        </TableRow>
-      </Table>
+      {element.valueType === "DATE" ? (
+        <>
+          <div className="row">
+            <div className="col float-left m-2">
+              {element.name}
+              {element.required ? (
+                <span
+                  style={{
+                    color: "red",
+                  }}
+                >
+                  {" "}
+                  *
+                </span>
+              ) : (
+                ""
+              )}
+            </div>
+            <div className="col m-2">
+              <DatePicker
+                selected={values}
+                onChange={(date) =>
+                  onChange(element.id, date, element.valueType)
+                }
+                className="form-control"
+              />
+            </div>
+          </div>
+        </>
+      ) : (
+        ""
+      )}
+      {element.valueType === "TRUE_ONLY" ? (
+        <>
+          <div className="row">
+            <div className="col float-left m-2">
+              {element.name}
+              {element.required ? (
+                <span
+                  style={{
+                    color: "red",
+                  }}
+                >
+                  {" "}
+                  *
+                </span>
+              ) : (
+                ""
+              )}
+            </div>
+            <div className="col m-2">
+              <Checkbox
+                color="primary"
+                id={element.id}
+                onChange={(e) => onChange(element.id, e, element.valueType)}
+              />
+            </div>
+          </div>
+        </>
+      ) : (
+        ""
+      )}
+      {element.valueType === "NUMBER" ? (
+        <>
+          <div className="row">
+            <div className="col float-left m-2">
+              {element.name}
+              {element.required ? (
+                <span
+                  style={{
+                    color: "red",
+                  }}
+                >
+                  *
+                </span>
+              ) : (
+                ""
+              )}
+            </div>
+            <div className="col m-2">
+              <input
+                type="number"
+                id={element.id}
+                className="form-control"
+                placeholder="Number value only"
+                onChange={(e) => onChange(element.id, e, element.valueType)}
+              />
+              {Error && errorDataElement === element.id ? (
+                <span
+                  style={{
+                    color: "red",
+                  }}
+                >
+                  Please Enter number value Only
+                </span>
+              ) : (
+                ""
+              )}
+            </div>
+          </div>
+        </>
+      ) : (
+        ""
+      )}
+      {element.valueType === "INTEGER_ZERO_OR_POSITIVE" ? (
+        <>
+          <div className="row">
+            <div className="col float-left m-2">
+              {element.name}
+              {element.required ? (
+                <span
+                  style={{
+                    color: "red",
+                  }}
+                >
+                  *
+                </span>
+              ) : (
+                ""
+              )}
+            </div>
+            <div className="col m-2">
+              <input
+                type="number"
+                id={element.id}
+                className="form-control"
+                placeholder="Number value only"
+                onChange={(e) => onChange(element.id, e, element.valueType)}
+              />
+              {Error && errorDataElement === element.id ? (
+                <span
+                  style={{
+                    color: "red",
+                  }}
+                >
+                  Please Enter number value Only
+                </span>
+              ) : (
+                ""
+              )}
+            </div>
+          </div>
+        </>
+      ) : (
+        ""
+      )}
     </Grid>
   );
 };

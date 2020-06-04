@@ -2,11 +2,9 @@ import React, { useEffect } from "react";
 import { Paper, Grid, Card, CardContent, CircularProgress } from "@material-ui/core";
 import { OrgUnitTree } from "@hisp-amr/org-unit-tree";
 import { useDispatch, useSelector } from "react-redux";
-import { LoadMetaData, getOrgUnitDetail, setPayload, setDataValues, getProgramStages, getPrograms, getProgramStageSections, setProgramRule } from "../../redux/action/event";
-import { ApiService } from "../../services/apiService";
+import { resetDyanamicData,resetStaticData, getOrgUnitDetail, setPayload, setDataValues, getProgramStages, getPrograms, getProgramStageSections, setProgramRule } from "../../redux/action/event";
 import { Sections } from "./sections";
 import Loader from "react-loader-spinner";
-import $ from "jquery";
 import "./custom.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -24,6 +22,7 @@ export const StaticData = (props) => {
   const orgUnitStatus = useSelector(state => state.data.orgUnitStatus);
   const metaDataLoading = useSelector(state => state.data.metaDataLoading);
   const startDate = useSelector(state => state.data.payload.eventDate);
+  console.log('here is ps', programStages)
   if (programStages === undefined) {
     programStages = [{
       name: ""
@@ -37,9 +36,11 @@ export const StaticData = (props) => {
     // window.location.reload(false)
     let data = [];
     for (let program of metadata.programs) {
-      for (let org of program.organisationUnits) {
-        if (org.id === payload.orgUnitId) {
-          data.push(program);
+      if(program["attributeValues"]["YiQU1BzZvVQ"]){
+        for (let org of program.organisationUnits) {
+          if (org.id === payload.orgUnitId ) {
+            data.push(program);
+          }
         }
       }
     }
@@ -50,6 +51,7 @@ export const StaticData = (props) => {
  
   const onSelect = selected => {
         dispatch(getOrgUnitDetail({...selected, eventDate:new Date()}));
+        dispatch(resetDyanamicData());
       };
   const onSelectProgram = e => {
     let programRules = [];
@@ -68,6 +70,7 @@ export const StaticData = (props) => {
     };
     dispatch(setProgramRule(programRules));
     dispatch(setPayload(data));
+    dispatch(resetStaticData());
     dispatch(getProgramStages(e.target.value));
   };
 
@@ -138,7 +141,7 @@ export const StaticData = (props) => {
                       Organisation Unit :
                     </Grid>
                     <Grid item xs={9}>
-                      <input type="text" className="form-control" value={OrgUnit || ""} />
+                      <input type="text" className="form-control" placeholder="Organisation Unit loading..." value={OrgUnit || ""} />
                       <br />
                     </Grid>
                   </Grid>

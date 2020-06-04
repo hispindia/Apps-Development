@@ -1,4 +1,4 @@
-import { PROGRAMSTAGE_SECTIONS_UPDATE, METADATA_RECEIVED, EVENT_FAILURE,EVENT_POST, SET_DATA_VALUES, SET_TEI_ATTRIBUTE, TRACKED_ENTITY_RECEIVED, CHECKED_VALIDATION, UPDATE_EVENT_VALUES, SET_PROGRAM_RULES, SET_PAYLOAD, PROGRAMS_RECEIVED, PROGRAMSTAGE_RECEIVED, PROGRAMSTAGE_SECTIONS_RECEIVED } from './types';
+import { PROGRAMSTAGE_SECTIONS_UPDATE,RESET,RESET_FORM, METADATA_RECEIVED, EVENT_FAILURE,EVENT_POST, SET_DATA_VALUES, SET_TEI_ATTRIBUTE, TRACKED_ENTITY_RECEIVED, CHECKED_VALIDATION, UPDATE_EVENT_VALUES, SET_PROGRAM_RULES, SET_PAYLOAD, PROGRAMS_RECEIVED, PROGRAMSTAGE_RECEIVED, PROGRAMSTAGE_SECTIONS_RECEIVED } from './types';
 import { createAction } from './actions';
 import { eventRules } from '../../helpers/eventRules';
 export const LoadMetaData = payload => dispatch => {
@@ -34,7 +34,7 @@ export const getPrograms = payload => dispatch => dispatch(createAction(PROGRAMS
 export const getProgramStages = id => (dispatch, getState) => {
   const programs = getState().data.dynamicData.programs;
   let program = programs.filter(program => program.id === id);
-  let ps = program['0'].programStages;
+  let ps = program['0'].programStages.filter( ps => ps["attributeValues"]["YiQU1BzZvVQ"]);
   let payload = {
     programs: programs,
     programStages: ps
@@ -49,7 +49,6 @@ export const setProgramRule = payload => dispatch => dispatch(createAction(SET_P
 export const getProgramRuleChecking = (dataValues, programStageSection, programRules) => dispatch => {
   try {
     const data = eventRules(dataValues, programStageSection, programRules);
-
     dispatch(createAction(SET_DATA_VALUES, data['0']));
     dispatch(createAction(PROGRAMSTAGE_SECTIONS_UPDATE, data['1']));
   } catch (error) {
@@ -58,3 +57,11 @@ export const getProgramRuleChecking = (dataValues, programStageSection, programR
 };
 export const postingEvent = () => dispatch => dispatch(createAction(EVENT_POST));
 export const failureEvent = () => dispatch => dispatch(createAction(EVENT_FAILURE));
+export const resetDyanamicData = () => dispatch => {
+  dispatch(createAction(RESET));
+}
+export const resetStaticData = () => (dispatch, getState) => {
+  const programs = getState().data.dynamicData.programs;
+  dispatch(createAction(RESET_FORM, programs));
+}
+

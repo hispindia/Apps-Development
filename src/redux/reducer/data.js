@@ -1,6 +1,6 @@
 import { GET_ORG_UNITS_DETAIL, METADATA_RECEIVED, SET_PAYLOAD, SET_DATA_VALUES, SET_TEI_ATTRIBUTE, TRACKED_ENTITY_RECEIVED,
    CHECKED_VALIDATION, EVENT_FAILURE, DYNAMIC_RECEIVED_DATA, PROGRAMS_RECEIVED, PROGRAMSTAGE_RECEIVED, PROGRAMSTAGE_SECTIONS_RECEIVED,
-    UPDATE_EVENT_VALUES, SET_PROGRAM_RULES, EVENT_POST } from '../action';
+    UPDATE_EVENT_VALUES,RESET_FORM, SET_PROGRAM_RULES, EVENT_POST, RESET } from '../action';
 const INITIAL_EVENT = {
   values: null,
   programStage: null,
@@ -108,6 +108,24 @@ export const dataReducer = (state = INITIAL_STATE, {
         Error: payload.type
       };
 
+      case RESET:
+        return { ...state,
+          programStageSections:[],
+          dynamicData: {
+            programs: [],
+            programStages: [] 
+          },
+          btnStatus: false,
+        };
+        case RESET_FORM:
+        return { ...state,
+          programStageSections:[],
+          dynamicData: {
+            programs: payload,
+            programStages: [] 
+          },
+          btnStatus: false,
+        };
     case DYNAMIC_RECEIVED_DATA:
       {
         return { ...state,
