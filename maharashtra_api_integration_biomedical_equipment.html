@@ -286,6 +286,11 @@
         });
         */
     var dataValues = [];
+	var currentDate = new Date();
+	var currentYear = currentDate.getFullYear();
+	var nextYear = currentDate.getFullYear() + 1;
+	var currentFinancialYear = currentYear + "-" + nextYear;
+	console.log( "currentFinancialYear -- " + currentFinancialYear );
     var proxyURL = "https://cors-anywhere.herokuapp.com/";
     $.ajax({
 
@@ -330,7 +335,7 @@
                 + " -- " +  getISOPeriod ( apiResponse[i].Year, apiResponse[i].month ) );
                 */
 
-                if( apiResponse[i].Year === '2018-19' || apiResponse[i].Year === '2019-20' || apiResponse[i].Year === '2020-21' ){
+                if( apiResponse[i].Year === '2018-19' || apiResponse[i].Year === '2019-20' || apiResponse[i].Year === currentFinancialYear ){
                     regOrgUnitList.push( orgUnitMap[(apiResponse[i].District).toUpperCase()] );
                     regPeriodList.push( getISOPeriod ( apiResponse[i].Year, apiResponse[i].month ) );
 
