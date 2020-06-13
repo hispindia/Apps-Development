@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Grid,
@@ -6,9 +6,6 @@ import {
   RadioGroup,
   Checkbox,
   FormControlLabel,
-  Table,
-  TableRow,
-  TableCell,
 } from "@material-ui/core";
 import {
   updateEventValues,
@@ -18,6 +15,8 @@ import {
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./custom.css";
+import $ from "jquery";
+
 
 export const Element = (props) => {
   const dispatch = useDispatch();
@@ -33,13 +32,21 @@ export const Element = (props) => {
   const errorDataElement = useSelector((state) => state.data.checkingId);
   const payload = useSelector((state) => state.data.payload);
   const element = props.element;
-  const values = useSelector((state) => state.data.dataValue[element.id]);
+  const values = useSelector((state) => {
+   return state.data.dataValue[element.id]});
   const hide = useSelector(
     (state) =>
       state.data.programStageSections[
         state.data.programStageSections.dataElementIndex[element.id]
       ].dataElements[element.id].hide
   );
+ 
+  useEffect( () => {
+    if(element.optionSetValue && element.valueType === "TEXT"){
+      $('.opt').prop('selectedIndex', 0);
+    }
+   
+  }, [element])
   const onChange = (key, e, valueType) => {
     if (valueType != "DATE") {
       const re = /^[0-9\b]+$/;
@@ -102,16 +109,16 @@ export const Element = (props) => {
             </div>
             <div className="col m-2">
               <select
-                className="form-control"
-                id={element.id}
+                className="form-control opt"
+                 id={element.id}
                 onChange={(e) => onChange(element.id, e)}
-              >
+              > 
                 {element.optionSet.options.map((opt) => (
-                  <>
+                  <> 
                     <option selected hidden>
-                      Please Select Option
+                      Please Select Option 
                     </option>
-                    <option value={opt.code}>{opt.name}</option>
+                <option id={opt.id}>{opt.name}</option>
                   </>
                 ))}
               </select>
@@ -143,6 +150,7 @@ export const Element = (props) => {
                 className="form-control"
                 placeholder="Text value only"
                 onChange={(e) => onChange(element.id, e)}
+                value={values}
               />
               {Error && errorDataElement === element.id ? (
                 <span
@@ -184,6 +192,7 @@ export const Element = (props) => {
                   label="Yes"
                   value="true"
                   onChange={(e) => onChange(element.id, e)}
+                  checked={values === true}
                   id={element.id}
                 />
                 <FormControlLabel
@@ -191,6 +200,7 @@ export const Element = (props) => {
                   label="No"
                   value="false"
                   onChange={(e) => onChange(element.id, e)}
+                  checked={values === false}
                   id={element.id}
                 />
               </RadioGroup>
@@ -256,6 +266,7 @@ export const Element = (props) => {
                 color="primary"
                 id={element.id}
                 onChange={(e) => onChange(element.id, e, element.valueType)}
+                checked={values === true}
               />
             </div>
           </div>
@@ -287,6 +298,7 @@ export const Element = (props) => {
                 className="form-control"
                 placeholder="Number value only"
                 onChange={(e) => onChange(element.id, e, element.valueType)}
+                value={values === true}
               />
               {Error && errorDataElement === element.id ? (
                 <span
@@ -329,6 +341,7 @@ export const Element = (props) => {
                 className="form-control"
                 placeholder="Number value only"
                 onChange={(e) => onChange(element.id, e, element.valueType)}
+                value={values}
               />
               {Error && errorDataElement === element.id ? (
                 <span

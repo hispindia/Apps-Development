@@ -1,6 +1,6 @@
 import { GET_ORG_UNITS_DETAIL, METADATA_RECEIVED, SET_PAYLOAD, SET_DATA_VALUES, SET_TEI_ATTRIBUTE, TRACKED_ENTITY_RECEIVED,
    CHECKED_VALIDATION, EVENT_FAILURE, DYNAMIC_RECEIVED_DATA, PROGRAMS_RECEIVED, PROGRAMSTAGE_RECEIVED, PROGRAMSTAGE_SECTIONS_RECEIVED,
-    UPDATE_EVENT_VALUES,RESET_FORM, SET_PROGRAM_RULES, EVENT_POST, RESET } from '../action';
+    UPDATE_EVENT_VALUES,RESET_FORM, SET_PROGRAM_RULES, EVENT_POST, RESET,LOADING_PAGE } from '../action';
 const INITIAL_EVENT = {
   values: null,
   programStage: null,
@@ -46,7 +46,8 @@ const INITIAL_STATE = {
   metaDataLoading:true,
   programStatus: false,
   orgUnitStatus: false,
-  failEvent: false
+  failEvent: false,
+  pageLoading: false
 };
 export const dataReducer = (state = INITIAL_STATE, {
   type,
@@ -117,6 +118,10 @@ export const dataReducer = (state = INITIAL_STATE, {
           },
           btnStatus: false,
         };
+        case LOADING_PAGE:
+        return { ...state,
+          pageLoading:true,
+        };
         case RESET_FORM:
         return { ...state,
           programStageSections:[],
@@ -164,7 +169,7 @@ export const dataReducer = (state = INITIAL_STATE, {
         return { ...state,
           programStageSections: payload,
           btnStatus: true,          
-        orgUnitStatus:false
+         orgUnitStatus:false
         };
       }
     case METADATA_RECEIVED:

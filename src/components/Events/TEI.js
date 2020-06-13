@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Grid, Card, Checkbox, CardContent, Table, TableBody, TableRow, TableCell, TableHead } from "@material-ui/core";
-import { getTEIAttribute, getTrackedEntityInstances, postingEvent,failureEvent } from '../../redux/action/event';
+import { getTEIAttribute, getTrackedEntityInstances, postingEvent,failureEvent, loadingPage } from '../../redux/action/event';
 import { ApiService } from "../../services/apiService";
 import Loader from "react-loader-spinner";
 import SweetAlert from 'react-bootstrap-sweetalert';
@@ -39,7 +39,7 @@ export const TEIDetails = () => {
               teiAttributes.push(proTEIAttr.trackedEntityAttribute.displayName);
             }
           });
-          dispatch(getTEIAttribute(teiAttributes)); //   console.log("here is tei", response);
+          dispatch(getTEIAttribute(teiAttributes));
 
           response.trackedEntityInstances.forEach(tei => {
             let obj = [];
@@ -133,8 +133,9 @@ export const TEIDetails = () => {
   };
   const onConfirm =  () => {
     console.log(params)
-    // window.location.reload(false)
+    dispatch(loadingPage())
     history.goBack()
+
   }
  
   return <>  

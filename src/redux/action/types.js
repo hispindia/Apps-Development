@@ -17,6 +17,8 @@ export const EVENT_POST = 'EVENT_POST';
 export const EVENT_FAILURE = 'EVENT_FAILURE';
 export const RESET = 'RESET';
 export const RESET_FORM = 'RESET_FORM';
+export const LOADING_PAGE = 'LOADING_PAGE';
+
 
 
 

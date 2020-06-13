@@ -8,6 +8,7 @@ import Loader from "react-loader-spinner";
 import "./custom.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import $ from "jquery";
 
 export const StaticData = (props) => {
   const dispatch = useDispatch();
@@ -22,27 +23,32 @@ export const StaticData = (props) => {
   const orgUnitStatus = useSelector(state => state.data.orgUnitStatus);
   const metaDataLoading = useSelector(state => state.data.metaDataLoading);
   const startDate = useSelector(state => state.data.payload.eventDate);
-  console.log('here is ps', programStages)
+  const pageLoading = useSelector(state => state.data.pageLoading);
+
   if (programStages === undefined) {
     programStages = [{
-      name: ""
+      displayName: ""
     }];
   } else {
-    programStages = programStages;
+        programStages = programStages
   }
+  useEffect( () => {
+    if(pageLoading){
+    window.location.reload(false)
+    }
+  },[pageLoading])
 
   useEffect(() => {
    if( orgUnitStatus && !metaDataLoading){
-    // window.location.reload(false)
     let data = [];
     for (let program of metadata.programs) {
-      if(program["attributeValues"]["YiQU1BzZvVQ"]){
+       if(program["attributeValues"]["YiQU1BzZvVQ"]){
         for (let org of program.organisationUnits) {
           if (org.id === payload.orgUnitId ) {
             data.push(program);
           }
         }
-      }
+       }
     }
     dispatch(getPrograms(data));
    }  
@@ -54,6 +60,7 @@ export const StaticData = (props) => {
         dispatch(resetDyanamicData());
       };
   const onSelectProgram = e => {
+      $('#ps').prop('selectedIndex', 0);
     let programRules = [];
 
     for (let programRule of metadata.programRules) {
@@ -75,6 +82,7 @@ export const StaticData = (props) => {
   };
 
   const selectedProgramStage = e => {
+    
     let ps = programStages.filter(programStage => programStage.id === e.target.value);
     let dataValues = [];
 
@@ -119,7 +127,7 @@ export const StaticData = (props) => {
     localStorage.setItem("payload", JSON.stringify(datas));
     dispatch(setPayload(data));
   };
-
+ 
   const onError = error => console.error(error);
 
   return (<>
@@ -164,7 +172,7 @@ export const StaticData = (props) => {
                       Program Stage :
                     </Grid>
                     <Grid item xs={9}>
-                      <select className="form-control" id="programStageId" onChange={e => selectedProgramStage(e)}>
+                      <select className="form-control" id="ps"  onChange={e => selectedProgramStage(e)}>
                         <option selected hidden>
                           Please Select Program Stage
                         </option>

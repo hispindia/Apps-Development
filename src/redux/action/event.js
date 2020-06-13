@@ -1,4 +1,4 @@
-import { PROGRAMSTAGE_SECTIONS_UPDATE,RESET,RESET_FORM, METADATA_RECEIVED, EVENT_FAILURE,EVENT_POST, SET_DATA_VALUES, SET_TEI_ATTRIBUTE, TRACKED_ENTITY_RECEIVED, CHECKED_VALIDATION, UPDATE_EVENT_VALUES, SET_PROGRAM_RULES, SET_PAYLOAD, PROGRAMS_RECEIVED, PROGRAMSTAGE_RECEIVED, PROGRAMSTAGE_SECTIONS_RECEIVED } from './types';
+import { PROGRAMSTAGE_SECTIONS_UPDATE,RESET,RESET_FORM, LOADING_PAGE, METADATA_RECEIVED, EVENT_FAILURE,EVENT_POST, SET_DATA_VALUES, SET_TEI_ATTRIBUTE, TRACKED_ENTITY_RECEIVED, CHECKED_VALIDATION, UPDATE_EVENT_VALUES, SET_PROGRAM_RULES, SET_PAYLOAD, PROGRAMS_RECEIVED, PROGRAMSTAGE_RECEIVED, PROGRAMSTAGE_SECTIONS_RECEIVED } from './types';
 import { createAction } from './actions';
 import { eventRules } from '../../helpers/eventRules';
 export const LoadMetaData = payload => dispatch => {
@@ -16,7 +16,6 @@ export const setPayload = payload => (dispatch, getState) => {
 }
 export const getOrgUnitDetail = payload => dispatch => dispatch(createAction(SET_PAYLOAD, payload));
 export const getProgramStageSections = payload => (dispatch, getState) => {
-  
   const dataValues = getState().data.dataValue;
   const programRules = getState().data.programsRules;
   try {
@@ -57,11 +56,9 @@ export const getProgramRuleChecking = (dataValues, programStageSection, programR
 };
 export const postingEvent = () => dispatch => dispatch(createAction(EVENT_POST));
 export const failureEvent = () => dispatch => dispatch(createAction(EVENT_FAILURE));
-export const resetDyanamicData = () => dispatch => {
-  dispatch(createAction(RESET));
-}
+export const resetDyanamicData = () => dispatch => dispatch(createAction(RESET));
 export const resetStaticData = () => (dispatch, getState) => {
   const programs = getState().data.dynamicData.programs;
   dispatch(createAction(RESET_FORM, programs));
 }
-
+export const loadingPage = () => dispatch => dispatch(createAction(LOADING_PAGE));
