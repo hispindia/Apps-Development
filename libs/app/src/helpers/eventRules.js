@@ -79,7 +79,7 @@ export const eventRules = (
                 const cond = eval(rule.condition)
                 const de = r.dataElement
                     ? stage.dataElements[r.dataElement.id]
-                    : null
+                    : r.content ? { id: r.content.slice(2, -1), hasCalculatedVar: true } : null
                 const s = r.programStageSection
                     ? findSection(r.programStageSection.id)
                     : null
@@ -111,14 +111,24 @@ export const eventRules = (
                         if (cond !== s.hide) s.hide = cond
                         break
                     case 'ASSIGN':
-                        if (!cond) break
-                        setColors(rule.condition, de, r.data)
-                        // Assigning value.
-                        if (values[de.id] !== r.data) {
-                            values[de.id] = r.data
-                            if (pushChanges) updateValue(de.id, r.data)
-                        }
-                        de.disabled = true
+                        const totalId = Object.keys(r).filter(a => a == "content" || a == "dataElement");
+                        totalId.forEach(deKey => {
+                            let de = deKey == "dataElement" ? stage.dataElements[r.dataElement.id] : r.content ? { id: r.content.slice(2, -1), hasCalculatedVar: true } : null
+                            if (!cond) {
+                                if (values[de.id]) {
+                                    values[de.id] = ""
+                                    if (!de.hasCalculatedVar) if (pushChanges) updateValue(de.id, r.data)
+                                }
+                            } else {
+                                setColors(rule.condition, de, r.data)
+                                // Assigning value.
+                                if (values[de.id] !== r.data) {
+                                    values[de.id] = r.data
+                                    if (!de.hasCalculatedVar) if (pushChanges) updateValue(de.id, r.data)
+                                }
+                                if (!de.hasCalculatedVar) de.disabled = true
+                            }
+                        })
                         break
                     case 'SHOWWARNING':
                         if (cond && de.warning !== r.content)

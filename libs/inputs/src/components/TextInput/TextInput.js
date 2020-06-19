@@ -20,14 +20,19 @@ export const TextInput = props => {
     }, [props.value])
 
     useEffect(() => {
-        if (
-            debouncedValue !== "" &&
-            debouncedValue !== null &&
-            debouncedValue === value &&
-            debouncedValue !== props.value
-        )
-            passValue(debouncedValue)
-    }, [debouncedValue])
+      if (
+        debouncedValue !== null &&
+        debouncedValue === value &&
+        debouncedValue !== props.value
+      ) {
+        if (props.name == "GpAu5HjWAEz" && debouncedValue !== "") {
+          //Checks if lab sample id is filled or not
+          passValue(debouncedValue);
+        } else if (props.name != "GpAu5HjWAEz") {
+          passValue(debouncedValue);
+        }
+      }
+    }, [debouncedValue]);
 
     /**
      * Passes the value to parent component after 1 sec.

@@ -40,6 +40,7 @@ const getMetadata = async () =>
                 trackedEntityAttribute[name,id,displayName,valueType,
                 unique,optionSetValue,optionSet]]`,
                 'value',
+                'programRuleVariableSourceType'
             ],
             options: [
                 'constants=true',
@@ -76,8 +77,9 @@ const hasEditable = name => name.includes(EDITABLE)
 const removeOption = (name, option) => name.replace(option, '')
 
 export const initMetadata = async isIsolate => {
+    let calculatedVariables = [];
     // Replaces '#{xxx}' with 'this.state.values['id of xxx']'
-    const programCondition = c => {
+    const programCondition = (c ,pId)=> {
         const original = c
         try {
             const variableDuplicated = c.match(/#\{.*?\}/g)
@@ -89,13 +91,22 @@ export const initMetadata = async isIsolate => {
             })
             variables.forEach(variable => {
                 const name = variable.substring(2, variable.length - 1)
-                const id = data.programRuleVariables.find(
-                    ruleVariable => ruleVariable.name === name
-                ).dataElement.id
-                c = c.replace(
-                    new RegExp('#{' + name + '}', 'g'),
-                    "values['" + id + "']"
+                const reqID = data.programRuleVariables.find(
+                    ruleVariable => ruleVariable.name === name && ruleVariable.program.id == pId
                 )
+                var id = reqID.dataElement? reqID.dataElement.id: "";
+                if(reqID.programRuleVariableSourceType==="CALCULATED_VALUE") {
+                    let checkValue = calculatedVariables.some(cv=> cv.id == name && cv.program == reqID.program.id)
+                    if(!checkValue) calculatedVariables.push({id: name, program:reqID.program.id});
+                    id = name;
+                }
+               
+                if(id) {
+                    c = c.replace(
+                        new RegExp('#{' + name + '}', 'g'),
+                        "values['" + id + "']"
+                    )
+                }
             })
         } catch (e) {
             console.warn('Improper condition:', original)
@@ -282,11 +293,11 @@ export const initMetadata = async isIsolate => {
     data.programRules
         .filter(r =>
             r.programRuleActions.find(
-                a => a.dataElement || a.programStageSection
+                a => a.dataElement || a.programStageSection || a.content
             )
         )
         .forEach(d => {
-            d.condition = programCondition(d.condition)
+            d.condition = programCondition(d.condition, d.program.id)
             eventRules.push(d)
         })
     eventRules = eventRules.sort((a, b) =>
@@ -316,5 +327,6 @@ export const initMetadata = async isIsolate => {
         orgUnits,
         user,
         eventRules,
+        calculatedVariables
     }
 }

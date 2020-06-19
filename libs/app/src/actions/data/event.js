@@ -124,6 +124,10 @@ export const getExistingEvent = (orgUnit, tieId, eventId, editStatus, btnStatus)
                 data.program,
                 data.programStage.id
             )
+            state.metadata.calculatedVariables.forEach(variables => {
+                for (let key in data.eventValues)
+                    if ((key != variables.id) && data.program == variables.program) data.eventValues[variables.id] = "";
+            })
             const [eventValues, programStage, invalid] = eventRules(
                 data.eventValues,
                 data.programStage,
@@ -186,6 +190,10 @@ export const createNewEvent = () => async (dispatch, getState) => {
                 orgUnitCode: orgUnit.code,
             }
         )
+        metadata.calculatedVariables.forEach(variables => {
+            for (let key in data.eventValues)
+                if ((key != variables.id) && panel.program == variables.program) data.eventValues[variables.id] = "";
+        })
         const [values, programStage, invalid] = eventRules(
             data.eventValues,
             data.programStage,
