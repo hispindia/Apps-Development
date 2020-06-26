@@ -56,9 +56,15 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <figure class="highcharts-figure">
+    <div id="container1" style= "height: 800px"></div>
+    <div id="container_region" style= "height: 800px"></div>
+    <div id="container_3_" style= "height: 800px"></div>
+    <div id="container_4_" style= "height: 800px"></div>
+    <div id="container_5_" style= "height: 800px"></div>
+    <div id="container_6_" style= "height: 800px"></div>
+    <div id="container_7_" style= "height: 800px"></div>
     <div id="container" style= "height: 800px"></div>
-    <div id="container2" style= "height: 800px"></div>
-    <div id="container3" style= "height: 800px"></div>
+
 </figure>
 
 <script>
@@ -73,11 +79,21 @@
             categories2.push(categories1[i]);
         }
 
-
+        var yAxis_value=0;
         var country_list = [];
+        var country_list_global = [];
+        var country_list_region = [];
+        var country_list_global = [];
         var series_data = [];
+        var series_data_global = [];
+        var series_data_region = [];
+        var series_data_region2 = [];
+        var series_data_region3 = [];
+        var series_data_region4 = [];
+        var series_data_region5 = [];
+
         debugger;
-        $.getJSON("/api/29/analytics.json?dimension=dx:SsZP6Izyhay&dimension=pe:2012;2013;2014;2015;2016;2017;2018&dimension=ou:USER_ORGUNIT_GRANDCHILDREN&displayProperty=NAME&user=dcMT9xWEWHA", function (data) {
+        $.getJSON("../../analytics.json?dimension=dx:SsZP6Izyhay&dimension=pe:2012;2013;2014;2015;2016;2017;2018&dimension=ou:USER_ORGUNIT_GRANDCHILDREN&displayProperty=NAME&user=dcMT9xWEWHA", function (data) {
 
             for (j = 0; j < data.metaData.dimensions.ou.length; j++) {
                 country_list.push({name:data.metaData.items[data.metaData.dimensions.ou[j]].name,uid:data.metaData.dimensions.ou[j],data:[]});
@@ -108,27 +124,34 @@
                     if (l<country_list[k].data.length)
                     {
 
-                        data_v.push(parseFloat(country_list[k].data[l].value));
-                    }
-                    else
-                    {
-                        data_v.push(0);
+                        if (parseFloat(country_list[k].data[l].value)<50&&parseFloat(country_list[k].data[l].value)>0)
+                        {
+                            data_v.push(parseFloat(country_list[k].data[l].value));
+                            yAxis_value=0;
+                        }
+                        if (parseFloat(country_list[k].data[l].value)>50)
+                        {
+                            data_v.push(parseFloat(country_list[k].data[l].value));
+                            yAxis_value=1;
+                        }
                     }
 
+
                 }
-                series_data.push({name:country_list[k].name,data:data_v,visible: true})
+                series_data.push({name:country_list[k].name,data:data_v,yAxis:yAxis_value,visible: true,type:'scatter'})
             }
             var chart = new Highcharts.Chart({
 
                 chart: {
-                    renderTo: 'container'
+                    renderTo: 'container',
+                    type: 'line'
                 },
                 title: {
                     text: 'Child case detection rate - 2012-2018'
                 },
 
                 subtitle: {
-                    text: 'Source: '
+                    text: 'Scattered Dual Chart (All Countries)'
                 },
                 xAxis: {
                     accessibility: {
@@ -136,9 +159,7 @@
                     },
                     allowDecimals: false
                 },
-                yAxis: {
-                    max: 200
-                },
+                yAxis: [{},{}],
                 legend: {
                     layout: 'vertical',
                     align: 'right',
@@ -154,154 +175,6 @@
                         },
                         pointStart: 2012
                     }
-                },
-                    responsive: {
-                        rules: [{
-                            condition: {
-                                maxWidth: 1500
-                            },
-                            chartOptions: {
-                                legend: {
-                                    layout: 'horizontal',
-                                    align: 'center',
-                                    verticalAlign: 'bottom'
-                                }
-                            }
-                        }]
-                    }
-
-            });
-
-            var chart = new Highcharts.Chart({
-
-                chart: {
-                    renderTo: 'container2',
-                    type: 'column'
-                },
-                title: {
-                    text: 'Child case detection rate - 2012-2018 Stacked'
-                },
-
-                subtitle: {
-                    text: 'Source: '
-                },
-                xAxis: {
-                    accessibility: {
-                        rangeDescription: 'Range: 2012 to 2018'
-                    },
-                    allowDecimals: false
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'Case Detection Rate'
-                    },
-                    stackLabels: {
-                        enabled: true,
-                        style: {
-                            fontWeight: 'bold',
-                            color: ( // theme
-                                Highcharts.defaultOptions.title.style &&
-                                Highcharts.defaultOptions.title.style.color
-                            ) || 'gray'
-                        }
-                    }
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'middle'
-                },
-
-                series: series_data,
-                plotOptions: {
-                    column: {
-                        stacking: 'normal',
-                        dataLabels: {
-                            enabled: true
-                        }
-                    },
-                    series: {
-
-                        pointStart: 2012
-                    }
-                },
-
-                tooltip: {
-                    headerFormat: '<b>{point.x}</b><br/>',
-                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
-                },
-                    responsive: {
-                        rules: [{
-                            condition: {
-                                maxWidth: 1500
-                            },
-                            chartOptions: {
-                                legend: {
-                                    layout: 'horizontal',
-                                    align: 'center',
-                                    verticalAlign: 'bottom'
-                                }
-                            }
-                        }]
-                    }
-
-            });
-            var chart = new Highcharts.Chart({
-
-                chart: {
-                    renderTo: 'container3',
-                    type: 'column'
-                },
-                title: {
-                    text: 'Child case detection rate - 2012-2018 Stacked'
-                },
-
-                subtitle: {
-                    text: 'Source: '
-                },
-                xAxis: {
-                    accessibility: {
-                        rangeDescription: 'Range: 2012 to 2018'
-                    },
-                    allowDecimals: false
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'Case Detection Rate'
-                    },
-                    stackLabels: {
-                        enabled: true,
-                        style: {
-                            fontWeight: 'bold',
-                            color: ( // theme
-                                Highcharts.defaultOptions.title.style &&
-                                Highcharts.defaultOptions.title.style.color
-                            ) || 'gray'
-                        }
-                    }
-                },
-                plotOptions: {
-                    series: {
-                        label: {
-                            connectorAllowed: false
-                        },
-                        pointStart: 2012
-                    }
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'middle'
-                },
-
-                series: series_data,
-
-
-                tooltip: {
-                    headerFormat: '<b>{point.x}</b><br/>',
-                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
                 },
                 responsive: {
                     rules: [{
@@ -319,6 +192,562 @@
                 }
 
             });
+
+        });
+
+        $.getJSON("../../analytics.json?dimension=dx:SsZP6Izyhay&dimension=pe:2012;2013;2014;2015;2016;2017;2018&dimension=ou:OU_GROUP-gTofFxvbRSI;x3i5oi4axNu&displayProperty=NAME", function (data) {
+
+            for (j = 0; j < data.metaData.dimensions.ou.length; j++) {
+                country_list_global.push({name:data.metaData.items[data.metaData.dimensions.ou[j]].name,uid:data.metaData.dimensions.ou[j],data:[]});
+
+            }
+            for (j = 0; j < country_list_global.length; j++) {
+                for (i = 0; i < data.rows.length; i++) {
+                    if (data.rows[i][2] == country_list_global[j].uid) {
+                        var x = {};
+                        x.country = data.rows[i][2];
+                        x.year = data.rows[i][1];
+                        x.value = data.rows[i][3];
+                        country_list_global[j].data.push({year:data.rows[i][1],value:data.rows[i][3]});
+                    }
+                }
+            }
+
+            for (k=0;k<country_list_global.length;k++)
+            {
+                var data_v=[]
+                // for (l=0;l<country_list[k].data.length;l++)
+                // {
+                //     data_v.push(country_list[k].data[l].value);
+                // }
+                for (l=0;l<categories1.length;l++)
+                {
+                    if (l<country_list_global[k].data.length)
+                    {
+
+                        if (parseFloat(country_list_global[k].data[l].value)<50&&parseFloat(country_list_global[k].data[l].value)>0)
+                        {
+                            data_v.push(parseFloat(country_list_global[k].data[l].value));
+                            yAxis_value=0;
+                        }
+                        if (parseFloat(country_list_global[k].data[l].value)>50)
+                        {
+                            data_v.push(parseFloat(country_list_global[k].data[l].value));
+                            yAxis_value=1;
+                        }
+                    }
+                    else
+                    {
+                        data_v.push(0);
+                    }
+
+                }
+                series_data_global.push({name:country_list_global[k].name,data:data_v,yAxis:yAxis_value,visible: true})
+            }
+            var chart = new Highcharts.Chart({
+
+                chart: {
+                    renderTo: 'container1',
+                    type: 'line'
+                },
+                title: {
+                    text: 'Child case detection rate - 2012-2018'
+                },
+
+                subtitle: {
+                    text: 'Global priority countries'
+                },
+                xAxis: {
+                    accessibility: {
+                        rangeDescription: 'Range: 2012 to 2018'
+                    },
+                    allowDecimals: false
+                },
+                yAxis: [{},{}],
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+
+                series: series_data_global,
+
+                plotOptions: {
+                    series: {
+                        label: {
+                            connectorAllowed: false
+                        },
+                        pointStart: 2012
+                    }
+                },
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 1500
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
+                }
+
+            });
+
+
+
+        });
+
+    $.getJSON("../../analytics.json?dimension=dx:SsZP6Izyhay&dimension=pe:2012;2013;2014;2015;2016;2017;2018&dimension=ou:LEVEL-2;LEVEL-1;x3i5oi4axNu&displayProperty=NAME", function (data) {
+
+            for (j = 0; j < data.metaData.dimensions.ou.length; j++) {
+                country_list_region.push({name:data.metaData.items[data.metaData.dimensions.ou[j]].name,uid:data.metaData.dimensions.ou[j],data:[]});
+
+            }
+            for (j = 0; j < country_list_region.length; j++) {
+                for (i = 0; i < data.rows.length; i++) {
+                    if (data.rows[i][2] == country_list_region[j].uid) {
+                        var x = {};
+                        x.country = data.rows[i][2];
+                        x.year = data.rows[i][1];
+                        x.value = data.rows[i][3];
+                        country_list_region[j].data.push({year:data.rows[i][1],value:data.rows[i][3]});
+                    }
+                }
+            }
+
+            for (k=0;k<country_list_region.length;k++)
+            {
+                var data_v=[]
+                // for (l=0;l<country_list[k].data.length;l++)
+                // {
+                //     data_v.push(country_list[k].data[l].value);
+                // }
+                for (l=0;l<categories1.length;l++)
+                {
+                    if (l<country_list_region[k].data.length)
+                    {
+                            data_v.push(parseFloat(country_list_region[k].data[l].value));
+
+                    }
+                    else
+                    {
+                        data_v.push(0);
+                    }
+
+                }
+                series_data_region.push({name:country_list_region[k].name,data:data_v,visible: true})
+            }
+            var chart = new Highcharts.Chart({
+
+                chart: {
+                    renderTo: 'container_region',
+                    type: 'line'
+                },
+                title: {
+                    text: 'Child case detection rate - 2012-2018'
+                },
+
+                subtitle: {
+                    text: 'Global + Region'
+                },
+                xAxis: {
+                    accessibility: {
+                        rangeDescription: 'Range: 2012 to 2018'
+                    },
+                    allowDecimals: false
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+
+                series: series_data_region,
+
+                plotOptions: {
+                    series: {
+                        label: {
+                            connectorAllowed: false
+                        },
+                        pointStart: 2012
+                    }
+                },
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 1500
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
+                }
+
+            });
+
+
+
+
+        });
+
+    $.getJSON("../../analytics.json?dimension=dx:SsZP6Izyhay&dimension=pe:2012;2013;2014;2015;2016;2017;2018&dimension=ou:USER_ORGUNIT_GRANDCHILDREN&displayProperty=NAME&user=dcMT9xWEWHA", function (data) {
+        country_list_region=[];
+        series_data_region=[];
+            for (j = 0; j < data.metaData.dimensions.ou.length; j++) {
+                country_list_region.push({name:data.metaData.items[data.metaData.dimensions.ou[j]].name,uid:data.metaData.dimensions.ou[j],data:[]});
+
+            }
+            for (j = 0; j < country_list_region.length; j++) {
+                for (i = 0; i < data.rows.length; i++) {
+                    if (data.rows[i][2] == country_list_region[j].uid) {
+                        var x = {};
+                        x.country = data.rows[i][2];
+                        x.year = data.rows[i][1];
+                        x.value = data.rows[i][3];
+                        country_list_region[j].data.push({year:data.rows[i][1],value:data.rows[i][3]});
+                    }
+                }
+            }
+
+            for (k=0;k<country_list_region.length;k++)
+            {
+                var data_v=[]
+                var data_v2=[]
+                var data_v3=[]
+                var data_v4=[]
+                var data_v5=[]
+                // for (l=0;l<country_list[k].data.length;l++)
+                // {
+                //     data_v.push(country_list[k].data[l].value);
+                // }
+                for (l=0;l<categories1.length;l++)
+                {
+                    var sereies1=0;
+                    var sereies2=0;
+                    var sereies3=0;
+                    var sereies4=0;
+                    var sereies5=0;
+                    if (l<country_list_region[k].data.length)
+                    {
+
+                        if (parseFloat(country_list_region[k].data[l].value)<2&&parseFloat(country_list_region[k].data[l].value)>0)
+                        {
+                            data_v.push(parseFloat(country_list_region[k].data[l].value));
+                            sereies1=1;
+                        }
+                        if (parseFloat(country_list_region[k].data[l].value)>2&&parseFloat(country_list_region[k].data[l].value)<5 )
+                        {
+                            data_v2.push(parseFloat(country_list_region[k].data[l].value));
+                            sereies2=1;
+                        }
+                        if (parseFloat(country_list_region[k].data[l].value)>5&&parseFloat(country_list_region[k].data[l].value)<7)
+                        {
+                            data_v3.push(parseFloat(country_list_region[k].data[l].value));
+                            sereies3=1;
+                        }
+                        if (parseFloat(country_list_region[k].data[l].value)>7&&parseFloat(country_list_region[k].data[l].value)<100)
+                        {
+                            data_v4.push(parseFloat(country_list_region[k].data[l].value));
+                            sereies4=1;
+                        }
+                        if (parseFloat(country_list_region[k].data[l].value)>100)
+                        {
+                            data_v5.push(parseFloat(country_list_region[k].data[l].value));
+                            sereies5=1;
+                        }
+                    }
+
+                }
+                if(sereies1==1)
+                {
+                    series_data_region.push({name:country_list_region[k].name,data:data_v,visible: true});
+                }
+                else if (sereies2==1)
+                {
+                    series_data_region2.push({name:country_list_region[k].name,data:data_v2,visible: true});
+                }
+                else if (sereies3==1)
+                {
+                    series_data_region3.push({name:country_list_region[k].name,data:data_v3,visible: true});
+                }
+                else if (sereies4==1)
+                {
+                    series_data_region4.push({name:country_list_region[k].name,data:data_v4,visible: true})
+                }
+                else if (sereies5==1)
+                {
+                    series_data_region5.push({name:country_list_region[k].name,data:data_v5,visible: true})
+                }
+
+
+            }
+            var chart = new Highcharts.Chart({
+
+                chart: {
+                    renderTo: 'container_3_',
+                    type: 'line'
+                },
+                title: {
+                    text: 'Child case detection rate - 2012-2018'
+                },
+
+                subtitle: {
+                    text: 'Divided into 5 groups(<2)'
+                },
+                xAxis: {
+                    accessibility: {
+                        rangeDescription: 'Range: 2012 to 2018'
+                    },
+                    allowDecimals: false
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+
+                series: series_data_region,
+
+                plotOptions: {
+                    series: {
+                        label: {
+                            connectorAllowed: false
+                        },
+                        pointStart: 2012
+                    }
+                },
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 1500
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
+                }
+
+            });
+            var chart = new Highcharts.Chart({
+
+                chart: {
+                    renderTo: 'container_4_',
+                    type: 'line'
+                },
+                title: {
+                    text: 'Child case detection rate - 2012-2018'
+                },
+
+                subtitle: {
+                    text: 'Divided into 5 groups(<5)'
+                },
+                xAxis: {
+                    accessibility: {
+                        rangeDescription: 'Range: 2012 to 2018'
+                    },
+                    allowDecimals: false
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+
+                series: series_data_region2,
+
+                plotOptions: {
+                    series: {
+                        label: {
+                            connectorAllowed: false
+                        },
+                        pointStart: 2012
+                    }
+                },
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 1500
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
+                }
+
+            });
+            var chart = new Highcharts.Chart({
+
+                chart: {
+                    renderTo: 'container_5_',
+                    type: 'line'
+                },
+                title: {
+                    text: 'Child case detection rate - 2012-2018'
+                },
+
+                subtitle: {
+                    text: 'Divided into 5 groups(<7)'
+                },
+                xAxis: {
+                    accessibility: {
+                        rangeDescription: 'Range: 2012 to 2018'
+                    },
+                    allowDecimals: false
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+
+                series: series_data_region2,
+
+                plotOptions: {
+                    series: {
+                        label: {
+                            connectorAllowed: false
+                        },
+                        pointStart: 2012
+                    }
+                },
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 1500
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
+                }
+
+            });
+            var chart = new Highcharts.Chart({
+
+                chart: {
+                    renderTo: 'container_6_',
+                    type: 'line'
+                },
+                title: {
+                    text: 'Child case detection rate - 2012-2018'
+                },
+
+                subtitle: {
+                    text: 'Divided into 5 groups(<100)'
+                },
+                xAxis: {
+                    accessibility: {
+                        rangeDescription: 'Range: 2012 to 2018'
+                    },
+                    allowDecimals: false
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+
+                series: series_data_region4,
+
+                plotOptions: {
+                    series: {
+                        label: {
+                            connectorAllowed: false
+                        },
+                        pointStart: 2012
+                    }
+                },
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 1500
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
+                }
+
+            });
+            var chart = new Highcharts.Chart({
+
+                chart: {
+                    renderTo: 'container_7_',
+                    type: 'line'
+                },
+                title: {
+                    text: 'Child case detection rate - 2012-2018'
+                },
+
+                subtitle: {
+                    text: 'Divided into 5 groups(>100)'
+                },
+                xAxis: {
+                    accessibility: {
+                        rangeDescription: 'Range: 2012 to 2018'
+                    },
+                    allowDecimals: false
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+
+                series: series_data_region5,
+
+                plotOptions: {
+                    series: {
+                        label: {
+                            connectorAllowed: false
+                        },
+                        pointStart: 2012
+                    }
+                },
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 1500
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
+                }
+
+            });
+
+
+
+
         });
 
     });
