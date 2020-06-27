@@ -1,11 +1,14 @@
 {
    "version": "3.0",
-   "name": "Child Case Detection Rate",
+   "name": "GLP Reports",
    "description": "",
    "launch_path": "/index.html",
    "appType": "APP",
    "icons": {
-      
+      "16": "app-icons/graph.jpg",
+       "48": "app-icons/graph.jpg",
+       "128": "app-icons/graph.jpg",
+       "512": "app-icons/graph.jpg"
    },
    "developer": {
         "name": "Sourabh",
