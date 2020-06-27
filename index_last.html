@@ -56,47 +56,52 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <figure class="highcharts-figure">
-    <div id="container1" style= "height: 800px"></div>
-    <div id="container_region" style= "height: 800px"></div>
-    <div id="container_3_" style= "height: 800px"></div>
-    <div id="container_4_" style= "height: 800px"></div>
-    <div id="container_5_" style= "height: 800px"></div>
-    <div id="container_6_" style= "height: 800px"></div>
-    <div id="container_7_" style= "height: 800px"></div>
-    <div id="container" style= "height: 800px"></div>
+    <div id="container0" style="height: 600px;padding: 5px"></div>
+    <div id="container1" style="height: 800px;padding: 5px"></div>
+    <div id="container_region" style="height: 800px;padding: 5px"></div>
+    <div id="container_3_" style="height: 800px;padding: 5px"></div>
+    <div id="container_4_" style="height: 800px;padding: 5px"></div>
+    <div id="container_5_" style="height: 800px;padding: 5px"></div>
+    <div id="container_6_" style="height: 800px;padding: 5px"></div>
+    <div id="container_7_" style="height: 800px;padding: 5px"></div>
+    <div id="container" style="height: 900px;padding: 15px"></div>
 
 </figure>
 
 <script>
     $(document).ready(function () {
-
-        // Original array
-        var categories1=['2012', '2013', '2014', '2015', '2016', '2017','2018'];
-
-// Copy and/or modifify the second array content
-        var categories2=[];
-        for(var i=0;i<categories1.length;i++){
+        var categories1 = ['2012', '2013', '2014', '2015', '2016', '2017', '2018'];
+        var categories2 = [];
+        for (var i = 0; i < categories1.length; i++) {
             categories2.push(categories1[i]);
         }
 
-        var yAxis_value=0;
+        var yAxis_value = 0;
         var country_list = [];
-        var country_list_global = [];
+        var country_list_indi = [];
         var country_list_region = [];
         var country_list_global = [];
         var series_data = [];
+        var country_series_plot = [];
         var series_data_global = [];
         var series_data_region = [];
         var series_data_region2 = [];
         var series_data_region3 = [];
         var series_data_region4 = [];
         var series_data_region5 = [];
+        var data_indicator1 = [];
+        var data_indicator2 = [];
+        var indicator1 = "";
+        var indicator2 = "";
 
-        debugger;
         $.getJSON("../../analytics.json?dimension=dx:SsZP6Izyhay&dimension=pe:2012;2013;2014;2015;2016;2017;2018&dimension=ou:USER_ORGUNIT_GRANDCHILDREN&displayProperty=NAME&user=dcMT9xWEWHA", function (data) {
 
             for (j = 0; j < data.metaData.dimensions.ou.length; j++) {
-                country_list.push({name:data.metaData.items[data.metaData.dimensions.ou[j]].name,uid:data.metaData.dimensions.ou[j],data:[]});
+                country_list.push({
+                    name: data.metaData.items[data.metaData.dimensions.ou[j]].name,
+                    uid: data.metaData.dimensions.ou[j],
+                    data: []
+                });
 
             }
             for (j = 0; j < country_list.length; j++) {
@@ -106,43 +111,42 @@
                         x.country = data.rows[i][2];
                         x.year = data.rows[i][1];
                         x.value = data.rows[i][3];
-                        country_list[j].data.push({year:data.rows[i][1],value:data.rows[i][3]});
+                        country_list[j].data.push({year: data.rows[i][1], value: data.rows[i][3]});
                     }
                 }
             }
             console.log(country_list);
 
-            for (k=0;k<country_list.length;k++)
-            {
-                var data_v=[]
-                // for (l=0;l<country_list[k].data.length;l++)
-                // {
-                //     data_v.push(country_list[k].data[l].value);
-                // }
-                for (l=0;l<categories1.length;l++)
-                {
-                    if (l<country_list[k].data.length)
-                    {
+            for (k = 0; k < country_list.length; k++) {
+                var data_v = []
 
-                        if (parseFloat(country_list[k].data[l].value)<50&&parseFloat(country_list[k].data[l].value)>0)
-                        {
+                for (l = 0; l < categories1.length; l++) {
+                    if (l < country_list[k].data.length) {
+
+                        if (parseFloat(country_list[k].data[l].value) < 50 && parseFloat(country_list[k].data[l].value) > 0) {
                             data_v.push(parseFloat(country_list[k].data[l].value));
-                            yAxis_value=0;
+                            yAxis_value = 0;
                         }
-                        if (parseFloat(country_list[k].data[l].value)>50)
-                        {
+                        if (parseFloat(country_list[k].data[l].value) > 50) {
                             data_v.push(parseFloat(country_list[k].data[l].value));
-                            yAxis_value=1;
+                            yAxis_value = 1;
                         }
                     }
 
 
                 }
-                series_data.push({name:country_list[k].name,data:data_v,yAxis:yAxis_value,visible: true,type:'scatter'})
+                series_data.push({
+                    name: country_list[k].name,
+                    data: data_v,
+                    yAxis: yAxis_value,
+                    visible: true,
+                    type: 'scatter'
+                })
             }
             var chart = new Highcharts.Chart({
 
                 chart: {
+                    plotBorderWidth: 2,
                     renderTo: 'container',
                     type: 'line'
                 },
@@ -159,7 +163,7 @@
                     },
                     allowDecimals: false
                 },
-                yAxis: [{},{}],
+                yAxis: [{}, {}],
                 legend: {
                     layout: 'vertical',
                     align: 'right',
@@ -185,7 +189,7 @@
                             legend: {
                                 layout: 'horizontal',
                                 align: 'center',
-                                verticalAlign: 'bottom'
+                                verticalAlign: 'center'
                             }
                         }
                     }]
@@ -195,10 +199,99 @@
 
         });
 
+
+        $.getJSON("../../analytics.json?dimension=pe:2019&dimension=dx:SsZP6Izyhay;v1Fr4On014j&dimension=ou:USER_ORGUNIT_GRANDCHILDREN&displayProperty=NAME&user=dcMT9xWEWHA", function (data) {
+
+            for (j = 0; j < data.metaData.dimensions.ou.length; j++) {
+                country_list_indi.push({
+                    name: data.metaData.items[data.metaData.dimensions.ou[j]].name,
+                    uid: data.metaData.dimensions.ou[j],
+                    data: []
+                });
+
+            }
+            indicator1 = data.metaData.items['SsZP6Izyhay'].name;
+            indicator2 = data.metaData.items['v1Fr4On014j'].name;
+            for (j = 0; j < country_list_indi.length; j++) {
+                for (i = 0; i < data.rows.length; i++) {
+                    if (data.rows[i][2] == country_list_indi[j].uid) {
+                        var x = {};
+                        x.country = data.rows[i][2];
+                        x.year = data.rows[i][1];
+                        x.value = data.rows[i][3];
+                        country_list_indi[j].data.push({year: data.rows[i][0], value: data.rows[i][3]});
+                    }
+                }
+            }
+
+            debugger;
+            for (k = 0; k < country_list_indi.length; k++) {
+                for (l = 0; l < 2; l++) {
+                    if (country_list_indi[k].data.length > 1) {
+                        if (country_list_indi[k].data[l].year == "SsZP6Izyhay") {
+                            data_indicator1.push(parseFloat(country_list_indi[k].data[l].value));
+                        }
+                        else if (country_list_indi[k].data[l].year == "v1Fr4On014j") {
+                            data_indicator2.push(parseFloat(country_list_indi[k].data[l].value));
+                        }
+                    }
+
+
+                }
+                if (country_list_indi[k].data.length > 1) {
+                    country_series_plot.push(country_list_indi[k].name);
+                }
+
+            }
+            Highcharts.chart('container0', {
+                chart: {
+                    plotBorderWidth: 2,
+                    type: 'line'
+                },
+                title: {
+                    text: indicator2 + ' vs ' + indicator2
+                },
+                subtitle: {
+                    text: '2019'
+                },
+                xAxis: {
+                    categories: country_series_plot,
+                    crosshair: true
+                },
+                yAxis: {
+                    min: 0,
+                    max: 15,
+                    title: {
+                        text: 'Value'
+                    }
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 3,
+                        borderWidth: 1
+                    }
+                },
+                series: [{
+                    name: indicator1,
+                    data: data_indicator1
+
+                }, {
+                    name: indicator2,
+                    data: data_indicator2
+
+                }]
+            });
+        });
+
+
         $.getJSON("../../analytics.json?dimension=dx:SsZP6Izyhay&dimension=pe:2012;2013;2014;2015;2016;2017;2018&dimension=ou:OU_GROUP-gTofFxvbRSI;x3i5oi4axNu&displayProperty=NAME", function (data) {
 
             for (j = 0; j < data.metaData.dimensions.ou.length; j++) {
-                country_list_global.push({name:data.metaData.items[data.metaData.dimensions.ou[j]].name,uid:data.metaData.dimensions.ou[j],data:[]});
+                country_list_global.push({
+                    name: data.metaData.items[data.metaData.dimensions.ou[j]].name,
+                    uid: data.metaData.dimensions.ou[j],
+                    data: []
+                });
 
             }
             for (j = 0; j < country_list_global.length; j++) {
@@ -208,45 +301,41 @@
                         x.country = data.rows[i][2];
                         x.year = data.rows[i][1];
                         x.value = data.rows[i][3];
-                        country_list_global[j].data.push({year:data.rows[i][1],value:data.rows[i][3]});
+                        country_list_global[j].data.push({year: data.rows[i][1], value: data.rows[i][3]});
                     }
                 }
             }
 
-            for (k=0;k<country_list_global.length;k++)
-            {
-                var data_v=[]
-                // for (l=0;l<country_list[k].data.length;l++)
-                // {
-                //     data_v.push(country_list[k].data[l].value);
-                // }
-                for (l=0;l<categories1.length;l++)
-                {
-                    if (l<country_list_global[k].data.length)
-                    {
+            for (k = 0; k < country_list_global.length; k++) {
+                var data_v = []
+                for (l = 0; l < categories1.length; l++) {
+                    if (l < country_list_global[k].data.length) {
 
-                        if (parseFloat(country_list_global[k].data[l].value)<50&&parseFloat(country_list_global[k].data[l].value)>0)
-                        {
+                        if (parseFloat(country_list_global[k].data[l].value) < 50 && parseFloat(country_list_global[k].data[l].value) > 0) {
                             data_v.push(parseFloat(country_list_global[k].data[l].value));
-                            yAxis_value=0;
+                            yAxis_value = 0;
                         }
-                        if (parseFloat(country_list_global[k].data[l].value)>50)
-                        {
+                        if (parseFloat(country_list_global[k].data[l].value) > 50) {
                             data_v.push(parseFloat(country_list_global[k].data[l].value));
-                            yAxis_value=1;
+                            yAxis_value = 1;
                         }
                     }
-                    else
-                    {
+                    else {
                         data_v.push(0);
                     }
 
                 }
-                series_data_global.push({name:country_list_global[k].name,data:data_v,yAxis:yAxis_value,visible: true})
+                series_data_global.push({
+                    name: country_list_global[k].name,
+                    data: data_v,
+                    yAxis: yAxis_value,
+                    visible: true
+                })
             }
             var chart = new Highcharts.Chart({
 
                 chart: {
+                    plotBorderWidth: 2,
                     renderTo: 'container1',
                     type: 'line'
                 },
@@ -263,7 +352,7 @@
                     },
                     allowDecimals: false
                 },
-                yAxis: [{},{}],
+                yAxis: [{}, {}],
                 legend: {
                     layout: 'vertical',
                     align: 'right',
@@ -298,13 +387,16 @@
             });
 
 
-
         });
 
-    $.getJSON("../../analytics.json?dimension=dx:SsZP6Izyhay&dimension=pe:2012;2013;2014;2015;2016;2017;2018&dimension=ou:LEVEL-2;LEVEL-1;x3i5oi4axNu&displayProperty=NAME", function (data) {
+        $.getJSON("../../analytics.json?dimension=dx:SsZP6Izyhay&dimension=pe:2012;2013;2014;2015;2016;2017;2018&dimension=ou:LEVEL-2;LEVEL-1;x3i5oi4axNu&displayProperty=NAME", function (data) {
 
             for (j = 0; j < data.metaData.dimensions.ou.length; j++) {
-                country_list_region.push({name:data.metaData.items[data.metaData.dimensions.ou[j]].name,uid:data.metaData.dimensions.ou[j],data:[]});
+                country_list_region.push({
+                    name: data.metaData.items[data.metaData.dimensions.ou[j]].name,
+                    uid: data.metaData.dimensions.ou[j],
+                    data: []
+                });
 
             }
             for (j = 0; j < country_list_region.length; j++) {
@@ -314,36 +406,29 @@
                         x.country = data.rows[i][2];
                         x.year = data.rows[i][1];
                         x.value = data.rows[i][3];
-                        country_list_region[j].data.push({year:data.rows[i][1],value:data.rows[i][3]});
+                        country_list_region[j].data.push({year: data.rows[i][1], value: data.rows[i][3]});
                     }
                 }
             }
 
-            for (k=0;k<country_list_region.length;k++)
-            {
-                var data_v=[]
-                // for (l=0;l<country_list[k].data.length;l++)
-                // {
-                //     data_v.push(country_list[k].data[l].value);
-                // }
-                for (l=0;l<categories1.length;l++)
-                {
-                    if (l<country_list_region[k].data.length)
-                    {
-                            data_v.push(parseFloat(country_list_region[k].data[l].value));
+            for (k = 0; k < country_list_region.length; k++) {
+                var data_v = []
+                for (l = 0; l < categories1.length; l++) {
+                    if (l < country_list_region[k].data.length) {
+                        data_v.push(parseFloat(country_list_region[k].data[l].value));
 
                     }
-                    else
-                    {
+                    else {
                         data_v.push(0);
                     }
 
                 }
-                series_data_region.push({name:country_list_region[k].name,data:data_v,visible: true})
+                series_data_region.push({name: country_list_region[k].name, data: data_v, visible: true})
             }
             var chart = new Highcharts.Chart({
 
                 chart: {
+                    plotBorderWidth: 2,
                     renderTo: 'container_region',
                     type: 'line'
                 },
@@ -393,16 +478,17 @@
 
             });
 
-
-
-
         });
 
-    $.getJSON("../../analytics.json?dimension=dx:SsZP6Izyhay&dimension=pe:2012;2013;2014;2015;2016;2017;2018&dimension=ou:USER_ORGUNIT_GRANDCHILDREN&displayProperty=NAME&user=dcMT9xWEWHA", function (data) {
-        country_list_region=[];
-        series_data_region=[];
+        $.getJSON("../../analytics.json?dimension=dx:SsZP6Izyhay&dimension=pe:2012;2013;2014;2015;2016;2017;2018&dimension=ou:USER_ORGUNIT_GRANDCHILDREN&displayProperty=NAME&user=dcMT9xWEWHA", function (data) {
+            country_list_region = [];
+            series_data_region = [];
             for (j = 0; j < data.metaData.dimensions.ou.length; j++) {
-                country_list_region.push({name:data.metaData.items[data.metaData.dimensions.ou[j]].name,uid:data.metaData.dimensions.ou[j],data:[]});
+                country_list_region.push({
+                    name: data.metaData.items[data.metaData.dimensions.ou[j]].name,
+                    uid: data.metaData.dimensions.ou[j],
+                    data: []
+                });
 
             }
             for (j = 0; j < country_list_region.length; j++) {
@@ -412,79 +498,62 @@
                         x.country = data.rows[i][2];
                         x.year = data.rows[i][1];
                         x.value = data.rows[i][3];
-                        country_list_region[j].data.push({year:data.rows[i][1],value:data.rows[i][3]});
+                        country_list_region[j].data.push({year: data.rows[i][1], value: data.rows[i][3]});
                     }
                 }
             }
 
-            for (k=0;k<country_list_region.length;k++)
-            {
-                var data_v=[]
-                var data_v2=[]
-                var data_v3=[]
-                var data_v4=[]
-                var data_v5=[]
-                // for (l=0;l<country_list[k].data.length;l++)
-                // {
-                //     data_v.push(country_list[k].data[l].value);
-                // }
-                for (l=0;l<categories1.length;l++)
-                {
-                    var sereies1=0;
-                    var sereies2=0;
-                    var sereies3=0;
-                    var sereies4=0;
-                    var sereies5=0;
-                    if (l<country_list_region[k].data.length)
-                    {
+            for (k = 0; k < country_list_region.length; k++) {
+                var data_v = []
+                var data_v2 = []
+                var data_v3 = []
+                var data_v4 = []
+                var data_v5 = []
+                for (l = 0; l < categories1.length; l++) {
+                    var sereies1 = 0;
+                    var sereies2 = 0;
+                    var sereies3 = 0;
+                    var sereies4 = 0;
+                    var sereies5 = 0;
+                    if (l < country_list_region[k].data.length) {
 
-                        if (parseFloat(country_list_region[k].data[l].value)<2&&parseFloat(country_list_region[k].data[l].value)>0)
-                        {
+                        if (parseFloat(country_list_region[k].data[l].value) < 2 && parseFloat(country_list_region[k].data[l].value) > 0) {
                             data_v.push(parseFloat(country_list_region[k].data[l].value));
-                            sereies1=1;
+                            sereies1 = 1;
                         }
-                        if (parseFloat(country_list_region[k].data[l].value)>2&&parseFloat(country_list_region[k].data[l].value)<5 )
-                        {
+                        if (parseFloat(country_list_region[k].data[l].value) > 2 && parseFloat(country_list_region[k].data[l].value) < 5) {
                             data_v2.push(parseFloat(country_list_region[k].data[l].value));
-                            sereies2=1;
+                            sereies2 = 1;
                         }
-                        if (parseFloat(country_list_region[k].data[l].value)>5&&parseFloat(country_list_region[k].data[l].value)<7)
-                        {
+                        if (parseFloat(country_list_region[k].data[l].value) > 5 && parseFloat(country_list_region[k].data[l].value) < 7) {
                             data_v3.push(parseFloat(country_list_region[k].data[l].value));
-                            sereies3=1;
+                            sereies3 = 1;
                         }
-                        if (parseFloat(country_list_region[k].data[l].value)>7&&parseFloat(country_list_region[k].data[l].value)<100)
-                        {
+                        if (parseFloat(country_list_region[k].data[l].value) > 7 && parseFloat(country_list_region[k].data[l].value) < 100) {
                             data_v4.push(parseFloat(country_list_region[k].data[l].value));
-                            sereies4=1;
+                            sereies4 = 1;
                         }
-                        if (parseFloat(country_list_region[k].data[l].value)>100)
-                        {
+                        if (parseFloat(country_list_region[k].data[l].value) > 100) {
                             data_v5.push(parseFloat(country_list_region[k].data[l].value));
-                            sereies5=1;
+                            sereies5 = 1;
                         }
                     }
 
                 }
-                if(sereies1==1)
-                {
-                    series_data_region.push({name:country_list_region[k].name,data:data_v,visible: true});
+                if (sereies1 == 1) {
+                    series_data_region.push({name: country_list_region[k].name, data: data_v, visible: true});
                 }
-                else if (sereies2==1)
-                {
-                    series_data_region2.push({name:country_list_region[k].name,data:data_v2,visible: true});
+                else if (sereies2 == 1) {
+                    series_data_region2.push({name: country_list_region[k].name, data: data_v2, visible: true});
                 }
-                else if (sereies3==1)
-                {
-                    series_data_region3.push({name:country_list_region[k].name,data:data_v3,visible: true});
+                else if (sereies3 == 1) {
+                    series_data_region3.push({name: country_list_region[k].name, data: data_v3, visible: true});
                 }
-                else if (sereies4==1)
-                {
-                    series_data_region4.push({name:country_list_region[k].name,data:data_v4,visible: true})
+                else if (sereies4 == 1) {
+                    series_data_region4.push({name: country_list_region[k].name, data: data_v4, visible: true})
                 }
-                else if (sereies5==1)
-                {
-                    series_data_region5.push({name:country_list_region[k].name,data:data_v5,visible: true})
+                else if (sereies5 == 1) {
+                    series_data_region5.push({name: country_list_region[k].name, data: data_v5, visible: true})
                 }
 
 
@@ -492,6 +561,7 @@
             var chart = new Highcharts.Chart({
 
                 chart: {
+                    plotBorderWidth: 2,
                     renderTo: 'container_3_',
                     type: 'line'
                 },
@@ -543,6 +613,7 @@
             var chart = new Highcharts.Chart({
 
                 chart: {
+                    plotBorderWidth: 2,
                     renderTo: 'container_4_',
                     type: 'line'
                 },
@@ -594,6 +665,7 @@
             var chart = new Highcharts.Chart({
 
                 chart: {
+                    plotBorderWidth: 2,
                     renderTo: 'container_5_',
                     type: 'line'
                 },
@@ -645,6 +717,7 @@
             var chart = new Highcharts.Chart({
 
                 chart: {
+                    plotBorderWidth: 2,
                     renderTo: 'container_6_',
                     type: 'line'
                 },
@@ -696,6 +769,7 @@
             var chart = new Highcharts.Chart({
 
                 chart: {
+                    plotBorderWidth: 2,
                     renderTo: 'container_7_',
                     type: 'line'
                 },
@@ -744,8 +818,6 @@
                 }
 
             });
-
-
 
 
         });
