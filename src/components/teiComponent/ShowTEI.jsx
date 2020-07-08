@@ -32,7 +32,6 @@ class ShowTEI extends React.Component {
         else{
             this.setState({buttonStatus : true});
         }
-        console.log("helo", changedTei)
     }
      markCheckll() {
         //this.setState({buttonStatus : false});
@@ -59,7 +58,6 @@ class ShowTEI extends React.Component {
         window.history.back();
     }
     sendEvents() {
-        console.log("state",this.props)
         let selectedTEI = this.state.tei.filter(tei => tei.checked);
         selectedTEI.forEach( ele => {
             let tei = ele.tei;
@@ -73,14 +71,11 @@ class ShowTEI extends React.Component {
                 status : "ACTIVE",
                 dataValues:payload.dataValues
                 };
-               console.log("here is pay load", event)
             ApiService.postEvent(event).then(result => {
                 if(result.httpStatus == 'OK'){
                     this.setState({ flag: true });
                 }
-               console.log("res", result)
             }, error => {
-                // this.setState({ statusAlert: true, flag: true });
                console.log(error)
             });
         })
@@ -88,7 +83,6 @@ class ShowTEI extends React.Component {
     }
 
     static getDerivedStateFromProps(props) {
-        // console.log('here is me!!')
         return { 
             tei: props.teis.payload.tei,
             teiAttributeHeader: props.teis.payload.teiAttributeHeader,
@@ -99,7 +93,6 @@ class ShowTEI extends React.Component {
 
     render() {
         const { history } = this.props;
-        // console.log('here is props at  showTEI', this.props.teis.payload.tei, this.state, this.state.payload.tei);
         let checkBoxHead = this.state.check ? "Unselect All" : "Select All";
         const tei =  () => {
              if (this.state.tei.length > 0 )
@@ -146,7 +139,6 @@ class ShowTEI extends React.Component {
              </div>)
             }
         } 
-        // console.log("here is data for event push", tei());<Col><Button color="danger" onClick={() => {history.push("/");}}>Back</Button></Col>
         return (<>
          <div>{tei()}</div>
         </>

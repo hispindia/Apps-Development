@@ -9,6 +9,7 @@ import Loader from 'react-loader-spinner';
 import $ from "jquery";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import './loadingCom.css'
+import { Multiselect } from 'multiselect-react-dropdown';
 const onError = error => console.error(error)
 class DynamicData extends React.Component {
   constructor(props) {
@@ -28,7 +29,10 @@ class DynamicData extends React.Component {
       loader: true,
       Error: false,
       teiAttributeHeader: [],
-      // value2:""
+      class: [{id: 6, class: '6'},{id: 7, class: '7'},{id: 8, class: '8'},{id: 9, class: '9'},{id: 10, class: '10'}, {id: 11, class: '11'},{id: 12, class: '12'}],
+      division: [{id: 1, division: "A"},{id: 2, division: "B"},{id: 3, division: "C"},{id: 4, division: "D"},{id: 5, division: "E"}],    // value2:""
+      classList: [],
+      classSection: []
     }
     this.onSelect = this.onSelect.bind(this);
     this.EventPass = this.EventPass.bind(this);
@@ -39,6 +43,10 @@ class DynamicData extends React.Component {
     this.handleChanges = this.handleChanges.bind(this);
     this.handleChangess = this.handleChangess.bind(this);
     this.checkBoxStatus =this.checkBoxStatus.bind(this);
+    this.onSelectClass =this.onSelectClass.bind(this);
+    this.onRemoveClass = this.onRemoveClass.bind(this);
+    this.onSelectSection= this.onSelectSection.bind(this);
+    this.onRemoveSection=this.onRemoveSection.bind(this);
   }
   componentDidMount() {
 
@@ -50,8 +58,7 @@ class DynamicData extends React.Component {
     let id = selected.id;
     if (id != undefined) {
       this.getPrograms(selected);
-      // console.log("here is the data", selected);
-      //this.props.history.push(`${selected.path}`)
+      
     }
   }
   getPrograms(selected) {
@@ -65,12 +72,10 @@ class DynamicData extends React.Component {
           if (programId != undefined) {
             ApiService.getProgramDetials(programId).then(res => {
               var programStage = res.programStages;
-              console.log('here is data', res)
               if (programStage.length > 0) {
                 if (programStage.length > 0) {
                   var programStageId = programStage[0].id;
                   var programStageSection = programStage[0].programStageSections;
-                  // console.log("here programStageSection", programStageSection, porgramStageDateElement)
                   let pram = {
                     program: programId,
                     ou: id
@@ -86,39 +91,22 @@ class DynamicData extends React.Component {
                               if (proTEIAttr.displayInList){
                                 displayTEIAttr[proTEIAttr.trackedEntityAttribute.id] = true;
                                 teiAttributes.push( proTEIAttr.trackedEntityAttribute.displayName );
-                                console.log( "attribute" , teiAttributes);
                               }
                             });
-                            console.log( "teiAttributeHeader" , teiAttributes);
                             this.setState({
                               teiAttributeHeader:teiAttributes
                             })
 
-                            console.log('here is tei', response);
                             response.trackedEntityInstances.forEach(tei => {
                               let obj = []
-                              //obj["Student/Youth group ID"] = "";
-                              //obj["Age (In Years)"] = "";
                               obj["tei"] = tei.trackedEntityInstance;
                               obj["checked"] = false;
-
-                              //obj["Student Roll No."] = "";
-                              //var neededAttr = [];
-                              //neededAttr["Iuzv5U8feq2"] = true; //Student/Youth group ID
-                              //neededAttr["tsBbDQe3sGo"] = true; //Name
-                              //neededAttr["MaBiIrJDIWA"] = true; //Gender
-                              //neededAttr["N48JExn2s73"] = true; //Gender
-                              //neededAttr["aSpasplLgMf"] = true; //Age (In Years)
-                              //neededAttr["mkHRXzHJuvn"] = true; //Student Roll No.
-                              //neededAttr["vAxn2PGzIrA"] = true; //Class
-                              //neededAttr["pbJoXwUS8b9"] = true; //Division
                               tei.attributes.forEach(attr => {
                                 if (displayTEIAttr[attr.attribute]) {
                                   obj[attr.displayName] = attr.value;
                                 }
 
                               });
-                              //obj["Name"] = (obj["First name"] ? obj["First name"] : "") + " " + (obj["Last name"] ? obj["Last name"] : "");
                               arr.push(obj);
 
                             })
@@ -132,10 +120,7 @@ class DynamicData extends React.Component {
                               programSection: programStageSection,
                               tei: arr,
                               loader: false,
-                              //teiAttributeHeader:teiAttributes
                             });
-                            //  this.setState({ tei: arr })
-                            //  console.log(response)
                           }
                       );
 
@@ -154,16 +139,13 @@ class DynamicData extends React.Component {
         console.log("here is error", error);
       }
     )
-    // console.log("here is default", this.state);
   }
   handleChange(e) {
     var id = e.target.value;
-     console.log("here is default",id);
     if (id !== undefined) {
       ApiService.getProgramStage(id).then(
         result => {
           var programStage = result.programStages
-          console.log("here is seleted", result.programStages);
           if (programStage.length > 0) {
             var programStageId = programStage[0].id;
             let pram = {
@@ -181,37 +163,28 @@ class DynamicData extends React.Component {
                         if (proTEIAttr.displayInList){
                           displayTEIAttr[proTEIAttr.trackedEntityAttribute.id] = true;
                           teiAttributes.push( proTEIAttr.trackedEntityAttribute.displayName );
-                          //console.log( "attribute" , teiAttributes);
                         }
 
                       });
-                      //console.log( "displayTEIAttr" , displayTEIAttr);
                       this.setState({
                         teiAttributeHeader:teiAttributes
                       });
 
-                      //console.log('here is tei', response);
                       response.trackedEntityInstances.forEach(tei => {
                         let obj = [];
 
                         obj["tei"] = tei.trackedEntityInstance;
                         obj["checked"] = false;
 
-                        //console.log( tei.trackedEntityInstance + " -- "  +  tei.attributes + " -- " + displayTEIAttr );
                         tei.attributes.forEach(attr => {
-                          console.log( tei.trackedEntityInstance + " -- "  +  attr.attributes + " -- " + displayTEIAttr );
                           if (displayTEIAttr[attr.attribute]) {
                             obj[attr.displayName] = attr.value;
-
-                            //console.log( tei.trackedEntityInstance + " -- "  +  attr.displayName );
                           }
                         });
 
                         arr.push(obj);
 
                       });
-                      //  this.setState({ tei: arr })
-                      //  console.log(response)
                     }
                 );
 
@@ -222,7 +195,6 @@ class DynamicData extends React.Component {
             );
 
             ApiService.getDataElements(programStageId).then(result => {
-              // console.log("ok", result.programStageSections)
               this.setState({
                 programId: id,
                 programStage: programStage,
@@ -245,7 +217,6 @@ class DynamicData extends React.Component {
     if (id !== undefined) {
       ApiService.getDataElements(id).then(
         result => {
-          //  console.log("here is seleted", result.programStageSections);
           this.setState({
             programStageId: id,
             programSection: result.programStageSections,
@@ -258,7 +229,6 @@ class DynamicData extends React.Component {
     }
   }
   handleChangess(index1, index2, e) {
-   console.log(index1, index2, e.target.value)
     let dataValues = this.state.programSection;
     dataValues[index1]["dataElements"][index2]["value"] = e.target.value;
     this.setState({ dataValues: dataValues})
@@ -266,7 +236,6 @@ class DynamicData extends React.Component {
   onChange = date => this.setState({ date })
   
   checkNumber(index1, index2, e) {
-    console.log('here is option changed',index1, index2, e.target.value)
     let dataValues = this.state.programSection;
     dataValues[index1]["dataElements"][index2]["value"] = e.target.value;
     this.setState({ dataValues: dataValues})
@@ -277,7 +246,6 @@ class DynamicData extends React.Component {
     }
   }
   checkText(index1, index2, e){
-    console.log('here is option changed',index1, index2, e.target.value)
      let dataValues = this.state.programSection;
     dataValues[index1]["dataElements"][index2]["value"] = e.target.value;
     this.setState({ dataValues: dataValues})
@@ -290,36 +258,56 @@ class DynamicData extends React.Component {
     let dataValues = this.state.programSection;
     dataValues[index1]["dataElements"][index2]["value"] = e.target.value;
     this.setState({ dataValues: dataValues})
-    console.log('here is option changed',index1, index2, e.target.value);
   }
   checkBoxStatus(index1, index2, e){
     let dataValues = this.state.programSection;
-    //let checkBoxValue = "";
-    //if( e.target.checked){
-    //  checkBoxValue = 'true';
-    //}
     dataValues[index1]["dataElements"][index2]["value"] = e.target.checked;
     this.setState({ dataValues: dataValues})
-    console.log('here is option changed',index1, index2, e.target.checked)
 
   }
   changeRadioBtn(index1, index2, e){
     let dataValues = this.state.programSection;
     dataValues[index1]["dataElements"][index2]["value"] = e.target.value;
     this.setState({ dataValues: dataValues})
-    console.log('here is option changed',index1, index2, e.target.value)
   }
   EventPass() {
     let date = JSON.stringify(this.state.date);
     let fdate = date.substring(1, date.length - 1);
-     console.log('here is date', this.state)
+     let TeiVal= [];
+     for( let tei of this.state.tei){
+      if(!this.state.classSection.length && !this.state.classList.length){
+        TeiVal.push(tei);   
+      }
+      if(!this.state.classSection.length){
+       for( let selectedClass of this.state.classList){
+          if(tei['Class'] == selectedClass.class){
+            TeiVal.push(tei);
+          }
+        }
+       }
+       if(!this.state.classList.length){
+        for(let selectedDivision of this.state.classSection){
+          if(tei["Division"]== selectedDivision.division){
+            TeiVal.push(tei);
+          }
+        }
+       }
+       for( let selectedClass of this.state.classList){
+         for(let selectedDivision of this.state.classSection){
+           if( (tei['Class'] == selectedClass.class) && (tei["Division"]== selectedDivision.division)){
+             TeiVal.push(tei);
+           }
+          
+         }
+       }
+     }
     let payload = {
       orgUnitId: this.state.orgUnitId,
       programStageId: this.state.programStageId,
       programId: this.state.programId,
       eventDate: fdate,
       status: "ACTIVE",
-      tei: this.state.tei,
+      tei: TeiVal,
       teiAttributeHeader: this.state.teiAttributeHeader
 
     }
@@ -333,23 +321,39 @@ class DynamicData extends React.Component {
           let dVal = { dataElement: id, value: valu,providedElsewhere:false };
           data.push(dVal)
         }
-        //  console.log('here is me', data)
       })
     })
     payload['dataValues'] = data;
     payloadService.passpayload(payload);
+    // localStorage.setItem("payload", JSON.stringify(payload));
     this.setState({payload: payload})
-     console.log("payload", payload)
   }
+
+onSelectClass(selectedList, selectedItem) {
+  this.setState({classList: selectedList});
+
+}
+
+onRemoveClass(selectedList, removedItem) {
+  this.setState({classList: selectedList});
+
+}
+onSelectSection(selectedList, selectedItem) {
+  this.setState({classSection: selectedList});
+
+}
+
+onRemoveSection(selectedList, removedItem) {
+  this.setState({classSection: selectedList});
+
+}
   render() {
     const programStageDataElement =this.state.porgramStageDateElement
-     console.log("state",this.state)
     const optionVal = () => {
       if (this.state.program === undefined) {
         let val = [""];
         return val;
       } else {
-        // console.log(this.props.program);
         let a = [...this.state.program];
         let b = a.map((val, index) => (
           <option key={index} value={val.id}>
@@ -365,7 +369,6 @@ class DynamicData extends React.Component {
         return val
       } else {
         let a = [...this.state.programStage]
-        console.log('here is a',a)
         let b = a.map((val, index) => <option key={index} value={val.id}> {val.displayName} </option>)
         return b;
       }
@@ -522,6 +525,7 @@ class DynamicData extends React.Component {
             <Row form>
               <Col className ="col-md-4">Program Stage : </Col>
               <Col className ="col-md-8">
+
                 <Input type="select" name="select" id="exampleSelect" onChange={this.handleChanges}>
                   {optionVals()}
                 </Input>
@@ -536,6 +540,29 @@ class DynamicData extends React.Component {
           </div>
           <Row form>
             <div className='p-5 shadow-lg p-3 mb-3 bg-white rounded box font col-md-12'>
+             <Row form>
+              <Col className ="col-md-3">Class :</Col>
+              <Col className ="col-md-3"> 
+               <Multiselect
+                options={this.state.class} // Options to display in the dropdown
+                onSelect={this.onSelectClass} // Function will trigger on select event
+                onRemove={this.onRemoveClass} 
+                selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
+                displayValue="class" // Property name to display in the dropdown options
+                />
+                </Col>
+              <Col className ="col-md-3">Division: </Col>
+              <Col className ="col-md-3">
+              <Multiselect
+                options={this.state.division} // Options to display in the dropdown
+                onSelect={this.onSelectSection} // Function will trigger on select event
+                onRemove={this.onRemoveSection} 
+                selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
+                displayValue="division" // Property name to display in the dropdown options
+                />
+              </Col>
+             </Row>
+             <br />
               <Col>{sectionHeader()}</Col>
               <br />
               <Col sm={{ size: 10, offset: 11 }}>

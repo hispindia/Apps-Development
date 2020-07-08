@@ -6,11 +6,9 @@ class Alert extends Component {
         this.state = {  }
     }
     hideAlert(){
-        //this.props.history.goBack();
         window.history.back();
      }
     render() { 
-     //console.log("here is props", this.props)
         return ( 
             <>
            <SweetAlert

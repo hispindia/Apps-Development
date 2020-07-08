@@ -64,14 +64,12 @@ function getProgramDetials(id) {
   
 // get data using programStageSections id
 function getDetials(id ) {
-    console.log('here is id',id)
     const requestOptions = { method: 'GET'};
     return fetch( BaseUrl + '/api/programStageSections/'+id+'.json?fields=programStage[id,name,displayName,programStageDataElements[compulsory,dataElement[id,name,displayName]],program[id,name,programRuleVariables[id,name,displayName,dataElement[id,name,valueType,optionSet[id,name,displayName,options[id,name,displayName]]]]]],dataElements[optionSetValue,valueType,displayName,id,formName,optionSet[id,name,displayName,options[id,name,displayName]]]&paging=false', requestOptions).then(res => res.json());
 }
 
 // get data using programStageSections id
 function getProgramTEIAttribute(id ) {
-    console.log('here is id',id);
     const requestOptions = { method: 'GET'};
     return fetch( BaseUrl + '/api/programs/'+id+'.json?fields=id,displayName,programTrackedEntityAttributes[mandatory,displayInList,valueType,optionSetValue,optionSet[id,name,valueType,options[id,name,valueType]],trackedEntityAttribute[id,displayName]]&paging=false', requestOptions).then(res => res.json());
 }

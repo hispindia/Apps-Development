@@ -1,5 +1,5 @@
 {
-  "name": "CSE-DataEntry",
+  "name": "CSE-DataEntry-1",
   "version": "1.0.0",
   "description": "",
   "main": "App.js",
@@ -11,7 +11,7 @@
     "company": "HISP India"
   },
   "manifest.webapp": {
-    "name": "CSE Data Entry",
+    "name": "CSE Data Entry-1",
     "description": "Basic layout for react app develop.",
     "appType": "APP",
     "activities": {
@@ -43,6 +43,7 @@
     "d2-tracker": "^31.0.31",
     "jquery": "^3.4.1",
     "jquery-sticky": "^1.0.4",
+    "multiselect-react-dropdown": "^1.5.7",
     "react-bootstrap-sweetalert": "^5.1.9",
     "react-calendar": "^2.19.2",
     "react-date-picker": "^7.10.0",
