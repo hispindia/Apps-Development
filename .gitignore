@@ -30,5 +30,8 @@ overlays/
 dhis-2/projectFilesBackup
 coverage
 dist
+build
+.d2
 node_modules
 **/rebel.xml
+yarn.lock
