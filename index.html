@@ -213,14 +213,16 @@
   <div id="hitDiv"></div>
 
   <div id="searchButton"><a class="blueButtonLink" href="javascript:dhis2.db.search()" id="i18n_search"></a></div>
-
-  <div id="cogButton"><a class="greyButtonLink" href="javascript:dhis2.db.viewOrgUnitSelector()"><i class="fa fa-cog"></i></a></div>
+  <div id="cogButton"><a class="greyButtonLink" href="javascript:dhis2.db.viewOrgUnitSelector()"><i class="fa fa-cog"></i></a>
+   <span class="blueButtonLink" onclick="OpenCircle();" >Circle</span>
+  </div>
   <br />
   <br />
   <br />
   <div>
      <b><span name="i18n_program" style="color: #606060;"></span></b>
     <select id='select' onchange="getOptionValue();" class="greyButtonLink" style="height: 28px; width: 120px;">
+      <option> ALL </option>
     </select>
   </div>
   <div style="display: inline-grid;margin-top: 20px;position: relative;">
@@ -369,9 +371,5 @@
     <td style="width: 25px; text-align: center;"><a href="" class="removeUserGroupAccess">X</a></td>
   </tr>
 </script>
-
-
-
-
 </body>
 </html>

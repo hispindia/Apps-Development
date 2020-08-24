@@ -406,9 +406,7 @@ function updateSharing(dashboard) {
 
 dhis2.db.renderDashboardListLoadFirst = function () {
     var $l = $("#dashboardList");
-
     $l.empty();
-
     $.getJSON("../api/dashboards.json?fields=id,displayName&paging=false&links=false&" + dhis2.util.cacheBust(), function (data) {
         if (undefined !== data.dashboards) {
             var first;
@@ -423,15 +421,15 @@ dhis2.db.renderDashboardListLoadFirst = function () {
                     $('#select').append('<option id="'+dashboard+'">'+dashboard+'</option>');
                 }
              dhis2.db.dashboardObj =data.dashboards
-            let dashboardVal = [];
-            let optValue = $('#select').val()
-            for( let dash of  dhis2.db.dashboardObj ){
-            let val = dash.displayName.split(" ")
-            if(val["0"] == optValue){
-                dashboardVal.push(dash)
-            } 
-            }
-            $.each(dashboardVal, function (index, dashboard) {
+            // let dashboardVal = [];
+            // let optValue = $('#select').val()
+            // for( let dash of  dhis2.db.dashboardObj ){
+            // let val = dash.displayName.split(" ")
+            // if(val["0"] == optValue){
+            //     dashboardVal.push(dash)
+            // } 
+            // }
+            $.each(data.dashboards, function (index, dashboard) {
                 $l.append($.tmpl(dhis2.db.tmpl.dashboardLink, {"id": dashboard.id, "name": dashboard.displayName}));
                 if (index == 0) {
                     first = dashboard.id;
@@ -443,7 +441,7 @@ dhis2.db.renderDashboardListLoadFirst = function () {
             }
 
             if (undefined !== dhis2.db.current()) {
-                dhis2.db.renderDashboard(dhis2.db.current());
+                dhis2.db.renderDashboard(first);
             }
             else {
                 dhis2.db.clearDashboard();
@@ -463,6 +461,9 @@ function getOptionValue() {
     var first;
     let dashboardVal = [];
     let optValue = $('#select').val()
+    if(optValue == "All"){
+        dhis2.db.renderDashboardListLoadFirst()
+    }
     for( let dash of  dhis2.db.dashboardObj ){
        let val = dash.displayName.split(" ")
        if(val["0"] == optValue){
@@ -1589,6 +1590,19 @@ dhis2.db.updateSelectedOrgUnits = function () {
     dhis2.db.currentUserOrgUnit = ous;
     dhis2.db.renderDashboard(dhis2.db.current());
     $("#orgUnitSelectorForm").dialog("destroy");
+}
+function OpenCircle(){
+    let url = "../api/organisationUnitGroups/k5pG961XOGC.json?paging=false&fields=organisationUnits[id,name]"
+    $.getJSON(url, function (data) {
+        console.log(data)
+      });
+      $('#select').get(0).selectedIndex = 0;
+      dhis2.db.renderDashboardListLoadFirst()
+    // let val1 = $("#selectionTree").val()
+    // var ous = selectionTreeSelection.getSelectedUid();
+    // console.log('here is val', ous, val1 )
+    // dhis2.db.currentUserOrgUnit = ous;
+    // dhis2.db.renderDashboard("k5pG961XOGC");
 }
 
 dhis2.db.clearSelectedOrgUnits = function () {

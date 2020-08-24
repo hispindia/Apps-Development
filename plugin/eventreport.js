@@ -3559,7 +3559,7 @@ Ext.onReady( function() {
 				// get html
 				return function() {
 					htmlArray = Ext.Array.clean([].concat(getColAxisHtmlArray() || [], getRowHtmlArray() || [], getTotalHtmlArray() || []));
-
+                    console.log('here is val', htmlArray)
 					return {
 						html: getHtml(htmlArray),
 						uuidDimUuidsMap: uuidDimUuidsMap,

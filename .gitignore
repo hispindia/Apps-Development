@@ -1,34 +1,20 @@
+# Jetbrains files
+.idea
+*.iml
+
+# Project folders/dependencies
+node_modules
+build
+coverage
+manifest.webapp
 target
-*.log
-*.log.*
 ./taret
 ./target
 ./target/classes
 target/**
-*.settings
-.metadata
-build.sh
-.springBeans
-nbactions.xml
 .classpath
 .project
-.mtj
-.idea
-.swp
-*.iml
-*.ipr
-*.ids
-*.iws
-overlays/
-./dhis-2/atlassian-ide-plugin.xml
-./atlassian-ide-plugin.xml
-./.git
-./.gitattributes
-./.gitignore
-./.travis.yml
+
+# Misc files
+npm-debug.log
 .DS_Store
-dhis-2/projectFilesBackup
-coverage
-dist
-node_modules
-**/rebel.xml

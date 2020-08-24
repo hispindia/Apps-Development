@@ -177,6 +177,7 @@ const initTranslation = function ( d2 ) {
   jQuery("#i18n_interpretations").html(d2.i18n.getTranslation("interpretations"));
   jQuery("#searchField").attr({"placeholder": d2.i18n.getTranslation("search_for_users_charts_maps_reports")});
   jQuery("#i18n_search").html(d2.i18n.getTranslation("search"));
+  jQuery("#i18n_circle").html(d2.i18n.getTranslation("circle"));
   jQuery("#i18n_rename_current_dashboard").html(d2.i18n.getTranslation("rename_current_dashboard"));
   jQuery("label[name='i18n_from']").html(d2.i18n.getTranslation("from"));
   jQuery("#i18n_pivot_table").html(d2.i18n.getTranslation("pivot_table"));
