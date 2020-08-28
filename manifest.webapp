@@ -10,12 +10,8 @@
   "name": "Dashboard App",
   "version": "27.0.6",
   "description": "DHIS2 Dashboard App",
-  "developer": {
-    "name": "Viet Nguyen",
-    "email": "viet@dhis2.org"
-  },
   "icons": {
     "48": "icon.png"
   },
-  "manifest_generated_at": "Mon Aug 24 2020 18:26:37 GMT+0530 (India Standard Time)"
+  "manifest_generated_at": "Fri Aug 28 2020 12:12:16 GMT+0530 (India Standard Time)"
 }

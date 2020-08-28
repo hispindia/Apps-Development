@@ -37,6 +37,8 @@ dhis2.db.chartItems = [];
 dhis2.db.eventReportItems = [];
 dhis2.db.eventChartItems = [];
 dhis2.db.dashboardObj = {};
+dhis2.db.userId;
+
 
 
 // TODO support table as link and embedded
@@ -421,14 +423,6 @@ dhis2.db.renderDashboardListLoadFirst = function () {
                     $('#select').append('<option id="'+dashboard+'">'+dashboard+'</option>');
                 }
              dhis2.db.dashboardObj =data.dashboards
-            // let dashboardVal = [];
-            // let optValue = $('#select').val()
-            // for( let dash of  dhis2.db.dashboardObj ){
-            // let val = dash.displayName.split(" ")
-            // if(val["0"] == optValue){
-            //     dashboardVal.push(dash)
-            // } 
-            // }
             $.each(data.dashboards, function (index, dashboard) {
                 $l.append($.tmpl(dhis2.db.tmpl.dashboardLink, {"id": dashboard.id, "name": dashboard.displayName}));
                 if (index == 0) {
@@ -461,7 +455,7 @@ function getOptionValue() {
     var first;
     let dashboardVal = [];
     let optValue = $('#select').val()
-    if(optValue == "All"){
+    if(optValue == "ALL"){
         dhis2.db.renderDashboardListLoadFirst()
     }
     for( let dash of  dhis2.db.dashboardObj ){
@@ -1588,21 +1582,31 @@ dhis2.db.viewOrgUnitSelector = function () {
 dhis2.db.updateSelectedOrgUnits = function () {
     var ous = selectionTreeSelection.getSelectedUid();
     dhis2.db.currentUserOrgUnit = ous;
+
     dhis2.db.renderDashboard(dhis2.db.current());
     $("#orgUnitSelectorForm").dialog("destroy");
 }
-function OpenCircle(){
-    let url = "../api/organisationUnitGroups/k5pG961XOGC.json?paging=false&fields=organisationUnits[id,name]"
+let url = "../api/26/me.json"
     $.getJSON(url, function (data) {
-        console.log(data)
+         dhis2.db.userId =data.userCredentials.userInfo.id
       });
-      $('#select').get(0).selectedIndex = 0;
-      dhis2.db.renderDashboardListLoadFirst()
-    // let val1 = $("#selectionTree").val()
-    // var ous = selectionTreeSelection.getSelectedUid();
-    // console.log('here is val', ous, val1 )
-    // dhis2.db.currentUserOrgUnit = ous;
-    // dhis2.db.renderDashboard("k5pG961XOGC");
+let url1 = "../api/userGroups/Ki2oAVFHA0e.json?fields=users[id,name]"
+    $.getJSON(url1, function (data) {
+          let UG;
+         for (let user of data.users){
+          if(user.id == dhis2.db.userId){
+            UG = dhis2.db.userId
+          }
+         }
+        if(UG){
+         $('#circleDiv').show()
+        }else{
+           $('#circleDiv').hide()
+        }
+      });
+function OpenCircle(){
+      dhis2.db.currentUserOrgUnit = "fU0PPhAypN8";
+      dhis2.db.renderDashboard(dhis2.db.current());
 }
 
 dhis2.db.clearSelectedOrgUnits = function () {
