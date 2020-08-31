@@ -1586,24 +1586,26 @@ dhis2.db.updateSelectedOrgUnits = function () {
     dhis2.db.renderDashboard(dhis2.db.current());
     $("#orgUnitSelectorForm").dialog("destroy");
 }
-let url = "../api/26/me.json"
-    $.getJSON(url, function (data) {
-         dhis2.db.userId =data.userCredentials.userInfo.id
-      });
-let url1 = "../api/userGroups/Ki2oAVFHA0e.json?fields=users[id,name]"
-    $.getJSON(url1, function (data) {
-          let UG;
-         for (let user of data.users){
-          if(user.id == dhis2.db.userId){
-            UG = dhis2.db.userId
-          }
-         }
-        if(UG){
-         $('#circleDiv').show()
-        }else{
-           $('#circleDiv').hide()
+
+$.when(
+    $.get("../api/26/me.json"),
+    $.get("../api/userGroups/Ki2oAVFHA0e.json?fields=users[id,name]")
+).done(function (response1, response2) {
+    let  userID = response1["0"].id;
+    let UG;
+    for( let user of response2["0"].users){
+        if(user.id == userID){
+            UG = userID
         }
-      });
+        if(UG){
+        $('#circleDiv').show()
+        }else{
+        $('#circleDiv').hide()
+        }
+    }
+})
+
+
 function OpenCircle(){
       dhis2.db.currentUserOrgUnit = "fU0PPhAypN8";
       dhis2.db.renderDashboard(dhis2.db.current());
