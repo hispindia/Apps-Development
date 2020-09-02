@@ -27,6 +27,8 @@ overlays/
 ./.gitignore
 ./.travis.yml
 .DS_Store
+apps/entry/build
+apps/entry/node_modules
 dhis-2/projectFilesBackup
 coverage
 dist
