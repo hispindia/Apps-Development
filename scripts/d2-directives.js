@@ -74,7 +74,7 @@ var d2Directives = angular.module('d2Directives', [])
 
             function setSelectedOu(ids, names) {
                 var ou = {id: ids[0], name: names[0]};
-                
+                scope.selectedOrgUnit = ou;
                 selection.getOrganisationUnit(ou.id).then(function(o){
                     $timeout(function () {
                         ou.c = o[ou.id].c ? o[ou.id].c : [];

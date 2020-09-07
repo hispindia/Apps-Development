@@ -90,9 +90,23 @@ excelUpload.controller('TemplateController',
 		
 		//org unit group
 		$("#templateProgress").html("Fetching organisation unit groups...");
-		$.get('../../../api/organisationUnitGroups.json?paging=false', function(ou){
-			console.log( ou );
-			$scope.orgUnitGroups = ou.organisationUnitGroups;
+		$.get('../../../api/organisationUnitGroups.json?fields=id,displayName,attributeValues[value,attribute[id,name,code]]&paging=false', function (orgGroup) {
+			console.log(orgGroup);
+			let orgUnitGrps =[];
+			for(let j=0;j<orgGroup.organisationUnitGroups.length;j++){
+				let val=orgGroup.organisationUnitGroups[j].attributeValues.length;
+				for (let i=0;i<val;i++){
+					let val1=orgGroup.organisationUnitGroups[j].attributeValues[i].attribute.code;
+					if( orgGroup.organisationUnitGroups[j].attributeValues.length !== 0){
+						if (orgGroup.organisationUnitGroups[j].attributeValues[i].attribute.code === 'Excel_Import_OrgUnitGrp_Filter' && orgGroup.organisationUnitGroups[j].attributeValues[i].value === "true")
+						{
+							orgUnitGrps.push(orgGroup.organisationUnitGroups[j]);
+						}
+					}
+				}
+			}
+			$scope.orgUnitGroups = orgUnitGrps;
+			//$scope.orgUnitGroups = ou.organisationUnitGroups;
 			
 			//datasets whith attributevalues="Excel_Import_DataSet_Filter"
 			$("#templateProgress").html("Fetching all the data sets...");
@@ -103,9 +117,9 @@ excelUpload.controller('TemplateController',
                            {var val=ds.dataSets[j].attributeValues.length;
                                 for (var i=0;i<val;i++)
 								{  var val1=ds.dataSets[j].attributeValues[i].attribute.code;
-									if( ds.dataSets[j].attributeValues.length!=0)
+									if( ds.dataSets[j].attributeValues.length!==0)
 									{
-									if (ds.dataSets[j].attributeValues[i].attribute.code == 'Excel_Import_DataSet_Filter' && ds.dataSets[j].attributeValues[i].value == "true")
+									if (ds.dataSets[j].attributeValues[i].attribute.code === 'Excel_Import_DataSet_Filter' && ds.dataSets[j].attributeValues[i].value === "true")
 									{
 										datets.push(ds.dataSets[j]);
 										
