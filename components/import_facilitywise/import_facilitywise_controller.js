@@ -913,18 +913,21 @@ excelUpload.controller('ImportFacilitywiseController',
 
         $.each($scope.childrenDataValues, function (i, dv) {
 
-            $.each($scope.orgUnitChildrens, function (j, temOrgUnit) {
+            if(  dv.dataElement !== 'reIsaKSpZRO' || dv.dataElement !== 'XVK0Y3PnGsU' ){
+                $.each($scope.orgUnitChildrens, function (j, temOrgUnit) {
 
-                for (let  k = 0; k < $scope.financilaPeriodList.length; k++) {
-                    let tempDataValue = {};
-                    tempDataValue.period = $scope.financilaPeriodList[k];
-                    tempDataValue.dataElement = dv.dataElement;
-                    tempDataValue.categoryOptionCombo = dv.categoryOptionCombo;
-                    tempDataValue.orgUnit = temOrgUnit.id;
-                    tempDataValue.value = dv.value;
-                    tempDataValues.push(tempDataValue);
-                }
-            });
+                    for (let  k = 0; k < $scope.financilaPeriodList.length; k++) {
+                        let tempDataValue = {};
+                        tempDataValue.period = $scope.financilaPeriodList[k];
+                        tempDataValue.dataElement = dv.dataElement;
+                        tempDataValue.categoryOptionCombo = dv.categoryOptionCombo;
+                        tempDataValue.orgUnit = temOrgUnit.id;
+                        tempDataValue.value = dv.value;
+                        tempDataValues.push(tempDataValue);
+                    }
+                });
+            }
+
 
             //console.log(' dataElement ' + dv.dataElement + ' categoryOptionCombo ' + dv.categoryOptionCombo + ' value ' + dv.value);
             //console.log(' temp data - categoryOptionCombo ' + dv.categoryOptionCombo );
