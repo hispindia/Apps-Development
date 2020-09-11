@@ -707,7 +707,8 @@ excelUpload.controller('ImportFacilitywiseController',
 
                         if ($scope.confirmedUploads.orgUnits.length == (index + 1)) {
                             callbackfunct();
-
+							
+							/*
                             let selectedMonth = $scope.confirmedUploads.periodVal.slice(-2);
                             if( selectedMonth === '04' && $("#imDataSetId").val() === 'ruF6WDXDWAM'){
                                 $scope.financialPeriodList( $scope.confirmedUploads.periodVal );
@@ -715,6 +716,8 @@ excelUpload.controller('ImportFacilitywiseController',
                             else{
                                 //alert( 'selected month - ' + selectedMonth );
                             }
+							*/
+							
 
                         }
                     });
@@ -866,6 +869,7 @@ excelUpload.controller('ImportFacilitywiseController',
             }
         })();
 
+/* // use case for NIPI --
         $scope.financialPeriodList = function (  selectedPeriod ) {
             //$scope.financilaPeriodList.push('201904');
             //let startYear = financialYear.split("-")[0];
@@ -949,4 +953,7 @@ excelUpload.controller('ImportFacilitywiseController',
         }
        //$("#loader").fadeOut();
     };
+	
+*/
+	
 });
