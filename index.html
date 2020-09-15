@@ -155,6 +155,12 @@
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <script src="https://code.highcharts.com/maps/highmaps.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/map.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/data.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/offline-exporting.js"></script>
+    <script src="https://code.highcharts.com/mapdata/custom/world.js"></script>
 </head>
 
 <body>
@@ -169,6 +175,10 @@
         onclick="tableToExcel('state', 'WER report', 'WER report')"><span class="glyphicon glyphicon-download-alt"
             style="font-size: 15px;"></span>Download As Excel</button>
 
+    <button type="button" class="btn btn-success btn-sm" style="vertical-align: middle;" id="btnExport"
+        onclick="tableToExcel('state', 'WER report', 'WER report.doc')"><span class="glyphicon glyphicon-download-alt"
+            style="font-size: 15px;"></span>Download As Word</button>
+
 
     <div id="loader" style="display: none"></div>
     <div id="printing" class="animate-bottom">
@@ -180,7 +190,7 @@
                         <label for="period-year">Select Year : </strong>
                     </td>
                     <td style="width: 60%;">
-                        <select class="form-control" id="period-year" onchange="submitData()">
+                        <select class="form-control" id="period-year" onchange="submitData()" style="cursor: pointer;">
                             <option hidden selected>Please select a year</option>
                         </select>
                     </td>
@@ -315,6 +325,11 @@
                 <div id="highCharts_second" style="height: 500px"></div>
                 <div id="highCharts_third" style="height: 600px"></div>
                 <div id="highCharts_fourth" style="height: 500px"></div>
+                <div id="highCharts_fifth" style="height: 600px"></div>
+                <div id="highCharts_sixth" style="height: 600px"></div>
+                <div id="highCharts_seventh" style="height: 600px"></div>
+                <div id="highCharts_Eighth" style="height: 600px"></div>
+                <div id="highCharts_Twelfth" style="height: 600px"></div>
             </figure>
         </div>
     </div>
@@ -347,46 +362,55 @@
             }
 
             var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            var abbreviatedNames = {
+                "L9CbxlithLc": "AFR",
+                "uWVIlmAl1r5": "AMR",
+                "XHT7CFb5mEe": "EMR",
+                "UzbbopOhq1L": "EUR",
+                "vY40CQrh4Kk": "SEAR",
+                "QvCHetFovQg": "WPR",
+                "x3i5oi4axNu": "World"
+            }
             var printTotalThird = [], printTotalFifth = [], printTotalSixth = [];
-            var trendG2CasesChild, trendG2Cases = [];
+            var trendG2CasesChild, trendG2Cases = [], leprorsyThreeCases = [], LeprosyFourCases = [], LeprosyTotalCases = [];
             var trendG2CasesChildPie = [{
                 name: 'Number of countries reporting 0 child grade 2 disability cases',
-                value:"0",
-                y: 0,                
+                value: "0",
+                y: 0,
                 sliced: true,
                 selected: true
             }, {
                 name: 'Number of countries reporting 1-9 child grade 2 disability cases',
-                value:"1-9",
+                value: "1-9",
                 y: 0,
-                
+
             }, {
                 name: 'Number of countries reporting 10-99 child grade 2 disability cases',
-                value:'10-99',
+                value: '10-99',
                 y: 0,
-                
+
             }, {
                 name: 'Number of countries reporting >99 child grade 2 disability cases',
-                value:">99",
+                value: ">99",
                 y: 0,
-                
+
             }];
             var trendG2CasesPie = [{
                 name: 'Number of countries reporting <1 grade 2 disability rate per million population',
                 value: "<1",
-                y: 0,                
+                y: 0,
                 sliced: true,
                 selected: true
             }, {
                 name: 'Number of countries reporting 1-9 grade 2 disability rate per million population',
-                value:"1-9",
+                value: "1-9",
                 y: 0,
-                
+
             }, {
                 name: 'Number of countries reporting >9 grade 2 disability rate per million population',
                 value: ">9",
                 y: 0,
-                
+
             }]
             var globalTotalThird = [], globalTotalFifth = [], globalTotalSixth = [], globalTotalSeventh = 0, globalTotalEighth = [];
             for (var i = 0; i <= 10; i++) {
@@ -449,18 +473,34 @@
 
             var orgUnitGroup = "../../organisationUnitGroups/gTofFxvbRSI.json?fields=[name,organisationUnits]&paging=false"; //Global Priority Countries
 
-            var globalTotalUrl = "../../analytics.json?dimension=dx:gY7b9azcUQG;cyg9FDI48hW;PS9m9ERoPaj&dimension=ou:x3i5oi4axNu&dimension=pe:" + getYear(selectedPeriod, 10).join(";") + "&displayProperty=NAME"
+            var globalTotalUrl = "../../analytics.json?dimension=dx:gY7b9azcUQG;cyg9FDI48hW;PS9m9ERoPaj&dimension=ou:x3i5oi4axNu&dimension=pe:" + getYear(selectedPeriod, 10).join(";") + "&displayProperty=NAME";
 
-            var organisationUnit = [];
+            var selectedPeriodNinth = getYear(selectedPeriod, 10);
+            var dataElementIdNinth = ["gY7b9azcUQG", "PS9m9ERoPaj", "cyg9FDI48hW"]
+            var idNinth = `../../analytics.json?dimension=dx:gY7b9azcUQG;PS9m9ERoPaj;cyg9FDI48hW&dimension=pe:${selectedPeriodNinth.join(";")}&filter=ou:USER_ORGUNIT&displayProperty=NAME&user=z7Gac7vahQL&paging=false`;
+
+            var dataElementIdTenth = ["gY7b9azcUQG", "PS9m9ERoPaj", "ElAjdwOrjMq", "SsZP6Izyhay"]
+            var idTenth = `../../analytics.json?dimension=dx:${dataElementIdTenth.join(";")}&dimension=pe:${selectedPeriodNinth.join(";")}&filter=ou:USER_ORGUNIT&displayProperty=NAME&user=z7Gac7vahQL&paging=false`;
+
+            var orgUnitIdEleventh = ["L9CbxlithLc", "uWVIlmAl1r5", "XHT7CFb5mEe", "UzbbopOhq1L", "vY40CQrh4Kk", "QvCHetFovQg", "x3i5oi4axNu"]
+            var idEleventh = `../../analytics.json?dimension=ou:${orgUnitIdEleventh.join(";")}&dimension=pe:${selectedPeriodNinth.join(";")}&filter=dx:gY7b9azcUQG&displayProperty=NAME&user=z7Gac7vahQL&paging=false`;
+
+            var idTwelfth = `../../analytics.json?dimension=pe:${selectedPeriod}&dimension=dx:gY7b9azcUQG&dimension=ou:USER_ORGUNIT_GRANDCHILDREN&displayProperty=NAME&paging=false`;
+
+            var organisationUnitName = [];
+            var organisationUnitCode = [];
+
             $.ajax({
                 type: "GET",
                 async: false,
-                url: "../../organisationUnits/x3i5oi4axNu.json?fields=children[id,name,children[id,name]]",
+                url: "../../organisationUnits/x3i5oi4axNu.json?fields=children[id,name,children[id,name,code],code]",
                 data: JSON,
                 success: function (orgUnit) {
                     orgUnit.children.sort((a, b) => a.name.localeCompare(b.name));
-                    orgUnit.children.forEach(level => level.children.sort((a, b) => a.name.localeCompare(b.name)));
-                    organisationUnit = orgUnit;
+                    orgUnit.children.forEach(orgUnits => orgUnits.children.forEach(ou => {
+                        organisationUnitCode[ou.id] = (ou.code ? ou.code : "")
+                        organisationUnitName[ou.id] = (ou.name ? ou.name : "")
+                    }))
                 }
             })
 
@@ -475,7 +515,11 @@
                 $.get(globalTotalUrl),
                 $.get(idSeventh),
                 $.get(idEighth),
-            ).done(function (rowFirst, rowSecond, rowThird, rowFourth, rowFifth, rowSixth, GlobalPriorityCountries, globalTotalVlaues, rowSeventh, rowEighth) {
+                $.get(idNinth),
+                $.get(idTenth),
+                $.get(idEleventh),
+                $.get(idTwelfth),
+            ).done(function (rowFirst, rowSecond, rowThird, rowFourth, rowFifth, rowSixth, GlobalPriorityCountries, globalTotalVlaues, rowSeventh, rowEighth, rowNinth, rowTenth, rowEleventh, rowTwelfth) {
 
                 rowFirst = rowFirst["0"];
                 rowSecond = rowSecond["0"];
@@ -487,9 +531,12 @@
                 rowEighth = rowEighth["0"];
                 globalTotalVlaues = globalTotalVlaues["0"];
                 GlobalPriorityCountries = GlobalPriorityCountries["0"].organisationUnits;
+                rowNinth = rowNinth["0"];
+                rowTenth = rowTenth["0"];
+                rowEleventh = rowEleventh["0"];
+                rowTwelfth = rowTwelfth["0"];
 
-
-                let dataFirst = [], dataSecond = [], dataThird = []; dataFourth = [], dataFifth = [], dataSixth = [], globalTotal = [], dataSeventh = [], dataEighth = [];
+                let dataFirst = [], dataSecond = [], dataThird = []; dataFourth = [], dataFifth = [], dataSixth = [], globalTotal = [], dataSeventh = [], dataEighth = [], dataNinth = [], dataTenth = [], dataEleventh = [], dataTwelfth = [];
                 let metadataValues = [];
 
                 for (let id in rowFirst.metaData.items) {
@@ -503,7 +550,6 @@
                     return gpc;
                 }).sort((a, b) => a.name.localeCompare(b.name));
 
-                debugger;
                 rowFirst.rows.forEach(row => {
                     if (!dataFirst[row["1"]]) {
                         dataFirst[row["1"]] = [];
@@ -576,11 +622,8 @@
 
                     }
                 })
-            
                 let keys = Object.keys(dataSeventh).sort();
                 trendG2CasesChild = keys.map(key => (dataSeventh[key]) ? dataSeventh[key] : 0);
-
-
 
                 rowEighth.rows.forEach(row => {
                     if (Number(row["3"]) < 1) {
@@ -601,6 +644,7 @@
                         }
                     }
                 })
+
                 keys = Object.keys(dataEighth).sort();
                 trendG2Cases.push({ name: "Number of countries reporting <1 grade 2 disability rate per million population", data: [] })
                 trendG2Cases.push({ name: "Number of countries reporting >=1 grade 2 disability rate per million population", data: [] })
@@ -619,6 +663,62 @@
                     }
                 });
 
+                rowNinth.rows.forEach(row => {
+                    if (!dataNinth[row["0"]]) {
+                        dataNinth[row["0"]] = [];
+                        dataNinth[row["0"]][row["1"]] = Number(row["2"]);
+                    }
+                    else {
+                        dataNinth[row["0"]][row["1"]] = Number(row["2"]);
+                    }
+                })
+
+                dataElementIdNinth.forEach((key, indexFirst) => {
+                    leprorsyThreeCases[indexFirst] = [];
+                    selectedPeriodNinth.forEach((period, indexSecond) => {
+                        leprorsyThreeCases[indexFirst][indexSecond] = dataNinth[key][period] ? dataNinth[key][period] : 0;
+                    })
+                });
+
+                rowTenth.rows.forEach(row => {
+                    if (!dataTenth[row["0"]]) {
+                        dataTenth[row["0"]] = [];
+                        dataTenth[row["0"]][row["1"]] = Number(row["2"]);
+                    }
+                    else {
+                        dataTenth[row["0"]][row["1"]] = Number(row["2"]);
+                    }
+                })
+
+                dataElementIdTenth.forEach((key, indexFirst) => {
+                    LeprosyFourCases[indexFirst] = [];
+                    selectedPeriodNinth.forEach((period, indexSecond) => {
+                        LeprosyFourCases[indexFirst][indexSecond] = dataTenth[key][period] ? dataTenth[key][period] : 0;
+                    })
+                })
+
+                rowEleventh.rows.forEach(row => {
+                    if (!dataEleventh[row["0"]]) {
+                        dataEleventh[row["0"]] = [];
+                        dataEleventh[row["0"]][row["1"]] = Number(row["2"]);
+                    }
+                    else {
+                        dataEleventh[row["0"]][row["1"]] = Number(row["2"]);
+                    }
+                })
+
+                orgUnitIdEleventh.forEach((key, indexFirst) => {
+                    LeprosyTotalCases[indexFirst] = {
+                        type: key == "x3i5oi4axNu" ? 'line' : 'column',
+                        name: (abbreviatedNames[key] ? abbreviatedNames[key] : metadataValues[key]),
+                        data: []
+                    }
+
+                    selectedPeriodNinth.forEach((period, indexSecond) => {
+                        LeprosyTotalCases[indexFirst]["data"][indexSecond] = dataEleventh[key][period] ? dataEleventh[key][period] : 0;
+                    })
+                })
+
                 globalTotalVlaues.rows.forEach(row => {
                     if (!globalTotal[row["2"]]) {
                         globalTotal[row["2"]] = [];
@@ -627,6 +727,19 @@
                         globalTotal[row["2"]][row["0"]] = Number(row["3"]);
                     }
                 })
+
+                let rowCheck = [];
+                rowTwelfth.rows.forEach(row => {
+                    if (!rowCheck[row["2"]]) {
+                        rowCheck[row["2"]] = true;
+                        dataTwelfth.push({
+                            code: organisationUnitCode[row["2"]].toUpperCase(),
+                            value: Number(row["3"]),
+                            name: organisationUnitName[row["2"]]
+                        })
+                    }
+                })
+
 
                 var tableRow = ""
                 for (let orgUnitId of orgUnitIdFirst) {
@@ -691,6 +804,7 @@
                     });
                     tableRow += "<tr>";
                 }
+                
                 tableRow += "<tr><td style='text-align:left;font-weight:600;'>Number of new cases with G2D in global priority countries</td>"
                 for (let i = 0; i < 5; i++)  tableRow += "<td style='font-weight:600'>" + printTotalFifth[i] + "</td>";
                 tableRow += "<tr>";
@@ -791,7 +905,7 @@
                     },
                     plotOptions: {
                         pie: {
-                            showInLegend:true,
+                            showInLegend: true,
                             allowPointSelect: true,
                             cursor: 'pointer',
                             dataLabels: {
@@ -807,9 +921,37 @@
                     }]
                 });
 
+                // Highcharts.chart('highCharts_third', {
+                //     chart: {
+                //         type: 'line'
+                //     },
+                //     title: {
+                //         text: `Graph 3 : Trend - Countries reporting <1 and >=1 grade 2 disability rate per million population -  ${selectedPeriod - 4} - ${selectedPeriod}`
+                //     },
+                //     xAxis: {
+                //         categories: selectedPeriodEighth,
+                //         accessibility: {
+                //             rangeDescription: `Range from ${selectedPeriod - 4} - ${selectedPeriod}`
+                //         },
+                //     },
+                //     yAxis: {
+                //         title: {
+                //             text: 'Number of Countries'
+                //         }
+                //     },
+                //     plotOptions: {
+                //         line: {
+                //             dataLabels: {
+                //                 enabled: true
+                //             },
+                //             enableMouseTracking: true
+                //         }
+                //     },
+                //     series: trendG2Cases
+                // });
                 Highcharts.chart('highCharts_third', {
                     chart: {
-                        type: 'line'
+                        type: 'column'
                     },
                     title: {
                         text: `Graph 3 : Trend - Countries reporting <1 and >=1 grade 2 disability rate per million population -  ${selectedPeriod - 4} - ${selectedPeriod}`
@@ -835,6 +977,7 @@
                     },
                     series: trendG2Cases
                 });
+
                 Highcharts.chart('highCharts_fourth', {
                     chart: {
                         plotBackgroundColor: null,
@@ -850,7 +993,7 @@
                     },
                     plotOptions: {
                         pie: {
-                            showInLegend:true,
+                            showInLegend: true,
                             allowPointSelect: true,
                             cursor: 'pointer',
                             dataLabels: {
@@ -863,6 +1006,301 @@
                         name: 'Countries',
                         colorByPoint: true,
                         data: trendG2CasesPie
+                    }]
+                });
+
+                Highcharts.chart('highCharts_fifth', {
+                    chart: {
+                        type: 'line'
+                    },
+                    title: {
+                        text: `Graph 5 : Trend - Countries reporting <1 grade 2 disability rate per million population -  ${selectedPeriod - 4} - ${selectedPeriod}`
+                    },
+
+                    xAxis: {
+                        categories: selectedPeriodSeventh,
+                        accessibility: {
+                            rangeDescription: `Range from ${selectedPeriod - 4} - ${selectedPeriod}`
+                        }
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Number of Countries'
+                        }
+                    },
+                    plotOptions: {
+                        line: {
+                            dataLabels: {
+                                enabled: true
+                            },
+                        }
+                    },
+                    series: [trendG2Cases["0"]]
+
+                });
+
+                Highcharts.chart('highCharts_sixth', {
+
+                    title: {
+                        text: ''
+                    },
+                    xAxis: {
+                        categories: selectedPeriodNinth,
+                        accessibility: {
+                            rangeDescription: `Range from  ${selectedPeriod - 15} - ${selectedPeriod}`
+                        }
+                    },
+                    yAxis: [{
+                        title: {
+                            text: 'New leprosy cases',
+                            style: {
+                                color: Highcharts.getOptions().colors[0]
+                            }
+                        },
+                        labels: {
+                            style: {
+                                color: Highcharts.getOptions().colors[0]
+                            }
+                        },
+                    }, { // Secondary yAxis
+                        title: {
+                            text: 'New child cases & New G2D cases',
+                            style: {
+                                color: Highcharts.getOptions().colors[1]
+                            }
+                        },
+                        opposite: true
+                    }],
+
+                    plotOptions: {
+                        column: {
+                            stacking: 'normal',
+                            dataLabels: {
+                                enabled: true,
+                                color: "white"
+                            }
+                        },
+                        line: {
+                            dataLabels: {
+                                enabled: true
+                            },
+                        }
+                    },
+                    series: [{
+                        type: 'column',
+                        name: 'New leprosy cases',
+                        data: leprorsyThreeCases["0"]
+                    },
+                    {
+                        type: 'line',
+                        name: 'New child cases',
+                        yAxis: 1,
+                        data: leprorsyThreeCases["1"]
+                    }, {
+                        type: 'line',
+                        name: 'New G2D cases',
+                        yAxis: 1,
+                        data: leprorsyThreeCases["2"]
+
+                    }]
+
+                });
+
+                Highcharts.chart('highCharts_seventh', {
+
+                    title: {
+                        text: ''
+                    },
+                    xAxis: {
+                        categories: selectedPeriodNinth,
+                        accessibility: {
+                            rangeDescription: `Range from  ${selectedPeriod - 10} - ${selectedPeriod}`
+                        }
+                    },
+                    yAxis: [{
+                        title: {
+                            text: 'New leprosy cases',
+                            style: {
+                                color: Highcharts.getOptions().colors[0]
+                            }
+                        },
+                        labels: {
+                            style: {
+                                color: Highcharts.getOptions().colors[0]
+                            }
+                        },
+                    }, { // Secondary yAxis
+                        title: {
+                            text: 'Detection rate',
+                            style: {
+                                color: Highcharts.getOptions().colors[1]
+                            }
+                        },
+                        opposite: true
+                    }],
+
+                    plotOptions: {
+                        column: {
+                            stacking: 'normal',
+                            dataLabels: {
+                                enabled: true,
+                                color: 'white'
+                            }
+                        },
+                        line: {
+                            dataLabels: {
+                                enabled: true
+                            },
+                        }
+                    },
+                    series: [{
+                        type: 'column',
+                        name: 'Total cases',
+                        data: LeprosyFourCases["0"]
+                    },
+                    {
+                        type: 'column',
+                        name: 'New cases: Children',
+                        data: LeprosyFourCases["1"]
+                    },
+                    {
+                        type: 'line',
+                        name: 'Case detection Rate (Per million population)',
+                        yAxis: 1,
+                        data: LeprosyFourCases["2"]
+                    }, {
+                        type: 'line',
+                        name: 'Child case detection rate (Per million child population)',
+                        yAxis: 1,
+                        data: LeprosyFourCases["3"]
+
+                    }]
+
+                });
+                Highcharts.chart('highCharts_Eighth', {
+
+                    title: {
+                        text: ''
+                    },
+                    xAxis: {
+                        categories: selectedPeriodNinth,
+                        accessibility: {
+                            rangeDescription: `Range from  ${selectedPeriod - 10} - ${selectedPeriod}`
+                        }
+                    },
+                    yAxis: [{
+                        title: {
+                            text: 'Total Cases',
+                            style: {
+                                color: Highcharts.getOptions().colors[0]
+                            }
+                        },
+                        labels: {
+                            style: {
+                                color: Highcharts.getOptions().colors[0]
+                            }
+                        },
+                    }],
+
+                    plotOptions: {
+                        column: {
+                            stacking: 'normal',
+                            dataLabels: {
+                                enabled: true,
+                                color: 'white'
+                            }
+                        },
+                        line: {
+                            dataLabels: {
+                                enabled: true
+                            },
+                        }
+                    },
+                    series: LeprosyTotalCases
+
+                });
+
+                Highcharts.mapChart('highCharts_Twelfth', {
+                    chart: {
+                        map: 'custom/world',
+                        borderWidth: 1
+                    },
+
+                    colors: ['rgba(19,64,117,0)', 'rgba(19,64,117,0.05)', 'rgba(19,64,117,0.2)', 'rgba(19,64,117,0.4)',
+                        'rgba(19,64,117,0.5)', 'rgba(19,64,117,0.6)', 'rgba(19,64,117,0.8)'],
+
+                    title: {
+                        text: ""
+                    },
+
+                    mapNavigation: {
+                        enabled: true
+                    },
+
+                    legend: {
+                        title: {
+                            text: `New leprosy cases- ${selectedPeriod}`,
+                            style: {
+                                color: ( // theme
+                                    Highcharts.defaultOptions &&
+                                    Highcharts.defaultOptions.legend &&
+                                    Highcharts.defaultOptions.legend.title &&
+                                    Highcharts.defaultOptions.legend.title.style &&
+                                    Highcharts.defaultOptions.legend.title.style.color
+                                ) || 'black'
+                            }
+                        },
+                        align: 'left',
+                        verticalAlign: 'bottom',
+                        floating: true,
+                        layout: 'vertical',
+                        valueDecimals: 0,
+                        backgroundColor: ( // theme
+                            Highcharts.defaultOptions &&
+                            Highcharts.defaultOptions.legend &&
+                            Highcharts.defaultOptions.legend.backgroundColor
+                        ) || 'rgba(255, 255, 255, 0.85)',
+                        symbolRadius: 0,
+                        symbolHeight: 14
+                    },
+
+                    colorAxis: {
+                        dataClasses: [{
+                            to: 0,
+                            name: "No data"
+                        }, {
+                            from: 0,
+                            to: 0,
+                            name: '0'
+                        }, {
+                            from: 1,
+                            to: 10
+                        }, {
+                            from: 11,
+                            to: 100
+                        }, {
+                            from: 101,
+                            to: 1000
+                        }, {
+                            from: 1001,
+                            to: 10000
+                        }, {
+                            from: 10000,
+                            name: "more than 10 000"
+                        }]
+                    },
+
+                    series: [{
+                        data: dataTwelfth,
+                        joinBy: ['iso-a3', 'code'],
+                        animation: true,
+                        name: `New leprosy cases- ${selectedPeriod}`,
+                        states: {
+                            hover: {
+                                color: '#a4edba'
+                            }
+                        },
+                        shadow: false
                     }]
                 });
             })
