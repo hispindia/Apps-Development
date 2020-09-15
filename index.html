@@ -1,0 +1,1218 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+        integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        thead>tr>td {
+            font-weight: bold;
+        }
+
+        tbody>tr>td {
+            font-weight: bold;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            opacity: 1;
+        }
+
+        /* Center the loader  */
+        #loader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            width: 150px;
+            height: 150px;
+            margin: -75px 0 0 -75px;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #34B4DB;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+
+        @-webkit-keyframes spin {
+            0 % {
+                -webkit-transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Add animation to "page content" */
+
+        .animate-bottom {
+            position: relative;
+            -webkit-animation-name: animatebottom;
+            -webkit-animation-duration: 1s;
+            animation-name: animatebottom;
+            animation-duration: 1s
+        }
+
+        @-webkit-keyframes animatebottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
+
+            to {
+                bottom: 0px;
+                opacity: 1
+            }
+        }
+
+        @keyframes animatebottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
+
+            to {
+                bottom: 0;
+                opacity: 1
+            }
+        }
+
+        #printing {
+            text-align: left;
+        }
+
+        .avatar {
+            vertical-align: middle;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
+
+        .indicator {
+            background-color: #00796b;
+            height: 40px;
+            padding: 8px;
+            color: white;
+            cursor: pointer;
+            border-radius: 18px;
+        }
+
+        .rowMargin {
+            margin-left: 25px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .align {
+            text-align: right;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px;
+            height: 580px ;
+            /* overflow: auto; */
+            }
+            .modal-content-body{
+            height: 580px;
+            overflow: auto;
+            width: 100%;
+            }
+            /* The Close Button */
+            .close {
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            }
+            
+    ul,
+    #orgUnit {
+        list-style-type: none;
+        font-weight: 600px
+    }
+
+    #orgUnit {
+        margin: 0;
+        padding: 0;
+    }
+
+    .caret {
+        cursor: pointer;
+        -webkit-user-select: none;
+        /* Safari 3.1+ */
+        -moz-user-select: none;
+        /* Firefox 2+ */
+        -ms-user-select: none;
+        /* IE 10+ */
+        user-select: none;
+    }
+
+    .caret::before {
+        content: "\25B6";
+        color: rgb(167, 167, 167);
+        display: inline-block;
+        margin-right: 2px;
+    }
+
+    .caret-down::before {
+        -ms-transform: rotate(90deg);
+        /* IE 9 */
+        -webkit-transform: rotate(90deg);
+        /* Safari */
+       transform: rotate(90deg);
+    }   
+
+    .nested {
+        display: none;
+    }
+
+    .active {
+        display: block;
+    }
+    .modal{
+        right: 0 !important; 
+    }
+    .focus{
+        background-color: teal;
+        color: white;
+    }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript"></script>
+</head>
+
+<body>
+
+    <div class="card shadow-lg rounded">
+        <div class="card-body">
+            <div class="row rowMargin">
+                <div class="col-3">
+                    <div>
+                        <div>
+
+                        <div id="myModal" class="modal">
+                            <!-- Modal content -->
+                            <div class="modal-content">
+                               <div class="modal-content-body" >
+                               <div id="contentID"></div>
+                                </div>
+                               <span class="btn btn-primary" onclick="submitData()">Submit</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <input id="OUVal" onfocus="loadModal()" placeholder="Organisation Unit" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-3 ">
+                    <select id="period" onchange="submitData()" class="form-control">
+                    </select>
+                </div>
+                <div class="col-6 align">
+                    <Tooltip title="Event Capture">
+                        <a href="http://45.79.54.176/measles/dhis-web-capture/index.html">
+                            <img class="avatar" src="image/capture.png" alt="Event Capture" />
+                        </a>
+                    </Tooltip>
+                    <Tooltip title="Reports">
+                        <a href="http://45.79.54.176/measles/api/apps/Reports/index.html">
+                            <img class="avatar" src="image/report.png" alt="Reports" />
+                        </a>
+                    </Tooltip>
+                    <Tooltip title="Excel Import">
+                        <a href=" http://45.79.54.176/measles/api/apps/Excel-Import/index.html#/">
+                            <img class="avatar mr-5" alt="Excel Import" src="image/import.png" />
+                        </a>
+                    </Tooltip>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col=3 rounded-pill rowMargin indicator" id="tab1" onclick="LoadMeaslesRubella()"><b>Measles and
+                    Rubella Programme Indicators</b></div>
+                <div class="col=3 rounded-pill rowMargin indicator" id="tab2" onclick="LoadNCV()"><b>NVC Indicators</b></div>
+                <div class="col=3 rowMargin">
+                    <select id="selectedReport" class="form-control" onclick="LoadReport()">
+                        <option selected hidden>Filter</option>
+                        <option id="opt0"> All</option>
+                        <option id="opt1">Status of measles and rubella elimination</option>
+                        <option id="opt2">National strategic plan for measles and rubella or equivalent</option>
+                        <option id="opt3">Suspected case definition for measles and rubella</option>
+                        <option id="opt4">Vaccine introduction details</option>
+                        <option id="opt5">Schedule of measles and rubella vaccine</option>
+                        <option id="opt6">Status of coverage for measles and rubella containing vaccine</option>
+                        <option id="opt7">Composition of national verification committee</option>
+                        <option id="opt8">Secretarial support 2</option>
+                        <option id="opt9">Secretarial support to NVC</option>
+                        <option id="opt10">Number of activities/ meetings conducted by NVC in the year (second)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a id="dlink" style="display:none;"></a>
+    <button type="button" class="btn btn-primary btn-sm" style="vertical-align: middle;"
+        onclick="printContent('state')"><span class="glyphicon glyphicon-print" style="font-size: 15px;"></span> &nbsp;
+        Print
+    </button>
+    <button type="button" class="btn btn-success btn-sm" style="vertical-align: middle;" id="btnExport"
+        onclick="tableToExcel('state', 'Status of measles and rubella elimination', 'Status of measles and rubella elimination.xls')"><span
+            class="glyphicon glyphicon-download-alt" style="font-size: 15px;"></span>Download As Excel</button>
+
+    <div id="loader"></div>
+    <div id='state' style="display:none;">
+        <div id="measles">
+            <br />
+            <table border="1" id="table1" class="table  table-hover text-center" cellspacing="6" cellpadding="4"
+                style="width: 100%;">
+                <colgroup>
+                    <col style="width:5%">
+                    <col style="width:15%">
+                    <col style="width:20%">
+                    <col style="width:20%">
+                    <col style="width:20%">
+                    <col style="width:20%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <td style="font-weight:400; border-bottom:1px solid white; background: rgb(39, 102, 150);font-size:20px; color:white; text-align: center;"
+                            colspan="6">
+                            Status of measles and rubella elimination <br> Period: <span id="period-statusMR"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">S.No.</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Year</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Country</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Reviewers classification
+                            of the country for
+                            CRS</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Reviewers classification
+                            of the country for
+                            measles</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Reviewers classification
+                            of the country for
+                            rubella</td>
+                    </tr>
+                </thead>
+                <tbody id="tableBody-statusMR"></tbody>
+            </table><br />
+            <table border="1" id="table2" class="table  table-hover text-center" cellspacing="6"
+                cellpadding="4" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <td style="font-weight:400; border-bottom:1px solid white; background: rgb(39, 102, 150);font-size:20px; color:white; text-align: center; width: 100%;"
+                            id="tableHead-NSColSpan">
+                            National strategic plan for measles and rubella or equivalent
+                        </td>
+                    </tr>
+                    <tr id="tableHead-nationalStatergyMR"></tr>
+                </thead>
+                <tbody id="tableBody-nationalStatergyMR"></tbody>
+            </table><br />
+            <table border="1" id="table3" class="table  table-hover text-center" cellspacing="6" cellpadding="4"
+                style="width: 100%;">
+                <colgroup>
+                    <col style="width:5%">
+                    <col style="width:15%">
+                    <col style="width:20%">
+                    <col style="width:30%">
+                    <col style="width:30%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <td style="font-weight:400; border-bottom:1px solid white; background: rgb(39, 102, 150);font-size:20px; color:white; text-align: center; width: 100%;"
+                            colspan="5">
+                            Suspected case definition for Measles and Rubella <br> Period: <span
+                                id="period-suspectedCaseMR"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">S.No.</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Year</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Country</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Suspected measles and
+                            rubella case</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Suspected measles and
+                            rubella others</td>
+                    </tr>
+                </thead>
+                <tbody id="tableBody-suspectedCaseMR"></tbody>
+            </table><br />
+            <table border="1" id="table4" class="table  table-hover text-center" cellspacing="6" cellpadding="4"
+                style="width: 100%;">
+                <colgroup>
+                    <col style="width:2%">
+                    <col style="width:10%">
+                    <col style="width:20%">
+                    <col style="width:17%">
+                    <col style="width:17%">
+                    <col style="width:17%">
+                    <col style="width:17%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <td style="font-weight:400; border-bottom:1px solid white; background: rgb(39, 102, 150);font-size:20px; color:white; text-align: center;"
+                            colspan="7">
+                            Vaccine introduction details <br> Period: <span id="period-vaccineIntroMR"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">S.No.</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Year</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Country</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">MCV 1_Introduction date
+                        </td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">MCV 2_Introduction date
+                        </td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">RCV 1_Introduction date
+                        </td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">RCV 2_Introduction date
+                        </td>
+                    </tr>
+                </thead>
+                <tbody id="tableBody-vaccineIntroMR"></tbody>
+            </table><br />
+            <table border="1" id="table5" class="table  table-hover text-center" cellspacing="6" cellpadding="4"
+                style="width: 100%;">
+                <thead>
+                    <tr>
+                        <td style="font-weight:400; border-bottom:1px solid white; background: rgb(39, 102, 150);font-size:20px; color:white; text-align: center;"
+                            colspan="11">
+                            Schedule of Measles and rubella vaccine <br> Period: <span id="period-scheduleMR"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">S.No.</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Year</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Country</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">MCV 1_Vaccine type</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">MCV 1_Admin age</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">MCV 2_Vaccine type</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">MCV 2_Admin age</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">RCV 1_Vaccine type</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">RCV 1_Admin age</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">RCV 2_Vaccine type</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">RCV 2_Admin age</td>
+                    </tr>
+                </thead>
+                <tbody id="tableBody-scheduleMR"></tbody>
+            </table><br />
+            <table border="1" id="table6" class="table  table-hover text-center" cellspacing="6" cellpadding="4"
+                style="width: 100%;">
+                <colgroup>
+                    <col style="width:5%">
+                    <col style="width:15%">
+                    <col style="width:20%">
+                    <col style="width:30%">
+                    <col style="width:30%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <td style="font-weight:400; border-bottom:1px solid white; background: rgb(39, 102, 150);font-size:20px; color:white; text-align: center; width: 100%;"
+                            colspan="5">
+                            Status of coverage for measles and rubella containing vaccine <br> Period: <span
+                                id="period-statusCoverageMR"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">S.No.</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Year</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Country</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">% districts >95%
+                            coverage of MRCV1</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">% districts >95%
+                            coverage of MRCV2</td>
+                    </tr>
+                </thead>
+                <tbody id="tableBody-statusCoverageMR"></tbody>
+            </table><br />
+        </div>
+        <!-- form here nvc  -->
+        <div id="ncv">
+            <table border="1" id="table7" class="table  table-hover text-center" cellspacing="6"
+                cellpadding="4" style="width: 100%">
+                <thead>
+                    <tr>
+                        <td style="font-weight:400; border-bottom:1px solid white; background: rgb(39, 102, 150);font-size:20px; color:white; text-align: center;"
+                            id="tableHead-CNVCColSpan">
+                            Composition of National Verification Committee
+                        </td>
+                    </tr>
+                    <tr id="tableHead-compositionNVC1"></tr>
+                    <tr id="tableHead-compositionNVC2"></tr>
+                </thead>
+                <tbody id="tableBody-compositionNVC"></tbody>
+            </table><br />
+            <table border="1" id="table8" class="table  table-hover text-center" cellspacing="6" cellpadding="4"
+                style="width: 100%">
+                <thead>
+                    <tr>
+                        <td style="font-weight:400; border-bottom:1px solid white; background: rgb(39, 102, 150);font-size:20px; color:white; text-align: center;"
+                            colspan="5">
+                            Secretarial support 2 <br> Period: <span id="period-secreterailSupportMR"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Country</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">National EPI programme
+                        </td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">WHO</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Others</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">NoHeading</td>
+                    </tr>
+                </thead>
+                <tbody id="tableBody-secreterailSupportMR"></tbody>
+            </table><br />
+            <table border="1" id="table9" class="table  table-hover text-center" cellspacing="6"
+                cellpadding="4" style="width: 100%">
+                <thead>
+                    <tr>
+                        <td style="font-weight:400; border-bottom:1px solid white; background: rgb(39, 102, 150);font-size:20px; color:white; text-align: center;"
+                            id="tableHead-SSNVCColSpan">
+                            Secretarial support to NVC
+                        </td>
+                    </tr>
+                    <tr id="tableHead-secreterailSupportNVC1"></tr>
+                    <tr id="tableHead-secreterailSupportNVC2"></tr>
+                </thead>
+                <tbody id="tableBody-secreterailSupportNVC"></tbody>
+            </table><br />
+            <table border="1" id="table-activitiesNVC" class="table  table-hover text-center" cellspacing="6"
+                cellpadding="4" style="width: 100%">
+                <thead>
+                    <tr>
+                        <td style="font-weight:400; border-bottom:1px solid white; background: rgb(39, 102, 150);font-size:20px; color:white; text-align: center;"
+                            id="tableHead-NVCColSpan">
+                            Number of activities/ meetings conducted by NVC in last five year
+                        </td>
+                    </tr>
+                    <tr id="tableHead-activitiesNVC"></tr>
+                </thead>
+                <tbody id="tableBody-activitiesNVC"></tbody>
+            </table><br />
+            <table border="1" id="table10" class="table  table-hover text-center" cellspacing="6" cellpadding="4"
+                style="width: 100%">
+                <thead>
+                    <tr>
+                        <td style="font-weight:400; border-bottom:1px solid white; background: rgb(39, 102, 150);font-size:20px; color:white; text-align: center;"
+                            colspan="11">
+                            Number of activities/ meetings conducted by NVC in the year (second) <br> Period: <span
+                                id="period-activitiesSecondMR"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">S.No.</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Year</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Country</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Activity or Meeting
+                            topic 1</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Activity or Meeting
+                            topic 2</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Activity or Meeting
+                            topic 3</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Activity or Meeting
+                            topic 4</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Activity or Meeting
+                            topic 5</td>
+                        <td style="border:1px solid black;background:#F8F8F8; text-align:left;">Activity or Meeting
+                            topic 6</td>
+                    </tr>
+                </thead>
+                <tbody id="tableBody-activitiesSecondMR"></tbody>
+            </table><br />
+        </div>
+    </div>
+    <script>
+        var orgUnits = {};
+        var OUname = "Organisation Unit";
+        var selectedOU = '';
+        loadOrgUnit();
+        function loadOrgUnit() {
+            
+            console.log('here is OU selection')
+            var tree = '<ul id="myUL">'
+            var selectedOrgUnit = { id: 'GaRQQc2xvan' }
+            var url = '../../../api/organisationUnits/' + selectedOrgUnit.id + '.json?paging=false&fields=id,name,level,dataSets[id]';
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: '../../../api/organisationUnitLevels.json',
+                data: JSON,
+                success: function (data, status) {
+
+                    for (let i = 0; i < data.organisationUnitLevels.length; i++) {
+                        url += ',children[id,name,level';
+                    }
+                    url += ']';
+                }
+            });
+
+
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: url,
+                data: JSON,
+                success: function (data, status) {
+                    treeDown(data);
+                }
+            });
+            function treeDown(arr) {
+                var key = arr;
+                orgUnits[key.id] = {
+                    id : key.id,
+                    name: key.name
+                }
+                tree += `<li><span id="${key.id}" class="caret">${key.name}</span>`
+                if (key.children) {
+                    tree += '<ul class="nested">'
+                    key.children.sort((a, b) => a.name.localeCompare(b.name))
+                    for (let i = 0; i < key.children.length; i++) {
+                        treeDown(key.children[i]);
+                    }
+                    tree += "</ul>"
+                }
+                tree += '</li>'
+
+            }
+            document.getElementById("contentID").innerHTML = tree
+        }
+
+        var toggler = document.getElementsByClassName("caret");
+
+        for (let i = 0; i < toggler.length; i++) {    
+            toggler[i].addEventListener("click", function () {  
+              
+             OUname= orgUnits[toggler[i].id].name;
+            selectedOU = toggler[i].id;
+            if (this.parentElement.querySelector(".nested")) {
+                this.parentElement.querySelector(".nested").classList.toggle("active");
+                this.classList.toggle("caret-down");
+            }
+            });
+        }
+       function loadModal(){ 
+        $(".modal").show();
+        $("#myModal").show();
+       }
+       function closeModal() {
+        $(".modal").hide();
+        $("#myModal").hide();
+       }
+        var period = new Date().getFullYear()
+
+        var optionYear = ''
+        for (let i = period; i>(period-5); i--) {
+            optionYear += '<option value="'+i+'">'+i+'</option>' 
+        }
+        document.getElementById("period").innerHTML = optionYear
+        loadFirst();
+        function loadFirst() {
+        $("#ncv").hide()
+        $("#tab1").css({ "background-color": "#00796b", "color": "white" });
+        $("#tab2").css({ "background-color": "white", "color": "black" });
+        $("#opt7").hide()
+        $("#opt8").hide()
+        $("#opt9").hide()
+        $("#opt10").hide()
+        }
+       
+        function LoadMeaslesRubella() {
+            $("#measles").show()
+            $("#tab1").css({ "background-color": "#00796b", "color": "white" });
+            $("#tab2").css({ "background-color": "white", "color": "black" });
+            $("#ncv").hide();
+            $("#opt7").hide()
+            $("#opt8").hide()
+            $("#opt9").hide()
+            $("#opt10").hide()
+            $("#opt1").show()
+            $("#opt2").show()
+            $("#opt3").show()
+            $("#opt4").show()
+            $("#opt5").show()
+        }
+
+        function LoadNCV() {
+            $("#ncv").show();
+            $("#tab2").css({ "background-color": "#00796b",  "color": "white" });
+            $("#tab1").css({ "background-color": "white", "color": "black" });
+            $("#measles").hide()
+            $("#opt1").hide()
+            $("#opt2").hide()
+            $("#opt3").hide()
+            $("#opt4").hide()
+            $("#opt5").hide()
+            $("#opt6").hide()
+            $("#opt7").show()
+            $("#opt8").show()
+            $("#opt9").show()
+            $("#opt10").show()
+
+
+        }
+       
+       
+        var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        // var selectedOrgunit = dhis2.report.organisationUnit;
+        submitData();
+        function submitData() {
+            document.getElementById("OUVal").value =OUname
+            $(".modal").hide();
+            $("#myModal").hide();
+              period =document.getElementById('period').value ? document.getElementById('period').value : period ;
+            var generateHeaderRow = (headerId, rowHead, body, metaDataValues) => {
+                let tableHead = `<td style="border:1px solid black; font-weight:600; background:#f2f2f2;text-align:left">${rowHead}</td>`;
+
+                if (metaDataValues) body.forEach(b => tableHead += `<td style="border:1px solid black; font-weight:600; background:#f2f2f2">${metaDataValues[b]}</td>`);
+                else body.forEach(b => tableHead += `<td style="border:1px solid black; font-weight:600; background:#f2f2f2">${b}</td>`);
+
+                document.getElementById(headerId).innerHTML = tableHead;
+            }
+
+            var generateHeaderMatrixRow = (headerId, rowHead, period, repeatValues) => {
+                let tableHead = `<tr><td style="border:1px solid black; font-weight:600; background:#f2f2f2;text-align:left">Period</td>`;
+                period.forEach(p => tableHead += `<td style="border:1px solid black; font-weight:600; background:#f2f2f2" colspan=${repeatValues.length}>${p}</td>`);
+                tableHead += `</tr>`;
+                document.getElementById((headerId + "1")).innerHTML = tableHead;
+
+                tableHead = `<tr><td style="border:1px solid black; font-weight:600; background:#f2f2f2;text-align:left">${rowHead}</td>`;
+                period.forEach(() => repeatValues.forEach(values => tableHead += `<td style="border:1px solid black; font-weight:600; background:#f2f2f2">${values}</td>`));
+                tableHead += `</tr>`;
+
+                document.getElementById((headerId + "2")).innerHTML = tableHead;
+            }
+
+            var getYear = (currentYear, yearsBack) => {
+                let arrYear = [];
+                while (yearsBack != 0) {
+                    arrYear.push(currentYear);
+                    currentYear--;
+                    yearsBack--;
+                }
+                return arrYear.reverse();
+            }
+
+            //MR = MeaslesRubella
+            var periodStatusMR = getYear(period, 5); //Last 5 years
+            var ouStatusMR = ["N8HDeqniqWX", "eMUHSZcgYHD", "O0Ju9kVgDwZ", "MmoBpXrLgp4", "n2OY4kF8ZEO", "gsniJrJg5Z0", "ALxiQkagGoU", "XtwIEZF3gbv", "H7kKlF65Df2", "LikOpu1SUTx", "wSiw2vmj00A"]
+            ouStatusMR = selectedOU ? [selectedOU] : ouStatusMR;
+            var statusMR = `../../../api/analytics/events/query/SkWSuOzF0Pu.json?dimension=pe:${periodStatusMR.join(";")}&dimension=ou:${ouStatusMR.join(";")}&dimension=Djj0AaPEdAu.N2YoN6kzCYY&dimension=Djj0AaPEdAu.g1vkL9lvBYu&dimension=Djj0AaPEdAu.KJVtChEsCJI&stage=Djj0AaPEdAu&displayProperty=NAME&outputType=EVENT&desc=eventdate&paging=false`;
+
+            var periodNationalStatergyMR = periodStatusMR; //Last 5 years
+            var ouNationalStatergyMR = ouStatusMR;
+            var nationalStatergyMR = `../../../api/analytics/events/aggregate/qwD1MiX35HB.json?dimension=ou:${ouStatusMR.join(";")}&dimension=pe:${periodStatusMR.join(";")}&filter=IAeiPRPu6q7.cVODRxppt1U&stage=IAeiPRPu6q7&displayProperty=NAME&outputType=ENROLLMENT&paging=false`;
+
+            // var periodSuspectedCaseMR = periodStatusMR;
+            // var ouSuspectedCaseMR = ouStatusMR;
+            // var suspectedCaseMR = `../../../api/analytics/events/query/qwD1MiX35HB.json?dimension=pe:${periodSuspectedCaseMR.join(";")}&dimension=ou:${ouSuspectedCaseMR.join(";")}&dimension=IAeiPRPu6q7.l8USlLaBYwS&dimension=IAeiPRPu6q7.bx5DzBTJBz1&stage=IAeiPRPu6q7&displayProperty=NAME&outputType=EVENT&asc=l8USlLaBYwS&paging=false`;
+
+            var periodVaccineIntroMR = periodStatusMR;
+            var ouVaccineIntroMR = ouStatusMR;
+            var vaccineIntroMR = `../../../api/analytics/events/query/qwD1MiX35HB.json?dimension=pe:${periodVaccineIntroMR.join(";")}&dimension=ou:${ouVaccineIntroMR.join(";")}&dimension=IAeiPRPu6q7.o1u47MXuqis&dimension=IAeiPRPu6q7.yXqiR7qdwU3&dimension=IAeiPRPu6q7.mNreDBRvatn&dimension=IAeiPRPu6q7.Tha5oowZEgg&stage=IAeiPRPu6q7&displayProperty=NAME&outputType=EVENT&desc=eventdate&paging=false`;
+
+            var periodScheduleMR = periodStatusMR;
+            var ouScheduleMR = ouStatusMR;
+            var scheduleMR = `../../../api/analytics/events/query/qwD1MiX35HB.json?dimension=pe:${periodScheduleMR.join(";")}&dimension=ou:${ouScheduleMR.join(";")}&dimension=IAeiPRPu6q7.AWMqN5iQbkL&dimension=IAeiPRPu6q7.kKQ5pIPM52h&dimension=IAeiPRPu6q7.XDvDt9hrRxq&dimension=IAeiPRPu6q7.FnRsqi5ARvD&dimension=IAeiPRPu6q7.e0hjIGkd0iK&dimension=IAeiPRPu6q7.RYkVzHKXF8U&dimension=IAeiPRPu6q7.nIgiTMLAxZa&dimension=IAeiPRPu6q7.BhKwH69WaIb&stage=IAeiPRPu6q7&displayProperty=NAME&outputType=EVENT&desc=eventdate&paging=false`;
+
+            var periodStatusCoverageMR = periodStatusMR;
+            var ouStatusCoverageMR = ouStatusMR;
+            var statusCoverageMR = `../../../api/analytics/events/query/qwD1MiX35HB.json?dimension=pe:${periodStatusCoverageMR.join(";")}&dimension=ou:${ouStatusCoverageMR.join(";")}&dimension=IAeiPRPu6q7.iU1R3MhZ43g&dimension=IAeiPRPu6q7.MPsCUlBerFX&stage=IAeiPRPu6q7&displayProperty=NAME&outputType=EVENT&desc=eventdate&paging=false`;
+
+            var periodCompositionNVC = [period]
+            var ouCompositionNVC = ouStatusMR;
+            var compositionNVC = `../../../api/analytics.json?dimension=pe:${periodCompositionNVC["0"]}&dimension=dx:ackvH2mrBqa;L1iXUo4HljH;QrjFXHfPwiX;Sa7VSNhatBg;za0g2rbH7OO;sbdFsifqCFV;zHfLvJled49;xSzTg8j6HTT&dimension=ou:${ouCompositionNVC.join(";")}&displayProperty=NAME&paging=false`;
+
+            var periodSecreterailSupportMR = periodStatusMR;
+            var ouSecreterailSupportMR = ouStatusMR;
+            var secreterailSupportMR = `../../../api/analytics/events/aggregate/qwD1MiX35HB.json?dimension=IAeiPRPu6q7.bmZEs2VyJkW&dimension=ou:${ouSecreterailSupportMR.join(";")}&filter=pe:${periodSecreterailSupportMR.join(";")}&stage=IAeiPRPu6q7&displayProperty=NAME&outputType=EVENT`;
+
+            var periodSecreterailSupportNVC = getYear(period, 2);
+            var ouSecreterailSupportNVC = ouStatusMR;
+            var secreterailSupportNVC = `../../../api/analytics/events/aggregate/qwD1MiX35HB.json?dimension=pe:${periodSecreterailSupportNVC.join(";")}&dimension=IAeiPRPu6q7.bmZEs2VyJkW:IN:National%20EPI%20programme;Others;WHO&dimension=ou:${ouSecreterailSupportNVC.join(";")}&filter=IAeiPRPu6q7.FQmj95DUPt0&stage=IAeiPRPu6q7&displayProperty=NAME&outputType=EVENT&paging=false`;
+
+            var periodActivitiesNVC = periodStatusMR;
+            var ouActivitiesNVC = ouStatusMR;
+            var activitiesNVC = `../../../api/analytics/events/aggregate/qwD1MiX35HB.json?dimension=pe:${periodActivitiesNVC.join(";")}&dimension=ou:${ouActivitiesNVC.join(";")}&filter=IAeiPRPu6q7.b4V3Li20Vcv&filter=IAeiPRPu6q7.ja7WpLIgNDA&filter=IAeiPRPu6q7.xt1KGbeoEAx&filter=IAeiPRPu6q7.eMHhULBHnMd&filter=IAeiPRPu6q7.b9VWfHubS1f&filter=IAeiPRPu6q7.oVv3XCsuvuM&stage=IAeiPRPu6q7&displayProperty=NAME&outputType=EVENT&paging=false`;
+
+            var periodActivitiesSecondMR = periodStatusMR;
+            var ouActivitiesSecondMR = ouStatusMR;
+            var activitiesSecondMR = `../../../api/analytics/events/query/qwD1MiX35HB.json?dimension=pe:${periodActivitiesSecondMR.join(";")}&dimension=ou:${ouActivitiesSecondMR.join(";")}&dimension=IAeiPRPu6q7.b4V3Li20Vcv&dimension=IAeiPRPu6q7.ja7WpLIgNDA&dimension=IAeiPRPu6q7.xt1KGbeoEAx&dimension=IAeiPRPu6q7.eMHhULBHnMd&dimension=IAeiPRPu6q7.b9VWfHubS1f&dimension=IAeiPRPu6q7.oVv3XCsuvuM&stage=IAeiPRPu6q7&displayProperty=NAME&outputType=EVENT&desc=eventdate&paging=false`;
+
+            $.when(
+                $.get(statusMR),
+                $.get(nationalStatergyMR),
+                // $.get(suspectedCaseMR),
+                $.get(vaccineIntroMR),
+                $.get(scheduleMR),
+                $.get(statusCoverageMR),
+                $.get(compositionNVC),
+                $.get(secreterailSupportMR),
+                $.get(secreterailSupportNVC),
+                $.get(activitiesNVC),
+                $.get(activitiesSecondMR),
+            ).done(function (resStatusMR, resNationalStatergyMR, resVaccineIntroMR, resScheculeMR, resStatusCoverageMR, resCompositionNVC, resSecreterailSupportMR, resSecreterailSupportNVC, resActivitiesNVC, resActivitiesSecondMR) {
+
+                // ).done(function (resStatusMR, resNationalStatergyMR, resSuspectedCaseMR, resVaccineIntroMR, resScheculeMR, resStatusCoverageMR, resCompositionNVC, resSecreterailSupportMR, resSecreterailSupportNVC, resActivitiesNVC, resActivitiesSecondMR) {
+
+                var dataStatusMR = resStatusMR["0"].rows;
+                var dataNationalStatergyMR = resNationalStatergyMR["0"].rows;
+                // var dataSuspectedCaseMR = resSuspectedCaseMR["0"].rows;
+                var dataVaccineIntroMR = resVaccineIntroMR["0"].rows;
+                var dataScheduleMR = resScheculeMR["0"].rows;
+                var dataStatusCoverageMR = resStatusCoverageMR["0"].rows;
+                var dataCompositionNVC = resCompositionNVC["0"].rows;
+                var dataSecreterailSupportMR = resSecreterailSupportMR["0"].rows;
+                var dataSecreterailSupportNVC = resSecreterailSupportNVC["0"].rows;
+                var dataActivitiesNVC = resActivitiesNVC["0"].rows;
+                var dataActivitiesSecondMR = resActivitiesSecondMR["0"].rows;
+
+                var dataSSMR = {}, metaDataValues = {};
+                for (let id in resSecreterailSupportMR["0"].metaData.items) {
+                    metaDataValues[id] = resSecreterailSupportMR["0"].metaData.items[id].name;
+                }
+
+                dataSecreterailSupportMR.forEach(data => {
+                    if (!dataSSMR[data["1"]]) dataSSMR[data["1"]] = {};
+                    if (data["0"] === "") dataSSMR[data["1"]]["NoHeading"] = Number(data["2"]);
+                    else dataSSMR[data["1"]][data["0"]] = Number(data["2"]);
+                });
+
+                var dataNSMR = {};
+                dataNationalStatergyMR.forEach(data => {
+                    if (!dataNSMR[data["1"]]) dataNSMR[data["1"]] = {};
+                    dataNSMR[data["1"]][data["0"]] = Number(data["2"]);
+                });
+
+                var dataNVC = {};
+                dataActivitiesNVC.forEach(data => {
+                    if (!dataNVC[data["1"]]) dataNVC[data["1"]] = {};
+                    dataNVC[data["1"]][data["0"]] = Number(data["2"]);
+                });
+
+                var dataSSNVC = {};
+                dataSecreterailSupportNVC.forEach(data => {
+                    if (!dataSSNVC[data["1"]]) dataSSNVC[data["1"]] = {};
+                    if (!dataSSNVC[data["1"]][data["2"]]) dataSSNVC[data["1"]][data["2"]] = {};
+                    dataSSNVC[data["1"]][data["2"]][data["0"]] = Number(data["3"]);
+                });
+
+                var dataCNVC = {};
+                dataCompositionNVC.forEach(data => {
+                    if (!dataCNVC[data["1"]]) dataCNVC[data["1"]] = {};
+                    if (!dataCNVC[data["1"]][data["2"]]) dataCNVC[data["1"]][data["2"]] = {};
+                    dataCNVC[data["1"]][data["2"]][data["0"]] = Number(data["3"]);
+                });
+
+                var tableRow = '';
+                var sNo = 0;
+                dataStatusMR.forEach(row => {
+                    if (row["2"].includes("-")) row["2"] = row["2"].split("-")["0"];
+
+                    tableRow += `<tr>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${(++sNo)}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["2"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["6"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["9"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["10"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["11"]}</td>
+                                </tr>`;
+                })
+                document.getElementById("period-statusMR").innerHTML = periodStatusMR.join(", ");
+                document.getElementById("tableBody-statusMR").innerHTML = tableRow;
+
+                tableRow = '';
+                sNo = 0;
+                periodNationalStatergyMR.forEach(period => {
+                    tableRow += `<tr><td style="border:1px solid black; text-align:left;font-weight:600;">${period}</td>`;
+                    if (dataNSMR[period]) ouNationalStatergyMR.forEach(ou => tableRow += `<td style="border:1px solid black; text-align:left;font-weight:600;">${(dataNSMR[period][ou] ? dataNSMR[period][ou] : "")}</td>`);
+                    else ouNationalStatergyMR.forEach(ou => tableRow += `<td style="border:1px solid black; text-align:left;font-weight:600;"></td>`);
+                    tableRow += `</tr>`;
+                })
+
+                generateHeaderRow("tableHead-nationalStatergyMR", "Period/ Organisational Unit", ouNationalStatergyMR, metaDataValues);
+                document.getElementById("tableHead-NSColSpan").colSpan = (ouNationalStatergyMR.length + 1);
+                document.getElementById("tableBody-nationalStatergyMR").innerHTML = tableRow;
+
+                // tableRow = '';
+                // sNo = 0;
+                // dataSuspectedCaseMR.forEach(row => {
+                //     if (row["2"].includes("-")) row["2"] = row["2"].split("-")["0"];
+
+                //     tableRow += `<tr>
+                //                     <td style="border:1px solid black; text-align:left;font-weight:600;">${(++sNo)}</td>
+                //                     <td style="border:1px solid black; text-align:left;font-weight:600;">${row["2"]}</td>
+                //                     <td style="border:1px solid black; text-align:left;font-weight:600;">${row["6"]}</td>
+                //                     <td style="border:1px solid black; text-align:left;font-weight:600;">${row["9"]}</td>
+                //                     <td style="border:1px solid black; text-align:left;font-weight:600;">${row["10"]}</td>
+                //                 </tr>`;
+                // })
+                // document.getElementById("period-suspectedCaseMR").innerHTML = periodSuspectedCaseMR.join(", ");
+                // document.getElementById("tableBody-suspectedCaseMR").innerHTML = tableRow;
+
+                tableRow = '';
+                sNo = 0;
+                dataVaccineIntroMR.forEach(row => {
+                    if (row["2"].includes("-")) row["2"] = row["2"].split("-")["0"];
+                    if (row["9"].includes(" ")) row["9"] = row["9"].split(" ")["0"];
+                    if (row["10"].includes(" ")) row["10"] = row["10"].split(" ")["0"];
+                    if (row["11"].includes(" ")) row["11"] = row["11"].split(" ")["0"];
+                    if (row["12"].includes(" ")) row["12"] = row["12"].split(" ")["0"];
+
+                    tableRow += `<tr>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${(++sNo)}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["2"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["6"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["9"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["10"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["11"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["12"]}</td>
+                                </tr>`;
+                })
+                document.getElementById("period-vaccineIntroMR").innerHTML = periodVaccineIntroMR.join(", ");
+                document.getElementById("tableBody-vaccineIntroMR").innerHTML = tableRow;
+
+                tableRow = '';
+                sNo = 0;
+                dataScheduleMR.forEach(row => {
+                    if (row["2"].includes("-")) row["2"] = row["2"].split("-")["0"];
+
+                    tableRow += `<tr>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${(++sNo)}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["2"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["6"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["9"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["10"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["11"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["12"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["13"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["14"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["15"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["16"]}</td>
+                                </tr>`;
+                })
+                document.getElementById("period-scheduleMR").innerHTML = periodScheduleMR.join(", ");
+                document.getElementById("tableBody-scheduleMR").innerHTML = tableRow;
+
+                tableRow = '';
+                sNo = 0;
+                dataStatusCoverageMR.forEach(row => {
+                    if (row["2"].includes(" ")) row["2"] = row["2"].split("-")["0"];
+
+                    tableRow += `<tr>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${(++sNo)}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["2"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["6"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${Number(row["9"])}%</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${Number(row["10"])}%</td>
+                                </tr>`;
+                })
+                document.getElementById("period-statusCoverageMR").innerHTML = periodStatusCoverageMR.join(", ");
+                document.getElementById("tableBody-statusCoverageMR").innerHTML = tableRow;
+
+                tableRow = '';
+                sNo = 0;
+                ouCompositionNVC.forEach(ou => {
+                    tableRow += `<tr><td style="border:1px solid black; text-align:left;font-weight:600;">${metaDataValues[ou]}</td>`;
+                    periodCompositionNVC.forEach(period => {
+                        if (dataCNVC[period] && dataCNVC[period][ou]) {
+                            tableRow += `<td style="border:1px solid black; text-align:left;font-weight:600;">${(dataCNVC[period][ou]["ackvH2mrBqa"] ? dataCNVC[period][ou]["ackvH2mrBqa"] : "")}</td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;">${(dataCNVC[period][ou]["L1iXUo4HljH"] ? dataCNVC[period][ou]["L1iXUo4HljH"] : "")}</td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;">${(dataCNVC[period][ou]["QrjFXHfPwiX"] ? dataCNVC[period][ou]["QrjFXHfPwiX"] : "")}</td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;">${(dataCNVC[period][ou]["Sa7VSNhatBg"] ? dataCNVC[period][ou]["Sa7VSNhatBg"] : "")}</td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;">${(dataCNVC[period][ou]["za0g2rbH7OO"] ? dataCNVC[period][ou]["za0g2rbH7OO"] : "")}</td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;">${(dataCNVC[period][ou]["sbdFsifqCFV"] ? dataCNVC[period][ou]["sbdFsifqCFV"] : "")}</td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;">${(dataCNVC[period][ou]["zHfLvJled49"] ? dataCNVC[period][ou]["zHfLvJled49"] : "")}</td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;">${(dataCNVC[period][ou]["xSzTg8j6HTT"] ? dataCNVC[period][ou]["xSzTg8j6HTT"] : "")}</td>`;
+
+                        } else {
+                            tableRow += `<td style="border:1px solid black; text-align:left;font-weight:600;"></td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;"></td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;"></td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;"></td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;"></td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;"></td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;"></td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;"></td>`;
+                        }
+                    })
+                    tableRow += `</tr>`;
+                })
+
+                generateHeaderMatrixRow("tableHead-compositionNVC", "Country / Data", periodCompositionNVC, ["EPI Program Manager", "Epidemiologist", "Internal medicine", "Pediatrics", "Public Health Expert", "Social Scientist", "Virologist", "Others (specify)"]);
+                document.getElementById("tableHead-CNVCColSpan").colSpan = ((periodCompositionNVC.length * 8) + 1);;
+                document.getElementById("tableBody-compositionNVC").innerHTML = tableRow;
+
+                tableRow = '';
+                sNo = 0;
+                ouSecreterailSupportMR.forEach(ou => {
+                    if (dataSSMR[ou]) {
+                        tableRow += `<tr>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;">${metaDataValues[ou]}</td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;">${(dataSSMR[ou]["National EPI programme"] ? dataSSMR[ou]["National EPI programme"] : "")}</td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;">${(dataSSMR[ou]["WHO"] ? dataSSMR[ou]["WHO"] : "")}</td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;">${(dataSSMR[ou]["Others"] ? dataSSMR[ou]["Others"] : "")}</td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;">${(dataSSMR[ou]["NoHeading"] ? dataSSMR[ou]["NoHeading"] : "")}</td>
+                                    </tr>`;
+                    } else {
+                        tableRow += `<tr>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;">${metaDataValues[ou]}</td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;"></td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;"></td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;"></td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;"></td>
+                                    </tr>`;
+                    }
+                })
+
+                document.getElementById("period-secreterailSupportMR").innerHTML = periodSecreterailSupportMR.join(", ");
+                document.getElementById("tableBody-secreterailSupportMR").innerHTML = tableRow;
+
+                tableRow = '';
+                sNo = 0;
+                ouSecreterailSupportNVC.forEach(ou => {
+                    tableRow += `<tr><td style="border:1px solid black; text-align:left;font-weight:600;">${metaDataValues[ou]}</td>`;
+                    periodSecreterailSupportNVC.forEach(period => {
+                        if (dataSSNVC[period] && dataSSNVC[period][ou]) {
+                            tableRow += `<td style="border:1px solid black; text-align:left;font-weight:600;">${(dataSSNVC[period][ou]["National EPI programme"] ? dataSSNVC[period][ou]["National EPI programme"] : "")}</td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;">${(dataSSNVC[period][ou]["Others"] ? dataSSNVC[period][ou]["Others"] : "")}</td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;">${(dataSSNVC[period][ou]["WHO"] ? dataSSNVC[period][ou]["WHO"] : "")}</td>`;
+
+                        } else {
+                            tableRow += `<td style="border:1px solid black; text-align:left;font-weight:600;"></td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;"></td>
+                                        <td style="border:1px solid black; text-align:left;font-weight:600;"></td>`;
+                        }
+                    })
+                    tableRow += `</tr>`;
+                })
+
+                generateHeaderMatrixRow("tableHead-secreterailSupportNVC", "Country / Provider_Secretariat support", periodSecreterailSupportNVC, ["National EPI programme", "Others", "WHO"]);
+                document.getElementById("tableHead-SSNVCColSpan").colSpan = ((periodSecreterailSupportNVC.length * 3) + 1);;
+                document.getElementById("tableBody-secreterailSupportNVC").innerHTML = tableRow;
+
+                tableRow = '';
+                sNo = 0;
+                ouActivitiesNVC.forEach(ou => {
+                    tableRow += `<tr><td style="border:1px solid black; text-align:left;font-weight:600;">${metaDataValues[ou]}</td>`;
+                    if (dataNVC[ou]) periodActivitiesNVC.forEach(period => tableRow += `<td style="border:1px solid black; font-weight:600;">${(dataNVC[ou][period] ? dataNVC[ou][period] : "")}</td>`);
+                    else periodActivitiesNVC.forEach(period => tableRow += `<td style="border:1px solid black; text-align:left;font-weight:600;"></td>`);
+                    tableRow += `</tr>`;
+                })
+
+                generateHeaderRow("tableHead-activitiesNVC", "Organisational Unit/ Period", periodActivitiesNVC);
+                document.getElementById("tableHead-NVCColSpan").colSpan = (ouActivitiesNVC.length + 1);
+                document.getElementById("tableBody-activitiesNVC").innerHTML = tableRow;
+
+                tableRow = '';
+                sNo = 0;
+                dataActivitiesSecondMR.forEach(row => {
+                    if (row["2"].includes(" ")) row["2"] = row["2"].split("-")["0"];
+
+                    tableRow += `<tr>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${(++sNo)}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["2"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["6"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["9"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["10"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["11"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["12"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["13"]}</td>
+                                    <td style="border:1px solid black; text-align:left;font-weight:600;">${row["14"]}</td>
+                                 </tr>`;
+                })
+                document.getElementById("period-activitiesSecondMR").innerHTML = periodActivitiesSecondMR.join(", ");
+                document.getElementById("tableBody-activitiesSecondMR").innerHTML = tableRow;
+
+                document.getElementById("state").style.display = "block";
+                document.getElementById("loader").style.display = "none";
+            });
+        }
+
+        var tableToExcel = (function () {
+            var uri = 'data:application/vnd.ms-excel;base64,'
+                , template = '<html xmlns: <head><!--[if gte mso 9]><xml><x: <x: <x: <x: {worksheet}</x: <x: <x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x: ExcelWorksheets ></x: ExcelWorkbook ></xml >< ![endif]-- ></head > <body><table>{table}</table><br /></body></html > '
+                , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+                , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+            return function (table, name, filename) {
+                if (!table.nodeType) table = document.getElementById(table)
+                var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+                document.getElementById("dlink").href = uri + base64(format(template, ctx));
+                document.getElementById("dlink").download = filename;
+                document.getElementById("dlink").click();
+            }
+        })()
+
+        function printContent(el) {
+            var restorepage = document.body.innerHTML;
+            var printcontent = document.getElementById(el).innerHTML;
+            document.body.innerHTML = printcontent;
+            window.print();
+            document.body.innerHTML = restorepage;
+        }
+
+        function LoadReport() {
+            let report = $("#selectedReport").val()
+            if(report == "All"){
+                $("#table1").show()
+                $("#table2").show()
+                $("#table3").show()
+                $("#table4").show()
+                $("#table5").show()
+                $("#table6").show()
+                $("#table7").show()
+                $("#table8").show()
+                $("#table9").show()
+                $("#table10").show()
+            }
+            if(report == "Status of measles and rubella elimination"){
+                $("#table1").show()
+                $("#table2").hide()
+                $("#table3").hide()
+                $("#table4").hide()
+                $("#table5").hide()
+                $("#table6").hide()
+                $("#table7").hide()
+                $("#table8").hide()
+                $("#table9").hide()
+                $("#table10").hide()
+            }
+            if(report == "National strategic plan for measles and rubella or equivalent"){
+                $("#table1").hide()
+                $("#table2").show()
+                $("#table3").hide()
+                $("#table4").hide()
+                $("#table5").hide()
+                $("#table6").hide()
+                $("#table7").hide()
+                $("#table8").hide()
+                $("#table9").hide()
+                $("#table10").hide()
+            }
+            if(report == "Suspected case definition for measles and rubella"){
+                $("#table2").hide()
+                $("#table1").hide()
+                $("#table3").show()
+                $("#table4").hide()
+                $("#table5").hide()
+                $("#table6").hide()
+                $("#table7").hide()
+                $("#table8").hide()
+                $("#table9").hide()
+                $("#table10").hide()
+            }
+            if(report == "Vaccine introduction details"){
+                $("#table2").hide()
+                $("#table3").hide()
+                $("#table1").hide()
+                $("#table4").show()
+                $("#table5").hide()
+                $("#table6").hide()
+                $("#table7").hide()
+                $("#table8").hide()
+                $("#table9").hide()
+                $("#table10").hide()
+            }
+            if(report == "Schedule of measles and rubella vaccine"){
+                $("#table2").hide()
+                $("#table3").hide()
+                $("#table4").hide()
+                $("#table1").hide()
+                $("#table5").show()
+                $("#table6").hide()
+                $("#table7").hide()
+                $("#table8").hide()
+                $("#table9").hide()
+                $("#table10").hide()
+            }
+            if(report == "Status of coverage for measles and rubella containing vaccine"){
+                $("#table2").hide()
+                $("#table3").hide()
+                $("#table4").hide()
+                $("#table5").hide()
+                $("#table1").hide()
+                $("#table6").show()
+                $("#table7").hide()
+                $("#table8").hide()
+                $("#table9").hide()
+                $("#table10").hide()
+            }
+            if(report == "Composition of national verification committee"){
+                $("#table2").hide()
+                $("#table3").hide()
+                $("#table4").hide()
+                $("#table5").hide()
+                $("#table6").hide()
+                $("#table1").hide()
+                $("#table7").show()
+                $("#table8").hide()
+                $("#table9").hide()
+                $("#table10").hide()
+            }
+            if(report == "Secretarial support 2"){
+                $("#table2").hide()
+                $("#table3").hide()
+                $("#table4").hide()
+                $("#table5").hide()
+                $("#table6").hide()
+                $("#table7").hide()
+                $("#table8").show()
+                $("#table1").hide()
+                $("#table9").hide()
+                $("#table10").hide()
+            }
+            if(report == "Secretarial support to NVC"){
+                $("#table2").hide()
+                $("#table3").hide()
+                $("#table4").hide()
+                $("#table5").hide()
+                $("#table6").hide()
+                $("#table7").hide()
+                $("#table8").hide()
+                $("#table1").hide()
+                $("#table9").show()
+                $("#table10").hide()
+            }
+            if(report == "Number of activities/ meetings conducted by NVC in the year (second)"){
+                $("#table2").hide()
+                $("#table3").hide()
+                $("#table4").hide()
+                $("#table5").hide()
+                $("#table6").hide()
+                $("#table7").hide()
+                $("#table8").hide()
+                $("#table9").hide()
+                $("#table1").hide()
+                $("#table10").show()
+            }
+
+        }
+    </script>
+</body>
+
+</html>

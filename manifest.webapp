@@ -1,0 +1,29 @@
+{
+   "version": "2.0",
+   "name": "Measles Report",
+   "description": "",
+   "launch_path": "/index.html",
+   "appType": "APP",
+   "icons": {
+      "16": "app-icons/tableGraph.webp",
+       "48": "app-icons/tableGraph.webp",
+       "128": "app-icons/tableGraph.webp",
+       "512": "app-icons/tableGraph.webp"
+   },
+   "developer": {
+        "name": "gyan",
+        "url": "https://github.com/GyanHISP"
+    },
+   "default_locale": "en",
+   "activities": {
+       "dhis": {
+           "href": "*",
+           "namespace": "my-namespace"
+       }
+   },
+   "authorities": [
+        "MY_APP_ADD_NEW",
+        "MY_APP_UPDATE",
+        "MY_APP_DELETE"
+   ]
+}
