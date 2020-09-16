@@ -16,7 +16,7 @@ class HomeComponet extends React.Component {
     this.setState({ orgUnit: selected });
   }
 
-  componentDidMount() {
+  getEvents() {
     var dataValue = [];
     axios
       .get(
@@ -28,6 +28,7 @@ class HomeComponet extends React.Component {
           var dataValueList = [];
           dataSetElements.eventDate = arrayItem["eventDate"];
           dataSetElements.orgUnit = arrayItem["orgUnit"];
+          dataSetElements.program = arrayItem["program"];
           for (const dataValEle in arrayItem["dataValues"]) {
             var dataElementsValue = {};
             var dataElement =
@@ -41,6 +42,19 @@ class HomeComponet extends React.Component {
         });
         console.log(JSON.stringify(dataValue));
       });
+  }
+
+  getPrograms() {
+    axios
+      .get(`../../../api/programs.json?paging=false&fielda=id,name`)
+      .then((response) => {
+        console.log("PROGRAMMS " + JSON.stringify(response.data));
+      });
+  }
+
+  componentDidMount() {
+    this.getEvents();
+    this.getPrograms();
   }
   render() {
     return (
