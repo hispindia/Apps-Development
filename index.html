@@ -330,6 +330,10 @@
                 <div id="highCharts_seventh" style="height: 600px"></div>
                 <div id="highCharts_Eighth" style="height: 600px"></div>
                 <div id="highCharts_Twelfth" style="height: 600px"></div>
+                <div id="highCharts_thirteenth" style="height: 600px"></div>
+                <div id="highCharts_fourteenth" style="height: 600px"></div>
+                <div id="highCharts_Fifteenth" style="height: 600px"></div>
+                <div id="highCharts_Sixteenth" style="height: 600px"></div>
             </figure>
         </div>
     </div>
@@ -487,6 +491,14 @@
 
             var idTwelfth = `../../analytics.json?dimension=pe:${selectedPeriod}&dimension=dx:gY7b9azcUQG&dimension=ou:USER_ORGUNIT_GRANDCHILDREN&displayProperty=NAME&paging=false`;
 
+            var idthirteenth = `../../analytics.json?dimension=dx:PS9m9ERoPaj&dimension=pe:${selectedPeriod}&dimension=ou:USER_ORGUNIT_GRANDCHILDREN&displayProperty=NAME&paging=false`;
+          
+            var idfourteenth = `../../analytics.json?dimension=dx:vDXU1FdXPHz&dimension=pe:${selectedPeriod}&dimension=ou:USER_ORGUNIT_GRANDCHILDREN&displayProperty=NAME&paging=false`;
+
+            var idFifteenth = `../../analytics.json?dimension=dx:YgvbZE63e8T&dimension=pe:${selectedPeriod}&dimension=ou:USER_ORGUNIT_GRANDCHILDREN&displayProperty=NAME&paging=false`;
+            
+            var idSixteenth = `../../analytics.json?dimension=dx:cyg9FDI48hW&dimension=pe:${selectedPeriod}&dimension=ou:USER_ORGUNIT_GRANDCHILDREN&displayProperty=NAME&paging=false`;
+
             var organisationUnitName = [];
             var organisationUnitCode = [];
 
@@ -519,7 +531,11 @@
                 $.get(idTenth),
                 $.get(idEleventh),
                 $.get(idTwelfth),
-            ).done(function (rowFirst, rowSecond, rowThird, rowFourth, rowFifth, rowSixth, GlobalPriorityCountries, globalTotalVlaues, rowSeventh, rowEighth, rowNinth, rowTenth, rowEleventh, rowTwelfth) {
+                $.get(idthirteenth),
+                $.get(idfourteenth),
+                $.get(idFifteenth),
+                $.get(idSixteenth),
+            ).done(function (rowFirst, rowSecond, rowThird, rowFourth, rowFifth, rowSixth, GlobalPriorityCountries, globalTotalVlaues, rowSeventh, rowEighth, rowNinth, rowTenth, rowEleventh, rowTwelfth,rowthirteenth, rowfourteenth,rowFifteenth, rowSixteenth) {
 
                 rowFirst = rowFirst["0"];
                 rowSecond = rowSecond["0"];
@@ -535,8 +551,12 @@
                 rowTenth = rowTenth["0"];
                 rowEleventh = rowEleventh["0"];
                 rowTwelfth = rowTwelfth["0"];
+                rowthirteenth = rowthirteenth["0"];
+                rowfourteenth = rowfourteenth["0"];
+                rowFifteenth = rowFifteenth["0"];
+                rowSixteenth = rowSixteenth["0"];
 
-                let dataFirst = [], dataSecond = [], dataThird = []; dataFourth = [], dataFifth = [], dataSixth = [], globalTotal = [], dataSeventh = [], dataEighth = [], dataNinth = [], dataTenth = [], dataEleventh = [], dataTwelfth = [];
+                let dataFirst = [], dataSecond = [], dataThird = []; dataFourth = [], dataFifth = [], dataSixth = [], globalTotal = [], dataSeventh = [], dataEighth = [], dataNinth = [], dataTenth = [], dataEleventh = [], dataTwelfth = [], datathirteenth = [], datafourteenth =[], dataFifteenth = [], dataSixteenth = [];
                 let metadataValues = [];
 
                 for (let id in rowFirst.metaData.items) {
@@ -739,7 +759,53 @@
                         })
                     }
                 })
+                rowCheck = []
+                rowthirteenth.rows.forEach(row => {
+                    if (!rowCheck[row["2"]]) {
+                        rowCheck[row["2"]] = true;
+                        datathirteenth.push({
+                            code: organisationUnitCode[row["2"]].toUpperCase(),
+                            value: Number(row["3"]),
+                            name: organisationUnitName[row["2"]]
+                        })
+                    }
+                })
+                
+                rowCheck = []
+                rowfourteenth.rows.forEach(row => {
+                    if (!rowCheck[row["2"]]) {
+                        rowCheck[row["2"]] = true;
+                        datafourteenth.push({
+                            code: organisationUnitCode[row["2"]].toUpperCase(),
+                            value: Number(row["3"]),
+                            name: organisationUnitName[row["2"]]
+                        })
+                    }
+                })
 
+                rowCheck = []
+                rowFifteenth.rows.forEach(row => {
+                    if (!rowCheck[row["2"]]) {
+                        rowCheck[row["2"]] = true;
+                        dataFifteenth.push({
+                            code: organisationUnitCode[row["2"]].toUpperCase(),
+                            value: Number(row["3"]),
+                            name: organisationUnitName[row["2"]]
+                        })
+                    }
+                })
+                
+                 rowCheck = [];
+                rowSixteenth.rows.forEach(row => {
+                    if (!rowCheck[row["2"]]) {
+                        rowCheck[row["2"]] = true;
+                        dataSixteenth.push({
+                            code: organisationUnitCode[row["2"]].toUpperCase(),
+                            value: Number(row["3"]),
+                            name: organisationUnitName[row["2"]]
+                        })
+                    }
+                })
 
                 var tableRow = ""
                 for (let orgUnitId of orgUnitIdFirst) {
@@ -1285,7 +1351,7 @@
                             from: 1001,
                             to: 10000
                         }, {
-                            from: 10000,
+                            from: 10001,
                             name: "more than 10 000"
                         }]
                     },
@@ -1303,6 +1369,339 @@
                         shadow: false
                     }]
                 });
+
+                Highcharts.mapChart('highCharts_thirteenth', {
+                    chart: {
+                        map: 'custom/world',
+                        borderWidth: 1
+                    },
+
+                    colors: ['rgba(19,64,117,0)', 'rgba(19,64,117,0.05)', 'rgba(19,64,117,0.2)', 'rgba(19,64,117,0.4)',
+                        'rgba(19,64,117,0.5)', 'rgba(19,64,117,0.6)', 'rgba(19,64,117,0.8)'],
+
+                    title: {
+                        text: ""
+                    },
+
+                    mapNavigation: {
+                        enabled: true
+                    },
+
+                    legend: {
+                        title: {
+                            text: `Child Cases- ${selectedPeriod}`,
+                            style: {
+                                color: ( // theme
+                                    Highcharts.defaultOptions &&
+                                    Highcharts.defaultOptions.legend &&
+                                    Highcharts.defaultOptions.legend.title &&
+                                    Highcharts.defaultOptions.legend.title.style &&
+                                    Highcharts.defaultOptions.legend.title.style.color
+                                ) || 'black'
+                            }
+                        },
+                        align: 'left',
+                        verticalAlign: 'bottom',
+                        floating: true,
+                        layout: 'vertical',
+                        valueDecimals: 0,
+                        backgroundColor: ( // theme
+                            Highcharts.defaultOptions &&
+                            Highcharts.defaultOptions.legend &&
+                            Highcharts.defaultOptions.legend.backgroundColor
+                        ) || 'rgba(255, 255, 255, 0.85)',
+                        symbolRadius: 0,
+                        symbolHeight: 14
+                    },
+
+                    colorAxis: {
+                        dataClasses: [{
+                            to: 0,
+                            name: "No data"
+                        }, {
+                            from: 0,
+                            to: 0,
+                            name: '0'
+                        }, {
+                            from: 1,
+                            to: 10
+                        }, {
+                            from: 11,
+                            to: 100
+                        }, {
+                            from: 101,
+                            to: 1000
+                        }, {
+                            from: 1001,
+                            to: 10000
+                        }, {
+                            from: 10001,
+                            name: "more than 10000"
+                        }]
+                    },
+
+                    series: [{
+                        data: datathirteenth,
+                        joinBy: ['iso-a3', 'code'],
+                        animation: true,
+                        name: `New leprosy cases- ${selectedPeriod}`,
+                        states: {
+                            hover: {
+                                color: '#a4edba'
+                            }
+                        },
+                        shadow: false
+                    }]
+                });
+
+                Highcharts.mapChart('highCharts_fourteenth', {
+                    chart: {
+                        map: 'custom/world',
+                        borderWidth: 1
+                    },
+
+                    colors: ['rgb(255, 0, 0, 0)', 'rgba(255, 0, 0,0.2)', 'rgba(255, 0, 0,0.4)', 'rgba(255, 0, 0,0.6)', 'rgba(255, 0, 0,0.8)'],
+
+                    title: {
+                        text: ""
+                    },
+
+                    mapNavigation: {
+                        enabled: true
+                    },
+
+                    legend: {
+                        title: {
+                            text: `Child G2D Cases- ${selectedPeriod}`,
+                            style: {
+                                color: ( // theme
+                                    Highcharts.defaultOptions &&
+                                    Highcharts.defaultOptions.legend &&
+                                    Highcharts.defaultOptions.legend.title &&
+                                    Highcharts.defaultOptions.legend.title.style &&
+                                    Highcharts.defaultOptions.legend.title.style.color
+                                ) || 'black'
+                            }
+                        },
+                        align: 'left',
+                        verticalAlign: 'bottom',
+                        floating: true,
+                        layout: 'vertical',
+                        valueDecimals: 0,
+                        backgroundColor: ( // theme
+                            Highcharts.defaultOptions &&
+                            Highcharts.defaultOptions.legend &&
+                            Highcharts.defaultOptions.legend.backgroundColor
+                        ) || 'rgba(255, 255, 255, 0.85)',
+                        symbolRadius: 0,
+                        symbolHeight: 14
+                    },
+
+                    colorAxis: {
+                        dataClassColor: 'category',
+                        dataClasses: [{
+                            to: 0,
+                            name: "No data"
+                        }, {
+                            from: 0,
+                            to: 0,
+                            name: '0'
+                        }, {
+                            from: 1,
+                            to: 10
+                        }, {
+                            from: 11,
+                            to: 100
+                        }, {
+                            from: 101,
+                            name: "more than 100"
+                        }]
+                    },
+
+                    series: [{
+                        data: datafourteenth,
+                        joinBy: ['iso-a3', 'code'],
+                        animation: true,
+                        name: `New leprosy cases- ${selectedPeriod}`,
+                        states: {
+                            hover: {
+                                color: '#a4edba'
+                            }
+                        },
+                        shadow: false
+                    }]
+                });
+
+                Highcharts.mapChart('highCharts_Fifteenth', {
+                    chart: {
+                        map: 'custom/world',
+                        borderWidth: 1
+                    },
+
+                    colors: ['rgba(247, 202, 24,0)', 'rgba(247, 202, 24,0.05)', 'rgba(247, 202, 24,0.2)', 'rgba(247, 202, 24,0.4)',
+                        'rgba(247, 202, 24,0.5)', 'rgba(247, 202, 24,0.6)', 'rgba(247, 202, 24,0.8)'],
+
+                    title: {
+                        text: ""
+                    },
+
+                    mapNavigation: {
+                        enabled: true
+                    },
+
+                    legend: {
+                        title: {
+                            text: `Prevalence- ${selectedPeriod}`,
+                            style: {
+                                color: ( // theme
+                                    Highcharts.defaultOptions &&
+                                    Highcharts.defaultOptions.legend &&
+                                    Highcharts.defaultOptions.legend.title &&
+                                    Highcharts.defaultOptions.legend.title.style &&
+                                    Highcharts.defaultOptions.legend.title.style.color
+                                ) || 'black'
+                            }
+                        },
+                        align: 'left',
+                        verticalAlign: 'bottom',
+                        floating: true,
+                        layout: 'vertical',
+                        valueDecimals: 0,
+                        backgroundColor: ( // theme
+                            Highcharts.defaultOptions &&
+                            Highcharts.defaultOptions.legend &&
+                            Highcharts.defaultOptions.legend.backgroundColor
+                        ) || 'rgba(255, 255, 255, 0.85)',
+                        symbolRadius: 0,
+                        symbolHeight: 14
+                    },
+
+                    colorAxis: {
+                        dataClassColor: 'category',
+                        dataClasses: [{
+                            to: 0,
+                            name: "No data"
+                        }, {
+                            from: 0,
+                            to: 0,
+                            name: '0'
+                        }, {
+                            from: 1,
+                            to: 10
+                        }, {
+                            from: 11,
+                            to: 100
+                        }, {
+                            from: 101,
+                            to: 1000
+                        }, {
+                            from: 1001,
+                            to: 10000
+                        }, {
+                            from: 10001,
+                            name: "more than 10 000"
+                        }]
+                    },
+
+                    series: [{
+                        data: dataFifteenth,
+                        joinBy: ['iso-a3', 'code'],
+                        animation: true,
+                        name: `G2D cases- ${selectedPeriod}`,
+                        states: {
+                            hover: {
+                                color: '#F4ECF7'
+                            }
+                        },
+                        shadow: false
+                    }]
+                });
+                
+                Highcharts.mapChart('highCharts_Sixteenth', {
+                    chart: {
+                        map: 'custom/world',
+                        borderWidth: 1
+                    },
+
+                    colors: ['rgb(64,19,117, 0)', 'rgba(64,19,117, 0.05)', 'rgba(64,19,117, 0.2)', 'rgba(64,19,117,0.4)',
+                        'rgba(64,19,117, 0.5)', 'rgba(64,19,117, 0.6)', 'rgba(64,19,117, 0.8)'],
+
+                    title: {
+                        text: ""
+                    },
+
+                    mapNavigation: {
+                        enabled: true
+                    },
+
+                    legend: {
+                        title: {
+                            text: `New Grade 2 cases- ${selectedPeriod}`,
+                            style: {
+                                color: ( // theme
+                                    Highcharts.defaultOptions &&
+                                    Highcharts.defaultOptions.legend &&
+                                    Highcharts.defaultOptions.legend.title &&
+                                    Highcharts.defaultOptions.legend.title.style &&
+                                    Highcharts.defaultOptions.legend.title.style.color
+                                ) || 'black'
+                            }
+                        },
+                        align: 'left',
+                        verticalAlign: 'bottom',
+                        floating: true,
+                        layout: 'vertical',
+                        valueDecimals: 0,
+                        backgroundColor: ( // theme
+                            Highcharts.defaultOptions &&
+                            Highcharts.defaultOptions.legend &&
+                            Highcharts.defaultOptions.legend.backgroundColor
+                        ) || 'rgba(255, 255, 255, 0.85)',
+                        symbolRadius: 0,
+                        symbolHeight: 14
+                    },
+
+                    colorAxis: {
+                        dataClassColor: 'category',
+                        dataClasses: [{
+                            to: 0,
+                            name: "No data"
+                        }, {
+                            from: 0,
+                            to: 0,
+                            name: '0'
+                        }, {
+                            from: 1,
+                            to: 10
+                        }, {
+                            from: 11,
+                            to: 100
+                        }, {
+                            from: 101,
+                            to: 1000
+                        }, {
+                            from: 1001,
+                            to: 10000
+                        }, {
+                            from: 10000,
+                            name: "more than 10 000"
+                        }]
+                    },
+
+                    series: [{
+                        data: dataSixteenth,
+                        joinBy: ['iso-a3', 'code'],
+                        animation: true,
+                        name: `Prevalence- ${selectedPeriod}`,
+                        states: {
+                            hover: {
+                                color: '#FFA07A'
+                            }
+                        },
+                        shadow: false
+                    }]
+                });
+
             })
         }
 
