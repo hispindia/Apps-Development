@@ -114,7 +114,7 @@ class ShowTEI extends React.Component {
                                 {this.state.teiAttributeHeader.map((teiAttrName, index) => (
                                      <th>{teiAttrName}</th>
                                   ))}
-                                <th><Label> <Input type="checkbox" id="checkbox-head" onClick={() => this.markCheckll()} />  {checkBoxHead}</Label></th>
+                                <th><Label> <input type="checkbox" id="checkbox-head" onClick={() => this.markCheckll()} />  {checkBoxHead}</Label></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -124,7 +124,7 @@ class ShowTEI extends React.Component {
                                     {this.state.teiAttributeHeader.map((teiAttrName, index) => (
                                         <td>{tei[teiAttrName]}</td>
                                      ))}
-                                    <td> <Input type="checkbox" onClick={() => this.markCheck(index)} /> </td>
+                                    <td> <input type="checkbox" onClick={() => this.markCheck(index)} /> </td>
                                 </tr>
                             ))}
                         </tbody>

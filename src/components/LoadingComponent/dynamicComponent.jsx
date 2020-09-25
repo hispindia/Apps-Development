@@ -37,7 +37,10 @@ class DynamicData extends React.Component {
       classOptionList: [],
       divisionOptionList: [],
       classList: [],
-      divisionList: []
+      divisionList: [],
+      enrollmentDate: new Date(),
+      youthGroupOptionList: [],
+      youthGroupList: []
       // value2:""
     }
     this.onSelect = this.onSelect.bind(this);
@@ -54,16 +57,24 @@ class DynamicData extends React.Component {
     this.onRemoveClass = this.onRemoveClass.bind(this);
     this.onSelectDivision= this.onSelectDivision.bind(this);
     this.onRemoveDivision=this.onRemoveDivision.bind(this);
+    this.onSelectYouthGroup= this.onSelectYouthGroup.bind(this);
+    this.onRemoveYouthGroup=this.onRemoveYouthGroup.bind(this);
 
   }
   componentDidMount() {
 
     $(".row").hide();
+
+    $(".cseSchool").hide();
+    $(".youthGroup").hide();
     let classOptionSetUid = 'McLlu7elDpJ';
     let divisionOptionSetUid = 'uTXQe0NS3ra';
+    let youthGroupOptionSetUid = 'WpYVPWMLVux';
 
     this.getClassOptions(classOptionSetUid);
     this.getDivisionOptions(divisionOptionSetUid);
+    this.getYouthGroupOptions(youthGroupOptionSetUid);
+
 
   }
   onSelect(selected) {
@@ -82,11 +93,38 @@ class DynamicData extends React.Component {
     var name = selected.displayName;
     ApiService.getProgram(id).then(
       (result) => {
-        var program = result.programs
+        //var program = result.programs
+        let program = [];
+        result.programs.forEach(tempProgram => {
+          if (!tempProgram.withoutRegistration) {
+
+            //let val = tempProgram.attributeValues.length;
+            for (let i=0;i<tempProgram.attributeValues.length;i++) {
+
+              if( tempProgram.attributeValues.length!==0) {
+                if (tempProgram.attributeValues[i].attribute.code === 'cse_app_access'
+                    && tempProgram.attributeValues[i].value === "true") {
+                  program.push(tempProgram);
+                }
+              }
+            }
+          }
+        });
+
         this.setState({programs:program})
         if (program.length > 0) {
           var programId = program[0].id;
           if (programId != undefined) {
+
+            if(programId === 'byYVkNvOt2R'){
+              $(".cseSchool").hide();
+              $(".youthGroup").show();
+            }
+            else if(programId === 'dWPcV6EiVB1'){
+              $(".cseSchool").show();
+              $(".youthGroup").hide();
+            }
+
             ApiService.getProgramDetials(programId).then(res => {
               var programStage = res.programStages;
               console.log('here is data', res)
@@ -120,10 +158,12 @@ class DynamicData extends React.Component {
 
                             console.log('here is tei', response);
                             response.trackedEntityInstances.forEach(tei => {
+                              let tempEnrollments = tei.enrollments;
                               let obj = [];
                               //obj["Student/Youth group ID"] = "";
                               //obj["Age (In Years)"] = "";
                               obj["tei"] = tei.trackedEntityInstance;
+                              obj["enrollmentDate"] = tempEnrollments[0].enrollmentDate.substring(0, 10);
                               obj["checked"] = false;
 
                               //obj["Student Roll No."] = "";
@@ -186,6 +226,14 @@ class DynamicData extends React.Component {
     var id = e.target.value;
      console.log("here is default",id);
     if (id !== undefined) {
+      if(id === 'byYVkNvOt2R'){
+        $(".cseSchool").hide();
+        $(".youthGroup").show();
+      }
+      else if(id === 'dWPcV6EiVB1'){
+        $(".cseSchool").show();
+        $(".youthGroup").hide();
+      }
       ApiService.getProgramStage(id).then(
         result => {
           var programStage = result.programStages
@@ -218,8 +266,9 @@ class DynamicData extends React.Component {
 
                       //console.log('here is tei', response);
                       response.trackedEntityInstances.forEach(tei => {
+                        let tempEnrollments = tei.enrollments;
                         let obj = [];
-
+                        obj["enrollmentDate"] = tempEnrollments[0].enrollmentDate.substring(0, 10);
                         obj["tei"] = tei.trackedEntityInstance;
                         obj["checked"] = false;
 
@@ -290,6 +339,10 @@ class DynamicData extends React.Component {
     this.setState({ dataValues: dataValues})
   }
   onChange = date => this.setState({ date });
+
+  onChangeEnrollmentDate = enrollmentDate => this.setState({ enrollmentDate });
+
+
   
   checkNumber(index1, index2, e) {
     console.log('here is option changed',index1, index2, e.target.value)
@@ -340,35 +393,98 @@ class DynamicData extends React.Component {
     let eventDate = date.substring(1, date.length - 1);
      console.log('here is date', this.state)
 
-    let filteredTEI= [];
-    for( let tei of this.state.tei){
-      if(!this.state.divisionList.length && !this.state.classList.length){
-        filteredTEI.push(tei);
-      }
-      if(!this.state.divisionList.length){
-        for( let selectedClass of this.state.classList){
-          if(tei['Class'] == selectedClass.code){
-            filteredTEI.push(tei);
-          }
-        }
-      }
-      if(!this.state.classList.length){
-        for(let selectedDivision of this.state.divisionList){
-          if(tei["Division"]== selectedDivision.code){
-            filteredTEI.push(tei);
-          }
-        }
-      }
-      for( let selectedClass of this.state.classList){
-        for(let selectedDivision of this.state.divisionList){
-          if( (tei['Class'] == selectedClass.code) && (tei["Division"]== selectedDivision.code)){
-            filteredTEI.push(tei);
-          }
+    //alert( this.state.enrollmentDate );
+    //let enrollmentD = JSON.stringify(this.state.enrollmentDate);
 
+    //alert( enrollmentD );
+    //let enrollmentDate = enrollmentD.substring(1, enrollmentD.length - 1);
+    //let enrollmentDate = enrollmentD.substring(0, 10);
+
+
+    let tempConvertDate = new Date(this.state.enrollmentDate);
+    //alert( tempConvertDate );
+    let enrollmentDate = "";
+    let selMonth = Number(tempConvertDate.getMonth() + 1);
+    if( selMonth.toString().length === 1 ){
+      enrollmentDate = tempConvertDate.getFullYear() +"-0" + selMonth +"-"+ tempConvertDate.getDate();
+    }
+    else{
+      enrollmentDate = tempConvertDate.getFullYear() +"-" + selMonth +"-"+ tempConvertDate.getDate();
+    }
+
+    //alert(tempConvertDate.getFullYear() +"-" + Number(tempConvertDate.getMonth() + 1) +"-"+ tempConvertDate.getDate() );
+
+    //alert( enrollmentDate + "--" + enrollmentDate.length);
+    let filteredTEI= [];
+
+    /*
+    if(id === 'byYVkNvOt2R'){
+      $(".cseSchool").hide();
+      $(".youthGroup").show();
+    }
+    else if(this.state.programId === 'dWPcV6EiVB1'){
+      $(".cseSchool").show();
+      $(".youthGroup").hide();
+    }
+    */
+
+    if(this.state.programId === 'dWPcV6EiVB1' ) {
+      for (let tei of this.state.tei) {
+        if (!this.state.divisionList.length && !this.state.classList.length) {
+          filteredTEI.push(tei);
+        }
+        if (!this.state.divisionList.length) {
+          for (let selectedClass of this.state.classList) {
+            if (tei['Class'] === selectedClass.code) {
+              filteredTEI.push(tei);
+            }
+          }
+        }
+        if (!this.state.classList.length) {
+          for (let selectedDivision of this.state.divisionList) {
+            if (tei["Division"] === selectedDivision.code) {
+              filteredTEI.push(tei);
+            }
+          }
+        }
+        for (let selectedClass of this.state.classList) {
+          for (let selectedDivision of this.state.divisionList) {
+            if ((tei['Class'] === selectedClass.code) && (tei["Division"] === selectedDivision.code)) {
+              filteredTEI.push(tei);
+            }
+
+          }
+        }
+      }
+    }
+    else if(this.state.programId === 'byYVkNvOt2R' ) {
+      for (let tei of this.state.tei) {
+        if (!this.state.youthGroupList.length && !this.state.enrollmentDate) {
+          filteredTEI.push(tei);
+        }
+        if (!this.state.youthGroupList.length) {
+          if (tei['enrollmentDate'] === enrollmentDate) {
+            filteredTEI.push(tei);
+          }
+        }
+        if (!this.state.enrollmentDate) {
+          for (let selectedYouthGroup of this.state.youthGroupList) {
+            if (tei["Youth Group"] === selectedYouthGroup.code) {
+              filteredTEI.push(tei);
+            }
+          }
+        }
+        for (let selectedYouthGroup of this.state.youthGroupList) {
+          if (tei["Youth Group"] === selectedYouthGroup.code && tei['enrollmentDate'] === enrollmentDate) {
+            filteredTEI.push(tei);
+          }
         }
       }
     }
 
+    else{
+      filteredTEI = [...this.state.tei];
+    }
     let payload = {
       orgUnitId: this.state.orgUnitId,
       programStageId: this.state.programStageId,
@@ -430,6 +546,22 @@ class DynamicData extends React.Component {
     )
   }
 
+  getYouthGroupOptions(optionSetUid) {
+    let youthGroupOptions = '';
+    ApiService.getOptionSetOptions(optionSetUid).then(
+        (optionsResponse) => {
+          youthGroupOptions = optionsResponse.options;
+          this.setState({
+            youthGroupOptionList: youthGroupOptions
+          });
+        },
+        (error) => {
+          console.log("here is error", error);
+        }
+    )
+  }
+
+
   onSelectClass(selectedList, selectedItem) {
     this.setState({classList: selectedList});
 
@@ -446,6 +578,16 @@ class DynamicData extends React.Component {
     this.setState({divisionList: selectedList});
 
   }
+
+  onSelectYouthGroup(selectedList, selectedItem) {
+    this.setState({youthGroupList: selectedList});
+
+  }
+  onRemoveYouthGroup(selectedList, removedItem) {
+    this.setState({youthGroupList: selectedList});
+
+  }
+
 
   render() {
     const programStageDataElement =this.state.porgramStageDateElement
@@ -650,7 +792,7 @@ class DynamicData extends React.Component {
             </div>
             <Row form>
               <div className='p-5 shadow-lg p-3 mb-3 bg-white rounded box font col-md-12'>
-                <Row form>
+                <Row form className = "cseSchool">
                   <Col className ="col-md-3">Class :</Col>
                   <Col className ="col-md-3">
                     <Multiselect
@@ -672,6 +814,24 @@ class DynamicData extends React.Component {
                     />
                   </Col>
                 </Row>
+
+                <Row form className = "youthGroup">
+                  <Col className ="col-md-2">Youth Group :</Col>
+                  <Col className ="col-md-4">
+                    <Multiselect
+                        options={this.state.youthGroupOptionList} // Options to display in the dropdown
+                        onSelect={this.onSelectYouthGroup} // Function will trigger on select event
+                        onRemove={this.onRemoveYouthGroup} // Function will trigger on remove event
+                        selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
+                        displayValue="displayName" // Property name to display in the dropdown options
+                    />
+                  </Col>
+                  <Col className ="col-md-2">Enrollment Date: </Col>
+                  <Col className ="col-md-4"><DatePicker onChange={this.onChangeEnrollmentDate} value={this.state.enrollmentDate} /></Col>
+                </Row>
+
+
+
                 <br />
                 <Col>{sectionHeader()}</Col>
                 <br />

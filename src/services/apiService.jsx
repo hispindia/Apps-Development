@@ -79,7 +79,7 @@ function getOptionSetOptions(id) {
 
 function getProgram(id) {
     const requestOptions = { method: 'GET' };
-    return fetch(BaseUrl + '/api/organisationUnits/' + id + '.json?fields=id,name,displayName,programs[id,name,displayName,code,withoutRegistration]&paging=false', requestOptions).then(res => res.json());
+    return fetch(BaseUrl + '/api/organisationUnits/' + id + '.json?fields=id,name,displayName,programs[id,name,displayName,code,withoutRegistration,attributeValues[value,attribute[id,name,code]]]&paging=false', requestOptions).then(res => res.json());
 }
 
 function getProgramStage(id) {
@@ -94,7 +94,7 @@ function getDataElements(id) {
 
 function getTrackedEntityInstances(data) {
     const requestOptions = { method: 'GET' };
-    return fetch( BaseUrl + '/api/trackedEntityInstances.json?program=' + data.program + '&ou=' + data.ou + '', requestOptions).then(res => res.json());
+    return fetch( BaseUrl + '/api/trackedEntityInstances.json?paging=false&fields=*&program=' + data.program + '&ou=' + data.ou + '', requestOptions).then(res => res.json());
 }
 
 function postEvent(event) {

@@ -15,9 +15,20 @@ class Enrollment extends React.Component {
     constructor(props) {
         super(props)
         console.log('here is props', props)
+        var tProgramId = "";
+
+        let tempList = props.selected.programs;
+        if (tempList.length > 0) {
+            tProgramId = tempList[0].id;
+        }
+        else{
+            tProgramId = '';
+        }
+
         this.state = {
             orgUnitName: '',
             orgUnitId: props.selected.id,
+            programId: tProgramId,
             programList: '',
             optionList: '',
             classOptionList: [],
@@ -74,10 +85,46 @@ class Enrollment extends React.Component {
         this.getClassOptions(classOptionSetUid);
         this.getDivisionOptions(divisionOptionSetUid);
         this.setState({goButtonStatus: false});
-        this.setState({orgUnitId: this.props.selected.orgUnitId});
+        //this.setState({orgUnitId: this.props.selected.orgUnitId});
+        this.setState({ orgUnitId: this.props.selected.selectedOrg.id });
+        //this.getPrograms(this.props.selected.selectedOrg.id);
     }
 
     getPrograms(orgUnitUid) {
+        let tempProgramList = [];
+        ApiService.getProgram(orgUnitUid).then(
+            (programResponse) => {
+                //programList = programResponse.programs;
+                programResponse.programs.forEach(tempProgram => {
+                    if (!tempProgram.withoutRegistration) {
+                        //let val = tempProgram.attributeValues.length;
+                        for (let i=0;i<tempProgram.attributeValues.length;i++) {
+
+                            if( tempProgram.attributeValues.length!==0) {
+                                if (tempProgram.attributeValues[i].attribute.code === 'cse_app_enroll'
+                                    && tempProgram.attributeValues[i].value === "true") {
+                                    tempProgramList.push(tempProgram);
+                                }
+                            }
+                        }
+                    }
+                });
+                this.setState({
+                    programList: tempProgramList
+                });
+                if (tempProgramList.length > 0) {
+                    let programId = tempProgramList[0].id;
+                    this.setState({
+                        programId: programId,
+                        goButtonStatus: false
+                    });
+                }
+            },
+            (error) => {
+                console.log("here is error", error);
+            }
+        )
+        /*
         let programList = [];
         ApiService.getProgram(orgUnitUid).then(
             (programResponse) => {
@@ -102,6 +149,7 @@ class Enrollment extends React.Component {
                 console.log("here is error", error);
             }
         )
+         */
     }
 
     getOptions(optionSetUid) {
@@ -157,6 +205,24 @@ class Enrollment extends React.Component {
             go: true,
             trackedEntityInstanceDetails: []
         });
+        //let tempList = [...this.props.selected.programs];
+
+
+        var tempProgramId = "";
+        if( this.state.programId === ""){
+            let tempList = [...this.props.selected.programs];
+            if (tempList.length > 0) {
+                tempProgramId = tempList[0].id;
+            }
+            this.setState({ programId: tempProgramId });
+        }
+        else{
+            tempProgramId = this.state.programId;
+        }
+        console.log( " sumit console " + this.state.programId );
+        //var tempSelect = document.getElementById("programSelect").value;
+        //this.setState({ programId: tempSelect });
+
 
         let selectedValues = {
             orgUnitId: this.state.orgUnitId,
@@ -167,7 +233,7 @@ class Enrollment extends React.Component {
         };
         console.log("selectedValues -- ", selectedValues);
         let pram = {
-            programId: this.state.programId,
+            programId: tempProgramId,
             orgUnitId: this.state.orgUnitId
         };
         var trackedEntityInstances = [];
@@ -667,6 +733,66 @@ class Enrollment extends React.Component {
 
         const getProgramList = () => {
 
+            //this.setState({ orgUnitId: this.props.selected.selectedOrg.id });
+            //alert( this.props.selected.selectedOrg.id + " -- " + this.state.orgUnitId + " -- " + this.props.selected.selectedOrg.displayName );
+            /*
+            let tempProgramList = [];
+            ApiService.getProgram(this.props.selected.selectedOrg.id).then(
+                (programResponse) => {
+                    //programList = programResponse.programs;
+                    programResponse.programs.forEach(tempProgram => {
+                        if (!tempProgram.withoutRegistration) {
+
+                            //let val = tempProgram.attributeValues.length;
+                            for (let i=0;i<tempProgram.attributeValues.length;i++) {
+
+                                if( tempProgram.attributeValues.length!==0) {
+                                    if (tempProgram.attributeValues[i].attribute.code === 'cse_app_enroll'
+                                        && tempProgram.attributeValues[i].value === "true") {
+                                        tempProgramList.push(tempProgram);
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    this.setState({
+                        programList: tempProgramList
+                    });
+                    if (tempProgramList.length > 0) {
+                        let programId = tempProgramList[0].id;
+                        this.setState({
+                            programId: programId,
+                            goButtonStatus: false
+                        });
+                    }
+                },
+                (error) => {
+                    console.log("here is error", error);
+                }
+            )
+            */
+
+            /*
+
+            if (this.state.programList === undefined) {
+                let val = [""];
+                return val;
+            } else {
+                // console.log(this.props.program);
+
+                let tempList = [...this.state.programList];
+                //let tempOption = [<option key={0} value="-1">Please Select</option>];
+                let finalList = [];
+                //finalList.push(tempOption);
+
+                finalList = tempList.map((val, index) => (
+                    <option key={index} value={val.id}>
+                        {val.name}
+                    </option>
+                ));
+                return finalList;
+            }
+            */
             if (this.props.selected.programs === undefined) {
                 let val = [""];
                 return val;
@@ -674,7 +800,24 @@ class Enrollment extends React.Component {
                 // console.log(this.props.program);
 
                 let tempList = [...this.props.selected.programs];
-                let finalList = tempList.map((val, index) => (
+                let tempProgramList = [];
+                tempList.forEach(tempProgram => {
+                    if (!tempProgram.withoutRegistration) {
+                        //let val = tempProgram.attributeValues.length;
+                        for (let i=0;i<tempProgram.attributeValues.length;i++) {
+
+                            if( tempProgram.attributeValues.length!==0) {
+                                if (tempProgram.attributeValues[i].attribute.code === 'cse_app_enroll'
+                                    && tempProgram.attributeValues[i].value === "true") {
+                                    tempProgramList.push(tempProgram);
+                                }
+                            }
+                        }
+                    }
+                });
+
+
+                let finalList = tempProgramList.map((val, index) => (
                     <option key={index} value={val.id}>
                         {val.name}
                     </option>
