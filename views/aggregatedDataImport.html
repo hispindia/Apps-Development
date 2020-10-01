@@ -1,0 +1,26 @@
+<div class="main">
+    <div class="card">
+        <div class="card-body">
+            <h2>Aggregated Data Import</h2>
+        </div>
+    </div>
+</div>
+<div ng-controller="LeftBarMenuController" class="card length">
+    <div class="side-bar card-body">
+        <div id="orgUnitTree">
+         <ul>
+        </ul>
+    </div>
+</div>
+<div class="content length1">
+    <div class="shadow-lg p-3 mb-5 bg-white rounded card" style="width: 34rem;" ng-controller="LeftBarMenuController">
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Organisatioin Unit<input class="form-control" /></li>
+                <li class="list-group-item">Period<input class="form-control" /></li>
+                <li class="list-group-item"> Please Upload .xlsx or .csv file <input type="file" style="width:300px; background-color: yellow;" id="fileInput"></li>
+                <li class="list-group-item"><button class="btn btn-primary" ng-click="getSet()">Import</button></li>
+              </ul>
+      </div>
+    </div>
+</div>
