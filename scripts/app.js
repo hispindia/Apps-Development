@@ -19,17 +19,14 @@ var excelImport = angular.module('excelImport',['ui.bootstrap',
 .config(function($routeProvider,$translateProvider){
         $routeProvider.when('/', {
             templateUrl:'views/home.html',
-            controller: 'LeftBarMenuController'
-
+            controller: 'importController'
         }).when('/tracker-data-import', {
             templateUrl:'views/trackerDataImport.html',
-            controller: 'LeftBarMenuController'
-
+            controller: 'importController'
         })
         .when('/aggregated-data-import', {
             templateUrl:'views/aggregatedDataImport.html',
-            controller: 'LeftBarMenuController'
-
+            controller: 'importController'
         })
         .otherwise({
             redirectTo : '/'
