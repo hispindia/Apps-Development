@@ -20,8 +20,8 @@ class DynamicComponent extends Component {
         var dECOC = this.state.dECOC;
         
         var url =  `../../../api/events.json?paging=false&orgUnit=${orgUnit}&ouMode=DESCENDANTS`;      
-        if(!startDate) url += `&startDate={startDate}`
-        if(!endDate) url += `&endDate={endDate}`   
+        if(startDate) url += `&startDate={startDate}`
+        if(endDate) url += `&endDate={endDate}`   
         return axios
         .get(url)
         .then(resp => {
@@ -40,20 +40,18 @@ class DynamicComponent extends Component {
                 eventData.dataValues = dataValue;
                 events.push(eventData);
             }
-
             });
 
+            if(!events.length) return;
             events.forEach(event => {
                 let eventDate = `${event.eventDate.split("-")["0"]}-${event.eventDate.split("-")["1"]}`;
                 let eventOrgUnit = event.orgUnit;
                 let eventDeCode = event.dataValues.deCode;
                 let eventCOC = event.dataValues.COC;
 
-                if(dECOC[eventDeCode] && dECOC[eventCOC]) {
-                    if(!programCount[eventOrgUnit]) programCount[eventOrgUnit] = {};
-                    if(!programCount[eventOrgUnit][eventDate]) programCount[eventOrgUnit][eventDate] = {};
-                    if(!programCount[eventOrgUnit][eventDate][`${dECOC[eventDeCode]}-${dECOC[eventCOC]}`]) programCount[eventOrgUnit][eventDate][`${dECOC[eventDeCode]}-${dECOC[eventCOC]}`] = 0;
-                    programCount[eventOrgUnit][eventDate][`${dECOC[eventDeCode]}-${dECOC[eventCOC]}`] += 1;
+                if(dECOC[eventDeCode] && dECOC[eventCOC] && eventDate && eventOrgUnit) {
+                    if(!programCount[`${eventOrgUnit}:${eventDate}:${dECOC[eventDeCode]}-${dECOC[eventCOC]}`]) programCount[`${eventOrgUnit}:${eventDate}:${dECOC[eventDeCode]}-${dECOC[eventCOC]}`] = 0;
+                    programCount[`${eventOrgUnit}:${eventDate}:${dECOC[eventDeCode]}-${dECOC[eventCOC]}`] += 1;
                 }
             })
             return programCount;
@@ -72,22 +70,19 @@ class DynamicComponent extends Component {
         });
     }
 
-    async postDataValues() {
-        var programCount = await this.getEvents("ANGhR1pa8I5", "2020-01-01", "2020-09-30");  
+    async postDataValues(orgUnit, startDate = "", endDate = "") {
+        var programCount = await this.getEvents(orgUnit, startDate, endDate);  
         var dataValues = [];
-
-        for(let orgUnit in programCount) {
-            for(let period in programCount[orgUnit]) {
-                for(let dataValue in programCount[orgUnit][period]) {
-                    dataValues.push({
-                        orgUnit: orgUnit,
-                        period: period,
-                        dataElement: dataValue.split("-")["0"],
-                        categoryOptionCombo: dataValue.split("-")["1"],
-                        value: programCount[orgUnit][period][dataValue]
-                    })
-                }
-            }
+        
+        for(let item in programCount) {
+            let dataValue = item.split(":");
+            dataValues.push({
+                orgUnit: dataValue["0"],
+                period: dataValue["1"],
+                dataElement: dataValue["2"].split("-")["0"],
+                categoryOptionCombo: dataValue["2"].split("-")["1"],
+                value: programCount[item]
+            })
         }
         console.log(dataValues);            
     }
@@ -95,8 +90,12 @@ class DynamicComponent extends Component {
     componentDidMount() {
         this.getdECOC();
     }
-
+    handleChange(e, id) {
+        this.setState({[id]: e.target.value})
+    }
     render() {
+        const { startDate, endDate } = this.state;
+
         return (
             <div className="pt-4 m-5 pb-5 mh-100 shadow-lg p-3 mb-4 bg-white rounded">
                 <h2 className="ml-5">Tracker Aggregation </h2>
@@ -109,7 +108,7 @@ class DynamicComponent extends Component {
                         Start Date:
                       </div>
                     <div className="col-sm-4 m-1">
-                       <input type="date" className="form-control" />
+                       <input type="date" value={startDate} onChange={(e) => this.handleChange(e, "startDate")} className="form-control" />
                    </div>
                 </div>
                 <div className="row">
@@ -117,10 +116,10 @@ class DynamicComponent extends Component {
                         End Date
                    </div>
                     <div className="col-sm-4 m-1">
-                      <input type="date" className="form-control" />
+                      <input type="date" value={endDate} onChange={(e) => this.handleChange(e, "endDate")} className="form-control" />
                    </div>
                 </div>
-                <button className="btn btn-primary ml-5" onClick={this.postDataValues}>Submit</button>
+                <button className="btn btn-primary ml-5" onClick={() => this.postDataValues(this.props.data.id, startDate, endDate)}>Submit</button>
             </div>
         );
     }
