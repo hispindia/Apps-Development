@@ -8,7 +8,8 @@ class DynamicComponent extends Component {
             startDate: "",
             endDate: "",
             dECOC: {},
-            programCount: {}
+            programCount: {},
+            dataJSON = {},
         }
         this.getdECOC = this.getdECOC.bind(this)
         this.postDataValues = this.postDataValues.bind(this)
@@ -84,7 +85,18 @@ class DynamicComponent extends Component {
                 value: programCount[item]
             })
         }
-        console.log(dataValues);            
+        console.log(dataValues);   
+
+        // PUSHING DATA IN DATA ENTRY
+        // this.setState({ dataJSON: JSON.stringify(dataValues) })
+        // axios.post('../api/dataValueSets/',JSON.stringify(dataValues))
+        // .then(function (response) {
+        //     console.log(response);
+        // })
+        // .catch(function (error) {
+        //     console.log(error);
+        // });
+
     }
 
     componentDidMount() {
