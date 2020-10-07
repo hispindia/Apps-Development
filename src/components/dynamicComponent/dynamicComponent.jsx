@@ -1,11 +1,101 @@
 import React, { Component } from 'react';
-import onSelect from '../homeComponent/homeComponent'
-class DynamicComponent extends React.Component {
+import axios from "axios";
+
+class DynamicComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            startDate: "",
+            endDate: "",
+            dECOC: {},
+            programCount: {}
         }
+        this.getdECOC = this.getdECOC.bind(this)
+        this.postDataValues = this.postDataValues.bind(this)
     }
+        
+    getEvents = (orgUnit, startDate, endDate) => {
+        var events = [];    
+        var programCount = {}; 
+        var dECOC = this.state.dECOC;
+        
+        var url =  `../../../api/events.json?paging=false&orgUnit=${orgUnit}&ouMode=DESCENDANTS`;      
+        if(!startDate) url += `&startDate={startDate}`
+        if(!endDate) url += `&endDate={endDate}`   
+        return axios
+        .get(url)
+        .then(resp => {
+            resp.data.events.forEach(event => {
+            var eventData = {};
+            var dataElement = {}
+            var dataValue = {};
+            if(event["eventDate"]) {
+                eventData.eventDate = event["eventDate"].split("T")["0"];
+                eventData.orgUnit = event["orgUnit"];
+                eventData.program = event["program"];                
+                event.dataValues.forEach(dataValue => dataElement[dataValue.dataElement] = dataValue.value);
+    
+                if(dataElement["SaQe2REkGVw"]) dataValue["deCode"] = dataElement["SaQe2REkGVw"];
+                if(dataElement["mp5MeJ2dFQz"] && dataElement["B7XuDaXPv10"]) dataValue["COC"] = `${dataElement["mp5MeJ2dFQz"]}, ${dataElement["B7XuDaXPv10"]}`;
+                eventData.dataValues = dataValue;
+                events.push(eventData);
+            }
+
+            });
+
+            events.forEach(event => {
+                let eventDate = `${event.eventDate.split("-")["0"]}-${event.eventDate.split("-")["1"]}`;
+                let eventOrgUnit = event.orgUnit;
+                let eventDeCode = event.dataValues.deCode;
+                let eventCOC = event.dataValues.COC;
+
+                if(dECOC[eventDeCode] && dECOC[eventCOC]) {
+                    if(!programCount[eventOrgUnit]) programCount[eventOrgUnit] = {};
+                    if(!programCount[eventOrgUnit][eventDate]) programCount[eventOrgUnit][eventDate] = {};
+                    if(!programCount[eventOrgUnit][eventDate][`${dECOC[eventDeCode]}-${dECOC[eventCOC]}`]) programCount[eventOrgUnit][eventDate][`${dECOC[eventDeCode]}-${dECOC[eventCOC]}`] = 0;
+                    programCount[eventOrgUnit][eventDate][`${dECOC[eventDeCode]}-${dECOC[eventCOC]}`] += 1;
+                }
+            })
+            return programCount;
+        });
+    }
+
+    async getdECOC() {  
+        var dECOC = {};
+        axios.get(`../../../api/29/sqlViews/GGhupAYbdg2/data.json?paging=false`)
+        .then((resp) => {
+            resp.data.listGrid.rows.forEach( row => {
+                if(row["0"]) dECOC[row["0"]] = row["2"];
+                if(row["7"]) dECOC[row["7"]] = row["6"];
+            });
+            this.setState({dECOC: dECOC})
+        });
+    }
+
+    async postDataValues() {
+        var programCount = await this.getEvents("ANGhR1pa8I5", "2020-01-01", "2020-09-30");  
+        var dataValues = [];
+
+        for(let orgUnit in programCount) {
+            for(let period in programCount[orgUnit]) {
+                for(let dataValue in programCount[orgUnit][period]) {
+                    dataValues.push({
+                        orgUnit: orgUnit,
+                        period: period,
+                        dataElement: dataValue.split("-")["0"],
+                        categoryOptionCombo: dataValue.split("-")["1"],
+                        value: programCount[orgUnit][period][dataValue]
+                    })
+                }
+            }
+        }
+        console.log(dataValues);            
+    }
+
+    componentDidMount() {
+        this.getdECOC();
+    }
+
     render() {
         return (
             <div className="pt-4 m-5 pb-5 mh-100 shadow-lg p-3 mb-4 bg-white rounded">
@@ -30,7 +120,7 @@ class DynamicComponent extends React.Component {
                       <input type="date" className="form-control" />
                    </div>
                 </div>
-                <button className="btn btn-primary ml-5">Submit</button>
+                <button className="btn btn-primary ml-5" onClick={this.postDataValues}>Submit</button>
             </div>
         );
     }
