@@ -18,5 +18,21 @@ var excelImportAppServices = angular.module('excelImportAppServices', [])
             });
             return def;
         },
+        postExcelData: function (payload) {
+            console.log('here is payload', payload)
+            var def = $.Deferred();
+            // $.ajax({
+            //     type: "Post",
+            //     dataType: "json",
+             //    data: JSON.stringify(payload),
+            //     contentType: "application/json",
+            //     url: '../../organisationUnits/' + id + ".json?fields=id,displayName,code&includeDescendants=true&paging=false",
+            //     success: function (data) {
+            //         def.resolve(data);
+            //     }
+            // });
+            return def;
+        },
+        
        }
     });

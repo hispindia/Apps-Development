@@ -26,7 +26,7 @@ var excelImport = angular.module('excelImport',['ui.bootstrap',
         })
         .when('/aggregated-data-import', {
             templateUrl:'views/aggregatedDataImport.html',
-            controller: 'importController'
+            controller: 'aggregatedataimportController'
         })
         .otherwise({
             redirectTo : '/'

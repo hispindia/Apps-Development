@@ -254,7 +254,6 @@ dhis2API.enrollment.prototype.POST = function(successCallback,errorCallback,inde
             response.importStat.index=index;
             response.importStat.metadata = JSON.stringify(enrollment);
             response.importStat.domain = DOMAIN_ENROLLMENT;
-
             successCallback(response);
         },
         error: function(response){
@@ -737,9 +736,7 @@ dhis2API.dataValue.prototype.getAPIObject = function(){
 }
 
 dhis2API.dataValue.prototype.excelImportPopulator = function(header,data, ouUid){
-
     this.orgUnit = ouUid;
-
     for (var i=0;i<header.length;i++){
         switch(header[i].field){
             case FIELD_ORG_UNIT :
