@@ -33,8 +33,16 @@ h3 {
   margin: 0 32px 0 0;
 }
 .leftMargin {
-margin-left: 30px;
+  margin-left: 30px;
 }
 .header {
+  text-align: center;
+}
+.spinner-border {
+  margin-top: 5%;
+  margin-left: 25%;
+}
+.alert-success {
+  width: 50%;
   text-align: center;
 }
