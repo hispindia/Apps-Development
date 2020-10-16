@@ -873,10 +873,19 @@ class Enrollment extends React.Component {
                                 <td> <input type="checkbox" onClick={() => this.teiCheck(teiIndex)} /> </td>
                             </tr>
                                 ))}
-                            <tr>
-                                <td>
-                                    <Button color="primary" disabled={this.state.closeEnrollmentButtonStatus} onClick={() =>this.closeEnrollment()}>Close/New Enrollment</Button>
-                                </td>
+
+                                <tr>
+                                    <td></td>
+                                    {this.state.teiAttributeHeader.map((teiAttrName, index) => (
+                                        <td></td>
+                                    ))}
+
+                                    <td></td>
+
+                                    <td>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <Button color="primary" disabled={this.state.closeEnrollmentButtonStatus} onClick={() =>this.closeEnrollment()}>Close/New Enrollment</Button>
+                                    </td>
                                 {/*
                                 <td>
                                     <Button color="primary" disabled={this.state.newEnrollmentButtonStatus} onClick={() =>this.newEnrollment()}>New Enrollment</Button>

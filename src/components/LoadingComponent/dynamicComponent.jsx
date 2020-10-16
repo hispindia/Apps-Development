@@ -789,49 +789,45 @@ class DynamicData extends React.Component {
                 <Col className ="col-md-8"><DatePicker onChange={this.onChange} value={this.state.date} /></Col>
               </Row>
               <br />
+              <Row form className = "cseSchool">
+                <Col className ="col-md-4">Class :</Col>
+                <Col className ="col-md-3">
+                  <Multiselect
+                      options={this.state.classOptionList} // Options to display in the dropdown
+                      onSelect={this.onSelectClass} // Function will trigger on select event
+                      onRemove={this.onRemoveClass} // Function will trigger on remove event
+                      selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
+                      displayValue="displayName" // Property name to display in the dropdown options
+                  />
+                </Col>
+                <Col className ="col-md-2">Division: </Col>
+                <Col className ="col-md-3">
+                  <Multiselect
+                      options={this.state.divisionOptionList} // Options to display in the dropdown
+                      onSelect={this.onSelectDivision} // Function will trigger on select event
+                      onRemove={this.onRemoveDivision} // Function will trigger on remove event
+                      selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
+                      displayValue="displayName" // Property name to display in the dropdown options
+                  />
+                </Col>
+              </Row>
+              <Row form className = "youthGroup">
+                <Col className ="col-md-4">Youth Group :</Col>
+                <Col className ="col-md-3">
+                  <Multiselect
+                      options={this.state.youthGroupOptionList} // Options to display in the dropdown
+                      onSelect={this.onSelectYouthGroup} // Function will trigger on select event
+                      onRemove={this.onRemoveYouthGroup} // Function will trigger on remove event
+                      selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
+                      displayValue="displayName" // Property name to display in the dropdown options
+                  />
+                </Col>
+                <Col className ="col-md-2">Enrollment Date: </Col>
+                <Col className ="col-md-3"><DatePicker onChange={this.onChangeEnrollmentDate} value={this.state.enrollmentDate} /></Col>
+              </Row>
             </div>
             <Row form>
               <div className='p-5 shadow-lg p-3 mb-3 bg-white rounded box font col-md-12'>
-                <Row form className = "cseSchool">
-                  <Col className ="col-md-3">Class :</Col>
-                  <Col className ="col-md-3">
-                    <Multiselect
-                        options={this.state.classOptionList} // Options to display in the dropdown
-                        onSelect={this.onSelectClass} // Function will trigger on select event
-                        onRemove={this.onRemoveClass} // Function will trigger on remove event
-                        selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
-                        displayValue="displayName" // Property name to display in the dropdown options
-                    />
-                  </Col>
-                  <Col className ="col-md-3">Division: </Col>
-                  <Col className ="col-md-3">
-                    <Multiselect
-                        options={this.state.divisionOptionList} // Options to display in the dropdown
-                        onSelect={this.onSelectDivision} // Function will trigger on select event
-                        onRemove={this.onRemoveDivision} // Function will trigger on remove event
-                        selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
-                        displayValue="displayName" // Property name to display in the dropdown options
-                    />
-                  </Col>
-                </Row>
-
-                <Row form className = "youthGroup">
-                  <Col className ="col-md-2">Youth Group :</Col>
-                  <Col className ="col-md-4">
-                    <Multiselect
-                        options={this.state.youthGroupOptionList} // Options to display in the dropdown
-                        onSelect={this.onSelectYouthGroup} // Function will trigger on select event
-                        onRemove={this.onRemoveYouthGroup} // Function will trigger on remove event
-                        selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
-                        displayValue="displayName" // Property name to display in the dropdown options
-                    />
-                  </Col>
-                  <Col className ="col-md-2">Enrollment Date: </Col>
-                  <Col className ="col-md-4"><DatePicker onChange={this.onChangeEnrollmentDate} value={this.state.enrollmentDate} /></Col>
-                </Row>
-
-
-
                 <br />
                 <Col>{sectionHeader()}</Col>
                 <br />
