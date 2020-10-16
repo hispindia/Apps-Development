@@ -75,7 +75,7 @@
         </div>
     </div>
 
-    <!-- Data Element Mapping of the template is displayed here -->
+    <!-- Data Element Mapping of the template is displayed here  with edit option -->
     <div id="tempDEMappingPage" style="overflow-y: auto" ng-if="tempDEMappingPage">
         <table class='table table-bordered table-hover' id="tableContent" style="width:95%; margin: 0 auto;margin-top:10px">
             <thead ng-if="selectedTemp.typeId==1">
@@ -111,19 +111,22 @@
                     <button class="btn btn-danger" ng-click="selectedTemp.DEMappings.splice($index, 1)">-</button>
                 </td>
             </tr>
+            
 
-            <!-- add new cell -->
+            <!-- add new cell while update the teamaplate  -->
             <tr>
                 <td>
                     <input ng-if="selectedTemp.typeId==1" class="form-control am" type="number" placeholder="Row Number" style="border-radius:0 5px 5px 0;margin-bottom:5px" ng-model="model.mappingID"/>
                     <input ng-if="selectedTemp.typeId==2" class="form-control am" type="text" placeholder="Cell Address" style="border-radius:0 5px 5px 0;margin-bottom:5px" ng-model="model.mappingID"/>
                 </td>
                 <td>
-                    <select class='form-control' ng-model="model.newDEwithCOC">
+                    <select  style="min-height:40px;" id="chosen-select" 
+                        ng-click="searchData()" class='form-control' ng-model="model.newDEwithCOC">
                         <option ng-repeat="option in availableOptions | orderBy:'name'"
                                 value="{{option.id}}">{{option.name}}
                         </option>
                     </select>
+                      
                 </td>
                 <td>
                     <button class="btn btn-success" ng-click="addNewMapping()" ng-disabled="model.mappingID.length<1||model.newDEwithCOC==-1">+</button>
@@ -132,7 +135,9 @@
             </tbody>
         </table>
     </div>
+	
 </div>
+
 <div class="modal-footer">
     <div class="pull-left">
         <button class="btn btn-primary" ng-click="saveTemp()">{{'Save'| translate}}</button>
@@ -143,3 +148,22 @@
         <button class="btn btn-success" ng-click="showTempDEMappingPage()" ng-disabled="tempDEMappingPage">{{'->'| translate}}</button>
     </div>
 </div>
+
+<script type="text/javascript">
+    var config = {
+      '.chosen-select'           : {},
+      '.chosen-select-deselect'  : {allow_single_deselect:true},
+      '.chosen-select-no-single' : {disable_search_threshold:10},
+      '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
+      '.chosen-select-width'     : {width:"95%"}
+    }
+    for (var selector in config) {
+      $(selector).chosen(config[selector]);
+    }
+          </script>
+
+<script type="text/javascript">
+
+     $("#chosen-select").chosen();
+    
+</script>          

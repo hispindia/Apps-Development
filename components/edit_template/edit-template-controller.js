@@ -28,7 +28,6 @@ excelUpload.controller('EditTemplateController',
 
         $scope.model = {newCellAddress:"",newDEwithCOC:-1};
 
-
         ExcelMappingService.get('Excel-import-app-templates').then(function(tem){
             if(!jQuery.isEmptyObject(tem))
                 $scope.templates = tem;
@@ -54,6 +53,43 @@ excelUpload.controller('EditTemplateController',
                     });
             });
         });
+
+        $scope.searchData = function() {
+            $("#chosen-select").chosen({ 
+                width:'330px',
+                no_results_text: "Oops, nothing found!",
+                placeholder_text_single: "Select value",
+                search_contains : 'false',
+                disable_search_threshold: '10'
+             });
+            
+    
+        }
+
+        $scope.searchUpdate = function() {
+            $("#chosen-select_1").chosen({ 
+                width:'330px',
+                no_results_text: "Oops, nothing found!",
+                placeholder_text_single: "Select value",
+                search_contains : 'false',
+                disable_search_threshold: '10'
+             });
+            
+    
+        }
+
+
+        // $scope.init = function () {
+        //     $("#chosen-select").chosen({ 
+        //         width:'330px',
+        //         no_results_text: "Oops, nothing found!",
+        //         placeholder_text_single: "Select value",
+        //         search_contains : 'false',
+        //         disable_search_threshold: '10'
+        //      });
+
+        //  };
+
 
         $scope.getSelectedDSWithCOC = function(){
             var url = "../../../api/dataSets/"+ $scope.selectedTemp.dataSet +".json?fields=id,organisationUnits[id],dataSetElements[dataElement[id,name,shortName,categoryCombo[categoryOptionCombos[id,name]]]]&paging=false";
@@ -149,3 +185,4 @@ excelUpload.controller('EditTemplateController',
             $modalInstance.dismiss('cancel');
         };
     });
+
