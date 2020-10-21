@@ -46,3 +46,6 @@ h3 {
   width: 50%;
   text-align: center;
 }
+.ml-8 {
+  margin-left: 8rem !important;
+}

@@ -24,7 +24,7 @@ class HomeComponet extends Component {
           <div className="col-lg-auto col-md-auto col-sm-auto col-xs-auto shadow-lg bg-white rounded">
             <OrgUnitTree onSelect={this.onSelect} onError={onError} />
           </div>
-          <div className="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+          <div className="col-lg-7 col-md-7 col-sm-7 col-xs-7">
             <DynamicComponent data={this.state.orgUnit} />
           </div>
         </div>
