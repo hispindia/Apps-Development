@@ -321,7 +321,9 @@ dhis2API.event = function(){
 }
 
 dhis2API.event.prototype.excelImportPopulator = function(header,data,tei){
-
+    var payload = JSON.parse(localStorage.getItem('payload')) ;
+    this.eventDate = payload.eventDate;
+    this.orgUnit = payload.OrgUnit;
     if (tei){
         if (tei.length >0){
             this.tei = tei[0].trackedEntityInstance;
@@ -331,13 +333,13 @@ dhis2API.event.prototype.excelImportPopulator = function(header,data,tei){
 
     for (var i=0;i<header.length;i++){
         switch(header[i].field){
-            case FIELD_ORG_UNIT :
-                if (header[i].args){
-                    this.orgUnit = header[i].args;
-                }else{
-                    this.orgUnit = data[header[i].key];
-                }
-                break
+            // case FIELD_ORG_UNIT :
+            //     if (header[i].args){
+            //         this.orgUnit = header[i].args;
+            //     }else{
+            //         this.orgUnit = data[header[i].key];
+            //     }
+            //     break
             case FIELD_PROGRAM:
                 if (header[i].args){
                     this.program = header[i].args;
@@ -352,13 +354,13 @@ dhis2API.event.prototype.excelImportPopulator = function(header,data,tei){
                     this.programStage = data[header[i].key];
                 }
                 break;
-            case FIELD_EVENT_DATE :
-                if (header[i].args){
-                    this.eventDate = header[i].args;
-                }else{
-                    this.eventDate = data[header[i].key];
-                }
-                break
+            // case FIELD_EVENT_DATE :
+            //     if (header[i].args){
+            //         this.eventDate = header[i].args;
+            //     }else{
+            //         this.eventDate = data[header[i].key];
+            //     }
+            //     break
             case FIELD_TRACKED_ENTITY_INSTANCE:
                 if (header[i].args){
                     this.tei = header[i].args;

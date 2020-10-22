@@ -1,9 +1,10 @@
-<div id="mainPage" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+<div id="mainPage" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 fonts"  ng-controller="importController">
     <div class="btnAlign">
-        <button class="btn btn-primary" style="margin-left: 10px;" ng-click="GoBack()">Go Back</button><h1><b style="margin-left: 450px;">Tracker Data Import</b></h1>
+        <button class="btn btn-primary" style="margin-left: 10px;" ng-click="GoBack()">Go Back</button>
+        <h1><b style="margin-left: 450px;">Outbreak Data Import</b></h1>
     </div>
     <h2>
-        <div ng-controller="LeftBarMenuController" class="card length">
+        <div class="card length">
             <div class="side-bar card-body">
                 <div id="orgUnitTree">
                     <ul>
@@ -11,11 +12,10 @@
                 </div>
             </div>
             <div class="content length1">
-                <div class="shadow-lg p-3 mb-5 bg-white rounded card" style="width: 34rem;"
-                    ng-controller="LeftBarMenuController">
+                <div class="shadow-lg p-3 mb-5 bg-white rounded card boxText" style="width: 34rem;">
                     <div class="card-body">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Organisatioin Unit<input  ng-model="selectedOrgUnit.name"
+                            <li class="list-group-item">Organisation Unit<input ng-model="selectedOU.name"
                                     class="form-control" /></li>
                             <li class="list-group-item">Period<select id="period" class="form-control">
                                     <option ng-repeat="year in years">{{year}}</option>
@@ -28,71 +28,71 @@
                     </div>
                 </div>
             </div>
-            <div id="firstTable">
-            <div ng-show="importSummary.outcome == 'error'" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <label>{{importSummary.errorMessage}}</label>
-            </div>
-            <div style="width:1300px; text-align: center;" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <h2><b>Following Mappings were found :-</b></h2>
-            </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <table class="table">
-                    <tr>
-                        <th>Domain</th>
-                        <th>Column</th>
-                        <th>Field</th>
-                        <th>Arguments</th>
-                    </tr>
-                    <tbody ng-repeat="iSummary in initialSummary">
+            <!-- <div id="firstTable">
+                <div ng-show="importSummary.outcome == 'error'" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label>{{importSummary.errorMessage}}</label>
+                </div>
+                <div style="width:1300px; text-align: center;" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h2><b>Following Mappings were found :-</b></h2>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <table class="table lowerSection">
                         <tr>
-                            <td rowspan="{{iSummary.length+1}}">{{iSummary[0].domain}}</td>
+                            <th>Domain</th>
+                            <th>Column</th>
+                            <th>Field</th>
+                            <th>Arguments</th>
                         </tr>
-                        <tr ng-repeat="item in iSummary">
-                            <td>{{item.key}}</td>
-                            <td>{{item.field}}</td>
-                            <td>{{item.args}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                        <tbody ng-repeat="iSummary in initialSummary">
+                            <tr>
+                                <td rowspan="{{iSummary.length+1}}">{{iSummary[0].domain}}</td>
+                            </tr>
+                            <tr ng-repeat="item in iSummary">
+                                <td>{{item.key}}</td>
+                                <td>{{item.field}}</td>
+                                <td>{{item.args}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div> -->
         </div>
-     </div>
         <br>
         <div id="secondTable">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <span class="btn btn-info float-right">No of Requests made : {{requestStats.requestCount}}</span>
-            <span class="btn btn-success" style="width:230px;">No of Successful requests :
-                {{requestStats.successCount}}</span>
-            <span class="btn btn-danger float-left">No of Failed requests : {{requestStats.errorCount}}</span>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Row</th>
-                            <th>Domain</th>
-                            <th>Status</th>
-                            <th>HTTP Response</th>
-                            <th>Conflict Details</th>
-                            <th>Reference</th>
-                        </tr>
-                    </thead>
-                    <tbody ng-repeat="summaryItems in importSummary">
-                        <tr>
-                            <td rowspan="{{summaryItems.length+1}}"> {{summaryItems[0].row+2}}</td>
-                        </tr>
-                        <tr ng-repeat="item in summaryItems">
-                            <td>{{item.domain}}</td>
-                            <td>{{item.status}}</td>
-                            <td>{{item.httpResponse.message}}</td>
-                            <td><i ng-repeat="conflict in item.conflicts">{{conflict.object}} {{conflict.value}}</i>
-                            </td>
-                            <td>{{item.reference}}</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 boxTexts">
+                <span class="btn btn-info float-right">No of Requests made : {{requestStats.requestCount}}</span>
+                <span class="btn btn-success" style="width:230px;">No of Successful requests :
+                    {{requestStats.successCount}}</span>
+                <span class="btn btn-danger float-left">No of Failed requests : {{requestStats.errorCount}}</span>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Row</th>
+                                <th>Domain</th>
+                                <th>Status</th>
+                                <th>HTTP Response</th>
+                                <th>Conflict Details</th>
+                                <th>Reference</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="summaryItems in importSummary">
+                            <tr>
+                                <td rowspan="{{summaryItems.length+1}}"> {{summaryItems[0].row+2}}</td>
+                            </tr>
+                            <tr ng-repeat="item in summaryItems">
+                                <td>{{item.domain}}</td>
+                                <td>{{item.status}}</td>
+                                <td>{{item.httpResponse.message}}</td>
+                                <td><i ng-repeat="conflict in item.conflicts">{{conflict.object}} {{conflict.value}}</i>
+                                </td>
+                                <td>{{item.reference}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
         <div class="alert">
             <table>
                 <tr ng-repeat="error in errorList">

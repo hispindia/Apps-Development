@@ -1196,7 +1196,7 @@ input, button, select, textarea {
 }
 .btnAlign {
     margin-top: 60px;
-   }
+}
 .content{
     margin-left: 330px;
 }
@@ -1221,3 +1221,110 @@ input, button, select, textarea {
 .length1{
     width: 75%;
 }
+.lowerSection{
+    width: 1350px;
+}
+.fonts{
+    font-size: 8pt !important;
+}
+#loader {
+    position: absolute;
+    left: 50%;
+    top: 500px;
+    z-index: 1;
+    width: 150px;
+    height: 150px;
+    margin: -75px 0 0 -75px;
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #34B4DB;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Add animation to "page content" */
+
+.animate-bottom {
+    position: relative;
+    -webkit-animation-name: animatebottom;
+    -webkit-animation-duration: 1s;
+    animation-name: animatebottom;
+    animation-duration: 1s
+}
+
+@-webkit-keyframes animatebottom {
+    from {
+        bottom: -100px;
+        opacity: 0
+    }
+
+    to {
+        bottom: 0px;
+        opacity: 1
+    }
+}
+
+@keyframes animatebottom {
+    from {
+        bottom: -100px;
+        opacity: 0
+    }
+
+    to {
+        bottom: 0;
+        opacity: 1
+    }
+}
+.boxText{
+    font-size: 12pt;
+}
+.boxTexts{
+    font-size: 12pt;
+}
+.data1{
+    text-align: center !important;
+}
+.logo{
+    text-align: left !important;
+}
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto ;
+    grid-gap: 4px;
+    background-color: darkgreen;
+    padding: 4px;
+  }
+  
+  .grid-container > div {
+    background-color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    padding: 20px 0;
+    font-size: 30px;
+    color: darkgreen;
+  }
+  
+  .item1 {
+    grid-row: 1 / span 2;
+  }

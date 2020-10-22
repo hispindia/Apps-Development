@@ -349,9 +349,7 @@ function importHandler(headers,importData,notificationCallback) {
     }
 
     function enroll(index, data, header, tei, enrollCallback) {
-
         var enrollment = new dhis2API.enrollment();
-
         enrollment.excelImportPopulator(header, data, tei);
         enrollment.POST(enrollCallback, enrollCallback, index);
     }
