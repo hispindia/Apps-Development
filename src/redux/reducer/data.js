@@ -1,6 +1,6 @@
 import { GET_ORG_UNITS_DETAIL, METADATA_RECEIVED, SET_PAYLOAD, SET_DATA_VALUES, SET_TEI_ATTRIBUTE, TRACKED_ENTITY_RECEIVED,
    CHECKED_VALIDATION, EVENT_FAILURE, DYNAMIC_RECEIVED_DATA, PROGRAMS_RECEIVED, PROGRAMSTAGE_RECEIVED, PROGRAMSTAGE_SECTIONS_RECEIVED,
-    UPDATE_EVENT_VALUES,RESET_FORM, SET_PROGRAM_RULES, EVENT_POST, RESET,LOADING_PAGE } from '../action';
+    UPDATE_EVENT_VALUES,RESET_FORM, SET_PROGRAM_RULES, PROGRAM_RULE_MERGE, EVENT_POST, RESET,LOADING_PAGE,FETCH_CONDITIONAL_OU, SET_PROGRAM_RULES_CONDITION } from '../action';
 const INITIAL_EVENT = {
   values: null,
   programStage: null,
@@ -47,7 +47,10 @@ const INITIAL_STATE = {
   programStatus: false,
   orgUnitStatus: false,
   failEvent: false,
-  pageLoading: false
+  pageLoading: false,
+  conditionalOU:[],
+  programRulesCondition:[],
+  mergeProgramRuleCondition: []
 };
 export const dataReducer = (state = INITIAL_STATE, {
   type,
@@ -79,18 +82,28 @@ export const dataReducer = (state = INITIAL_STATE, {
       return { ...state,
         dataValue: payload
       };
-
+      case PROGRAM_RULE_MERGE:
+        return { ...state,
+          mergeProgramRuleCondition: payload
+        };
     case SET_PROGRAM_RULES:
       return { ...state,
         programsRules: payload
       };
-
+      case SET_PROGRAM_RULES_CONDITION:
+        return { ...state,
+          programRulesCondition: payload
+        };
+  
     case SET_TEI_ATTRIBUTE:
       return { ...state,
         attributes: payload,
         TEIRender: false
       };
-
+      case FETCH_CONDITIONAL_OU:
+        return { ...state,
+          conditionalOU: payload
+        };
     case TRACKED_ENTITY_RECEIVED:
       return { ...state,
         tranckedEntityInstances: payload,
@@ -184,12 +197,14 @@ export const dataReducer = (state = INITIAL_STATE, {
         {
           return { ...state,
             eventPost: true,
+            pageLoading: true
           };
         }
         case EVENT_FAILURE:
         {
           return { ...state,
-            failEvent: true
+            failEvent: true,
+            pageLoading: true
           };
         }
     default:

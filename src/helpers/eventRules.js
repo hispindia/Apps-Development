@@ -1,4 +1,5 @@
 export const eventRules = (values, stage, rules // { rules, optionSets, pushChanges, updateValue }
+  
 ) => {
   /**
    * Gets the section that is affected by rule.
@@ -80,13 +81,24 @@ export const eventRules = (values, stage, rules // { rules, optionSets, pushChan
             break;
 
           case 'HIDEFIELD':
-            if (cond === de.hide) break; // setColors(rule.condition, de);
-
-            de.hide = cond;
-
-            if (values[de.id] !== '') {
-              values[de.id] = ''; // if (pushChanges) updateValue(de.id, '');
+            if(cond && !de.programRuleId){
+              de.programRuleId = rule.id;
+              de.hide = cond;
+              if (values[de.id] !== '') {
+                values[de.id] = ''; // if (pushChanges) updateValue(de.id, '');
+              }
             }
+            else if(rule.id == de.programRuleId && !cond){
+              de.hide = cond;
+              de.programRuleId =''
+            }  
+            // if (cond === de.hide) break; // setColors(rule.condition, de);
+
+            // de.hide = cond;
+
+            // if (values[de.id] !== '') {
+            //   values[de.id] = ''; // if (pushChanges) updateValue(de.id, '');
+            // }
 
             break;
 

@@ -2,13 +2,15 @@ import React, { useEffect } from "react";
 import { Paper, Grid, Card, CardContent, CircularProgress } from "@material-ui/core";
 import { OrgUnitTree } from "@hisp-amr/org-unit-tree";
 import { useDispatch, useSelector } from "react-redux";
-import { resetDyanamicData,resetStaticData, getOrgUnitDetail, setPayload, setDataValues, getProgramStages, getPrograms, getProgramStageSections, setProgramRule } from "../../redux/action/event";
+import { resetDyanamicData,resetStaticData, getOrgUnitDetail, setPayload, setDataValues, getProgramStages, getPrograms, getProgramStageSections, setProgramRule, setCondtionalOU } from "../../redux/action/event";
 import { Sections } from "./sections";
 import Loader from "react-loader-spinner";
 import "./custom.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import $ from "jquery";
+import { ApiService } from "../../services/apiService";
+import { eventRules } from '../../helpers/eventRules';
 
 export const StaticData = (props) => {
   const dispatch = useDispatch();
@@ -42,7 +44,7 @@ export const StaticData = (props) => {
    if( orgUnitStatus && !metaDataLoading){
     let data = [];
     for (let program of metadata.programs) {
-       if(program["attributeValues"]["YiQU1BzZvVQ"]){
+       if(program["attributeValues"]["bulkEventPush"]){  // for bulk entry 
         for (let org of program.organisationUnits) {
           if (org.id === payload.orgUnitId ) {
             data.push(program);
@@ -85,7 +87,7 @@ export const StaticData = (props) => {
     
     let ps = programStages.filter(programStage => programStage.id === e.target.value);
     let dataValues = [];
-
+    console.log(' ps[0].programStageDataElements',  ps[0].programStageDataElements)
     for (let values of ps[0].programStageDataElements) {
       dataValues[values.dataElement.id] = "";
     }

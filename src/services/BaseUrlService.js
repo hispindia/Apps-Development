@@ -1,2 +1,2 @@
 
- export const BaseUrl ='https://training.yesme.plan-yes.online/training';
+ export const BaseUrl ='https://yesme.plan-yes.online/yesme';

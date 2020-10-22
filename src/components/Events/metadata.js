@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ApiService } from "../../services/apiService";
-import { LoadMetaData} from "../../redux/action/event";
+import { LoadMetaData, setCondtionalOU, loadProgramRuleCondition, programConditionCheck} from "../../redux/action/event";
 
  export const MetaData = () => {
   const dispatch = useDispatch();
   const metaDataLoading = useSelector(state => state.data.metaDataLoading)
+  const programRulesCondition = useSelector(state => state.data.programRulesCondition)
 useEffect(() => {
   if(metaDataLoading){
     ApiService.getMetaData().then(res => {
@@ -14,7 +15,7 @@ useEffect(() => {
           if(program.attributeValues.length){
             let attribute = []
             program.attributeValues.forEach( attr => {
-             attribute[attr.attribute.id]=Boolean(attr.value);
+             attribute[attr.attribute.code]=Boolean(attr.value);
             })
             program.attributeValues = attribute; 
           }
@@ -23,7 +24,7 @@ useEffect(() => {
               if(programStage.attributeValues.length){
                 let attribute = []
                 programStage.attributeValues.forEach( attr => {
-                 attribute[attr.attribute.id]=Boolean(attr.value);
+                 attribute[attr.attribute.code]=Boolean(attr.value);
                 })
                 programStage.attributeValues = attribute; 
               }
@@ -41,8 +42,8 @@ useEffect(() => {
                   if (programStageDataElements[de.id]) {
                     de["required"] = programStageDataElements[de.id] == "false" ? false : true;
                   }
-  
                   de["hide"] = false;
+                  de["programRuleId"]= ""
                   programSectionDataElements[de.id] = de;
                   dataElementIndex[de.id] = index;
                 });
@@ -74,7 +75,11 @@ useEffect(() => {
           }
           return c;
         };
-  
+         let programRulesCondition =[]
+         for(let programRule of res.programRules ){
+          programRulesCondition.push(programRule.condition)
+         }
+         dispatch(loadProgramRuleCondition(programRulesCondition));
         res.programRules.forEach(programRule => {
           programRule.condition = programCondition(programRule.condition);
         });
