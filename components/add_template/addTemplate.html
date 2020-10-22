@@ -109,8 +109,80 @@
 				<image class="loadImage" src="images/loader.gif"/>
 			</div>
 			<div class="coverLoad"></div>
+
 			<div id="printContent">
-				<table class='table table-bordered table-hover' id="tableContent" style="width:95%; margin: 0 auto;margin-top:10px">
+				<table class='table table-bordered table-hover' style="width:95%; margin: 0 auto;margin-top:10px">
+
+					<thead>
+						<tr>
+							<th>{{'Row No.'| translate}}</th>
+							<th>{{'Respective Data Element - COC combination'| translate}}</th>
+
+						</tr>
+						</thead>
+						<thead ng-if="selectedTemp.typeId==2">
+						<tr>
+							<th>{{'Cell Address'| translate}}</th>
+							<th>{{'Respective Data Element - COC combination'| translate}}</th>
+						</tr>
+						</thead>
+
+					<tbody ng-if="optionValue.length>1">
+
+					<tr ng-repeat="item in lebelName">
+						<td>
+							{{item}}
+						</td>
+						<td>
+
+					<ui-select tagging ng-model="singleDemo.color" theme="select2" style="width: 880px;">
+						<ui-select-match placeholder="Select item...">{{$select.selected}}</ui-select-match>
+					
+						<ui-select-choices repeat="opt in optionValue | filter: $select.search">
+							<span ng-bind-html="opt | highlight: $select.search"></span>
+							<!-- <div ng-bind-html="{{opt}} | highlight: $select.search"></div> -->
+						</ui-select-choices>
+						
+					</ui-select>
+
+						<!-- <ui-select name="selectedDistrict" id="selectedDistrict" ng-model="selectedDistrict"
+						theme="select2" class="ui-select-style">
+
+						<ui-select-match allow-clear="true" class="form-control-ui-select" ng-model="selectedDistrict" placeholder="{{'select_or_search' | translate}}">
+						{{$select.selected.name || $select.selected}}</ui-select-match>
+
+						<ui-select-choices ng-model="selectedDistrict" repeat="districtOrgUnit.name as districtOrgUnit in optionValue | filter: $select.search | limitTo:maxOptionSize">
+						<span ng-bind-html="districtOrgUnit.name | highlight: $select.search"></span>
+						</ui-select-choices>
+
+						</ui-select> -->
+						</td>
+
+					</tr>
+
+							
+							
+				
+							<!-- add new cell while update the teamaplate 
+							<tr>
+								<td>
+									<input ng-if="selectedTemp.typeId==1" class="form-control am" type="number" placeholder="Row Number" style="border-radius:0 5px 5px 0;margin-bottom:5px" ng-model="model.mappingID"/>
+									<input ng-if="selectedTemp.typeId==2" class="form-control am" type="text" placeholder="Cell Address" style="border-radius:0 5px 5px 0;margin-bottom:5px" ng-model="model.mappingID"/>
+								</td>
+								<td>
+									<select  style="min-height:40px;" id="chosen-select" 
+										ng-click="searchData()" class='form-control' ng-model="model.newDEwithCOC">
+										<option ng-repeat="option in availableOptions | orderBy:'name'"
+												value="{{option.id}}">{{option.name}}
+										</option>
+									</select>
+									  
+								</td>
+								<td>
+									<button class="btn btn-success" ng-click="addNewMapping()" ng-disabled="model.mappingID.length<1||model.newDEwithCOC==-1">+</button>
+								</td>
+							</tr> -->
+							</tbody>
 				</table>
 			</div>
 		</div>
@@ -127,7 +199,7 @@
 	<div id="footer" > </div>
 
 
-		  <script type="text/javascript">
+	<script type="text/javascript">
     var config = {
       '.chosen-select'           : {},
       '.chosen-select-deselect'  : {allow_single_deselect:true},
