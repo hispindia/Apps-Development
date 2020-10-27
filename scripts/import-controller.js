@@ -30,10 +30,11 @@ excelImport
 
                     if( sheetName === 'event' ){
                         var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
-                        var json_object = JSON.stringify(XL_row_object);
-                        var objectKeys = Object.keys(XL_row_object["0"]);
-
+                        //var json_object = JSON.stringify(XL_row_object);
+                        //var objectKeys = Object.keys(XL_row_object["0"]);
+                        let importCount = 1;
                         XL_row_object.forEach(row => {
+                            importCount++;
                             //console.log( row );
                             var updateEventDataValue = {
                                 event: row.event,
@@ -46,46 +47,53 @@ excelImport
 
                             $.ajax({
                                 type: "PUT",
+                                async: false,
                                 dataType: "json",
                                 contentType: "application/json",
                                 data: JSON.stringify(updateEventDataValue),
                                 url: '../../events/' + row.event + '/' + row.dataElement,
                                 success: function (response) {
                                     //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
-                                    console.log( JSON.stringify(row) + " updated value " + row.value + " response: " + JSON.stringify(response) );
+                                    console.log( "Row - " + importCount + JSON.stringify(row) + " updated value " + row.value + " response: " + JSON.stringify(response) );
                                 },
                                 error: function (response) {
-                                    console.log(  JSON.stringify(row) +  " not updated value " + row.value + " response: " + JSON.stringify(response ));
+                                    console.log(  "Row - " + importCount + JSON.stringify(row) +  " not updated value " + row.value + " response: " + JSON.stringify(response ));
                                 },
                                 warning: function (response) {
-                                    console.log( JSON.stringify(row ) +  " -- "+ "Warning!: " +  JSON.stringify(response ) );
+                                    console.log( "Row - " + importCount + JSON.stringify(row ) +  " -- "+ "Warning!: " +  JSON.stringify(response ) );
                                 }
                             });
 
+                            //importCount++;
+                            //console.log( "Row - " + importCount + " update done for event " + row.event );
+                            if( importCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " update done ");
 
+                            }
                         });
 
                     }
                     else if( sheetName === 'eventCoordinate' ){
-                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
-                        var json_object = JSON.stringify(XL_row_object);
-                        var objectKeys = Object.keys(XL_row_object["0"]);
-                        var importCount = 1;
+                        let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        let json_object = JSON.stringify(XL_row_object);
+                        let objectKeys = Object.keys(XL_row_object["0"]);
+                        let importCount = 1;
                         XL_row_object.forEach(row => {
                             //console.log( row );
-
+                            //latitude: row.coordinates.split(",")[1],
+                            //longitude: row.coordinates.split(",")[0]
                             $.ajax({
                                 type: "GET",
                                 async: false,
                                 url: '../../events/' + row.event + ".json?paging=false",
                                 success: function (eventResponse) {
-                                    var updateEventDataValue = {
+                                    let updateEventDataValue = {
                                         event: row.event,
                                         program: eventResponse.program,
                                         orgUnit: eventResponse.orgUnit,
                                         coordinate: {
-                                            latitude: row.coordinates.split(",")[1],
-                                            longitude: row.coordinates.split(",")[0]
+                                            latitude: row.latitude,
+                                            longitude: row.longitude
                                         },
                                         dataValues: [...eventResponse.dataValues]
                                     };
@@ -128,10 +136,10 @@ excelImport
                     }
                     // for enrollment
                     else if( sheetName === 'enrollmentCoordinate' ){
-                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
-                        var json_object = JSON.stringify(XL_row_object);
-                        var objectKeys = Object.keys(XL_row_object["0"]);
-                        var importCount = 1;
+                        let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        let json_object = JSON.stringify(XL_row_object);
+                        let objectKeys = Object.keys(XL_row_object["0"]);
+                        let importCount = 1;
                         XL_row_object.forEach(row => {
                             //console.log( row );
                             importCount++;
@@ -140,7 +148,7 @@ excelImport
                                 async: false,
                                 url: '../../enrollments/' + row.enrollment + ".json?paging=false",
                                 success: function (enrollmentResponse) {
-                                    var updateEnrollment = {
+                                    let updateEnrollment = {
                                         enrollment: row.enrollment,
                                         status: enrollmentResponse.status,
                                         program: enrollmentResponse.program,
@@ -375,10 +383,103 @@ excelImport
 
                     }
 
+                    // dataValueSet post
+                    else if( sheetName === 'dataValueSet' ){
+                        let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        //let json_object = JSON.stringify(XL_row_object);
+                        //let objectKeys = Object.keys(XL_row_object["0"]);
+                        //let importCount = 1;
+                        let dataValues = [];
+                        XL_row_object.forEach(row => {
+                            let dataValue = {};
+                            dataValue.dataElement = row.dataElementUID;
+                            dataValue.categoryOptionCombo = row.categoryoptioncomboUID;
+                            dataValue.orgUnit = row.organisationunitUID;
+                            dataValue.period = row.isoPeriod;
+                            dataValue.value = row.dataValue;
+                            dataValues.push(dataValue);
 
+                        });
+                        let dataValueSet = {};
+                        dataValueSet.dataValues = dataValues;
+                        console.log(" final dataValueSet : " + dataValueSet );
+                        let dataJSON = JSON.stringify(dataValueSet);
+                        $.ajax({
+                            type: "POST",
+                            async: false,
+                            dataType: "json",
+                            contentType: "application/json",
+                            data: dataJSON,
+                            url: '../../dataValueSets',
 
+                            success: function (response) {
+                                //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
 
+                                console.log("response : " + response);
+                                console.log("conflicts : " + response.conflicts);
 
+                                let impCount = response.importCount.imported;
+                                let upCount = response.importCount.updated;
+                                let igCount = response.importCount.ignored;
+                                let conflictsDetails   = response.conflicts;
+
+                                console.log(  "impCount - " + impCount + " upCount - " + upCount + " igCount - " + igCount + " conflictsDetails - " + conflictsDetails  );
+                            },
+                            error: function (response) {
+                                console.log("error : " + response.conflicts );
+                            },
+                            warning: function (response) {
+                                console.log("warning : " + response.conflicts );
+                            }
+
+                        });
+
+                    }
+
+                    // dataValueSet post
+                    else if( sheetName === 'dataSetComplete' ){
+                        let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        //let json_object = JSON.stringify(XL_row_object);
+                        //let objectKeys = Object.keys(XL_row_object["0"]);
+                        let importCount = 1;
+
+                        XL_row_object.forEach(row => {
+                            importCount++;
+
+                            let dataSetCompleteRegistration = {completeDataSetRegistrations: []};
+                            dataSetCompleteRegistration.completeDataSetRegistrations.push({
+                                'dataSet': row.dataSet,
+                                'organisationUnit': row.organisationUnit,
+                                'period': row.period
+                            })
+                            $.ajax({
+                                type: "POST",
+                                async: false,
+                                dataType: "json",
+                                contentType: "application/json",
+                                data: JSON.stringify(dataSetCompleteRegistration),
+                                url: '../../completeDataSetRegistrations',
+
+                                success: function (response) {
+                                    //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+
+                                    console.log( "Row - " + importCount + " Registration Complete " + " response: " + JSON.stringify(response) );
+                                },
+                                error: function (response) {
+                                    console.log("error : " + response.conflicts );
+                                },
+                                warning: function (response) {
+                                    console.log("warning : " + response.conflicts );
+                                }
+                            });
+                            //importCount++;
+                            //console.log( "Row - " + importCount + " update done for event " + row.event );
+                            if( importCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " Registration Complete");
+
+                            }
+                        });
+                    }
 
                     else{
                         var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
