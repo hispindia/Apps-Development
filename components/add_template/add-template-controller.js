@@ -29,6 +29,8 @@ excelUpload.controller('AddTemplateController',
         $scope.optionValue = []; 
         $scope.selectedDataSetInfo = {};
 
+        $scope.selectedRowValue = [];
+
         //showing and hiding input by temp type
         if( $rootScope.selectedTemplateType == 1 )
         {
@@ -121,7 +123,6 @@ excelUpload.controller('AddTemplateController',
 
                     $scope.tempCells.push(cell);
 
-                    console.log("fetch data fromtemplate ",$scope.tempCells)
                 });
 
                 //getting max id
@@ -183,40 +184,32 @@ excelUpload.controller('AddTemplateController',
             }
         };
 
-        // $scope.searchData = function() {
-        //     $("#chosen-select").chosen({ 
-        //         width:'330px',
-        //         no_results_text: "Oops, nothing found!",
-        //         placeholder_text_single: "Select value",
-        //         search_contains : 'false',
-        //         disable_search_threshold: '10'
-        //      });
-        // }
+
+        $scope.getselectedValue = function(value,item) {
 
 
-        // $scope.searchData = function() {
-        //     $("#chosen-select").chosen({ 
-        //         width:'330px',
-        //         no_results_text: "Oops, nothing found!",
-        //         placeholder_text_single: "Select value",
-        //         search_contains : 'false',
-        //         disable_search_threshold: '10'
-        //      });
-            
-    
-        // }
+            if($scope.selectedRowValue.some(person => person.item === item)){
+                for(var i=0;i<$scope.selectedRowValue.length;i++){
+                    if($scope.selectedRowValue[i].item==item){
+                        $scope.selectedRowValue[i].value  = value;
+                       
+                    }
+                }
+            } 
+            else{
+                $scope.selectedRowValue.push({item,value})
+            }
+
+            console.log("value inserted ",$scope.selectedRowValue)
+         };
+         
+
 
         $scope.showMappingFormFor_SOU_MDE = function(){
             $("#loader").fadeIn();
             $("#templateProgress").html("");
             $("#mapElements").fadeIn();
             $("#tableContent").html("");
-
-            // $(".my_select_box").chosen({
-			// 	disable_search_threshold: 10,
-			// 	no_results_text: "Oops, nothing found!",
-			// 	width: "95%"
-			// });
 
             var htmlString = "<tr><th>Cell Address </th><th> Respective Data Element - COC combination</th></tr>";
 
@@ -232,7 +225,7 @@ excelUpload.controller('AddTemplateController',
                     htmlString += "<tr>";
                     //var lbl = $scope.getData(x, y);
                     var lbl = $scope.engAddress[y] + "" + x;
-                    console.log("LBL Value ",lbl)
+
                     $scope.lebelName.push(lbl)
 
                     htmlString += "<td style='padding:2px 5px'>" + lbl + "</td>";
@@ -241,26 +234,27 @@ excelUpload.controller('AddTemplateController',
                     // $scope.selectedDataSetInfo.dataSetElements.forEach(function(de){
                     //     de.dataElement.categoryCombo.categoryOptionCombos.forEach(function(coc){
                     //         var sel = $scope.isSelected( lbl, de.dataElement.id + "-" + coc.id ) ? "selected" : "";
-                    //         // console.log("sel, de.dataElement.name,coc.name",sel+" sel"+de.dataElement.name+"de name "+,coc.name)
                     //         htmlString += "<option value='" + de.dataElement.id + "-" + coc.id + "' "+ sel +">" + de.dataElement.name + " - " + coc.name + " </option>";
-                    //         $scope.optionValue.push(de.dataElement.name+"-"+coc.name)
                     //     });
                     // });
 
                     htmlString +="</select></td>";
                     htmlString += "</tr>";
+                    
                 }
-            }
 
+            }
 
             $scope.selectedDataSetInfo.dataSetElements.forEach(function(de){
                 de.dataElement.categoryCombo.categoryOptionCombos.forEach(function(coc){
                     var sel = $scope.isSelected( lbl, de.dataElement.id + "-" + coc.id ) ? "selected" : "";
-                    // console.log("sel, de.dataElement.name,coc.name",sel+" sel"+de.dataElement.name+"de name "+,coc.name)
-                    htmlString += "<option value='" + de.dataElement.id + "-" + coc.id + "' "+ sel +">" + de.dataElement.name + " - " + coc.name + " </option>";
-                    $scope.optionValue.push(de.dataElement.name+"-"+coc.name)
+                    var id   = de.dataElement.id + "-" + coc.id;
+                    var name = de.dataElement.name + " - " + coc.name;
+                    $scope.optionValue.push({id,name})
                 });
             });
+
+                    
 
             $("#tableContent").html(htmlString);
             $("#coverLoad").fadeOut();
@@ -289,6 +283,7 @@ excelUpload.controller('AddTemplateController',
                 {
                     htmlString += "<tr>";
                     var lbl = $scope.getData(x, $scope.newTemplate.rowStart.cn);
+                    
                     htmlString += "<td style='padding:2px 5px'>" + lbl + "</td>";
                     htmlString += "<td><select class='form-control' id='row_"+ x + "_" + $scope.newTemplate.rowStart.cn +"'><option value='-1'>--Select--</option>";
 
@@ -312,6 +307,7 @@ excelUpload.controller('AddTemplateController',
                 {
                     htmlString += "<tr>";
                     var lbl = $scope.getData( $scope.newTemplate.columnStart.rn , x );
+                    console.log("lbl",lbl)
                     htmlString += "<td style='padding:2px 5px'>" + lbl + "</td>";
                     htmlString += "<td><select class='form-control' id='row_"+ $scope.newTemplate.columnStart.rn + "_" + x +"'><option value='-1'>--Select--</option>";
 
@@ -332,8 +328,11 @@ excelUpload.controller('AddTemplateController',
         };
 
 
+        //**************************************************************************************************
+
 
         $scope.saveTemplate = function(){
+
 
             if( $rootScope.selectedTemplateType == 1 )
             {
@@ -350,13 +349,12 @@ excelUpload.controller('AddTemplateController',
                         newMapping.rowNumber = x;
                         newMapping.label = $scope.getData( x, $scope.newTemplate.rowStart.cn);
                         var ca = "row_" + x + "_" + $scope.newTemplate.rowStart.cn;
-                        console.log("ca mean ",ca)
+                       
+
                         newMapping.metadata = $("#" + ca ).val();
 
-                        console.log("newMapping.metadata",newMapping.metadata);
-
                         if($("#" + ca ).val() != "-1" )
-                        {
+                        {   
                             $scope.addPool( newMapping.label , newMapping.metadata );
                             $scope.newTemplate.DEMappings.push(newMapping);
                         }
@@ -371,9 +369,7 @@ excelUpload.controller('AddTemplateController',
                         newMapping.label = $scope.getData( $scope.newTemplate.columnStart.rn , x );
                         //var ca = "col_" + $scope.newTemplate.columnStart.rn + "_"  + x ;
                         var ca = "row_" + $scope.newTemplate.columnStart.rn + "_"  + x ;
-                        console.log("ca mean ",ca)
-                        
-                        
+                                                
                         newMapping.metadata = $("#" + ca ).val();
 
                         console.log("newMapping.metadata",newMapping.metadata);
@@ -400,18 +396,28 @@ excelUpload.controller('AddTemplateController',
                     {
                         var newMapping = {};
                         newMapping.cellAddress = $scope.engAddress[y] + "" + x;
+
                         newMapping.label = $scope.getData( x, $scope.newTemplate.dataStart.cn);
-                        var ca = "row_" + x + "_" + y;
-                        console.log("ca mean ",ca)
-                        newMapping.metadata = $("#" + ca ).val();
 
-                        console.log("newMapping.metadata",newMapping.metadata);
+                        for(var i=0;i<$scope.selectedRowValue.length;i++){
 
-                        if($("#" + ca ).val() != "-1" )
-                        {
+                        if($scope.selectedRowValue[i].item==newMapping.cellAddress){
+                            var ca_valaue = $scope.selectedRowValue[i].value.id;
+                            newMapping.metadata = ca_valaue;
                             $scope.addPool( newMapping.label , newMapping.metadata );
                             $scope.newTemplate.DEMappings.push(newMapping);
+
                         }
+                    }
+                        
+                        // var ca = "row_" + x + "_" + y;
+                        // newMapping.metadata = $("#" + ca ).val();
+
+                        // if($("#" + ca ).val() != "-1" )
+                        // {
+                        //     $scope.addPool( newMapping.label , newMapping.metadata );
+                        //     $scope.newTemplate.DEMappings.push(newMapping);
+                        // }
                     }
                 }
             }
@@ -420,11 +426,11 @@ excelUpload.controller('AddTemplateController',
             if( $scope.newTemplate.DEMappings.length == 0 )
             {
                 $scope.newTemplate
-                alert("Atleast one row should be mapped");
+                alert("Atleast one row should be mapped", $scope.newTemplate);
                 return false;
             }
             else
-            {
+            {   
                 $scope.templates.templates.push( $scope.newTemplate );
                 $scope.storeTemp();
                 return true;
@@ -434,7 +440,7 @@ excelUpload.controller('AddTemplateController',
 
         $scope.storeTemp = function( ){
             ExcelMappingService.save('Excel-import-app-templates',$scope.templates ).then(function(tem){
-                console.log( $scope.templates );
+                console.log("inside store temp" ,$scope.templates );
                 window.location.assign("#manage-templates");
             });
         };
@@ -456,6 +462,7 @@ excelUpload.controller('AddTemplateController',
 
         $scope.getData = function( rowNum, colNum ){
             var address = $scope.engAddress[colNum]+""+rowNum;
+            console.log("adrees value in get method ",address);
             var val = "";
 
             $scope.tempCells.forEach(function(c){

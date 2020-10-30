@@ -135,16 +135,28 @@
 						</td>
 						<td>
 
-					<ui-select tagging ng-model="singleDemo.color" theme="select2" style="width: 880px;">
-						<ui-select-match placeholder="Select item...">{{$select.selected}}</ui-select-match>
+					<!-- <ui-select ng-model="valuefromDropDown.selected" theme="select2" style="width: 880px;">
+						<ui-select-match placeholder="Select item...">{{$select.selected.name}}</ui-select-match>
+							
+						</ui-select-match>
+						<ui-select-choices repeat="country in optionValue | filter: $select.search">
+							<img ng-src="{{country.image}}"/>
+							<span ng-bind-html="country.name | highlight: $select.search"></span>
+						</ui-select-choices>
+					</ui-select>		 -->
 					
-						<ui-select-choices repeat="opt in optionValue | filter: $select.search">
-							<span ng-bind-html="opt | highlight: $select.search"></span>
-							<!-- <div ng-bind-html="{{opt}} | highlight: $select.search"></div> -->
+					<ui-select tagging ng-model="singleDemo.name" on-select="getselectedValue($item,item)" theme="select2" style="width: 880px;">
+						<ui-select-match placeholder="Select item...">{{$select.selected.name}}
+						</ui-select-match>
+					
+						<ui-select-choices  ng-model="singleDemo.name" repeat="opt in optionValue | filter: $select.search">
+							<img ng-src="{{country.image}}"/>
+							<span ng-bind-html="opt.name | highlight: $select.search"></span>
+							<!-- <div ng-bind-html="{{opt.name}} | highlight: $select.search"></div> -->
 						</ui-select-choices>
 						
 					</ui-select>
-
+					
 						<!-- <ui-select name="selectedDistrict" id="selectedDistrict" ng-model="selectedDistrict"
 						theme="select2" class="ui-select-style">
 
