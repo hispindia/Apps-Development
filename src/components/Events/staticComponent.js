@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Paper, Grid, Card, CardContent, CircularProgress } from "@material-ui/core";
 import { OrgUnitTree } from "@hisp-amr/org-unit-tree";
 import { useDispatch, useSelector } from "react-redux";
-import { resetDyanamicData,resetStaticData, getOrgUnitDetail, setPayload, setDataValues, getProgramStages, getPrograms, getProgramStageSections, setProgramRule, setCondtionalOU } from "../../redux/action/event";
+import { resetDyanamicData,resetStaticData, getOrgUnitDetail, setPayload, setDataValues, getProgramStages,setMandatoryDataElements, getPrograms, getProgramStageSections, setProgramRule, setCondtionalOU } from "../../redux/action/event";
 import { Sections } from "./sections";
 import Loader from "react-loader-spinner";
 import "./custom.css";
@@ -84,10 +84,8 @@ export const StaticData = (props) => {
   };
 
   const selectedProgramStage = e => {
-    
     let ps = programStages.filter(programStage => programStage.id === e.target.value);
     let dataValues = [];
-    console.log(' ps[0].programStageDataElements',  ps[0].programStageDataElements)
     for (let values of ps[0].programStageDataElements) {
       dataValues[values.dataElement.id] = "";
     }
@@ -106,6 +104,7 @@ export const StaticData = (props) => {
     eventDate: payload.eventDate,
     }
     localStorage.setItem("payload", JSON.stringify(datas))
+    dispatch(setMandatoryDataElements(ps[0].programStageDataElements))
     dispatch(setPayload(data));
     dispatch(setDataValues(dataValues));
     dispatch(getProgramStageSections(ps[0].programStageSections));

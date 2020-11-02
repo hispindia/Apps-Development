@@ -1,6 +1,6 @@
 import { GET_ORG_UNITS_DETAIL, METADATA_RECEIVED, SET_PAYLOAD, SET_DATA_VALUES, SET_TEI_ATTRIBUTE, TRACKED_ENTITY_RECEIVED,
-   CHECKED_VALIDATION, EVENT_FAILURE, DYNAMIC_RECEIVED_DATA, PROGRAMS_RECEIVED, PROGRAMSTAGE_RECEIVED, PROGRAMSTAGE_SECTIONS_RECEIVED,
-    UPDATE_EVENT_VALUES,RESET_FORM, SET_PROGRAM_RULES, PROGRAM_RULE_MERGE, EVENT_POST, RESET,LOADING_PAGE,FETCH_CONDITIONAL_OU, SET_PROGRAM_RULES_CONDITION } from '../action';
+   CHECKED_VALIDATION, EVENT_FAILURE, DYNAMIC_RECEIVED_DATA, PROGRAMS_RECEIVED, PROGRAMSTAGE_RECEIVED, PROGRAMSTAGE_SECTIONS_RECEIVED,SET_MENDATORY_DATAELEMENTS,
+    UPDATE_EVENT_VALUES,RESET_FORM, SET_PROGRAM_RULES, PROGRAM_RULE_MERGE, EVENT_POST, RESET,LOADING_PAGE,FETCH_CONDITIONAL_OU, SET_PROGRAM_RULES_CONDITION, CHECK_MANDATORY } from '../action';
 const INITIAL_EVENT = {
   values: null,
   programStage: null,
@@ -50,7 +50,9 @@ const INITIAL_STATE = {
   pageLoading: false,
   conditionalOU:[],
   programRulesCondition:[],
-  mergeProgramRuleCondition: []
+  mergeProgramRuleCondition: [],
+  mandatoryDataElements: [],
+  mandatoryElement: false
 };
 export const dataReducer = (state = INITIAL_STATE, {
   type,
@@ -100,6 +102,10 @@ export const dataReducer = (state = INITIAL_STATE, {
         attributes: payload,
         TEIRender: false
       };
+      case CHECK_MANDATORY:
+        return { ...state,
+          mandatoryElement: true
+        };
       case FETCH_CONDITIONAL_OU:
         return { ...state,
           conditionalOU: payload
@@ -165,7 +171,12 @@ export const dataReducer = (state = INITIAL_STATE, {
           orgUnitStatus:false
         };
       }
-
+      case SET_MENDATORY_DATAELEMENTS:
+        {
+          return { ...state,
+            mandatoryDataElements:payload
+          };
+        }
     case PROGRAMSTAGE_RECEIVED:
       {
         return { ...state,
@@ -182,7 +193,8 @@ export const dataReducer = (state = INITIAL_STATE, {
         return { ...state,
           programStageSections: payload,
           btnStatus: true,          
-         orgUnitStatus:false
+         orgUnitStatus:false,
+         mandatoryElement: false
         };
       }
     case METADATA_RECEIVED:

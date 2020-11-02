@@ -105,7 +105,6 @@ export const TEIDetails = () => {
     dispatch(loadingPage())
 
     payload = JSON.parse(localStorage.getItem('payload'))
-    console.log('here is val', payload)
     let selectedTEI = tranckedEntityInstances.filter(tei => tei.checked);
     let dataValue = [];
     for (let dv in dataValues) {

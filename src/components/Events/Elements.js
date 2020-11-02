@@ -11,6 +11,7 @@ import {
   updateEventValues,
   validation,
   getProgramRuleChecking,
+  checkMandatory
 } from "../../redux/action/event";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -31,6 +32,7 @@ export const Element = (props) => {
   const Error = useSelector((state) => state.data.Error);
   const errorDataElement = useSelector((state) => state.data.checkingId);
   const payload = useSelector((state) => state.data.payload);
+  const programSections = useSelector((state) => state.data.mandatoryDataElements);
   const element = props.element;
   const values = useSelector((state) => {
    return state.data.dataValue[element.id]});
@@ -81,10 +83,26 @@ export const Element = (props) => {
       value = e;
     }
     dataValues[key] = value;
+    if(value) {
+      for( let de of programSections){
+        if(de.dataElement.id == key){
+          de.compulsory= false
+        }
+      }
+    } 
     dispatch(updateEventValues(dataValues));
     dispatch(
       getProgramRuleChecking(dataValues, programStageSection, programRules)
     );
+    var flag = false;
+    for( let de of programSections){
+      if(de.compulsory==true){
+          flag = true; 
+      } 
+    }
+    if(flag==false){
+      dispatch(checkMandatory())
+    }
   };
   if (hide) return null;
   return (
@@ -298,7 +316,7 @@ export const Element = (props) => {
                 className="form-control"
                 placeholder="Number value only"
                 onChange={(e) => onChange(element.id, e, element.valueType)}
-                value={values === true}
+                value={values}
               />
               {Error && errorDataElement === element.id ? (
                 <span
