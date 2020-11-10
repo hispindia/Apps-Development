@@ -1,11 +1,11 @@
 // // Data element IDs for Tracked Entity Instances.
-// const teiElementIds = {
-//   firstname: 'kim8r9m1oGE',
-//   lastname: 'blDEf5Ld0fA',
-//   gender: 'uMSSNRDVcXS',
-//   birthdate: 'yj8BaYdkTA6',
-//   ubudehe: 'nUMqt8T4e0y'
-// };
+const teiElementIds = {
+  firstname: 'kim8r9m1oGE',
+  lastname: 'blDEf5Ld0fA',
+  gender: 'uMSSNRDVcXS',
+  birthdate: 'yj8BaYdkTA6',
+  ubudehe: 'nUMqt8T4e0y'
+};
 
 // // Data element IDs for Events.
 // const eventElementIds = {
@@ -20,19 +20,19 @@
 
 // Data element IDs for Tracked Entity Instances.
 
-const teiElementIds = {
+// const teiElementIds = {
 
-  firstname: 's8LMyJZmim8',
+//   firstname: 's8LMyJZmim8',
 
-  lastname: 'blDEf5Ld0fA',
+//   lastname: 'blDEf5Ld0fA',
 
-  gender: 'uSIz5uHBMdY',
+//   gender: 'uSIz5uHBMdY',
 
-  birthdate: 'twbKlJeT7bX',
+//   birthdate: 'twbKlJeT7bX',
 
-  ubudehe: 'wgc2mjsCVbu'
+//   ubudehe: 'wgc2mjsCVbu'
 
-};
+// };
 
  
 

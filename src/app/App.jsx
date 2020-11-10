@@ -86,6 +86,7 @@ class App extends React.Component {
         .then(result => result.trackedEntityInstances);
 
     Promise.all([events, trackedEntityInstances]).then(result => {
+         
       // Disable loading indicator here
       this.setState({
         result: {
@@ -135,9 +136,7 @@ class App extends React.Component {
       loading,
       compareResult
     } = this.state;
-
     if (!root) return null;
-
     return (
       <MuiThemeProvider muiTheme={getMuiTheme()}>
         <div

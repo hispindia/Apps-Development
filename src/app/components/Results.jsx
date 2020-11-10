@@ -23,6 +23,7 @@ class Results extends React.Component {
       toggleCompare,
       clearCompare
     } = this.props;
+
     const { showSkipped } = this.state;
 
     const {
@@ -33,7 +34,6 @@ class Results extends React.Component {
       skipped,
       timeline
     } = eventData;
-
     if (Object.values(events).length === 0)
       return (
         <div
@@ -211,7 +211,7 @@ class Results extends React.Component {
             minAge={minAge}
             maxAge={maxAge}
           />
-          <Result
+          {/* <Result
             label="MUAC-for-age"
             zscore={
               Math.round(averages.acfa / Object.values(events).length * 100) /
@@ -228,7 +228,7 @@ class Results extends React.Component {
             gender={gender}
             minAge={minAge}
             maxAge={maxAge}
-          />
+          /> */}
         </div>
       </div>
     );

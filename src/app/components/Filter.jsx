@@ -64,7 +64,7 @@ class Filter extends React.Component {
               }}
             />
 
-            <Button
+            {/* <Button
               label="Both"
               onClick={() => this.setGenderFilter('both')}
               small
@@ -72,7 +72,7 @@ class Filter extends React.Component {
                 margin: 5,
                 backgroundColor: gender === 'both' ? '#296596' : '#9c9c9c'
               }}
-            />
+            /> */}
           </div>
 
           <div style={{ margin: 10 }}>
@@ -105,7 +105,7 @@ class Filter extends React.Component {
               }}
             />
 
-            <Button
+            {/* <Button
               label="Both"
               onClick={() => this.setUbudehe(null)}
               small
@@ -113,7 +113,7 @@ class Filter extends React.Component {
                 margin: 5,
                 backgroundColor: !ubudeheCategory ? '#296596' : '#9c9c9c'
               }}
-            />
+            /> */}
           </div>
 
           <div style={{ margin: 10 }}>

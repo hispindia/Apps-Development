@@ -19,6 +19,25 @@ const calcZscore = (value, L, M, S) => {
 
   return zscore;
 };
+// added
+// const calcZscore1 = (L, M, S) => {
+
+//   const zscore = ((value / M) ** L - 1) / (S * L);
+
+//   if (zscore < -3) {
+//     const sd3neg = M * (1 + L * S * -3) ** (1 / L);
+//     const sd2neg = M * (1 + L * S * -2) ** (1 / L);
+//     return -3 + (value - sd3neg) / (sd2neg - sd3neg);
+//   }
+
+//   if (zscore > 3) {
+//     const sd3pos = M * (1 + L * S * 3) ** (1 / L);
+//     const sd2pos = M * (1 + L * S * 2) ** (1 / L);
+//     return 3 + (value - sd3pos) / (sd3pos - sd2pos);
+//   }
+
+//   return zscore;
+// };
 
 const getWeightForLength = (female, weight, height) => {
   if (height < 45 || height > 110) {
@@ -86,6 +105,31 @@ const getAgeBasedZscore = (dataset, measurement, age) => {
   return calcZscore(measurement, L, M, S);
 };
 
+// added
+// const getAgeBasedZscore1 = (dataset, age) => {
+//   const lms = getAgeBasedLms(dataset, age);
+//   if (lms.exact) {
+//     return calcZscore1(lms.exact.L, lms.exact.M, lms.exact.S);
+//   }
+
+//   const lowlms = dataset[lms.low];
+//   const highlms = dataset[lms.high];
+
+//   // If no data is found, return null
+//   if (!lowlms || !highlms) return null;
+
+//   const steps = age - lms.low;
+
+//   const L = lowlms.L + (highlms.L - lowlms.L) / 10 * steps;
+//   const M = lowlms.M + (highlms.M - lowlms.M) / 10 * steps;
+//   const S = lowlms.S + (highlms.S - lowlms.S) / 10 * steps;
+
+//   return calcZscore(measurement, L, M, S);
+// };
+
+
+
+
 const getWeightForAge = (female, weight, age) => {
   const dataset = female ? centileSets.wfaGirls : centileSets.wfaBoys;
 
@@ -104,18 +148,18 @@ const getBMIForAge = (female, bmi, age) => {
   return getAgeBasedZscore(dataset, bmi, age);
 };
 
-const getMUACForAge = (female, muac, age) => {
-  if (age < 91) return null;
+// const getMUACForAge = (female, age) => {
+//   if (age < 91) return null;
 
-  const dataset = female ? centileSets.acfaGirls : centileSets.acfaBoys;
+//   const dataset = female ? centileSets.acfaGirls : centileSets.acfaBoys;
 
-  return getAgeBasedZscore(dataset, muac, age);
-};
+//   return getAgeBasedZscore1(dataset, age);
+// };
 
 export {
   getWeightForLength,
   getWeightForAge,
   getLengthForAge,
   getBMIForAge,
-  getMUACForAge
+  // getMUACForAge
 };
