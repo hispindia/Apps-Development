@@ -17,7 +17,7 @@ reportsApp.controller('ReportGenerationController',
                 "startDate":"",
                 "endDate":"",
                 "period": {"month" : "",
-                            "year" : ""}
+                    "year" : ""}
             }
         }
 
@@ -51,6 +51,26 @@ reportsApp.controller('ReportGenerationController',
                 $scope.reportSettings = data.reports;
 
                 $scope.reportSettingMapping = [];
+                organisationUnitGroupService.getOuGroupsByOu($scope.selectedOrgUnit).then(function(data){
+                    //make a map for quick comparison
+                    $scope.organisationUnitGroupMap = [];
+                    angular.forEach(data.organisationUnitGroups,function(ouGroup){
+                        $scope.organisationUnitGroupMap[ouGroup.id] = ouGroup;
+                    })
+
+                    for (var count=0; count < $scope.reportSettings.length;count++){
+                        if ($scope.organisationUnitGroupMap[$scope.reportSettings[count].orgUnitGroup] == undefined || !isReportInUserGroup($scope.reportSettings[count].userGroupAccesses)){
+                            $scope.reportSettings.splice(count,1);
+                            count--;
+                        }
+                    }
+                    //console.log( " 2 Report Name-- " + report.name + " Report OrgUnitGroup-- " + report.orgUnitGroup + " Report userGroupAccesses-- " + report.userGroupAccesses);
+                    var currentDate = new Date();
+                    $scope.monthList = periodService.getMonthList();
+                    $scope.yearList = periodService.getYearListBetweenTwoYears(1900,currentDate.getFullYear());
+
+                })
+
                 angular.forEach($scope.reportSettings, function(report){
                     report.name = $scope.reportListMapping[report.id].name;
                     report.userGroupAccesses = $scope.reportListMapping[report.id].userGroupAccesses;
@@ -63,26 +83,10 @@ reportsApp.controller('ReportGenerationController',
 
                 })
 
-                organisationUnitGroupService.getOuGroupsByOu($scope.selectedOrgUnit).then(function(data){
-                    //make a map for quick comparison
-                    $scope.organisationUnitGroupMap = [];
-                    angular.forEach(data.organisationUnitGroups,function(ouGroup){
-                        $scope.organisationUnitGroupMap[ouGroup.id] = ouGroup;
-                    })
-
-                         for (var count=0; count < $scope.reportSettings.length;count++){
-                            if ($scope.organisationUnitGroupMap[$scope.reportSettings[count].orgUnitGroup] == undefined || !isReportInUserGroup($scope.reportSettings[count].userGroupAccesses)){
-                                $scope.reportSettings.splice(count,1);
-                                count--;
-                            }
-                        }
-                        //console.log( " 2 Report Name-- " + report.name + " Report OrgUnitGroup-- " + report.orgUnitGroup + " Report userGroupAccesses-- " + report.userGroupAccesses);
+                $scope.updatePeriods();
 
 
-                    })
-                    $scope.updatePeriods();
-
-                })
+            })
 
         }
         $scope.updatePeriods = function(){
@@ -98,7 +102,7 @@ reportsApp.controller('ReportGenerationController',
         //initialize
         updateReportSetting();
 
-            $scope.listenToOuChange = function(){
+        $scope.listenToOuChange = function(){
             $scope.selectedOrgUnit = selection.getSelected();
             $scope.currentReport.orgUnit = $scope.selectedOrgUnit;
             updateReportSetting();
@@ -119,15 +123,15 @@ reportsApp.controller('ReportGenerationController',
         ReportAppSectionSettingService.getAllReportAppSection().then(function(data) {
             $scope.sectionList = data.sections;
         })
-          // get DHIS reports
-            reportsService.getAllWithDetails().then(function(data){
+        // get DHIS reports
+        reportsService.getAllWithDetails().then(function(data){
             $scope.reportList = data.reports;
-                $scope.reportListMapping = [];
-                angular.forEach($scope.reportList,function(report){
-                    $scope.reportListMapping[report.id] = report;
-                })
+            $scope.reportListMapping = [];
+            angular.forEach($scope.reportList,function(report){
+                $scope.reportListMapping[report.id] = report;
+            })
 
-                updateReportSetting();
+            updateReportSetting();
         });
 
         var fetchReportSettings = function(){
@@ -136,8 +140,8 @@ reportsApp.controller('ReportGenerationController',
                 $scope.reportSettings = data.reports;
                 $scope.reportSettingMapping = [];
                 angular.forEach($scope.reportSettings, function(report){
-                        report.name = $scope.reportList[report.id].name;
-                        report.userGroupAccesses = $scope.reportListMapping[report.id].userGroupAccesses;
+                    report.name = $scope.reportList[report.id].name;
+                    report.userGroupAccesses = $scope.reportListMapping[report.id].userGroupAccesses;
 
                     $scope.reportSettingMapping[report.id] = report;
                 })
@@ -146,12 +150,12 @@ reportsApp.controller('ReportGenerationController',
         };
 
         var isReportInUserGroup = function(userGroupAccesses){
-          var returnVariable = false;
-          angular.forEach(userGroupAccesses,function(userGroupAccess){
-              //console.log( " 3 userGroupAccess Name-- " + userGroupAccess + " -- " + $scope.userGroupMap[userGroupAccess.userGroup.id] );
+            var returnVariable = false;
+            angular.forEach(userGroupAccesses,function(userGroupAccess){
+                //console.log( " 3 userGroupAccess Name-- " + userGroupAccess + " -- " + $scope.userGroupMap[userGroupAccess.userGroup.id] );
                 if ($scope.userGroupMap[userGroupAccess.userGroupUid] != undefined)
                     returnVariable = true;
-          });
+            });
             return returnVariable;
         };
 
@@ -160,10 +164,10 @@ reportsApp.controller('ReportGenerationController',
 
 
         $scope.generateReport = function(){
-		//alert( $scope.currentReport.period.year );
-        //alert( $scope.currentReport.section );
-        //alert( $scope.currentReport.id );
-        //alert( $scope.currentReport.section );
+            //alert( $scope.currentReport.period.year );
+            //alert( $scope.currentReport.section );
+            //alert( $scope.currentReport.id );
+            //alert( $scope.currentReport.section );
             var isValidated = "true";
             if( $scope.currentReport.section === "" || $scope.currentReport.section === undefined )
             {
