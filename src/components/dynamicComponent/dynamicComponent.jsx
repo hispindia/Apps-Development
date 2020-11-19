@@ -9,6 +9,7 @@ class DynamicComponent extends Component {
       startDate: "",
       endDate: "",
       dECOC: {},
+      deAnti: {},
       programCount: {},
       dataJson: {},
       loading: true,
@@ -30,6 +31,7 @@ class DynamicComponent extends Component {
     var programCount = {};
     try {
       var dECOC = this.state.dECOC;
+      var deAnti = this.state.deAnti;
 
       var url = `../../../api/events.json?paging=false&orgUnit=${orgUnit}&ouMode=DESCENDANTS`;
       if (startDate) url += `&startDate=${startDate}`;
@@ -54,6 +56,21 @@ class DynamicComponent extends Component {
               dataValue[
                 "COC"
               ] = `${dataElement["mp5MeJ2dFQz"]}, ${dataElement["B7XuDaXPv10"]}`;
+
+            for (const antiKeys in dataElement) {
+              let antiPresent = antiKeys in deAnti;
+              if (antiPresent) {
+                var antiValue = deAnti[antiKeys];
+                antiValue = antiValue.split("_")[0]; // Ampicillin_Results
+                antiValue = antiValue + "-" + dataElement[antiKeys]; // Ampicillin-Resistant
+                if (dataElement["mp5MeJ2dFQz"] && dataElement["B7XuDaXPv10"])
+                  dataValue[
+                    "COC"
+                  ] = `${antiValue}, ${dataElement["mp5MeJ2dFQz"]}, ${dataElement["B7XuDaXPv10"]}`;
+                console.log("ANTIBIOTIC", dataValue["COC"]);
+              }
+            }
+
             eventData.dataValues = dataValue;
             events.push(eventData);
           }
@@ -87,12 +104,31 @@ class DynamicComponent extends Component {
             ] += 1;
           }
         });
+        console.log(programCount);
         return programCount;
       });
     } catch (e) {
       console.log("Error in getEvents");
     }
   };
+
+  async getAntibio() {
+    var deAnti = {};
+    try {
+      axios
+        .get(`../../../api/sqlViews/Td7tyBlEqrT/data.json?paging=false`)
+        .then((respanti) => {
+          respanti.data.listGrid.rows.forEach((row) => {
+            if (row["2"]) deAnti[row["1"]] = row["2"];
+          });
+          console.log(deAnti);
+          this.setState({ deAnti: deAnti });
+        });
+    } catch (e) {
+      console.log("Error");
+      this.setState({ loading: false });
+    }
+  }
 
   async getdECOC() {
     var dECOC = {};
@@ -162,7 +198,7 @@ class DynamicComponent extends Component {
           console.log(error);
         });
     } catch (e) {
-      console.log("ERROR IN Push DAta");
+      console.log(e);
     }
 
     this.setState({ loading: false });
@@ -178,6 +214,7 @@ class DynamicComponent extends Component {
 
   componentDidMount() {
     this.getdECOC();
+    this.getAntibio();
   }
   handleChange(e, id) {
     this.setState({ [id]: e.target.value });
