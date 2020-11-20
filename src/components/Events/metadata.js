@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ApiService } from "../../services/apiService";
-import { LoadMetaData, setCondtionalOU, loadProgramRuleCondition, programConditionCheck} from "../../redux/action/event";
+import { LoadMetaData, setCondtionalOU,translationDataElements,setLanguage,loadProgramRuleCondition, programConditionCheck} from "../../redux/action/event";
 
  export const MetaData = () => {
   const dispatch = useDispatch();
@@ -9,6 +9,25 @@ import { LoadMetaData, setCondtionalOU, loadProgramRuleCondition, programConditi
   const programRulesCondition = useSelector(state => state.data.programRulesCondition)
 useEffect(() => {
   if(metaDataLoading){
+    ApiService.getMe().then(result => {
+    ApiService.getDETranslation().then(res => {
+      let translatedDE = []
+      for( let de of res.dataElements){
+           for(let language of de.translations){
+             if(language.locale == result.settings.keyDbLocale && language.property=="FORM_NAME" ){
+              let obj ={}
+              obj.id=de.id
+              obj.name=de.name
+              obj.displayName=language.value
+              translatedDE.push(obj)
+             }
+           }
+      }
+      dispatch(translationDataElements(translatedDE));
+
+    })
+      dispatch(setLanguage(result.settings.keyDbLocale));
+    })
     ApiService.getMetaData().then(res => {
       if (res.programs.length) {
         res.programs.forEach(program => {

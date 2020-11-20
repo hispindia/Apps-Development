@@ -1,6 +1,6 @@
 import { GET_ORG_UNITS_DETAIL, METADATA_RECEIVED, SET_PAYLOAD, SET_DATA_VALUES, SET_TEI_ATTRIBUTE, TRACKED_ENTITY_RECEIVED,
    CHECKED_VALIDATION, EVENT_FAILURE, DYNAMIC_RECEIVED_DATA, PROGRAMS_RECEIVED, PROGRAMSTAGE_RECEIVED, PROGRAMSTAGE_SECTIONS_RECEIVED,SET_MENDATORY_DATAELEMENTS,
-    UPDATE_EVENT_VALUES,RESET_FORM, SET_PROGRAM_RULES, PROGRAM_RULE_MERGE, EVENT_POST, RESET,LOADING_PAGE,FETCH_CONDITIONAL_OU, SET_PROGRAM_RULES_CONDITION, CHECK_MANDATORY } from '../action';
+    UPDATE_EVENT_VALUES,RESET_FORM, SET_PROGRAM_RULES, PROGRAM_RULE_MERGE, EVENT_POST, RESET,LOADING_PAGE,FETCH_CONDITIONAL_OU, SET_PROGRAM_RULES_CONDITION, CHECK_MANDATORY,TRANSLATION_DATAELEMENTS,SET_LANGUAGE } from '../action';
 const INITIAL_EVENT = {
   values: null,
   programStage: null,
@@ -52,7 +52,9 @@ const INITIAL_STATE = {
   programRulesCondition:[],
   mergeProgramRuleCondition: [],
   mandatoryDataElements: [],
-  mandatoryElement: false
+  mandatoryElement: false,
+  language:null,
+  dataElementsTranslation:null
 };
 export const dataReducer = (state = INITIAL_STATE, {
   type,
@@ -219,6 +221,18 @@ export const dataReducer = (state = INITIAL_STATE, {
             pageLoading: true
           };
         }
+        case SET_LANGUAGE:
+          {
+            return { ...state,
+              language: payload,
+            };
+          }
+          case TRANSLATION_DATAELEMENTS:
+            {
+              return { ...state,
+                dataElementsTranslation: payload
+              };
+            }
     default:
       return state;
   }

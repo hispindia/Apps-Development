@@ -111,7 +111,7 @@ export const Element = (props) => {
         <>
           <div className="row">
             <div className="col float-left m-2">
-              {element.formName}
+              {element.displayFormName}
               {element.required ? (
                 <span
                   style={{
@@ -136,7 +136,7 @@ export const Element = (props) => {
                     <option selected hidden>
                       Please Select Option 
                     </option>
-                <option id={opt.id} value={opt.name}>{opt.name}</option>
+                <option id={opt.id} value={opt.name}>{opt.displayName}</option>
                   </>
                 ))}
               </select>
@@ -148,7 +148,7 @@ export const Element = (props) => {
         <>
           <div className="row">
             <div className="col float-left m-2">
-              {element.formName}
+              {element.displayFormName}
               {element.required ? (
                 <span
                   style={{
@@ -189,7 +189,7 @@ export const Element = (props) => {
         <>
           <div className="row">
             <div className="col float-left m-2">
-              {element.formName}
+              {element.displayFormName}
               {element.required ? (
                 <span
                   style={{
@@ -233,7 +233,7 @@ export const Element = (props) => {
         <>
           <div className="row">
             <div className="col float-left m-2">
-              {element.formName}
+              {element.displayFormName}
               {element.required ? (
                 <span
                   style={{
@@ -265,7 +265,7 @@ export const Element = (props) => {
         <>
           <div className="row">
             <div className="col float-left m-2">
-              {element.formName}
+              {element.displayFormName}
               {element.required ? (
                 <span
                   style={{
@@ -296,7 +296,7 @@ export const Element = (props) => {
         <>
           <div className="row">
             <div className="col float-left m-2">
-              {element.formName}
+              {element.displayFormName}
               {element.required ? (
                 <span
                   style={{
@@ -339,7 +339,7 @@ export const Element = (props) => {
         <>
           <div className="row">
             <div className="col float-left m-2">
-              {element.formName}
+              {element.displayFormName}
               {element.required ? (
                 <span
                   style={{

@@ -7,7 +7,9 @@ export const ApiService = {
     getUserData,
     getEvents,
     getOUCondition,
-    getOUGroup
+    getOUGroup,
+    getMe,
+    getDETranslation
 };
 function getTrackedEntityInstance(data) {
     const requestOptions = { method: 'GET', credentials: 'include' };
@@ -39,7 +41,7 @@ function getUserData() {
 }
 function getMetaData() {
     const requestOptions = { method: 'GET', credentials: 'include',};
-    return fetch( BaseUrl + '/api/metadata.json?paging=false&fields=programRuleVariableSourceType,attributeValues[attribute[id,name,code],value],children,condition,code,dataElement,displayName,formName,id,name,options,organisationUnits,path,priority,program,programRuleActions[programRuleActionType,dataElement,optionGroup,content,trackedEntityAttribute,programStageSection,data],programStage,programStages[id,attributeValues[attribute[id,name,code],value],displayName,access,programStageDataElements[dataElement[id],compulsory,formName],programStageSections[id,name,formName,displayName,renderType,dataElements[id,name,formName,displayFormName,code,valueType,optionSetValue,optionSet[id,name,displayName,options[id,code,name,displayName]]]]],trackedEntityTypeAttributes[name,id,displayName,valueType,unique,optionSetValue,optionSet,mandatory,trackedEntityAttribute[name,id,displayName,valueType,unique,optionSetValue,optionSet]],value&order=level:asc&constants=true&dataElements=true&optionGroups=true&options=true&optionSets=true&organisationUnits=true&programRules=true&programRuleVariables=true&programs=true&trackedEntityTypes=true', requestOptions).then(res => res.json());
+    return fetch( BaseUrl + '/api/metadata.json?paging=false&fields=programRuleVariableSourceType,attributeValues[attribute[id,name,code],value],children,condition,code,dataElement,displayName,displayFormName,formName,id,name,options,organisationUnits,path,priority,program,programRuleActions[programRuleActionType,dataElement,optionGroup,content,trackedEntityAttribute,programStageSection,data],programStage,programStages[id,attributeValues[attribute[id,name,displayFormName,code],value],displayName,displayFormName,access,programStageDataElements[dataElement[id],compulsory,formName,displayFormName],programStageSections[id,name,formName,displayFormName,displayName,renderType,dataElements[id,name,formName,displayFormName,code,valueType,optionSetValue,optionSet[id,displayFormName,name,displayName,options[id,code,displayFormName,name,displayName]]]]],trackedEntityTypeAttributes[name,id,displayName,displayFormName,valueType,unique,optionSetValue,optionSet,mandatory,trackedEntityAttribute[name,id,displayName,displayFormName,valueType,unique,optionSetValue,optionSet]],value&order=level:asc&constants=true&dataElements=true&optionGroups=true&options=true&optionSets=true&organisationUnits=true&programRules=true&programRuleVariables=true&programs=true&trackedEntityTypes=true', requestOptions).then(res => res.json());
 }
 
 // get data using programStageSections id
@@ -55,3 +57,12 @@ function getOUCondition(id){
     const requestOptions = { method: 'GET', credentials: 'include',};
     return fetch(BaseUrl + '/api/organisationUnitGroups/'+id+'.json', requestOptions).then(res => res.json())
 }
+function getMe(){
+    const requestOptions = { method: 'GET', credentials: 'include',};
+    return fetch(BaseUrl + '/api/me.json?fields=settings', requestOptions).then(res => res.json())
+}
+function getDETranslation(){
+    const requestOptions = { method: 'GET', credentials: 'include',};
+    return fetch(BaseUrl + '/api/dataElements.json?fields=[id,name,translations]&paging=false', requestOptions).then(res => res.json())
+}
+

@@ -163,7 +163,7 @@ export const StaticData = (props) => {
                         <option selected hidden>
                           Please Select Program
                         </option>
-                        {programs.map(program => <option value={program.id}>{program.name}</option>)}
+                        {programs.map(program => <option value={program.id}>{program.displayName}</option>)}
                       </select>
                       <br />
                     </Grid>
