@@ -100,7 +100,7 @@ excelImport.controller('aggregatedataimportController', function ($rootScope,
                     var dataValueSet = {};
                     var dataValues = [];
                     var months = ["01","02","03","04","05","06","07","08","09","10","11","12"]
-                    var objArr = Object.keys(object)
+                    var objArr =["Sub-national level", "SIA - Age (range) of target group","SIA - Coverage achieved (%)","SIA - Start and end date","Qualitative assessment of most recent SIA","SIA - Vaccine","SIA - % sub-national units >95% coverage","SIA - Supplementary immunization activities with measles/rubella vaccine?","SIA - Target population size","Coverage 1st dose (%)","Coverage 2nd dose (%)","Vaccine target population","Population","Measles cases - Jan","Measles cases - Feb","Measles cases - Mar","Measles cases - April","Measles cases - May","Measles cases - June","Measles cases - July","Measles cases - Aug","Measles cases - Sept","Measles cases - Oct","Measles cases - Nov","Measles cases - Dec","Rubella cases  - Jan","Rubella cases  - Feb","Rubella cases  - Mar","Rubella cases  - April","Rubella cases  - May","Rubella cases  - June","Rubella cases  - July","Rubella cases  - Aug","Rubella cases  - Sept","Rubella cases  - Oct","Rubella cases  - Nov","Rubella cases  - Dec"]
                     for (let property in object) {
                         var dataValue = {};
                          if (property == objArr["1"]) {
@@ -180,31 +180,26 @@ excelImport.controller('aggregatedataimportController', function ($rootScope,
                             dataValue.value = object[property]
                             dataValue.period = $scope.selectedPayLoad.period + "01"
                             dataValues.push(dataValue);
-
                         } else if (property == objArr["14"]) {
                             dataValue.dataElement = "UpQo0wzxWBp"
                             dataValue.value = object[property]
                             dataValue.period = $scope.selectedPayLoad.period + "02"
                             dataValues.push(dataValue);
-
                         } else if (property == objArr["15"]) {
                             dataValue.dataElement = "UpQo0wzxWBp"
                             dataValue.value = object[property]
                             dataValue.period = $scope.selectedPayLoad.period + "03"
                             dataValues.push(dataValue);
-
                         } else if (property == objArr["16"]) {
                             dataValue.dataElement = "UpQo0wzxWBp"
                             dataValue.value = object[property]
                             dataValue.period = $scope.selectedPayLoad.period + "04"
                             dataValues.push(dataValue);
-
                         } else if (property == objArr["17"]) {
                             dataValue.dataElement = "UpQo0wzxWBp"
                             dataValue.value = object[property]
                             dataValue.period = $scope.selectedPayLoad.period + "05"
                             dataValues.push(dataValue);
-
                         } else if (property == objArr["18"]) {
                             dataValue.dataElement = "UpQo0wzxWBp"
                             dataValue.value = object[property]
@@ -313,9 +308,8 @@ excelImport.controller('aggregatedataimportController', function ($rootScope,
                                 dataValueSet.orgUnit = ou.id;
                             }
                         }
-                       
                     }
-                    dataValues.shift()
+                    // dataValues.shift()
                     dataValueSet.dataValues = dataValues;
                     MetadataService.postExcelData(dataValueSet).then(function (res) {
                         console.log('here is response', res)
