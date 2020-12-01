@@ -1328,3 +1328,6 @@ input, button, select, textarea {
   .item1 {
     grid-row: 1 / span 2;
   }
+  .excelLogo{
+    text-align: right !important;  
+  }

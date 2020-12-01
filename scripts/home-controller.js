@@ -51,6 +51,7 @@ excelImport.controller('aggregatedataimportController', function ($rootScope,
             $timeout(function () {
                 $scope.selectedPayLoad.name = ouRes.displayName;
                 $scope.selectedPayLoad.orgUnit = ouRes.id;
+                $scope.selectedPayLoad.ouName=ouRes.displayName+" aggregate.xlsx"
             })
         });
         MetadataService.getChildrenOU($scope.selectedPayLoad.id).then(function (res) {

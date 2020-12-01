@@ -20,15 +20,18 @@
                             <li class="list-group-item">Period<select id="period" class="form-control">
                                     <option ng-repeat="year in years">{{year}}</option>
                                 </select></li>
-                            <li class="list-group-item"> Please Upload .xlsx or .csv file <input type="file"
+                            <li class="list-group-item"> Please Upload .xlsx <input type="file"
                                     style="width:300px; background-color: yellow;" id="fileInput"></li>
                             <li class="list-group-item"><button class="btn btn-primary"
                                     ng-click="getSet()">Import</button></li>
                         </ul>
                     </div>
-                </div>
+                </div>  
             </div>
         </div>
+        <span class="excelLogo" style="width: 34rem; float: right;">
+            <a ng-href="img/{{selectedPayLoad.ouName}}">Download Blank Excel Sheet </a> 
+        </span>
         <br>
         <div id="loader"></div>
         <div id="secondTable" class="lowerSection boxTexts" >
