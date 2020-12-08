@@ -344,13 +344,56 @@ excelImport
 
                     // organisationUnits post
                     else if( sheetName === 'organisationUnitsPost' ){
+                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        //var json_object = JSON.stringify(XL_row_object);
+                        //var objectKeys = Object.keys(XL_row_object["0"]);
+                        let importCount = 1;
+                        XL_row_object.forEach(row => {
+                            importCount++;
+
+                            let orgUnitPostRequest = {
+                                id : row.uid,
+                                name: row.name,
+                                shortName: row.shortName,
+                                openingDate:'1990-01-01',
+                                parent: { id:  row.parent }
+                            };
+
+                            $.ajax({
+                                type: "POST",
+                                async: false,
+                                dataType: "json",
+                                contentType: "application/json",
+                                data: JSON.stringify(orgUnitPostRequest),
+                                url: '../../organisationUnits',
+                                success: function (response) {
+                                    //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                    console.log( "Row - " + importCount  + " response: " + JSON.stringify(response) );
+                                },
+                                error: function (response) {
+                                    console.log(  "Row - " + importCount  + " response: " + JSON.stringify(response ));
+                                },
+                                warning: function (response) {
+                                    console.log(  "Row - " + importCount  + " response: " + JSON.stringify(response ));
+                                }
+                            });
+
+                            //importCount++;
+                            //console.log( "Row - " + importCount + " update done for event " + row.event );
+                            if( importCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " import done ");
+                            }
+                        });
+
+                        /*
                         let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
                         //let json_object = JSON.stringify(XL_row_object);
                         //let objectKeys = Object.keys(XL_row_object["0"]);
                         //let importCount = 1;
 
                         let orgUnitPostRequest = {
-                            name: 'Ultha',
+                            uid : row.uid,
+                            name: row.name,
                             shortName: 'Ultha',
                             openingDate:'2020-07-02',
                             code: 'R1',
@@ -380,7 +423,7 @@ excelImport
                             }
 
                         });
-
+                        */
                     }
 
                     // dataValueSet post
@@ -394,6 +437,59 @@ excelImport
                             let dataValue = {};
                             dataValue.dataElement = row.dataElementUID;
                             dataValue.categoryOptionCombo = row.categoryoptioncomboUID;
+                            dataValue.orgUnit = row.organisationunitUID;
+                            dataValue.period = row.isoPeriod;
+                            dataValue.value = row.dataValue;
+                            dataValues.push(dataValue);
+
+                        });
+                        let dataValueSet = {};
+                        dataValueSet.dataValues = dataValues;
+                        console.log(" final dataValueSet : " + dataValueSet );
+                        let dataJSON = JSON.stringify(dataValueSet);
+                        $.ajax({
+                            type: "POST",
+                            async: false,
+                            dataType: "json",
+                            contentType: "application/json",
+                            data: dataJSON,
+                            url: '../../dataValueSets',
+
+                            success: function (response) {
+                                //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+
+                                console.log("response : " + response);
+                                console.log("conflicts : " + response.conflicts);
+
+                                let impCount = response.importCount.imported;
+                                let upCount = response.importCount.updated;
+                                let igCount = response.importCount.ignored;
+                                let conflictsDetails   = response.conflicts;
+
+                                console.log(  "impCount - " + impCount + " upCount - " + upCount + " igCount - " + igCount + " conflictsDetails - " + conflictsDetails  );
+                            },
+                            error: function (response) {
+                                console.log("error : " + response.conflicts );
+                            },
+                            warning: function (response) {
+                                console.log("warning : " + response.conflicts );
+                            }
+
+                        });
+
+                    }
+                    // dataValueSetDataSetAttribute post
+                    else if( sheetName === 'dataValueSetDataSetAttribute' ){
+                        let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        //let json_object = JSON.stringify(XL_row_object);
+                        //let objectKeys = Object.keys(XL_row_object["0"]);
+                        //let importCount = 1;
+                        let dataValues = [];
+                        XL_row_object.forEach(row => {
+                            let dataValue = {};
+                            dataValue.dataElement = row.dataElementUID;
+                            dataValue.categoryOptionCombo = row.categoryoptioncomboUID;
+                            dataValue.attributeOptionCombo = row.attributeOptionComboUID;
                             dataValue.orgUnit = row.organisationunitUID;
                             dataValue.period = row.isoPeriod;
                             dataValue.value = row.dataValue;
