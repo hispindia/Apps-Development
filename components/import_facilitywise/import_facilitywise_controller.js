@@ -218,7 +218,7 @@ excelUpload.controller('ImportFacilitywiseController',
                     //printing periods ------------------
                     var periodType = d.periodType;
                     var today = new Date();
-                    var stDate = "01/01/" + "2014";
+                    var stDate = "01/01/" + "2010";
                     var endDate = "01/01/" + (today.getFullYear() + 1);
 
                     var periods = "";
