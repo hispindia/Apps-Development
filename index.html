@@ -251,7 +251,7 @@
                         </select>
                     </div>
                     <div class="col-3 align">
-                        <Tooltip title="Event Capture">
+                        <Tooltip title="Event Capture" id="event-capture">
                             <a href="http://45.79.54.176/measles/dhis-web-capture/index.html">
                                 <img class="avatar" src="image/capture.png" alt="Event Capture" />
                             </a>
@@ -261,7 +261,7 @@
                                 <img class="avatar" src="image/report.png" alt="Reports" />
                             </a>
                         </Tooltip>
-                        <Tooltip title="Excel Import">
+                        <Tooltip title="Excel Import" id="excel-import">
                             <a href="http://45.79.54.176/measles/api/apps/Excel-Import-v34/index.html#/">
                                 <img class="avatar mr-5" alt="Excel Import" src="image/import.png" />
                             </a>
@@ -272,17 +272,17 @@
                     <div class="col=3 rounded-pill rowMargin indicator" id="tab1" onclick="LoadMeaslesRubella()">
                         <b>Measles
                             and
-                            Rubella Programme Indicators</b></div>
+                            Rubella Programme Indicators</b>
+                    </div>
                     <div class="col=3 rounded-pill rowMargin indicator" id="tab2" onclick="LoadNCV()"><b>NVC
                             Indicators</b>
                     </div>
                     <div class="col=3 rowMargin">
                         <select id="selectedReport" class="form-control" onchange="LoadReport()">
-                            <option selected hidden>Filter</option>
+                            <!-- <option selected hidden>Filter</option>
                             <option value="all"> All</option>
                             <option value="table-finalClassificationMRC">Final Classification of Measles, Rubella & CRS
                             </option>
-                            <!-- <option value="table-statusMR">Status of measles and rubella elimination</option> -->
                             <option value="table-nationalStatergyMR">National strategic plan for measles and rubella or
                                 equivalent</option>
                             <option value="table-suspectedMR">Suspected Measles and Rubella cases with symptoms</option>
@@ -295,12 +295,11 @@
                                 vaccines</option>
                             <option value="table-countryStatus">Status of completion of Annual NVC report </option>
                             <option value="table-compositionNVC">Composition of National Verification Committee</option>
-                            <!-- <option value="table-secreterailSupportMR">Secretarial support 2</option> -->
                             <option value="table-secreterailSupportMR">Secretarial support to NVC</option>
                             <option value="table-activitiesNVC">Number of activities/ meetings conducted by NVC in last
                                 five years</option>
                             <option value="table-activitiesSecondMR">Number of activities/ meetings conducted by NVC
-                            </option>
+                            </option> -->
                         </select>
                     </div>
                 </div>
@@ -697,7 +696,59 @@
         var orgUnits = {};
         var OUname = "Organisation Unit";
         var selectedOU = '';
+        var reportOptions = [
+            [{
+                name: "Final Classification of Measles, Rubella & CRS",
+                value: "table-finalClassificationMRC"
+            },
+            {
+                name: "National strategic plan for measles and rubella or equivalent",
+                value: "table-nationalStatergyMR"
+            },
+            {
+                name: "Suspected Measles and Rubella cases with symptoms",
+                value: "table-suspectedMR"
+            },
+            {
+                name: "Case based surveillance started for measles and rubella",
+                value: "table-caseSurveillanceMR"
+            },
+            {
+                name: "Vaccine introduction date",
+                value: "table-vaccineIntroMR"
+            },
+            {
+                name: "Schedule of Measles and rubella vaccine",
+                value: "table-scheduleMR"
+            },
+            {
+                name: "Status of coverage for measles and rubella containing vaccines",
+                value: "table-statusCoverageMR"
+            }],
+            [{
+                name: "Status of completion of Annual NVC report",
+                value: "table-countryStatus"
+            },
+            {
+                name: "Composition of National Verification Committee",
+                value: "table-compositionNVC"
+            },
+            {
+                name: "Secretarial support to NVC",
+                value: "table-secreterailSupportMR"
+            },
+            {
+                name: "Number of activities/ meetings conducted by NVC in last five years",
+                value: "table-activitiesNVC"
+            },
+            {
+                name: "Number of activities/ meetings conducted by NVC",
+                value: "table-activitiesSecondMR"
+            }]
+        ]
+
         loadOrgUnit();
+
         function loadOrgUnit() {
 
             console.log('here is OU selection')
@@ -706,10 +757,16 @@
             $.ajax({
                 type: "GET",
                 async: false,
-                url: '../../../api/me.json?fields=[dataViewOrganisationUnits]',
+                url: '../../../api/me.json?fields=userCredentials[userRoles],dataViewOrganisationUnits',
                 data: JSON,
                 success: function (data, status) {
-                    selectedOrgUnit["id"] = data.dataViewOrganisationUnits["0"].id;                    
+                    selectedOrgUnit["id"] = data.dataViewOrganisationUnits["0"].id;
+                    data.userCredentials.userRoles.forEach(userRole => {
+                        if (userRole.id == "CRccWb6G2rk") {
+                            document.getElementById("event-capture").style.display = "none";
+                            document.getElementById("excel-import").style.display = "none";
+                        }
+                    });
                 }
             });
 
@@ -786,51 +843,81 @@
 
         var optionYear = ''
         for (let i = period; i > (period - 5); i--) {
+            if (i == 2019) {
+                optionYear += '<option value="' + i + '" selected>' + i + '</option>'
+                continue;
+            }
             optionYear += '<option value="' + i + '">' + i + '</option>'
         }
         document.getElementById("period").innerHTML = optionYear
         loadFirst();
         function loadFirst() {
+            var optionString = `<option value="all">ALL</option>`
+            reportOptions[0].map(option => {
+                optionString += `<option value="${option.value}">${option.name}</option>`
+                $(`#${option.value}`).show();
+            });
+            document.getElementById("selectedReport").innerHTML = "";
+            document.getElementById("selectedReport").innerHTML = optionString;
+
             $("#ncv").hide()
             $("#tab1").css({ "background-color": "#00796b", "color": "white" });
             $("#tab2").css({ "background-color": "white", "color": "black" });
-            $("#opt7").hide()
-            $("#opt8").hide()
-            $("#opt9").hide()
-            $("#opt10").hide()
+            // $("#opt7").hide()
+            // $("#opt8").hide()
+            // $("#opt9").hide()
+            // $("#opt10").hide()
         }
 
         function LoadMeaslesRubella() {
-            $("#measles").show()
+            var optionString = `<option value="all">ALL</option>`
+            reportOptions[0].map(option => {
+                optionString += `<option value="${option.value}">${option.name}</option>`
+                $(`#${option.value}`).show();
+            });
+            document.getElementById("selectedReport").innerHTML = "";
+            document.getElementById("selectedReport").innerHTML = optionString;
+
+            $("#measles").show();
+            $("#ncv").hide();
             $("#tab1").css({ "background-color": "#00796b", "color": "white" });
             $("#tab2").css({ "background-color": "white", "color": "black" });
-            $("#ncv").hide();
-            $("#opt7").hide()
-            $("#opt8").hide()
-            $("#opt9").hide()
-            $("#opt10").hide()
-            $("#opt1").show()
-            $("#opt2").show()
-            $("#opt3").show()
-            $("#opt4").show()
-            $("#opt5").show()
+            
+            // $("#opt7").hide()
+            // $("#opt8").hide()
+            // $("#opt9").hide()
+            // $("#opt10").hide()
+            // $("#opt1").show()
+            // $("#opt2").show()
+            // $("#opt3").show()
+            // $("#opt4").show()
+            // $("#opt5").show()
         }
 
         function LoadNCV() {
+            var optionString = `<option value="all">ALL</option>`
+            reportOptions[1].map(option => {
+                optionString += `<option value="${option.value}">${option.name}</option>`
+                $(`#${option.value}`).show();
+            });
+            document.getElementById("selectedReport").innerHTML = "";
+            document.getElementById("selectedReport").innerHTML = optionString;
+            
             $("#ncv").show();
+            $("#measles").hide();
             $("#tab2").css({ "background-color": "#00796b", "color": "white" });
             $("#tab1").css({ "background-color": "white", "color": "black" });
-            $("#measles").hide()
-            $("#opt1").hide()
-            $("#opt2").hide()
-            $("#opt3").hide()
-            $("#opt4").hide()
-            $("#opt5").hide()
-            $("#opt6").hide()
-            $("#opt7").show()
-            $("#opt8").show()
-            $("#opt9").show()
-            $("#opt10").show()
+            
+            // $("#opt1").hide()
+            // $("#opt2").hide()
+            // $("#opt3").hide()
+            // $("#opt4").hide()
+            // $("#opt5").hide()
+            // $("#opt6").hide()
+            // $("#opt7").show()
+            // $("#opt8").show()
+            // $("#opt9").show()
+            // $("#opt10").show()
 
 
         }
@@ -884,7 +971,7 @@
             // var periodStatusMR = getYear(period, 5); //Last 5 years
             var periodStatusMR = [period];
             var ouStatusMR = ["N8HDeqniqWX", "eMUHSZcgYHD", "O0Ju9kVgDwZ", "MmoBpXrLgp4", "n2OY4kF8ZEO", "gsniJrJg5Z0", "ALxiQkagGoU", "XtwIEZF3gbv", "H7kKlF65Df2", "LikOpu1SUTx", "wSiw2vmj00A"]
-            ouStatusMR = (selectedOU!="GaRQQc2xvan" && selectedOU) ? [selectedOU] : ouStatusMR;
+            ouStatusMR = (selectedOU != "GaRQQc2xvan" && selectedOU) ? [selectedOU] : ouStatusMR;
             var statusMR = `../../../api/analytics/events/query/SkWSuOzF0Pu.json?dimension=pe:${periodStatusMR.join(";")}&dimension=ou:${ouStatusMR.join(";")}&dimension=Djj0AaPEdAu.N2YoN6kzCYY&dimension=Djj0AaPEdAu.g1vkL9lvBYu&dimension=Djj0AaPEdAu.KJVtChEsCJI&stage=Djj0AaPEdAu&displayProperty=NAME&outputType=EVENT&desc=eventdate&paging=false`;
 
             var periodNationalStatergyMR = periodStatusMR; //Last 5 years
@@ -934,7 +1021,7 @@
             var periodActivitiesNVC = periodStatusMR;
             var ouActivitiesNVC = ouStatusMR;
             var activitiesNVC = `../../../api/analytics.json?dimension=dx:n467QBpCVMN&dimension=ou:${ouActivitiesNVC.join(";")}&filter=pe:${periodActivitiesNVC.join(";")}&displayProperty=NAME&paging=false`;
-            
+
             var periodActivitiesSecondMR = periodStatusMR;
             var ouActivitiesSecondMR = ouStatusMR;
             var activitiesSecondMR = `../../../api/analytics/events/query/qwD1MiX35HB.json?dimension=pe:${periodActivitiesSecondMR.join(";")}&dimension=ou:${ouActivitiesSecondMR.join(";")}&dimension=IAeiPRPu6q7.b4V3Li20Vcv&dimension=IAeiPRPu6q7.ja7WpLIgNDA&dimension=IAeiPRPu6q7.xt1KGbeoEAx&dimension=IAeiPRPu6q7.eMHhULBHnMd&dimension=IAeiPRPu6q7.b9VWfHubS1f&dimension=IAeiPRPu6q7.oVv3XCsuvuM&stage=IAeiPRPu6q7&displayProperty=NAME&outputType=EVENT&desc=eventdate&paging=false`;
@@ -1261,7 +1348,7 @@
                     tableRow += `<tr><td style="border:1px solid black; text-align:left;font-weight:600;">${metaDataValues[ou]}</td>`;
                     periodCompositionNVC.forEach(period => {
                         if (dataCNVC[period] && dataCNVC[period][ou]) {
-                           
+
                             tableRow += `<td style="border:1px solid black; text-align:left;font-weight:600;">${(dataCNVC[period][ou]["QkhZlMI5xLM"] ? dataCNVC[period][ou]["QkhZlMI5xLM"] : "")}</td>
                                         <td style="border:1px solid black; text-align:left;font-weight:600;">${(dataCNVC[period][ou]["bTv8dyEgfgn"] ? dataCNVC[period][ou]["bTv8dyEgfgn"] : "")}</td>
                                         <td style="border:1px solid black; text-align:left;font-weight:600;">${(dataCNVC[period][ou]["wRnYgkjK9Tc"] ? dataCNVC[period][ou]["wRnYgkjK9Tc"] : "")}</td>
