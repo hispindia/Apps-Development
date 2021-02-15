@@ -132,19 +132,35 @@ class DynamicComponent extends Component {
 
   async getdECOC() {
     var dECOC = {};
+    let api_one = "../../../api/29/sqlViews/nExolJ6VsR5/data.json?paging=false"
+    let api_two = "../../../api/29/sqlViews/X0cT1wQvk9M/data.json?paging=false"
+    let api_three = "../../../api/29/sqlViews/nWUC12EYfQj/data.json?paging=false"
+    let api_four = "../../../api/29/sqlViews/rwE9Q42RHfg/data.json?paging=false"
+    let requestOne = api_one;
+    let requestTwo = api_two;
+    let requestThree = api_three;
+    let requestFour = api_four;
+
     try {
       axios
-        .get(`../../../api/29/sqlViews/GGhupAYbdg2/data.json?paging=false`)
-        .then((resp) => {
+        .all([requestOne, requestTwo, requestThree, requestFour])
+        .then(axios.spread((...responses) => {
+          const responseOne = responses[0]
+          const responseTwo = responses[1]
+          const responesThree = responses[2]
+          const responseFour = response[3]
+
           resp.data.listGrid.rows.forEach((row) => {
             if (row["0"]) dECOC[row["0"]] = row["2"];
             if (row["7"]) dECOC[row["7"]] = row["6"];
           });
           this.setState({ dECOC: dECOC });
           this.setState({ loading: false });
-        });
+        })).catch(errors => {
+  // react on errors.
+})
     } catch (e) {
-      console.log("Error");
+      console.log("Error", e);
       this.setState({ loading: false });
     }
   }
