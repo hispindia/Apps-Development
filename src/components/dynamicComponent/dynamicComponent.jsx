@@ -121,7 +121,6 @@ class DynamicComponent extends Component {
           respanti.data.listGrid.rows.forEach((row) => {
             if (row["2"]) deAnti[row["1"]] = row["2"];
           });
-          console.log(deAnti);
           this.setState({ deAnti: deAnti });
         });
     } catch (e) {
@@ -136,19 +135,22 @@ class DynamicComponent extends Component {
     let api_two = "../../../api/29/sqlViews/X0cT1wQvk9M/data.json?paging=false"
     let api_three = "../../../api/29/sqlViews/nWUC12EYfQj/data.json?paging=false"
     let api_four = "../../../api/29/sqlViews/rwE9Q42RHfg/data.json?paging=false"
-    let requestOne = api_one;
-    let requestTwo = api_two;
-    let requestThree = api_three;
-    let requestFour = api_four;
-
+    let requestOne = axios.get(api_one);
+    let requestTwo = axios.get(api_two);
+    let requestThree = axios.get(api_three);
+    let requestFour = axios.get(api_four);
+    debugger 
     try {
       axios
         .all([requestOne, requestTwo, requestThree, requestFour])
         .then(axios.spread((...responses) => {
+          debugger 
           const responseOne = responses[0]
           const responseTwo = responses[1]
           const responesThree = responses[2]
-          const responseFour = response[3]
+          const responseFour = responses[3]
+          console.log("RESPONSE ", responses);
+          console.log("RESPONSE TWO ",responseTwo)
 
           resp.data.listGrid.rows.forEach((row) => {
             if (row["0"]) dECOC[row["0"]] = row["2"];
@@ -157,6 +159,8 @@ class DynamicComponent extends Component {
           this.setState({ dECOC: dECOC });
           this.setState({ loading: false });
         })).catch(errors => {
+          debugger 
+          console.log("Errors", errors)
   // react on errors.
 })
     } catch (e) {
