@@ -61,13 +61,18 @@ class DynamicComponent extends Component {
               let antiPresent = antiKeys in deAnti;
               if (antiPresent) {
                 var antiValue = deAnti[antiKeys];
-                antiValue = antiValue.split("_")[0]; // Ampicillin_Results
+                if (antiValue.indexOf(' ') >= 0) {
+                    antiValue = antiValue.split(" ")[0]; // Ampicillin_Results
+                }
+                else {
+                    antiValue = antiValue.split("_")[0]; // Ampicillin_Results
+                }
                 antiValue = antiValue + "-" + dataElement[antiKeys]; // Ampicillin-Resistant
                 if (dataElement["mp5MeJ2dFQz"] && dataElement["B7XuDaXPv10"])
                   dataValue[
                     "COC"
                   ] = `${antiValue}, ${dataElement["mp5MeJ2dFQz"]}, ${dataElement["B7XuDaXPv10"]}`;
-                console.log("ANTIBIOTIC", dataValue["COC"]);
+                console.log("ANTIBIOTIC COCS: ", dataValue["COC"]);
               }
             }
 
@@ -121,6 +126,7 @@ class DynamicComponent extends Component {
           respanti.data.listGrid.rows.forEach((row) => {
             if (row["2"]) deAnti[row["1"]] = row["2"];
           });
+          console.log("ANTIBIOTICS: ",deAnti)
           this.setState({ deAnti: deAnti });
         });
     } catch (e) {
@@ -139,27 +145,23 @@ class DynamicComponent extends Component {
     let requestTwo = axios.get(api_two);
     let requestThree = axios.get(api_three);
     let requestFour = axios.get(api_four);
-    debugger 
     try {
       axios
         .all([requestOne, requestTwo, requestThree, requestFour])
         .then(axios.spread((...responses) => {
-          debugger 
           const responseOne = responses[0]
           const responseTwo = responses[1]
           const responesThree = responses[2]
           const responseFour = responses[3]
-          console.log("RESPONSE ", responses);
-          console.log("RESPONSE TWO ",responseTwo)
-
-          resp.data.listGrid.rows.forEach((row) => {
-            if (row["0"]) dECOC[row["0"]] = row["2"];
-            if (row["7"]) dECOC[row["7"]] = row["6"];
+          responses.forEach((resp) => {
+            resp.data.listGrid.rows.forEach((row) => {
+              if (row["0"]) dECOC[row["0"]] = row["2"];
+              if (row["7"]) dECOC[row["7"]] = row["6"];
+            });
           });
           this.setState({ dECOC: dECOC });
           this.setState({ loading: false });
         })).catch(errors => {
-          debugger 
           console.log("Errors", errors)
   // react on errors.
 })
