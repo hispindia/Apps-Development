@@ -21,6 +21,7 @@ class DynamicComponent extends Component {
       deleted: 0,
       ignored: 0,
       conflicts: 0,
+      deCOC_anti:{}
     };
     this.getdECOC = this.getdECOC.bind(this);
     this.postDataValues = this.postDataValues.bind(this);
@@ -68,11 +69,13 @@ class DynamicComponent extends Component {
                     antiValue = antiValue.split("_")[0]; // Ampicillin_Results
                 }
                 antiValue = antiValue + "-" + dataElement[antiKeys]; // Ampicillin-Resistant
+                if (dataElement["SaQe2REkGVw"])
+                  dataValue["deCode"] = dataElement["SaQe2REkGVw"]+"_AW";
                 if (dataElement["mp5MeJ2dFQz"] && dataElement["B7XuDaXPv10"])
                   dataValue[
                     "COC"
                   ] = `${antiValue}, ${dataElement["mp5MeJ2dFQz"]}, ${dataElement["B7XuDaXPv10"]}`;
-                console.log("ANTIBIOTIC COCS: ", dataValue["COC"]);
+                console.log("ANTIBIOTIC DEC COCS: ",dataValue["deCode"], ":", dataValue["COC"]);
               }
             }
 
