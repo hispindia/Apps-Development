@@ -32,7 +32,6 @@ class DynamicComponent extends Component {
     var programCount = {};
     try {
       var dECOC = this.state.dECOC;
-      var deAnti = this.state.deAnti;
 
       var url = `../../../api/events.json?paging=false&orgUnit=${orgUnit}&ouMode=DESCENDANTS`;
       if (startDate) url += `&startDate=${startDate}`;
@@ -57,27 +56,6 @@ class DynamicComponent extends Component {
               dataValue[
                 "COC"
               ] = `${dataElement["mp5MeJ2dFQz"]}, ${dataElement["B7XuDaXPv10"]}`;
-
-            for (const antiKeys in dataElement) {
-              let antiPresent = antiKeys in deAnti;
-              if (antiPresent) {
-                var antiValue = deAnti[antiKeys];
-                if (antiValue.indexOf(' ') >= 0) {
-                    antiValue = antiValue.split(" ")[0]; // Ampicillin_Results
-                }
-                else {
-                    antiValue = antiValue.split("_")[0]; // Ampicillin_Results
-                }
-                antiValue = antiValue + "-" + dataElement[antiKeys]; // Ampicillin-Resistant
-                if (dataElement["SaQe2REkGVw"])
-                  dataValue["deCode"] = dataElement["SaQe2REkGVw"]+"_AW";
-                if (dataElement["mp5MeJ2dFQz"] && dataElement["B7XuDaXPv10"])
-                  dataValue[
-                    "COC"
-                  ] = `${antiValue}, ${dataElement["mp5MeJ2dFQz"]}, ${dataElement["B7XuDaXPv10"]}`;
-                console.log("ANTIBIOTIC DEC COCS: ",dataValue["deCode"], ":", dataValue["COC"]);
-              }
-            }
 
             eventData.dataValues = dataValue;
             events.push(eventData);
@@ -112,11 +90,108 @@ class DynamicComponent extends Component {
             ] += 1;
           }
         });
-        console.log(programCount);
         return programCount;
       });
     } catch (e) {
       console.log("Error in getEvents");
+    }
+  };
+
+  getAntiEvents = (orgUnitAnti, startDateAnti, endDateAnti) => {
+    var eventsAnti = [];
+    var programCountAnti = {};
+    try {
+      var deCOC_anti = this.state.deCOC_anti;
+      var deAnti = this.state.deAnti;
+
+      var url = `../../../api/events.json?paging=false&orgUnit=${orgUnitAnti}&ouMode=DESCENDANTS`;
+      if (startDateAnti) url += `&startDate=${startDateAnti}`;
+      if (endDateAnti) url += `&endDate=${endDateAnti}`;
+      return axios.get(url).then((respAntiB) => {
+        respAntiB.data.events.forEach((event) => {
+          var eventDataAnti = {};
+          var dataElementAnti = {};
+          var dataValueAnti = {};
+          if (event["eventDate"]) {
+            eventDataAnti.eventDate = event["eventDate"].split("T")["0"];
+            eventDataAnti.orgUnit = event["orgUnit"];
+            eventDataAnti.program = event["program"];
+            event.dataValues.forEach(
+            (dataValue) =>
+              (dataElementAnti[dataValue.dataElement] = dataValue.value)
+            );
+
+            if (dataElementAnti["SaQe2REkGVw"])
+              dataValueAnti["deCode"] = dataElementAnti["SaQe2REkGVw"]+"_AW";
+            for (const antiKeys in dataElementAnti) {
+              let antiPresent = antiKeys in deAnti;
+              if (antiPresent) {
+                var antiValue = deAnti[antiKeys];
+                if (antiValue.indexOf(' ') >= 0) {
+                    antiValue = antiValue.split(" ")[0]; // Ampicillin_Results
+                }
+                else {
+                    antiValue = antiValue.split("_")[0]; // Ampicillin_Results
+                }
+                antiValue = antiValue + "-" + dataElementAnti[antiKeys]; // Ampicillin-Resistant
+                if (dataElementAnti["mp5MeJ2dFQz"] && dataElementAnti["B7XuDaXPv10"]) {
+                  let coc_key = "COC_"+antiValue
+                  dataValueAnti[
+                    coc_key 
+                  ] = `${antiValue}, ${dataElementAnti["mp5MeJ2dFQz"]}, ${dataElementAnti["B7XuDaXPv10"]}`;
+                }
+              }
+            }
+            eventDataAnti.dataValues = dataValueAnti;
+            eventsAnti.push(eventDataAnti);
+            console.log("Events Antibiotics Data : ",eventsAnti)
+          }
+        });
+
+        if (!eventsAnti.length) return;
+        eventsAnti.forEach((event) => {
+          let eventDateAnti = `${event.eventDate.split("-")["0"]}-${
+          event.eventDate.split("-")["1"]
+          }`;
+          let eventOrgUnitAnti = event.orgUnit;
+          let eventDeCodeAnti = event.dataValues.deCode;
+          // let eventCOCAnti = event.dataValues;
+          // console.log("ANTI ABA_AW value: ", deCOC_anti["ABA_AW"])
+          // console.log("ANTI ABA_AW Value COCS", deCOC_anti["Cefepime-Susceptible, Abdominal fluid, OPD"])
+          // console.log("ANTI ABA_AW Value COCS", deCOC_anti["Levofloxacin-Intermediate, Abdominal fluid, OPD"])
+          // console.log("ANTI ABA_AW Value COCS", deCOC_anti["Amikacin-Resistant, Abdominal fluid, OPD"])
+          // console.log("ANTI ABA_AW Value COCS", deCOC_anti["Imipenem-Susceptible, Abdominal fluid, OPD"])
+
+          for (var coc_keys in event.dataValues) {
+            let coc_key_anti = ""
+            if (eventDeCodeAnti != event.dataValues[coc_keys]) {
+              coc_key_anti = event.dataValues[coc_keys];
+            }
+            console.log("COC KEYS", eventDeCodeAnti," : ",coc_key_anti)
+            if (
+            deCOC_anti[eventDeCodeAnti] &&
+            deCOC_anti[coc_key_anti] &&
+            eventDateAnti &&
+            eventOrgUnitAnti
+            ) {
+              if (
+              !programCountAnti[
+              `${eventOrgUnitAnti}:${eventDateAnti}:${deCOC_anti[eventDeCodeAnti]}-${deCOC_anti[coc_key_anti]}`
+              ]
+              )
+              programCountAnti[
+              `${eventOrgUnitAnti}:${eventDateAnti}:${deCOC_anti[eventDeCodeAnti]}-${deCOC_anti[coc_key_anti]}`
+              ] = 0;
+              programCountAnti[
+              `${eventOrgUnitAnti}:${eventDateAnti}:${deCOC_anti[eventDeCodeAnti]}-${deCOC_anti[coc_key_anti]}`
+              ] += 1;
+            }
+          }
+        });
+        return programCountAnti;
+      });
+    } catch (e) {
+    console.log("Error in getEvents");
     }
   };
 
@@ -129,7 +204,6 @@ class DynamicComponent extends Component {
           respanti.data.listGrid.rows.forEach((row) => {
             if (row["2"]) deAnti[row["1"]] = row["2"];
           });
-          console.log("ANTIBIOTICS: ",deAnti)
           this.setState({ deAnti: deAnti });
         });
     } catch (e) {
@@ -140,6 +214,7 @@ class DynamicComponent extends Component {
 
   async getdECOC() {
     var dECOC = {};
+    var deCOC_anti = {};
     let api_one = "../../../api/29/sqlViews/nExolJ6VsR5/data.json?paging=false"
     let api_two = "../../../api/29/sqlViews/X0cT1wQvk9M/data.json?paging=false"
     let api_three = "../../../api/29/sqlViews/nWUC12EYfQj/data.json?paging=false"
@@ -158,12 +233,19 @@ class DynamicComponent extends Component {
           const responseFour = responses[3]
           responses.forEach((resp) => {
             resp.data.listGrid.rows.forEach((row) => {
-              if (row["0"]) dECOC[row["0"]] = row["2"];
-              if (row["7"]) dECOC[row["7"]] = row["6"];
+              if (row["1"].match(/- AW/g) == "- AW") { 
+                if (!(row["0"] in deCOC_anti)) deCOC_anti[row["0"]] = row["2"];
+                if (!(row["7"] in deCOC_anti)) deCOC_anti[row["7"]] = row["6"];
+              }
+              else {
+                if (row["0"]) dECOC[row["0"]] = row["2"];
+                if (row["7"]) dECOC[row["7"]] = row["6"];
+              }
             });
           });
           this.setState({ dECOC: dECOC });
           this.setState({ loading: false });
+          this.setState({ deCOC_anti: deCOC_anti });
         })).catch(errors => {
           console.log("Errors", errors)
   // react on errors.
@@ -178,8 +260,8 @@ class DynamicComponent extends Component {
     this.setState({ loading: true });
     try {
       var programCount = await this.getEvents(orgUnit, startDate, endDate);
-      var dataValues = [];
 
+      var dataValues = [];
       for (let item in programCount) {
         var dataValue = {};
         var itemKey = item.split(":");
@@ -190,7 +272,22 @@ class DynamicComponent extends Component {
         dataValue.value = programCount[item];
         dataValues.push(dataValue);
       }
-      console.log(dataValues);
+
+      console.log("DATA Sample Wise : ",programCount);
+      var programCountAnti = await this.getAntiEvents(orgUnit, startDate, endDate);
+
+      for (let itemAnti in programCountAnti) {
+        var dataValueAntiB = {};
+        var itemKeyAnti = itemAnti.split(":");
+        dataValueAntiB.orgUnit = itemKeyAnti["0"];
+        dataValueAntiB.period = itemKeyAnti["1"].split("-").join("");
+        dataValueAntiB.dataElement = itemKeyAnti["2"].split("-")["0"];
+        dataValueAntiB.categoryOptionCombo = itemKeyAnti["2"].split("-")["1"];
+        dataValueAntiB.value = programCountAnti[itemAnti];
+        dataValues.push(dataValueAntiB);
+      }
+
+      console.log("Data Antibiotics wise : ",programCountAnti);
 
       // PUSHING DATA IN DATA ENTRY
       var dataValueSet = {};
