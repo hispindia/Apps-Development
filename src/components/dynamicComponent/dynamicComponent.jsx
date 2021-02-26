@@ -127,24 +127,26 @@ class DynamicComponent extends Component {
               let antiPresent = antiKeys in deAnti;
               if (antiPresent) {
                 var antiValue = deAnti[antiKeys];
-                if (antiValue.indexOf(' ') >= 0) {
-                    antiValue = antiValue.split(" ")[0]; // Ampicillin_Results
-                }
-                else {
-                    antiValue = antiValue.split("_")[0]; // Ampicillin_Results
-                }
+                // if (antiValue.indexOf(' ') >= 0) {
+                //   console.log("ANTIVALUES WITH SPACES : ",antiValue)
+                //   antiValue = antiValue.split(" ")[0]; // Ampicillin_Results
+                // }
+                // else {
+                //   console.log("ANTIVALUES WITHOUT  SPACES : ",antiValue)
+                //   antiValue = antiValue.split("_")[0]; // Ampicillin_Results
+                // }
+                antiValue = antiValue.split("_")[0];
                 antiValue = antiValue + "-" + dataElementAnti[antiKeys]; // Ampicillin-Resistant
                 if (dataElementAnti["mp5MeJ2dFQz"] && dataElementAnti["B7XuDaXPv10"]) {
                   let coc_key = "COC_"+antiValue
                   dataValueAnti[
                     coc_key 
-                  ] = `${antiValue}, ${dataElementAnti["mp5MeJ2dFQz"]}, ${dataElementAnti["B7XuDaXPv10"]}`;
+                  ] = `${antiValue}, ${dataElementAnti["mp5MeJ2dFQz"]}, ${dataElementAnti["B7XuDaXPv10"]}`+"_"+dataElementAnti["SaQe2REkGVw"]+"_AW";
                 }
               }
             }
             eventDataAnti.dataValues = dataValueAnti;
             eventsAnti.push(eventDataAnti);
-            console.log("Events Antibiotics Data : ",eventsAnti)
           }
         });
 
@@ -157,8 +159,8 @@ class DynamicComponent extends Component {
           let eventDeCodeAnti = event.dataValues.deCode;
           // let eventCOCAnti = event.dataValues;
           // console.log("ANTI ABA_AW value: ", deCOC_anti["ABA_AW"])
-          // console.log("ANTI ABA_AW Value COCS", deCOC_anti["Cefepime-Susceptible, Abdominal fluid, OPD"])
-          // console.log("ANTI ABA_AW Value COCS", deCOC_anti["Levofloxacin-Intermediate, Abdominal fluid, OPD"])
+          // console.log("ANTI ABA_AW Value COCS", deCOC_anti["Meropenem-Resistant, CSF, OPD"])
+          // console.log("ANTI ABA_AW Value COCS", deCOC_anti["Minocycline-Resistant, CSF, OPD"])
           // console.log("ANTI ABA_AW Value COCS", deCOC_anti["Amikacin-Resistant, Abdominal fluid, OPD"])
           // console.log("ANTI ABA_AW Value COCS", deCOC_anti["Imipenem-Susceptible, Abdominal fluid, OPD"])
 
@@ -234,8 +236,11 @@ class DynamicComponent extends Component {
           responses.forEach((resp) => {
             resp.data.listGrid.rows.forEach((row) => {
               if (row["1"].match(/- AW/g) == "- AW") { 
+                let deCOC_anti_key = row["7"]+"_"+row["0"]
                 if (!(row["0"] in deCOC_anti)) deCOC_anti[row["0"]] = row["2"];
-                if (!(row["7"] in deCOC_anti)) deCOC_anti[row["7"]] = row["6"];
+                if (!(deCOC_anti_key in deCOC_anti)) {
+                  deCOC_anti[deCOC_anti_key] = row["6"];
+                }
               }
               else {
                 if (row["0"]) dECOC[row["0"]] = row["2"];
