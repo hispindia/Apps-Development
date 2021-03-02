@@ -72,12 +72,13 @@ export const EventForm = ({ history, match }) => {
     //for Previous event value 
     useEffect(()=> {
         // dispatch(PreValue(previousValues))
-        if(eventIDs && editable) {
-            for(let eventValues in previousValues) {
-                if(event["values"][eventValues] == "")  {
-                    dispatch(setEventValue(eventValues, previousValues[eventValues]))
-                    // event["values"][eventValues] = previousValues[eventValues]
-                } 
+        if (eventIDs && editable) {
+            var isPrev = true
+            for (let eventValues in previousValues) {
+                    if (event["values"][eventValues] == "") {
+                        dispatch(setEventValue(eventValues, previousValues[eventValues],isPrev))
+                        // event["values"][eventValues] = previousValues[eventValues]
+                    }
             }
             // dispatch(addExistingEvent(event))
             // dispatch(resetPreviousEntity())

@@ -1,8 +1,8 @@
 "use strict";
 
-var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
-
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -19,41 +19,13 @@ var _propTypes2 = require("../propTypes");
 
 var _colors = require("../colors");
 
-function _templateObject3() {
-  var data = (0, _taggedTemplateLiteral2.default)(["\n                fill: ", ";\n            "]);
+var _templateObject, _templateObject2, _templateObject3;
 
-  _templateObject3 = function _templateObject3() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject2() {
-  var data = (0, _taggedTemplateLiteral2.default)(["\n                margin: auto;\n                width: ", "px;\n                height: ", "px;\n            "]);
-
-  _templateObject2 = function _templateObject2() {
-    return data;
-  };
-
-  return data;
-}
-
-function _templateObject() {
-  var data = (0, _taggedTemplateLiteral2.default)(["\n    width: 24px;\n    height: 24px;\n    flex-shrink: 0;\n    ", "\n"]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
-
-var StyledSvg = _styledComponents.default.svg(_templateObject(), function (_ref) {
+var StyledSvg = _styledComponents.default.svg(_templateObject || (_templateObject = (0, _taggedTemplateLiteral2.default)(["\n    width: 24px;\n    height: 24px;\n    flex-shrink: 0;\n    ", "\n"])), function (_ref) {
   var size = _ref.size,
       color = _ref.color;
-  if (size) return (0, _styledComponents.css)(_templateObject2(), size, size);
-  if (color) return (0, _styledComponents.css)(_templateObject3(), _colors.colors[color]);
+  if (size) return (0, _styledComponents.css)(_templateObject2 || (_templateObject2 = (0, _taggedTemplateLiteral2.default)(["\n                margin: auto;\n                width: ", "px;\n                height: ", "px;\n            "])), size, size);
+  if (color) return (0, _styledComponents.css)(_templateObject3 || (_templateObject3 = (0, _taggedTemplateLiteral2.default)(["\n                fill: ", ";\n            "])), _colors.colors[color]);
 });
 
 exports.StyledSvg = StyledSvg;

@@ -19,12 +19,12 @@ var Icon = function Icon(_ref) {
   var icon = _ref.icon,
       color = _ref.color,
       size = _ref.size;
-  return _react.default.createElement(_StyledSvg.StyledSvg, {
+  return /*#__PURE__*/_react.default.createElement(_StyledSvg.StyledSvg, {
     xmlns: "http://www.w3.org/2000/svg",
     viewBox: "0 0 24 24",
     color: color,
     size: size
-  }, _react.default.createElement("path", {
+  }, /*#__PURE__*/_react.default.createElement("path", {
     d: icon
   }));
 };

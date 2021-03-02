@@ -169,6 +169,34 @@ export const createNewEvent = () => async (dispatch, getState) => {
     const entity = getState().data.entity
     const panel = getState().data.panel
     const metadata = getState().metadata
+    const prevStateValues = getState().data.previousValues
+
+    var values_to_send = []
+    var UpdatedEventPayload = {}
+    if (Object.keys(prevStateValues).length != 0) {
+        console.log("GETDATA", getState().data)        
+        Object.keys(prevStateValues).forEach(function (previouskey) {
+            if (prevStateValues[previouskey] != "") {
+                if (prevStateValues[previouskey] != "Detected") {
+                    values_to_send.push({
+                        dataElement: previouskey,
+                        value: prevStateValues[previouskey]
+                    })
+                }
+            }
+    
+        });
+        UpdatedEventPayload = {
+            dataValues: values_to_send,
+            program: panel.program,
+            orgUnit: getState().data.orgUnit.id
+        }
+        // const eveRes = postEvent(UpdatedEventPayload)
+        console.log("EVENTS POST SUCCESS", UpdatedEventPayload)
+
+    }
+
+
     const rules = getRules(
         metadata.eventRules,
         panel.program,
@@ -188,7 +216,8 @@ export const createNewEvent = () => async (dispatch, getState) => {
                 eValues: !entity.id || entity.editing ? entity.values : null,
                 sampleDate: panel.sampleDate,
                 orgUnitCode: orgUnit.code,
-            }
+            },
+            UpdatedEventPayload,
         )
         metadata.calculatedVariables.forEach(variables => {
             for (let key in data.eventValues)
@@ -314,13 +343,21 @@ export const onDeleteConfirmed = (confirmed, secondaryAction) => async (
     }
 }
 
-export const setEventValue = (key, value) => (dispatch, getState) => {
+export const setEventValue = (key, value,isPrev) => (dispatch, getState) => {
     const event = getState().data.event
     if (event.values[key] === value) return
     const optionSets = getState().metadata.optionSets
     const programId = getState().data.panel.program;
-
-    updateEventValue(event.id, key, value,programId )
+    var dID = ["mp5MeJ2dFQz", "dRKIjwIDab4", "GpAu5HjWAEz", "B7XuDaXPv10"];
+    if (isPrev != true) {
+        updateEventValue(event.id, key, value, programId)
+    }
+    else if (isPrev == true) {
+    if (!dID.includes(key)) {
+        updateEventValue(event.id, key, value, programId)
+    }
+    }
+    
     if (key === SAMPLE_ID_ELEMENT && programId == SAMPLE_TESTING_PROGRAM["0"].value) dispatch(checkDuplicacy(value))
 
     const [values, programStage, invalid] = eventRules(

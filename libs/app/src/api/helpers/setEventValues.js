@@ -5,7 +5,8 @@
  * @param {Object} testFields - Test fields meta data.
  * @returns {Object} Event.
  */
-export const setEventValues = async (event, values) => {
+export const setEventValues = async (event, values, uploadedprevious) => {
+    
     if (!event.dataValues) event.dataValues = []
 
     for (const dataElement in values) {
@@ -19,6 +20,10 @@ export const setEventValues = async (event, values) => {
               })
             : (dataE.value = values[dataElement])
     }
-
+    if (uploadedprevious.length != 0)
+    {
+        event.dataValues.push.apply(event.dataValues, uploadedprevious.dataValues) 
+    }
+    console.log("RETURNED EVENTS IS",event)
     return event
 }

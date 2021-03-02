@@ -102,7 +102,7 @@ export const deletePerson = async id =>
 export const newRecord = async (
     pId,
     pStage,
-    { orgaCode, ou, eId, eValues, sampleDate, orgUnitCode }
+    { orgaCode, ou, eId, eValues, sampleDate, orgUnitCode },UpdatedEventPayload
 ) => {
     const initialValues = {
         [ORGANISM_ELEMENT]: orgaCode,
@@ -115,7 +115,9 @@ export const newRecord = async (
               entityId: eId,
               entityValues: eValues,
               sampleDate,
-          })
+        },
+            UpdatedEventPayload
+        )
         : await addPersonWithEvent(initialValues, pId, {
               programStageId: pStage.id,
               orgUnitId: ou,
@@ -165,7 +167,8 @@ export const addPersonWithEvent = async (
             programStage: programStageId,
             status: 'ACTIVE',
         },
-        eventValues
+        eventValues,
+        {}
     )
 
     const data = {
@@ -219,7 +222,8 @@ export const addPersonWithEvent = async (
             trackedEntityInstance: teiResponse.response.importSummaries[0].reference,
             status: 'ACTIVE',
         },
-        eventValues
+        eventValues,
+        {}
     )
 
     const eventResponse = await post('events', newEventPayLoad)
@@ -269,7 +273,7 @@ export const addPersonWithEvent = async (
 export const addEvent = async (
     eventValues,
     programId,
-    { programStageId, orgUnitId, entityId, entityValues, sampleDate }
+    { programStageId, orgUnitId, entityId, entityValues, sampleDate },UpdatedEventPayload
 ) => {
     const event = await setEventValues(
         {
@@ -281,7 +285,8 @@ export const addEvent = async (
             trackedEntityInstance: entityId,
             status: 'ACTIVE',
         },
-        eventValues
+        eventValues,
+        UpdatedEventPayload
     )
     if (entityValues) await updatePerson(entityId, entityValues)
     // Enrolling if not already enrolled.
@@ -325,7 +330,7 @@ export const setEventStatus = async (eventId, completed) => {
         values[L2_APPROVAL_STATUS] = ''
         values[L2_REVISION_REASON] = ''
     }
-    event = await setEventValues(event, values)
+    event = await setEventValues(event, values,{})
     await put(url, event)
 }
 export const updateEventValue = (eventId, dataElementId, value, programID) =>

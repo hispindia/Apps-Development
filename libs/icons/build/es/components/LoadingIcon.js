@@ -43,7 +43,7 @@ var _ref = /*#__PURE__*/React.createElement("circle", {
 
 export const LoadingIcon = ({
   className
-}) => React.createElement(StyledSvg, {
+}) => /*#__PURE__*/React.createElement(StyledSvg, {
   xmlns: "http://www.w3.org/2000/svg",
   width: "48",
   height: "48",

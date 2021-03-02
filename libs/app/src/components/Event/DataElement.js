@@ -61,14 +61,14 @@ export const DataElement = ({ id }) => {
         if((key == ORGANISM_DETECTED) && (value == 'Detected'))
         {
          dispatch(AddAndSubmit(true))
-         dispatch(setEventValue(key, value))
+         dispatch(setEventValue(key, value,false))
         }
         else if((key == ORGANISM_DETECTED) && (value == 'Sterile')) {
          dispatch(AddAndSubmit(false))
-         dispatch(setEventValue(key, value))
+         dispatch(setEventValue(key, value,false))
         }
         else {
-            dispatch(setEventValue(key, value))
+            dispatch(setEventValue(key, value,false))
         }
     }
 

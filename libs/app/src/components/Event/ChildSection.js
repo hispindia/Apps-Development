@@ -34,7 +34,7 @@ export const ChildSection = ({ childSection }) => {
     const completed = useSelector(state => state.data.event.status.completed)
 
     const onChange = (key, value) => {
-        dispatch(setEventValue(key, value))
+        dispatch(setEventValue(key, value,false))
     }
 
     // If all, or all but one, of the data elements are of type TRUE_ONLY,
