@@ -71,7 +71,7 @@ export class TablecardComponent {
 
   displayReport(ou, pe, ds) {
     this.ajax.getDatasetHTML(ou, pe, ds).subscribe(res => {
-      console.log("here is res to display data on table", res);
+      // console.log("here is res to display data on table", res);
       setTimeout(() => {
         $("#loader-table").fadeOut(500);
         $(".ex-element-main").show();
@@ -82,13 +82,10 @@ export class TablecardComponent {
   }
 
   modifyReport(domstr) {
-    var response = $.parseHTML(domstr);
-    if(response[0].nodeName == 'P')response.splice(0,1);
-    console.log(response);
-    $(".custom-table-div").append(response);
-    // $(".custom-table-div p").remove();
-    $(".custom-table-div style").remove();
-    $(".custom-table-div table").attr("id", "table1");
+
+    $(".custom-table-div").append(domstr);
+    $("h3").hide()
+    $("#shareForm").hide()
     $(".custom-table-div table").removeAttr("style");
     $(".custom-table-div style").remove();
     $(".custom-table-div table tbody tr td span span").removeAttr("style");
@@ -117,17 +114,6 @@ export class TablecardComponent {
     $(".custom-table-div table thead tr td").attr("style","height:50px;min-width:75px");    
     $(".custom-table-div table thead").addClass("main");
     $(".custom-table-div table thead").attr("style","text-align:center");
-
-    $('table td:has(span)').text(function () {
-      return $(this).text()
-    })
-
-    $('table td:has(p)').text(function () {
-      return $(this).text()
-    })
-    if(!x.REMOVE_TOTAL.includes(this.ds))cellSumFunction.sumReports();
-    if(x.ADD_TOTAL.includes(this.ds))cellSumFunction.verticalSumReport();
-    // this.callingBridge.callMethodToSendOuandPe([this.ou,this.pe]);
   }
 
   expandTable() {

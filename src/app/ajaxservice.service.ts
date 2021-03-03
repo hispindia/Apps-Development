@@ -34,7 +34,8 @@ export class AjaxserviceService {
   }
 
   getDatasetHTML(ou: string, pe: string, ds: string): Observable<any> {
-    return this.http.get(x.BASE_URL + 'dataSetReport.json?ds=' + ds + '&pe=' + pe + '&ou=' + ou, { responseType: 'text' });
+    return this.http.get(x.BASE_URL + '../dhis-web-reporting/generateDataSetReport.action?ds='+ ds +'&pe='+ pe +'&ou='+ ou +'&selectedUnitOnly=false', { responseType: 'text' });
+    // return this.http.get(x.BASE_URL + 'dataSetReport.json?ds=' + ds + '&pe=' + pe + '&ou=' + ou, { responseType: 'text' });
   }
 
   getOuName(ou: string): Observable<any> {
