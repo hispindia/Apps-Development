@@ -7,11 +7,11 @@
   "private": true,
   "homepage": ".",
   "developer": {
-    "name": "Gyan Bahadur Tamang",
+    "name": "Ramkrishan Sharma",
     "company": "HISP India"
   },
   "manifest.webapp": {
-    "name": "Standard Report",
+    "name": "Report App",
     "description": "Basic layout for react app develop.",
     "appType": "APP",
     "activities": {
@@ -38,7 +38,11 @@
     "@hisp-amr/api": "^0.0.8",
     "@hisp-amr/org-unit-tree": "^0.0.17",
     "bootstrap": "^4.4.1",
+    "react-dropdown-select": "^4.7.3",
+    "react-router-dom": "^5.2.0",
+    "react-select": "^4.1.0",
     "reactstrap": "^8.3.1",
+    "semantic-ui-react": "^2.0.3",
     "styled-components": "^5.0.0",
     "webpack": "^4.41.5"
   }

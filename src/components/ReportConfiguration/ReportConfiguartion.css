@@ -1,0 +1,68 @@
+
+#mainPage {
+  margin: 50px 10px 2px 270px;
+}
+
+
+.vertical-spacing {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+
+.root-div {
+  text-align: center;
+}
+
+
+.select-wrapper {
+  display: inline-block;
+  text-align: center;
+}
+
+.myClassName__control {
+  width: 690px;
+}
+
+
+.select-custom-class .Select-multi-value-wrapper {
+  padding-right: 20px;
+}
+
+.select-custom-class .Select-menu-outer {
+  text-align: left;
+}
+
+
+label {
+    font-size: 12px;
+    margin:0 10px **15px** 0;
+    }
+    select {
+      height: 40px;
+    }
+    .form-inline {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    
+    .form-control {
+        display: inline-block;
+        width: auto;
+        vertical-align: middle;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    }

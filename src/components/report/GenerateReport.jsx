@@ -70,6 +70,10 @@ export class GenerateReport extends Component {
     err.length ? this.setState({ errors: err }) : this.setState({ displayFrame: true, errors: [] });
   }
 
+  saveData(){
+    
+  }
+
   render() {
     const { organisationUnit } = this.props;
     const { reportId, period, periodSelection, displayFrame } = this.state;
