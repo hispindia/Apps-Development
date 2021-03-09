@@ -1,0 +1,67 @@
+<div id="mainPage" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 fonts" ng-controller="aggregatedataimportController">
+    <div class="btnAlign">
+        <button class="btn btn-primary" style="margin-left: 10px;" ng-click="GoBack()">Go Back</button>
+        <h1><b style="margin-left: 450px;">Sub-National Data Import</b></h1>
+    </div>
+    <h2>
+        <div  class="card length">
+            <div class="side-bar card-body">
+                <div id="orgUnitTree">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+            <div class="content length1">
+                <div class="shadow-lg p-3 mb-5 bg-white rounded card boxText" style="width: 34rem;">
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Organisation Unit<input ng-model="selectedPayLoad.name"
+                                    class="form-control" /></li>
+                            <li class="list-group-item">Period<select id="period" class="form-control">
+                                    <option ng-repeat="year in years">{{year}}</option>
+                                </select></li>
+                            <li class="list-group-item"> Please Upload .xlsx <input type="file"
+                                    style="width:300px; background-color: yellow;" id="fileInput"></li>
+                            <li class="list-group-item"><button class="btn btn-primary"
+                                    ng-click="getSet()">Import</button></li>
+                        </ul>
+                    </div>
+                </div>  
+            </div>
+        </div>
+        <span class="excelLogo" style="width: 34rem; float: right;">
+            <a ng-href="img/{{selectedPayLoad.ouName}}">Download Blank Excel Sheet </a> 
+        </span>
+        <br>
+        <div id="loader"></div>
+        <div id="secondTable" class="lowerSection boxTexts" >
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <span class="btn btn-info float-right">No of Requests made : {{requestCount}}</span>
+                <span class="btn btn-success" style="width:230px;">No of Successful requests : {{successCount}}</span>
+                <span class="btn btn-danger float-left">No of Failed requests : {{errorCount}}</span>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Row</th>
+                                <th>OrgUnit</th>
+                                <th>Status</th>
+                                <th>HTTP Response</th>
+                                <th>Conflict Details</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="res in response" >
+                            <tr>
+                               <td> {{$index+2}}</td>
+                                <td>{{res.orgUnit}}</td>
+                                <td>{{res.status}}</td>
+                                <td>{{res.httpResponse}}</td>
+                                <td><span ng-repeat="error in res.conflict"><li>{{error.value}}</li></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+</div>
