@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
+import '../../App.css';
 
 function ReportManagement() {
     return (
-        <div>
+        <div id='mainPage'>
             "hello report Management "
         </div>
     )

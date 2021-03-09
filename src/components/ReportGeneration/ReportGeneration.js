@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import '../../App.css';
 
 export class ReportGeneration extends Component {
     render() {
         return (
-            <div>
+            <div id='mainPage'>
                 <h1>genration a report</h1>
             </div>
         )

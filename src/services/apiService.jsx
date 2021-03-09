@@ -89,7 +89,7 @@ async function getAReports(repID, orgUnitId, period) {
 // This method for fetching data 
 async function saveReportConfiguration (configuration) {
     
-    var key = 'report_confQ';
+    var key = 'report_confF';
     var namespace = 'report_configurationValue'
     var reportConfigurationJson = JSON.stringify(configuration);
 
@@ -112,41 +112,41 @@ async function saveReportConfiguration (configuration) {
             const requestOptions = {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json',
-                    Authorization : `Basicconsole.log("data", data) ${btoa('ram:Ram@1234')}`, },
+                    Authorization : `Basic ${btoa('ram:Ram@1234')}`, },
                     body: reportConfigurationJson,
                 };
 
             const response = await fetch(url, requestOptions);
-            
-            return response
+            if(response.status=='200'){
+                return "Updated"
+            }
 
-            
             }       
 
-        // else{
+        else{
                     
-        //         url = `${process.env.REACT_APP_DHIS2_BASE_URL}/api/dataStore/${key}/${namespace}`;
+                url = `${process.env.REACT_APP_DHIS2_BASE_URL}/api/dataStore/${key}/${namespace}`;
 
-        //         const requestOptions = {
-        //             method: 'POST',
-        //             headers: { 'Content-Type': 'application/json',
-        //             Authorization : `Basic ${btoa('ram:Ram@1234')}`, },
-        //             body: reportConfigurationJson,
-        //         };
+                const requestOptions = {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json',
+                    Authorization : `Basic ${btoa('ram:Ram@1234')}`, },
+                    body: reportConfigurationJson,
+                };
 
-        //         const response = await fetch(url, requestOptions);
-        //         let data = await response.json();
+                const response = await fetch(url, requestOptions);
+                // let data = await response.json();
                     
 
-        //         if(response.status == "201"){
-        //             return data;
+                if(response.status == "201"){
+                    return "Created"
                     
-        //         }
-        //         else {
-        //             throw "Error: Report generation failed, Please try again!";
-        //         }
+                }
+                else {
+                    throw "Error: Report generation failed, Please try again!";
+                }
                 
                 
-        // }        
+        }        
 
 }

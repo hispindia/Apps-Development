@@ -1,7 +1,8 @@
 
 import React from 'react';
 import NavBar  from './components/Navbar/NavBar';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import HomeComponent from './components/HomeComponent/HomeComponent'
 import ReportConfiguration from './components/ReportConfiguration/ReportConfiguration';
 import ReportManagement from './components/ReportManagement/ReportManagement';
 import ReportSection from './components/ReportSection/ReportSection';
@@ -13,29 +14,31 @@ import DataStatus from './components/DataStatus/DataStatus';
    const Routes = () => {
     return (
         <div>
-    <Router>
+    <BrowserRouter>
     <NavBar />
-    <switch>
+    <Switch>
 
-        <Route  path='/report-configuration' component={ReportConfiguration}>
+        <Route  exact path='/' component={HomeComponent}>
+        </Route>
+        <Route  exact path='/report-configuration' component={ReportConfiguration}>
         </Route>
         
-        <Route  path='/report-management' component={ReportManagement}>
-        
-        </Route>
-
-        <Route  path='/section-management' component={ReportSection}>
+        <Route exact path='/report-management' component={ReportManagement}>
         
         </Route>
 
-        <Route  path='/report-genration' component={ReportGeneration}>
+        <Route exact path='/section-management' component={ReportSection}>
+        
+        </Route>
+
+        <Route exact path='/report-genration' component={ReportGeneration}>
         </Route>
 
         <Route  path='/data-status' component={DataStatus}>
         
         </Route>
-    </switch>
-    </Router>
+    </Switch>
+    </BrowserRouter>
     </div> 
     );
   };

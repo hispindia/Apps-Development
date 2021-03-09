@@ -5,7 +5,7 @@ import './NavBar.css';
 const NavBar = () => {
 return (
     <>
-      <nav class="leftbar">
+      <nav className="leftbar">
         <div >
         <div>
           </div>

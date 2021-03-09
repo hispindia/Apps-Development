@@ -4,11 +4,12 @@ import React, { Component } from 'react'
 import './ReportConfiguartion.css';
 
 import Select from 'react-select';
-// import Select from 'react-dropdown-select';
 
 import { ApiService } from '../../services/apiService';
 import { Col, Row, Input, Button } from 'reactstrap';
-import { Dropdown } from 'semantic-ui-react'
+import { Dropdown } from 'semantic-ui-react';
+import SweetAlert from 'react-bootstrap-sweetalert';
+import { Redirect } from 'react-router';
 
 const configurationParameters = {
   "parameters": [
@@ -45,22 +46,19 @@ export class ReportConfiguration extends Component {
       selectedItems: "",
       selectedTeam: "",
       validationError: "",
-      size: 1, 
+      redirect: false
     }
   }
 
 
   getSelectedUser = selectedUser => {
     this.setState({ selectedUser });
-
     configurationParameters.parameters[0]["value"] = selectedUser.value;
-    console.log(`Option selected:`, configurationParameters);
   };
   
   getReportLogo = selectedLogo => {
     this.setState({ selectedLogo });
     configurationParameters.parameters[1]["value"] = selectedLogo.value;
-    console.log(`Option selected:`, configurationParameters);
   };
 
   getDataStatus = Selecteddatastatus => {
@@ -69,9 +67,6 @@ export class ReportConfiguration extends Component {
    
   };
     
-
-
-  
 
 
   componentDidMount() {
@@ -126,10 +121,15 @@ export class ReportConfiguration extends Component {
   }
 
   
+  /* This function is called to save configurataion 
+     call the method from API services 
+  */
   saveConfiguartion(){
-    // let key = "nameSpaceKey"
     ApiService.saveReportConfiguration(configurationParameters).then(response => {
-      console.log(response)
+      alert(response)
+      if(response){
+        this.setState({redirect:true})
+      }
     }).catch( err=> {
       console.log(err)
     })
@@ -143,6 +143,11 @@ export class ReportConfiguration extends Component {
         width: 600
       })
     };
+
+    const { redirect } = this.state;
+    if (redirect) {
+      return <Redirect to='/'/>;
+    }
 
     return (
       <div id='mainPage'>

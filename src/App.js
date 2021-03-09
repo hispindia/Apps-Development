@@ -14,17 +14,6 @@ import Report_Section from './components/ReportSection/ReportSection';
 import Report_Generation from './components/ReportGeneration/ReportGeneration';
 import Data_Status from './components/DataStatus/DataStatus';
 
-
-// const MyApp = () => { 
-//     return <> 
-
-// </>
-
-     
-// }
-// export default MyApp
-
-
 export default class App extends React.Component {
   render() {
     return (

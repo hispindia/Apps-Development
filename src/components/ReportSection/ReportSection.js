@@ -1,23 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-
-// export class Report_Section extends Component {
-//     static propTypes = {
-
-//     }
-
-//     render() {
-//         return (
-//             <div>
-                
-//             </div>
-//         )
-//     }
-// }
+import '../../App.css';
 
 function ReportSection(){
     return (
-        <div>
+        <div id='mainPage'>
             "hello report Management "
         </div>
     )
