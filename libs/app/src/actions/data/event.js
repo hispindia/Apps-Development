@@ -136,7 +136,7 @@ export const getExistingEvent = (orgUnit, tieId, eventId, editStatus, btnStatus)
                     optionSets,
                     pushChanges: !data.status.completed,
                     updateValue: (key, value) =>
-                    updateEventValue(data.eventId, key, value),
+                    updateEventValue(data.eventId, key, value,data.program),
                 }
             )
             data.entityValues = entityValues
@@ -367,7 +367,7 @@ export const setEventValue = (key, value,isPrev) => (dispatch, getState) => {
             rules: event.rules,
             optionSets,
             pushChanges: !event.status.completed,
-            updateValue: (key, value) => updateEventValue(event.id, key, value),
+            updateValue: (key, value) => updateEventValue(event.id, key, value,programId),
         }
     )
 
