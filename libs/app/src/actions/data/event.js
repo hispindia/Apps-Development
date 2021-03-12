@@ -128,6 +128,7 @@ export const getExistingEvent = (orgUnit, tieId, eventId, editStatus, btnStatus)
                 for (let key in data.eventValues)
                     if ((key != variables.id) && data.program == variables.program) data.eventValues[variables.id] = "";
             })
+            const tempSTATUS = "ACTIVE";
             const [eventValues, programStage, invalid] = eventRules(
                 data.eventValues,
                 data.programStage,
@@ -136,7 +137,7 @@ export const getExistingEvent = (orgUnit, tieId, eventId, editStatus, btnStatus)
                     optionSets,
                     pushChanges: !data.status.completed,
                     updateValue: (key, value) =>
-                    updateEventValue(data.eventId, key, value,data.program),
+                    updateEventValue(data.eventId, key, value,data.program,orgUnit,tieId,tempSTATUS,data.programStage.id),
                 }
             )
             data.entityValues = entityValues
@@ -223,6 +224,7 @@ export const createNewEvent = () => async (dispatch, getState) => {
             for (let key in data.eventValues)
                 if ((key != variables.id) && panel.program == variables.program) data.eventValues[variables.id] = "";
         })
+        const tempNEWStatus = "ACTIVE"
         const [values, programStage, invalid] = eventRules(
             data.eventValues,
             data.programStage,
@@ -231,7 +233,7 @@ export const createNewEvent = () => async (dispatch, getState) => {
                 optionSets: metadata.optionSets,
                 pushChanges: !data.status.completed,
                 updateValue: (name, value) =>
-                updateEventValue(data.eventId, name, value),
+                updateEventValue(data.eventId, name, value,orgUnit,entity.id,tempNEWStatus,panel.programStage.id),
             }
         )
         dispatch(
@@ -348,13 +350,18 @@ export const setEventValue = (key, value,isPrev) => (dispatch, getState) => {
     if (event.values[key] === value) return
     const optionSets = getState().metadata.optionSets
     const programId = getState().data.panel.program;
+    const orgUnit = getState().data.orgUnit.id;
+    const trackerID = getState().data.entity;
+    const tempProgramStage = getState().data.panel.programStage;
+    const tempStatus = "ACTIVE";
+    console.log("ORG UNITS",getState())
     var dID = ["mp5MeJ2dFQz", "dRKIjwIDab4", "GpAu5HjWAEz", "B7XuDaXPv10"];
     if (isPrev != true) {
-        updateEventValue(event.id, key, value, programId)
+        updateEventValue(event.id, key, value, programId,orgUnit,trackerID,tempStatus,tempProgramStage)
     }
     else if (isPrev == true) {
     if (!dID.includes(key)) {
-        updateEventValue(event.id, key, value, programId)
+        updateEventValue(event.id, key, value, programId,orgUnit,trackerID,tempStatus,tempProgramStage)
     }
     }
     
@@ -367,7 +374,7 @@ export const setEventValue = (key, value,isPrev) => (dispatch, getState) => {
             rules: event.rules,
             optionSets,
             pushChanges: !event.status.completed,
-            updateValue: (key, value) => updateEventValue(event.id, key, value,programId),
+            updateValue: (key, value) => updateEventValue(event.id, key, value,programId,orgUnit,trackerID,tempStatus,tempProgramStage),
         }
     )
 

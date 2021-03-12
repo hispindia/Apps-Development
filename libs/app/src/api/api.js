@@ -13,6 +13,8 @@ import {
 } from 'constants/dhis2'
 import { getProgramStage, generateAmrId, setEventValues } from './helpers'
 import * as DUPLICACY from 'constants/duplicacy'
+import axios from "axios";
+
 
 /**
  * Checks if any tracked entity instance has property with value.
@@ -333,11 +335,20 @@ export const setEventStatus = async (eventId, completed) => {
     event = await setEventValues(event, values,{})
     await put(url, event)
 }
-export const updateEventValue = (eventId, dataElementId, value, programID) =>
-    put(`events/${eventId}/${dataElementId}`, {
+export const updateEventValue = async (eventId, dataElementId, value, programID,orgUnit,trackerID,tempStatus,tempProgramStage) => {
+    var dataBody = {
+        event: eventId,
         program: programID,
-        dataValues: [{ dataElement: dataElementId, value: value }],
-    })
+        programStage: tempProgramStage,
+        orgUnit: orgUnit,
+        status: tempStatus,
+        trackedEntityInstance:trackerID.id,
+        dataValues: [{ dataElement: dataElementId, value: value , providedElsewhere: false}]
+    }
+    console.log("DATA TO SEND",dataBody)
+    return await axios.put(`../../../api/events/${eventId}/${dataElementId}`, dataBody);
+}
+
 
 export const isDuplicateRecord = async ({
     event,
