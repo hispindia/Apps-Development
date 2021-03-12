@@ -16,9 +16,6 @@ nbactions.xml
 .idea
 .swp
 *.iml
-*.ipr
-*.ids
-*.iws
 overlays/
 ./dhis-2/atlassian-ide-plugin.xml
 ./atlassian-ide-plugin.xml
@@ -34,3 +31,7 @@ coverage
 dist
 node_modules
 **/rebel.xml
+.zip
+.zip
+package-lock.json
+yarn.lock
