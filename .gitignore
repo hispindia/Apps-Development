@@ -31,7 +31,7 @@ coverage
 dist
 node_modules
 **/rebel.xml
-.zip
-.zip
+*.zip
+*.lock
 package-lock.json
 yarn.lock
