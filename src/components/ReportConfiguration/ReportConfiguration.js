@@ -8,7 +8,8 @@ import Select from 'react-select';
 import { ApiService } from '../../services/apiService';
 import { Col, Row, Input, Button } from 'reactstrap';
 import { Dropdown } from 'semantic-ui-react';
-import SweetAlert from 'react-bootstrap-sweetalert';
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import 'sweetalert2/src/sweetalert2.scss'
 import { Redirect } from 'react-router';
 
 const configurationParameters = {
@@ -126,7 +127,9 @@ export class ReportConfiguration extends Component {
   */
   saveConfiguartion(){
     ApiService.saveReportConfiguration(configurationParameters).then(response => {
-      alert(response)
+      // alert(response)
+      Swal.fire(response)
+      
       if(response){
         this.setState({redirect:true})
       }

@@ -4,12 +4,12 @@ export const ApiService = {
     getUserData,
     getDocumentsData,
     getReportData,
-    saveReportConfiguration
+    saveReportConfiguration,
+    getAllReportSection
+
 
 
 };
-
-
 
 async function getUserData(){
     let response = await fetch(`${process.env.REACT_APP_DHIS2_BASE_URL}/api/userGroups.json?fields=[id,name]&paging=false`, {
@@ -86,7 +86,7 @@ async function getAReports(repID, orgUnitId, period) {
 }
 
 
-// This method for fetching data 
+// This method for savingConfiguration
 async function saveReportConfiguration (configuration) {
     
     var key = 'report_confF';
@@ -148,5 +148,22 @@ async function saveReportConfiguration (configuration) {
                 
                 
         }        
+
+}
+
+
+async function getAllReportSection(){
+
+    var key = 'reportApp-section-json';
+    var url = `${process.env.REACT_APP_DHIS2_BASE_URL}/api/dataStore/${key}/${key}`;
+
+    let response = await fetch(url, {
+        method: 'GET',
+        credentials: 'include',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' } 
+    });
+
+    let data = await response.json();
+    return data;
 
 }
