@@ -118,6 +118,7 @@ export class ReportConfiguration extends Component {
     })
 
     this.setState({userdata: item })
+    console.log("section data",this.state.userdata)
     
   }
 

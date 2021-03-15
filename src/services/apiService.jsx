@@ -89,7 +89,7 @@ async function getAReports(repID, orgUnitId, period) {
 // This method for savingConfiguration
 async function saveReportConfiguration (configuration) {
     
-    var key = 'report_confF';
+    var key = 'report_confD';
     var namespace = 'report_configurationValue'
     var reportConfigurationJson = JSON.stringify(configuration);
 
