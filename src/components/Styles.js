@@ -11,8 +11,9 @@ export const Box = styled.div`
     box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
 `
 export const Aside = styled(Box)`
+    width:300px;
     max-height: 785px;
-    overflow-y: auto;
+    overflow: auto;
 `
 export const Section = styled(Box)`
     padding: 0px 10px;

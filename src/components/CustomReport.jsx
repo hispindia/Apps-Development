@@ -11,13 +11,14 @@ class CustomReport extends Component {
         super();
         this.state = {
             organisationUnit: [],
-            hideLoader: true
+            hideLoader: true,
+            orgUnitLoaded: true,
         }
         this.onSelect = this.onSelect.bind(this);
     }
 
     onSelect(selected) {
-        this.setState({ organisationUnit: selected })
+        this.setState({ organisationUnit: selected, orgUnitLoaded:false })
     }
 
     hideLoader = () => {
@@ -25,7 +26,7 @@ class CustomReport extends Component {
     }
 
     render() {
-        const { organisationUnit, hideLoader } = this.state;
+        const { organisationUnit, hideLoader, orgUnitLoaded } = this.state;
 
         return (
             <MainContainer>
@@ -41,7 +42,7 @@ class CustomReport extends Component {
                     hideLoader={this.hideLoader}
                 />
 
-                {hideLoader && <Loader />}
+                {hideLoader || orgUnitLoaded ? <Loader /> : ""}
             </MainContainer>
         );
     }

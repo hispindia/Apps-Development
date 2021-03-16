@@ -20,6 +20,7 @@ export class GenerateReport extends Component {
 
   componentDidMount() {
     ApiService.getReportList().then(response => {
+      response = response.reports.filter(report => report.name.includes('-Facility Level'))
       this.displayReportList(response)
       this.displayYears("10");
       this.props.hideLoader();
@@ -36,7 +37,7 @@ export class GenerateReport extends Component {
   displayReportList = data => {
     let reportParams = {};
     let reports = "<option selected hidden>Select Report</option>"
-    data.reports.forEach(report => {
+    data.forEach(report => {
       reports += `<option value="${report.id}">${report.name}</option>`;
       reportParams[report.id] = report.reportParams;
     })
