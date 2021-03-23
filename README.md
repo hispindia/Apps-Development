@@ -1,24 +1,21 @@
-# Apps-Development
-HISP INDIA External Apps Development 
+# Combat AMR
 
-
-Skeleton app base on react
+HISP INDIA
 
 # Installation
-   yarn global add @dhis2/cli
 
+yarn global add @dhis2/cli
 
-   yarn install
+yarn install
+
 # Development
- you need to log in server ( mention in .env.development) 
 
+you need to log in server ( mention in .env.development)
 
- 
- for eaxample  (http://localhost:3000/)
+for eaxample (http://localhost:3000/)
 
+yarn start
 
- yarn start
 # Building
 
-
- yarn build
+yarn build
