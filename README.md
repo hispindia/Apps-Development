@@ -1,6 +1,8 @@
-# Combat AMR
+# Apps-Development
 
-HISP INDIA
+HISP INDIA External Apps Development
+
+Skeleton app base on react
 
 # Installation
 
