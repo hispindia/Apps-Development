@@ -213,6 +213,14 @@ export const addPersonWithEvent = async (
     };
 
     const enrollmentResponse = await post('enrollments', newEnrollmentPayLoad)
+    var enrollRef = "";
+    var teiRef = "";
+    if (enrollmentResponse.response) {
+        enrollRef = enrollmentResponse.response.importSummaries[0].reference;
+    }
+    if (teiResponse.response) {
+        teiRef = teiResponse.response.importSummaries[0].reference;
+    }
 
     const newEventPayLoad = await setEventValues(
         {
@@ -221,8 +229,8 @@ export const addPersonWithEvent = async (
             orgUnit: orgUnitId,
             program: programId,
             programStage: programStageId,
-            enrollment: enrollmentResponse.response.importSummaries[0].reference,
-            trackedEntityInstance: teiResponse.response.importSummaries[0].reference,
+            enrollment: enrollRef,
+            trackedEntityInstance: teiRef,
             status: 'ACTIVE',
         },
         eventValues,

@@ -117,7 +117,7 @@ export const eventRules = (
                             if (!cond) {
                                 if (values[de.id]) {
                                     values[de.id] = ""
-                                    if (!de.hasCalculatedVar) if (pushChanges) updateValue(de.id, r.data)
+                                    // if (!de.hasCalculatedVar) if (pushChanges) updateValue(de.id, r.data)
                                 }
                             } else {
                                 setColors(rule.condition, de, r.data)
