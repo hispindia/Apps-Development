@@ -523,6 +523,7 @@ excelImport
                                     updateOrgUnit.id = row.uid;
                                     updateOrgUnit.name = row.name;
                                     updateOrgUnit.shortName = row.shortName;
+                                    //updateOrgUnit.translations = row.translations;
 
                                     $.ajax({
                                         type: "PUT",
@@ -561,7 +562,80 @@ excelImport
                         });
 
                     }
+                    // organisationUnits translations update // translations in json format in xls
+                    // update translations from one instance to another instance
+                    else if( sheetName === 'orgUnitTranslationsUpdate' ){
+                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        var json_object = JSON.stringify(XL_row_object);
+                        var objectKeys = Object.keys(XL_row_object["0"]);
+                        var importCount = 1;
+                        XL_row_object.forEach(row => {
+                            importCount++;
 
+                            $.ajax({
+                                type: "GET",
+                                async: false,
+                                url: '../../organisationUnits/' + row.uid + ".json?paging=false",
+                                success: function (orgUnitResponse) {
+                                    var updateOrgUnit = orgUnitResponse;
+                                    //var tempTranslations = eval(row.translations);
+                                    var tempTranslations = JSON.parse(row.translations);
+                                    //var translationArr = [];
+                                    //updateOrgUnit.id = row.uid;
+                                    //updateOrgUnit.name = row.name;
+                                    //updateOrgUnit.shortName = row.shortName;
+                                    //updateOrgUnit.translations = row.translations;
+                                    //tempTranslations.push( row.translations);
+                                    //updateOrgUnit.translations = tempTranslations;
+                                    /*
+                                    for( let i = 0; i < tempTranslations.length; i++){
+
+                                        translationArr.push({
+                                            "property": tempTranslations[i].property,
+                                            "locale": tempTranslations[i].locale,
+                                            "value": tempTranslations[i].value
+                                        });
+                                    }
+                                    */
+
+                                    updateOrgUnit.translations = tempTranslations;
+                                    $.ajax({
+                                        type: "PUT",
+                                        async: false,
+                                        dataType: "json",
+                                        contentType: "application/json",
+                                        data: JSON.stringify(updateOrgUnit),
+                                        url: '../../organisationUnits/' + row.uid,
+
+                                        success: function (response) {
+                                            //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                            console.log(  "Row - " + importCount + " update done response: " + JSON.stringify(response) );
+                                        },
+                                        error: function (response) {
+                                            console.log(  "Row - " + importCount + " error response: " + JSON.stringify(response ));
+                                        },
+                                        warning: function (response) {
+                                            console.log( "Row - " + importCount + "Warning response : " +  JSON.stringify(response ) );
+                                        }
+
+                                    });
+                                },
+                                error: function (orgUnitResponse) {
+                                    console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( orgUnitResponse ) );
+                                },
+                                warning: function (orgUnitResponse) {
+                                    console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( orgUnitResponse ) );
+                                }
+                            });
+
+                            //console.log( "Row - " + importCount + " update done for organisationUnit " + row.uid );
+                            if( importCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " update complete ");
+
+                            }
+                        });
+
+                    }
                     // organisationUnits  update
                     else if( sheetName === 'orgUnitCoordinateUpdate' ){
                         var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
@@ -1008,6 +1082,7 @@ excelImport
                                     updateDataElement.shortName = row.shortName;
                                     updateDataElement.description = row.description;
                                     updateDataElement.formName = row.formName;
+                                    updateDataElement.aggregationType = row.aggregationType;
 
                                     $.ajax({
                                         type: "PUT",
