@@ -67,11 +67,13 @@ export const useEvents = status => {
     useEffect(() => {
         const getData = async () => {
             try {
-                const events = await getTEI(selected)
-                dispatcher({
-                    type: NEW_ROWS,
-                    rows: events,
-                })
+                const events = await getTEI(selected).then((eventResult) =>
+                                dispatcher({
+                                type: NEW_ROWS,
+                                rows: eventResult,
+                                })
+                )
+                    
             } catch (error) {
                 console.error(error)
                 dispatcher({ type: EVENTS_ERRORED })
