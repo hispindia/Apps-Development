@@ -1,39 +1,29 @@
-import { GET_ORG_UNITS_DETAIL, GET_DATASETS, GET_OU, GET_ASSIGN_OU, PAGE_CHANGE} from '../action';
+import {SET_TEI, SET_EVENTS, SET_ATTRIBUTES} from '../action';
 const INITIAL_STATE = {
-  ouList: [],
-  assignedOU: [],
-  isFirstRender: true,
-  tableList: []
+  TEIList :[],
+  eventList: [],
+  attributes: [],
+  isValidID: true,
+
 };
 export const dataReducer = (state = INITIAL_STATE, {
   type,
   payload
 }) => {
   switch (type) {
-    case GET_ORG_UNITS_DETAIL:
+    case SET_TEI:
       return { ...state,
-        payload: {
-          orgUnitId: payload.id,
-          orgUnit: payload.displayName
-        }
+      TEIList: payload
       };
-      case GET_DATASETS:
+      case SET_EVENTS:
       return { ...state,
-        dataSets: payload.dataSets
+        eventList: payload
       };
-      case GET_OU:
-      return { ...state,
-        ouList: payload
-      };
-      case GET_ASSIGN_OU:
+      case SET_ATTRIBUTES:
         return { ...state,
-          assignedOU: payload
+          attributes: payload,
+          isValidID: false
         };
-        case PAGE_CHANGE:
-          return { ...state,
-            ouList: payload,
-            isFirstRender: false
-          };
      default:
       return state;
   }

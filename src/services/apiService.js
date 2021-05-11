@@ -1,26 +1,12 @@
 export  const ApiService = {
-    getDataSets,
-    getOU,
-    getOUAssginedDS,
-    postOUAssginedDS
+    getTEI,
+    getEvents
 };
-function getDataSets() {
-    const requestOptions = { method: 'GET', credentials: 'include' };
-    return fetch( `${process.env.REACT_APP_DHIS2_BASE_URL}/api/dataSets.json?paging=false`, requestOptions).then(res => res.json());
+function getTEI() {
+    const requestOptions = { method: 'GET', credentials: 'include'};
+    return fetch( 'https://li1637-34.members.linode.com/epi/api/trackedEntityInstances.json?program=yDuAzyqYABS&ou=AnO97v1hLDU&paging=false&ouMode=DESCENDANTS&fields=orgUnit,trackedEntityInstance,attributes[displayName,attribute,value]', requestOptions).then(res => res.json());
 }
-function getOU(ou) {
-    const requestOptions = { method: 'GET', credentials: 'include' };
-    return fetch( `${process.env.REACT_APP_DHIS2_BASE_URL}/api/organisationUnits/${ou}.json?fields=id,name,children[id,name]&paging=false`, requestOptions).then(res => res.json());
-}
-function getOUAssginedDS() {
-    const requestOptions = { method: 'GET', credentials: 'include' };
-    return fetch( `${process.env.REACT_APP_DHIS2_BASE_URL}/api/dataSets.json?fields=id,name,organisationUnits[id,name]&paging=false`, requestOptions).then(res => res.json());
-}
-function postOUAssginedDS(data, id) {
-    const requestOptions = { method: 'POST', credentials: 'include', body: JSON.stringify(data),
-    headers: {
-        'Content-Type': 'application/json'
-     }
-     };
-    return fetch( `${process.env.REACT_APP_DHIS2_BASE_URL}/api/dataSets/${id}/organisationUnits.json`, requestOptions).then(res => res.json());
+function getEvents(id) {
+    const requestOptions = { method: 'GET', credentials: 'include'};
+    return fetch( 'https://li1637-34.members.linode.com/epi/api/events.json?program=yDuAzyqYABS&trackedEntityInstance='+id+'&paging=false', requestOptions).then(res => res.json());
 }
