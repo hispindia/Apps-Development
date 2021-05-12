@@ -1,13 +1,9 @@
 .frame {
-    height: 400px;
-    width: 90%;
     border-style: solid;
     border-width: 15px;
     border-color: rgb(15, 175, 162);
-    margin-left: 80px;
 }
-.innerFrame {
-    height: 97%;
+.innerFrame {   
     width:  99%;
     border-style: solid;
     border-width: 5px;

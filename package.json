@@ -8,7 +8,7 @@
 	"name":"Gyan Bahadur Tamang",
 	"org":"HISP India",
 	"e-mail":"gyan.tamang@hispindia.org"
-     }
+     },
   "scripts": {
     "build": "d2-app-scripts build",
     "start": "d2-app-scripts start",

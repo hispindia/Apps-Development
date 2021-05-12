@@ -1,4 +1,5 @@
 const config = {
+    name: 'COVID 19 Vaccine Certificate',
     type: 'app',
 
     entryPoints: {

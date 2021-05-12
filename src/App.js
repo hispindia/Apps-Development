@@ -1,7 +1,7 @@
 import React from 'react'
 import i18n from '@dhis2/d2-i18n'
 import classes from './App.module.css'
-import './custome.css'
+import './App.css'
 import "bootstrap/dist/css/bootstrap.min.css";
 import store from './redux/store/store'
 import { Provider } from 'react-redux'
