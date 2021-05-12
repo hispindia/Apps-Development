@@ -13,13 +13,6 @@
 .container {
     text-align: center;
 }
-table,
-th,
-td {
-    border: 1px solid black;
-    border-collapse: collapse;
-    width: 930px;
-}
 
 .grid-container {
     display: grid;
@@ -32,9 +25,14 @@ td {
 .box {
     border-radius: 25px;
     border: 2px solid #f3e524;
-    width: 500px;
-    height: 200px;
+    width: 600px;
     padding: 20px;
     margin-left: 370px;
     margin-top: 25px
+}
+.event-table th,.event-table td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align:right;
+
 }

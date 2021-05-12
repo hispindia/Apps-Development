@@ -6,15 +6,9 @@ import { setTEIs, setEvents, setAttribute } from "../redux/action/event";
 const Static = () => {
   const dispatch = useDispatch();
   const [id, setId] = useState("");
-  const [idType, setIdType] = useState("");
-  const [isSelected, setIsSelected] = useState(false);
   const [LoadCertificate, setLoadCertificate] = useState(false);
   const TEIList = useSelector((state) => state.data.TEIList);
-  const isValidID = useSelector((state) => state.data.isValidID);
-  const handleIdType = (e) => {
-    setIsSelected(true);
-    setIdType(e.target.value);
-  };
+
   useEffect(() => {
     ApiService.getTEI().then((res) => {
       dispatch(setTEIs(res.trackedEntityInstances));
@@ -28,8 +22,8 @@ const Static = () => {
       return;
     }
     for (let tei of TEIList) {
-      for (let atr of tei.attributes) {
-        if (atr.value == id) {
+      for (let attr of tei.attributes) {
+        if ((attr.attribute == "KSr2yTdu1AI" || attr.attribute == "Ewi7FUfcHAD")  && attr.value == id) {
           hasValue = false;
           ApiService.getEvents(tei.trackedEntityInstance).then((res) => {
             dispatch(setAttribute(tei.attributes));
@@ -47,41 +41,23 @@ const Static = () => {
   return (
     <>
       <div className="box">
-        <div class="row">
-          <div class="col-4">
-            <strong>ID Type :</strong>
-          </div>
-          <div class="col-8">
-            <select className="form-control" onChange={(e) => handleIdType(e)}>
-              <option selected hidden>Please Select</option>
-              <option>National ID</option>
-              <option>System ID</option>
-            </select>
-          </div>
-        </div>
-        <br />
-        {isSelected ? (
-          <div className="row">
-            <div className="col-4">
-              <strong>{idType} :</strong>
+        <div className="row">
+            <div className="col-5">
+              <strong>Enter System Id / National Id:</strong>
             </div>
-            <div className="col-8">
+            <div className="col-7">
               <input
                 className="form-control"
                 onChange={(e) => setId(e.target.value)}
               />
             </div>
           </div>
-        ) : (
-          ""
-        )}
         <br/>
         <div style={{ textAlign: "center" }}>
           <button
             type="button"
             class="btn btn-primary"
             onClick={onGenerateCertificate}
-            disabled={!isSelected}
           >
             Generate Certificate
           </button>

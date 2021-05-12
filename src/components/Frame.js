@@ -5,7 +5,6 @@ import QRCode from "react-qr-code";
 import { useSelector } from "react-redux";
 
 const onPrintCertificate = (el) => {
-  var restorepage = document.body.innerHTML;
   var printcontent = document.getElementById(el).innerHTML;
   document.body.innerHTML = printcontent;
   window.print();
@@ -20,8 +19,8 @@ const Frame = () => {
   var attr = {};
   eventList.map((element) => {
     let obj = {};
-    obj["eventDate"] = element.eventDate.split("T")["0"];
-    obj["orgUnitName"] = element.orgUnitName;
+    if(element.eventDate) obj["eventDate"] = element.eventDate.split("T")["0"];
+    if(element.orgUnitName) obj["orgUnitName"] = element.orgUnitName;
     element.dataValues.map((val) => {
       obj[val.dataElement] = val.value;
     });
@@ -45,6 +44,8 @@ const Frame = () => {
         <div class="frame">
           <div class="innerFrame">
             <div style={{ textAlign: "center", padding: "10px" }}>
+              وزارة الصحة العامة والسكان
+              <br />
               Ministry of Public Health Population
               <img src={logo} style={{ height: "55px" }} />
             </div>
@@ -58,7 +59,11 @@ const Frame = () => {
               </div>
               <div class="item4">
                 <div style={{ textAlign: "center" }}>
-                  <strong>COVID-19 Vaccination Certification</strong>
+                  <strong>
+                    شهادة تطعيم كوفيد١٩
+                    <br />
+                    COVID-19 Vaccination Certification
+                  </strong>
                 </div>
               </div>
               <div class="item5">
@@ -70,59 +75,106 @@ const Frame = () => {
               </div>
             </div>
             <div class="grid-container">
-              <div class="item3">
-                <div>
-                  <strong>Number : </strong>
-                  {attr.Ewi7FUfcHAD}
-                </div>
-                <div>
-                  <strong>Name : </strong> {attr.TfdH5KvFmMy} {attr.aW66s2QSosT}
-                </div>
-                <div>
-                  <strong>Date of Birth : </strong>
-                  {attr.mAWcalQYYyk}
-                </div>
-                <div>
-                  <strong>Reference No. : </strong>123456
-                </div>
+              <div>
+                <table style={{ width: "70%" }}>
+                  <tr>
+                    <td>
+                      <strong>National Number : </strong>
+                    </td>
+                    <td>{attr.Ewi7FUfcHAD}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>Name : </strong>
+                    </td>
+                    <td>{attr.TfdH5KvFmMy}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>Date of Birth : </strong>
+                    </td>
+                    <td>{attr.mAWcalQYYyk}</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>Reference No. :</strong>
+                    </td>
+                    <td></td>
+                  </tr>
+                </table>
               </div>
-              <div class="item4">
+              <div style={{ textAlign: "center" }}>
                 <div>
                   <QRCode
                     value="https://li1637-34.members.linode.com/epi/"
-                    size={100}
+                    size={120}
                   />
                 </div>
               </div>
-              <div class="item5">
-                <div>
-                  {attr.Ewi7FUfcHAD}{" "}
-                  <strong>
-                    <span style={{ textAlign: "right" }}></span>:{" "}
-                  </strong>
-                </div>
-                <div>
-                  {attr.TfdH5KvFmMy} {attr.aW66s2QSosT} <strong>:</strong>
-                </div>
-                <div>
-                  {attr.mAWcalQYYyk}
-                  <strong>:</strong>
-                </div>
-                <div>
-                  123456<strong>:</strong>{" "}
-                </div>
+              <div>
+                <table
+                  style={{ width: "70%", textAlign: "right", float: "right" }}
+                >
+                  <tr>
+                    <td>{attr.Ewi7FUfcHAD}</td>
+                    <td>
+                      <strong>:الرقم الوطني</strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{attr.TfdH5KvFmMy}</td>
+                    <td>
+                      <strong>:الاسم</strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{attr.mAWcalQYYyk}</td>
+                    <td>
+                      <strong>:تاريخ الميلاد</strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <strong>: الرمز المرجعي</strong>
+                    </td>
+                  </tr>
+                </table>
               </div>
             </div>
-            <div class="grid-container">
-              <table style={{ width: "100%" }}>
-                <thead style={{ textAlign: "center" }}>
-                  <th>Center</th>
-                  <th>Date</th>
-                  <th>Lot Number</th>
-                  <th>Vaccine</th>
-                  <th>Dose</th>
+            <div>
+              <table
+                className="event-table"
+                style={{ width: "95%", margin: "5px auto" }}
+              >
+                <thead>
+                  <th>
+                    المركز
+                    <br />
+                    Center
+                  </th>
+                  <th>
+                    التاريخ
+                    <br />
+                    Date
+                  </th>
+                  <th>
+                    رقم التشغيلة
+                    <br />
+                    Lot Number
+                  </th>
+                  <th>
+                    المطعم
+                    <br />
+                    Vaccine
+                  </th>
+                  <th>
+                    الجرعة
+                    <br />
+                    Dose
+                  </th>
                 </thead>
-                <tbody style={{ textAlign: "center" }}>
+                <tbody>
                   {ev.map((element) => (
                     <tr>
                       <td>{element.orgUnitName}</td>
