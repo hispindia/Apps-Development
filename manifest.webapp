@@ -1,7 +1,7 @@
 {
-    "version": "1.1",
+    "version": "2.32",
     "name": "Dhis Web Excel Import",
-    "description": "Dhis Web Excel Import App for v34)",
+    "description": "Dhis Web Excel Import App for v32)",
     "launch_path": "index.html",
     "icons": {
         "16": "img/mortar-16.png",
