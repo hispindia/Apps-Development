@@ -43,12 +43,11 @@ const Frame = () => {
       <div class="container" id="printData">
         <div class="frame">
           <div class="innerFrame">
-            <div style={{ textAlign: "center", padding: "10px" }}>
-              وزارة الصحة العامة والسكان
-              <br />
-              Ministry of Public Health Population
-              <img src={logo} style={{ height: "55px" }} />
-            </div>
+          <div style={{padding: "10px"}}>
+             <div style={{width:"50%",float:"left",textAlign:"right"}}>وزارة الصحة العامة والسكان<br/>Ministry of Public Health Population</div>
+            <div style={{width:"50%",float:"left",textAlign:"left"}}><img src="./static/media/logo.cdb36493.png" style={{height: "55px"}}/></div>
+         </div>   
+         <div stylel={{clear:"both"}}></div> 
             <div class="grid-container">
               <div class="item3">
                 <div>
@@ -76,7 +75,7 @@ const Frame = () => {
             </div>
             <div class="grid-container">
               <div>
-                <table style={{ width: "70%" }}>
+                <table style={{ width: "90%" }}>
                   <tr>
                     <td>
                       <strong>National Number : </strong>
@@ -87,7 +86,7 @@ const Frame = () => {
                     <td>
                       <strong>Name : </strong>
                     </td>
-                    <td>{attr.TfdH5KvFmMy}</td>
+                    <td>{attr.TfdH5KvFmMy} {attr.aW66s2QSosT}</td>
                   </tr>
                   <tr>
                     <td>
@@ -106,14 +105,14 @@ const Frame = () => {
               <div style={{ textAlign: "center" }}>
                 <div>
                   <QRCode
-                    value="https://li1637-34.members.linode.com/epi/"
+                    value={`http://172.104.57.34:3000?${attr.Ewi7FUfcHAD}`}
                     size={120}
                   />
                 </div>
               </div>
               <div>
                 <table
-                  style={{ width: "70%", textAlign: "right", float: "right" }}
+                  style={{ width: "90%", textAlign: "right", float: "right" }}
                 >
                   <tr>
                     <td>{attr.Ewi7FUfcHAD}</td>
@@ -122,7 +121,7 @@ const Frame = () => {
                     </td>
                   </tr>
                   <tr>
-                    <td>{attr.TfdH5KvFmMy}</td>
+                    <td>{attr.TfdH5KvFmMy} {attr.aW66s2QSosT}</td>
                     <td>
                       <strong>:الاسم</strong>
                     </td>
