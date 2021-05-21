@@ -1,10 +1,10 @@
 import React, {useEffect, useState  } from 'react';
 import './App.css';
 
-
 import print from "./image/print.png";
 import logo from "./image/logo.png";
 import QRCode from "react-qr-code";
+import Loader from "react-loader-spinner";
 import { ApiService } from "./services/apiService";
 
 const onPrintCertificate = (el) => {
@@ -19,13 +19,14 @@ function App() {
   const [istrue, setIsTrue] = useState(true)
   const [attr, setAttr] = useState({});
   const [events, setEvents] = useState([]);
+  const [teiExist, setTeiExist] = useState(false);
+  const [loader, setLoader] = useState(true);
   const nationalId = window.location.href.split('?')[1];
 
   useEffect( async () =>{    
     if(istrue && nationalId) {
       let teiId = '';
-        setIsTrue(false)
-        debugger;
+        setIsTrue(false);
           await ApiService.getTEI().then((TEIList) => {
             for (let tei of TEIList.trackedEntityInstances) {
               for (let attr of tei.attributes) {
@@ -42,6 +43,8 @@ function App() {
             }
           });
           if(teiId) {
+            setLoader(false)
+            setTeiExist(true)
             await ApiService.getEvents(teiId).then((res) => {
               var events = [];
               res.events.map((element) => {
@@ -54,11 +57,24 @@ function App() {
                 events.push(obj);
               });
               setEvents(events);
+              setLoader(false);
             });
+          } else {
+            setTeiExist(false);
+            setLoader(false); 
           }
     }  
   }) 
-  return (
+  if(loader) return <Loader
+                      type="ThreeDots"
+                      color="#00BFFF"
+                      height={50}
+                      width={"100%"}
+                    />
+  return <>
+    { !teiExist ? 
+    <h2>No Certificate Found</h2>
+    :
     <div style={{ textAlign: "left", marginLeft: "10px" }}>
       <img
         src={print}
@@ -71,12 +87,11 @@ function App() {
       <div className="container" id="printData">
         <div className="frame">
           <div className="innerFrame">
-            <div style={{ textAlign: "center", padding: "10px" }}>
-              وزارة الصحة العامة والسكان
-              <br />
-              Ministry of Public Health Population
-              <img src={logo} style={{ height: "55px" }} />
-            </div>
+          <div style={{padding: "10px"}}>
+             <div style={{width:"50%",float:"left",textAlign:"right"}}>وزارة الصحة العامة والسكان<br/>Ministry of Public Health Population</div>
+            <div style={{width:"50%",float:"left",textAlign:"left"}}><img src={logo} style={{height: "55px"}}/></div>
+         </div>    
+         <div style={{clear:"both"}}></div>
             <div className="grid-container">
               <div className="item3">
                 <div>
@@ -104,7 +119,7 @@ function App() {
             </div>
             <div className="grid-container">
               <div>
-                <table style={{ width: "70%" }}>
+                <table style={{ width: "90%" }}>
                   <tbody>
                   <tr>
                     <td>
@@ -116,7 +131,7 @@ function App() {
                     <td>
                       <strong>Name : </strong>
                     </td>
-                    <td>{attr.TfdH5KvFmMy}</td>
+                    <td>{attr.TfdH5KvFmMy} {attr.aW66s2QSosT}</td>
                   </tr>
                   <tr>
                     <td>
@@ -136,14 +151,14 @@ function App() {
               <div style={{ textAlign: "center" }}>
                 <div>
                   <QRCode
-                    value={`http://10.22.99.105:3000?${attr.Ewi7FUfcHAD}`}
+                    value={`http://172.104.57.34:3000?${attr.Ewi7FUfcHAD}`}
                     size={120}
                   />
                 </div>
               </div>
               <div>
                 <table
-                  style={{ width: "70%", textAlign: "right", float: "right" }}
+                  style={{ width: "90%", textAlign: "right", float: "right" }}
                 >
                   <tbody>
                   <tr>
@@ -153,7 +168,7 @@ function App() {
                     </td>
                   </tr>
                   <tr>
-                    <td>{attr.TfdH5KvFmMy}</td>
+                    <td>{attr.TfdH5KvFmMy} {attr.aW66s2QSosT}</td>
                     <td>
                       <strong>:الاسم</strong>
                     </td>
@@ -222,7 +237,8 @@ function App() {
         </div>
       </div>
     </div>
-  );
+                  };
+    </>
 }
 
 export default App;
