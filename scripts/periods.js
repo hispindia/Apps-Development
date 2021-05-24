@@ -128,7 +128,29 @@
     function quartly(sD , eD)
     {
 
-        var dateString = "2014Q1;2014Q2;2014Q3;2014Q4;2015Q1;2015Q2;2015Q3;2015Q4;2016Q1;2016Q2;2016Q3;2016Q4";
-        
-        return dateString;
+        //var dateString = "2014Q1;2014Q2;2014Q3;2014Q4;2015Q1;2015Q2;2015Q3;2015Q4;2016Q1;2016Q2;2016Q3;2016Q4";
+		//var dateString = "2019Q1;2019Q2;2019Q3;2019Q4;2020Q1;2020Q2;2020Q3;2020Q4;2021Q1;2021Q2;2021Q3;2021Q4";
+		var today = new Date();
+		var stDate = "01/01/" + "2019";
+		var endDate = "01/01/" + (today.getFullYear());
+
+		var sDate = new Date(stDate);
+		sDate.setDate(1);
+		sDate.setMonth(0);
+		var eDate = new Date(endDate);
+		eDate.setDate(1);
+		eDate.setMonth(0);
+
+		var dateString = "";
+
+		while(sDate <= eDate)
+		{
+			//var dhisDate = sDate.getFullYear();
+
+			var dhisDate = sDate.getFullYear() + "" + "Q1" + ";" + sDate.getFullYear() + "" + "Q2" + ";" + sDate.getFullYear() + "" + "Q3" + ";" + sDate.getFullYear() + "" + "Q4";
+			dateString = ( dateString == "" ) ? dhisDate : ( dateString + ";" + dhisDate );
+			sDate.setYear( sDate.getFullYear() + 1 );
+		}
+
+		return dateString;
     }
