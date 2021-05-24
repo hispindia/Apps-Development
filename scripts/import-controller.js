@@ -1237,6 +1237,7 @@ excelImport
                                 aggregationType: row.aggregationType,
                                 domainType: row.domainType,
                                 valueType: row.valueType,
+                                zeroIsSignificant: row.zeroIsSignificant,
                                 legendSets: []
                             };
 
@@ -1295,6 +1296,7 @@ excelImport
                                     updateDataElement.description = row.description;
                                     updateDataElement.formName = row.formName;
                                     updateDataElement.aggregationType = row.aggregationType;
+                                    updateDataElement.zeroIsSignificant = row.zeroIsSignificant;
 
                                     $.ajax({
                                         type: "PUT",
