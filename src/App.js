@@ -18,6 +18,7 @@ const onPrintCertificate = (el) => {
 function App() {
   const [istrue, setIsTrue] = useState(true)
   const [attr, setAttr] = useState({});
+  const [optionSetValues, setOptionSetValues] = useState({});
   const [events, setEvents] = useState([]);
   const [teiExist, setTeiExist] = useState(false);
   const [loader, setLoader] = useState(true);
@@ -27,6 +28,16 @@ function App() {
     if(istrue && nationalId) {
       let teiId = '';
         setIsTrue(false);
+        await ApiService.getCovacVaccineNames().then(res => {
+          var covacVaccineNames = {}
+          res.options.forEach(option => covacVaccineNames[option.code] = option.name);
+          setOptionSetValues(covacVaccineNames);
+        })
+        await ApiService.getCovacDose().then(res => {
+          var covacDose = {}
+          res.options.forEach(option => covacDose[option.code] = option.name);
+          setOptionSetValues(prevState=> ({...prevState,...covacDose}));
+        })
           await ApiService.getTEI().then((TEIList) => {
             for (let tei of TEIList.trackedEntityInstances) {
               for (let attr of tei.attributes) {
@@ -47,7 +58,7 @@ function App() {
             setTeiExist(true)
             await ApiService.getEvents(teiId).then((res) => {
               var events = [];
-              res.events.map((element) => {
+              res.events.reverse().map((element) => {
                 let obj = {};
                 if(element.eventDate) obj["eventDate"] = element.eventDate.split("T")["0"];
                 if(element.orgUnitName) obj["orgUnitName"] = element.orgUnitName;
@@ -226,8 +237,8 @@ function App() {
                       <td>{element.orgUnitName}</td>
                       <td>{element.eventDate}</td>
                       <td>{element.Yp1F4txx8tm}</td>
-                      <td>{element.bbnyNYD1wgS}</td>
-                      <td>{element.LUIsbsm3okG}</td>
+                      <td>{(optionSetValues[element.bbnyNYD1wgS] ? optionSetValues[element.bbnyNYD1wgS] : "")}</td>
+                      <td>{(optionSetValues[element.LUIsbsm3okG] ? optionSetValues[element.LUIsbsm3okG] : "")}</td>
                     </tr>
                   ))}
                 </tbody>
