@@ -2,6 +2,8 @@
 export const SET_TEI = "SET_TEI"
 export const SET_EVENTS = "SET_EVENTS"
 export const SET_ATTRIBUTES = "SET_ATTRIBUTES"
+export const SET_COVAC_VACCINE_NAMES = "SET_COVAC_VACCINE_NAMES"
+export const SET_COVAC_DOSE = "SET_COVAC_DOSE"
 
 
 

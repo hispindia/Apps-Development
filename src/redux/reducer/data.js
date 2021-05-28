@@ -1,5 +1,7 @@
-import {SET_TEI, SET_EVENTS, SET_ATTRIBUTES} from '../action';
+import {SET_TEI, SET_EVENTS, SET_ATTRIBUTES, SET_COVAC_VACCINE_NAMES, SET_COVAC_DOSE} from '../action';
 const INITIAL_STATE = {
+  COVACVaccineNames:{},
+  COVACDose: {},
   TEIList :[],
   eventList: [],
   attributes: [],
@@ -15,6 +17,16 @@ export const dataReducer = (state = INITIAL_STATE, {
       return { ...state,
       TEIList: payload
       };
+      case SET_COVAC_VACCINE_NAMES:
+        return {
+          ...state,
+          COVACVaccineNames: payload
+        };
+        case SET_COVAC_DOSE:
+        return {
+          ...state,
+          COVACDose: payload
+        };
       case SET_EVENTS:
       return { ...state,
         eventList: payload

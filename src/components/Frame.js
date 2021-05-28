@@ -14,7 +14,8 @@ const onPrintCertificate = (el) => {
 const Frame = () => {
   const eventList = useSelector((state) => state.data.eventList);
   const attributes = useSelector((state) => state.data.attributes);
-  console.log("e", eventList, attributes);
+  const COVACVaccineNames = useSelector((state) => state.data.COVACVaccineNames);
+  const COVACDose = useSelector((state) => state.data.COVACDose);
   var ev = [];
   var attr = {};
   eventList.map((element) => {
@@ -45,7 +46,7 @@ const Frame = () => {
           <div class="innerFrame">
           <div style={{padding: "10px"}}>
              <div style={{width:"50%",float:"left",textAlign:"right"}}>وزارة الصحة العامة والسكان<br/>Ministry of Public Health Population</div>
-            <div style={{width:"50%",float:"left",textAlign:"left"}}><img src="./static/media/logo.cdb36493.png" style={{height: "55px"}}/></div>
+            <div style={{width:"50%",float:"left",textAlign:"left"}}><img src={logo} style={{height: "55px"}}/></div>
          </div>   
          <div stylel={{clear:"both"}}></div> 
             <div class="grid-container">
@@ -179,8 +180,8 @@ const Frame = () => {
                       <td>{element.orgUnitName}</td>
                       <td>{element.eventDate}</td>
                       <td>{element.Yp1F4txx8tm}</td>
-                      <td>{element.bbnyNYD1wgS}</td>
-                      <td>{element.LUIsbsm3okG}</td>
+                      <td>{(COVACVaccineNames[element.bbnyNYD1wgS] ? COVACVaccineNames[element.bbnyNYD1wgS] : "")}</td>
+                      <td>{(COVACDose[element.LUIsbsm3okG] ? COVACDose[element.LUIsbsm3okG]: "")}</td>
                     </tr>
                   ))}
                 </tbody>

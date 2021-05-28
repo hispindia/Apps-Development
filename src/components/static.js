@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Frame from "./Frame";
 import { useDispatch, useSelector } from "react-redux";
 import { ApiService } from "../services/apiService";
-import { setTEIs, setEvents, setAttribute } from "../redux/action/event";
+import { setCOVACVaccineNames, setCOVACDose, setTEIs, setEvents, setAttribute } from "../redux/action/event";
 const Static = () => {
   const dispatch = useDispatch();
   const [id, setId] = useState("");
@@ -13,6 +13,16 @@ const Static = () => {
     ApiService.getTEI().then((res) => {
       dispatch(setTEIs(res.trackedEntityInstances));
     });
+    ApiService.getCovacVaccineNames().then(res => {
+      var covacVaccineNames = {}
+      res.options.forEach(option => covacVaccineNames[option.code] = option.name);
+      dispatch(setCOVACVaccineNames(covacVaccineNames));
+    })
+    ApiService.getCovacDose().then(res => {
+      var covacDose = {}
+      res.options.forEach(option => covacDose[option.code] = option.name);
+      dispatch(setCOVACDose(covacDose));
+    })
   }, []);
 
   const onGenerateCertificate = () => {
@@ -27,7 +37,7 @@ const Static = () => {
           hasValue = false;
           ApiService.getEvents(tei.trackedEntityInstance).then((res) => {
             dispatch(setAttribute(tei.attributes));
-            dispatch(setEvents(res.events));
+            dispatch(setEvents(res.events.reverse()));
           });
         }
       }
