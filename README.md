@@ -1,47 +1,43 @@
-# Apps-Development
-HISP INDIA External Apps Development
+# WHO Immunization Analysis app
 
+## License
+© Copyright 2017 the World Health Organization (WHO).
+This software is distributed under the terms of the GNU General Public License version 3 (GPL Version 3),
+copied verbatim in the file “COPYING”.  In applying this license, WHO does not waive any of the privileges and
+immunities enjoyed by WHO under national or international law or submit to any national court jurisdiction.
 
- # Link of other external Apps developed:
+## Getting started
 
- 1# Tracker data approval app developed for UPHMIS
-    https://github.com/hispindia/dhis-tracker-data-approval-app
+### Install dependencies
+To install app dependencies:
 
- 2# e-Aushadhi Stock Data Import App developed for malaria
-    https://github.com/hispindia/dhis-app-excel-import/tree/Aggrigate-Data-Excel-Import-App-Without-Mapping
-	
- 3# Aggregate data excel import app developed for maharashtra with multiple OU and multiple Data Element
-    https://github.com/hispindia/dhis-app-excel-import/tree/Aggregate-Data-Excel-Import-App-MultipleOU-MultipleDE
- 
- 4# Excel import app for multiple stages version 2.27
-    https://github.com/hispindia/dhis-app-excel-import/tree/2.27-MWMIS-Odisha-Multistage-Excel-Import 
-	
- 5# Excel import app for multiple stages version 2.26
-    https://github.com/hispindia/dhis-app-excel-import/tree/2.26-AES-Multistage-Excel-Import
-	
- 6# Excel import app for aggrigate & tracker data version 2.27
-    https://github.com/hispindia/dhis-app-excel-import/tree/csv-2.27
-    
- 7# Tracker and event data exporter app ( generic, msf, tibet branches )  
-    https://github.com/hispindia/tracker-data-exporter-app/
-	
- 8# Intractive Dashboard app ( For ICMR-GBD )  
-    https://github.com/hispindia/interactive-dashboard-vuejs
-	
- 9# openimis-dhis2integration
-    https://github.com/hispindia/openimis-dhis2integration
-	https://github.com/hispindia/openimis-fhir-definitions
-	https://github.com/hispindia/openimis-be-api_fhir_py
-	https://github.com/openimis/openimis-be_py/tree/develop
+```
+yarn install
+```
 
- 10# kenya-sms-alert 
-    https://github.com/hispindia/dhis-outlier-analysis/tree/kenya-sms-alert	
+### Compile to zip
+To compile the app to a .zip file:
 
- 11# This app build in Angular JS
- 
-	After removing translation and trackedentitydatavalue table from 2.32 ownward
+```
+yarn run zip
+```
 
-    1) Used for import translation for 2.32
-    2) Event-datavalue update/add for single-dataelement for 2.32
-	
-      https://github.com/hispindia/Apps-Development/tree/excel-to-json-angular
+### Start dev server
+To start the webpack development server:
+
+```
+yarn start
+```
+
+By default, webpack will start on port 8081, and assumes DHIS2 is running on 
+http://localhost:8080/dhis with `admin:district` as the user and password.
+
+A different DHIS2 instance can be used to develop against by setting the `DHIS2_HOME`
+environmental variable (e.g. `export DHIS2_HOME=/Users/Olav/dhis2/epi_home`). 
+Inside the folder `DHIS2_HOME` points to, create a file `config` with the url 
+and base64-encoded username:password like this:
+
+```
+exports.baseUrl = 'http://localhost:8090/epidev';
+exports.authorization = 'Basic YWRtaW46ZGlzdHJpY3QK='; //Based64 encoded
+```

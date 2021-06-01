@@ -1,0 +1,381 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"POT-Creation-Date: 2018-05-08T08:33:28.209Z\n"
+"PO-Revision-Date: 2018-10-24 11:46+0200\n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.1.1\n"
+"Last-Translator: \n"
+"Language: pt\n"
+
+msgid "Select data element"
+msgstr "Selecionar elemento de dados"
+
+msgid "Loading"
+msgstr "Carregando"
+
+msgid "No data elements in"
+msgstr "Nenhum elemento de dados no"
+
+msgid "All data elements"
+msgstr "Todos os elementos de dados"
+
+msgid "Indicator group"
+msgstr "Grupo de Indicador"
+
+msgid "Totals"
+msgstr "Totais"
+
+msgid "Details"
+msgstr "Detalhes"
+
+msgid "Select indicator"
+msgstr "Selecione o indicador"
+
+msgid "No indicators in"
+msgstr "Não há indicadores em"
+
+msgid "All indicators"
+msgstr "Todos os indicadores"
+
+msgid "Boundary"
+msgstr "Limite geografico"
+
+msgid "Other"
+msgstr "Outro"
+
+msgid "Disaggregation"
+msgstr "Desagregação"
+
+msgid "Organisation unit level"
+msgstr "Nível da unidade organizacional"
+
+msgid "Organisation unit group"
+msgstr "Grupo de unidade organizacional"
+
+msgid "Selected"
+msgstr "Seleccionado"
+
+msgid "Select level"
+msgstr "Selecione o nível"
+
+msgid "Select group"
+msgstr "Selecionar o grupo"
+
+msgid "Report type"
+msgstr "Tipo de relatório"
+
+msgid "Data"
+msgstr "Dados"
+
+msgid "Period"
+msgstr "Período"
+
+msgid "Year"
+msgstr "Ano"
+
+msgid "Cumulative"
+msgstr "Cumulativo"
+
+msgid "Monthly"
+msgstr "Mensal"
+
+msgid "Previous years for comparison"
+msgstr "Anos anteriores para comparação"
+
+msgid "Month"
+msgstr "Mês"
+
+msgid "Organisation unit"
+msgstr "Unidade organizacional"
+
+msgid "Make report"
+msgstr "Produzir o relatório"
+
+msgid "Name"
+msgstr "Nome"
+
+msgid "Vaccine (total)"
+msgstr "Vacina (total)"
+
+msgid "Data element"
+msgstr "Elemento de dado"
+
+msgid "Indicator"
+msgstr "Indicador"
+
+msgid "Vaccine (target age)"
+msgstr "Vacina (idade-alvo)"
+
+msgid "Denominator"
+msgstr "Denominador"
+
+msgid "Save"
+msgstr "Gravar"
+
+msgid "Edit"
+msgstr "Editar"
+
+msgid "Delete"
+msgstr "Excluir"
+
+msgid "Add"
+msgstr "Adicionar"
+
+msgid "Vaccine from"
+msgstr "Vacina de"
+
+msgid "Vaccine to"
+msgstr "Vacina para"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid "Indicator (coverage)"
+msgstr "Indicador (cobertura)"
+
+msgid "Dropout rate"
+msgstr "Taxa de abandono"
+
+msgid "RIM export configuration"
+msgstr "Configuração de exportação para RIM"
+
+msgid ""
+"Configuration: used for changing general export parameters (existing "
+"parameters will be overwritten)"
+msgstr ""
+"Configuração: usado para alterar os parâmetros de exportação gerais (os "
+"parâmetros existentes serão substituídos)"
+
+msgid "Import: used for the initial import of RIM metadata only."
+msgstr "Importação: usado para a importação inicial de metadados RIM apenas."
+
+msgid "Configuration"
+msgstr "Configuração"
+
+msgid "Organisation unit levels"
+msgstr "Níveis da unidade organizacional"
+
+msgid ""
+"RIM export is done by district (admin 2) level, and also includes the "
+"province (admin 1) level and a country code. Please enter country code and "
+"select province, district levels here"
+msgstr ""
+"RIM exportação é feita por nível distrito (admin 2), e também inclui o nível "
+"de província (admin 1) e um código de país. Por favor insira o código do "
+"país e selecione província, os níveis distritais aqui"
+
+msgid "Country code:"
+msgstr "Código do país:"
+
+msgid "Completeness"
+msgstr "Complitude"
+
+msgid ""
+"Select the EPI data set/reporting form to use for reporting on completeness"
+msgstr ""
+"Selecione o conjunto de dados PAV/formulário de relatório a utilizar para "
+"comunicar"
+
+msgid "Update configuration"
+msgstr "Actualizar Configurações"
+
+msgid "Import settings"
+msgstr "Configurações de importação"
+
+msgid ""
+"RIM export relies on configuration of a set of DHIS 2 indicators. This page "
+"is used for selecting the relevant indicators and importing them into the "
+"DHIS 2. Administrators must then configure the indicator formulas to map "
+"each indicator to the appropriate data elements."
+msgstr ""
+"A exportação para RIM baseia-se na configuração de um conjunto de "
+"indicadores DHIS2. Esta página é usada para selecionar os indicadores "
+"relevantes e importá-los para o DHIS2. Os administradores devem então "
+"configurar as fórmulas do indicador para mapear cada indicador para os "
+"elementos de dados apropriados."
+
+msgid ""
+"Indicators will be added to an indicator group called RIM Export, and the "
+"indicators will have [RIM] as prefix."
+msgstr ""
+"Os indicadores serão adicionados a um grupo indicador denominado RIM Export, "
+"e os indicadores terão [RIM] como prefixo."
+
+msgid ""
+"A new user group will be imported with the current users as member, and the "
+"RIM indicators will be visible only to user in that group. Only users in "
+"this group can thus configure the RIM indicators, and export data in RIM "
+"format. Additional users can be added to this group in the DHIS 2 user "
+"management app."
+msgstr ""
+"Um novo grupo de usuários será importado com os usuários actuais como "
+"membro, e os indicadores do RIM ficarão visíveis somente para o usuário "
+"nesse grupo. Somente os usuários neste grupo podem configurar os indicadores "
+"do RIM, e exportar dados no formato do RIM. Usuários adicionais podem ser "
+"adicionados a esse grupo no aplicativo de gestão de usuário do DHIS2."
+
+msgid "Stock"
+msgstr "Estoque"
+
+msgid "Is information on stock (doses available and doses used) available?"
+msgstr ""
+"Informações sobre estoque (doses disponíveis e doses usadas) estão "
+"disponíveis?"
+
+msgid "AEFI"
+msgstr "Eventos adversos após imunização"
+
+msgid "Is information on AEFIs by vaccine available?"
+msgstr ""
+"Informação sobre eventos adversos após imunização esta disponível por vacina?"
+
+msgid "Vaccine disaggregation"
+msgstr "Desagregação de vacinas"
+
+msgid ""
+"Is vaccination data disaggregated by static/outreach, or static/outreach/"
+"mobile?"
+msgstr "Os dados de vacinação estão desagregados por estática/brigadas moveis?"
+
+msgid "Vaccines"
+msgstr "Vacinas"
+
+msgid "Overwrite previously imported RIM indicators?"
+msgstr "Substituir os indicadores do RIM importados anteriormente?"
+
+msgid "Import RIM metadata and update configuration"
+msgstr "Importar metadados do RIM e atualizar configurações"
+
+msgid "Download CSV"
+msgstr "Baixar aquivo CSV"
+
+msgid "All ages"
+msgstr "Todas as idades"
+
+msgid "Target age group"
+msgstr "Grupo etário alvo"
+
+msgid "Coverage"
+msgstr "Cobertura"
+
+msgid "Category A"
+msgstr "Categoria A"
+
+msgid "Category B"
+msgstr "Categoria B"
+
+msgid "Category C"
+msgstr "Categoria C"
+
+msgid "Category D"
+msgstr "Categoria D"
+
+msgid "Vaccine"
+msgstr "Vacina"
+
+msgid "Hierarchy"
+msgstr "Hierarquia"
+
+msgid "all ages"
+msgstr "todas as idades"
+
+msgid "target age"
+msgstr "idade alvo"
+
+msgid "coverage"
+msgstr "Cobertura"
+
+msgid "Performance report has not been configured, contact the administrators."
+msgstr ""
+"Relatório de desempenho não foi configurado, entre em contato com os "
+"administradores."
+
+msgid "DPT 1 coverage"
+msgstr "Cobertura DPT 1"
+
+msgid "DPT 1 to 3 dropout rate"
+msgstr "Taxa de abandono de DPT 1 a 3"
+
+msgid "Orgunits"
+msgstr "Unidades organizacionais"
+
+msgid "Summary by month"
+msgstr "Resumo por mês"
+
+msgid "Summary by orgunit"
+msgstr "Resumo por unidade organizacional"
+
+msgid "Identifying data"
+msgstr "Identificando dados"
+
+msgid "Downloading data"
+msgstr "Descarregando dados"
+
+msgid "January"
+msgstr "Janeiro"
+
+msgid "February"
+msgstr "Fevereiro"
+
+msgid "March"
+msgstr "Março"
+
+msgid "April"
+msgstr "Abril"
+
+msgid "May"
+msgstr "Maio"
+
+msgid "June"
+msgstr "Junho"
+
+msgid "July"
+msgstr "Julho"
+
+msgid "August"
+msgstr "Agosto"
+
+msgid "September"
+msgstr "Setembro"
+
+msgid "October"
+msgstr "Outubro"
+
+msgid "November"
+msgstr "Novembro"
+
+msgid "December"
+msgstr "Dezembro"
+
+msgid "Vaccines - doses and coverage"
+msgstr "Vacinas - doses e cobertura"
+
+msgid "Performance - coverage vs dropout rate"
+msgstr "Desempenho - cobertura vs taxa de abandono"
+
+msgid "Monitoring chart"
+msgstr "Gráfico de monitoria"
+
+msgid "Multiple vaccines for one orgunit"
+msgstr "Múltiplas vacinas para uma unidade organizacional"
+
+msgid "One vaccine for multiple orgunits"
+msgstr "Uma vacina para múltiplas unidades organizacionais"
+
+msgid "Multiple vaccines for one year"
+msgstr "Vacinas múltiplas para um ano"
+
+msgid "One vaccine for multiple years"
+msgstr "Uma vacina para vários anos"
+
+msgid "RIM Export"
+msgstr "Exportação RIM"
+
+msgctxt "export"
+msgid "RIM"
+msgstr "RIM"
