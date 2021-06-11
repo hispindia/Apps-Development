@@ -4,11 +4,11 @@
   "description": "",
   "license": "BSD-3-Clause",
   "private": true,
-  "dev":{
-	"name":"Gyan Bahadur Tamang",
-	"org":"HISP India",
-	"e-mail":"gyan.tamang@hispindia.org"
-     },
+  "dev": {
+    "name": "Gyan Bahadur Tamang",
+    "org": "HISP India",
+    "e-mail": "gyan.tamang@hispindia.org"
+  },
   "scripts": {
     "build": "d2-app-scripts build",
     "start": "d2-app-scripts start",
@@ -22,6 +22,7 @@
     "@dhis2/app-runtime": "^2.7.0",
     "bootstrap": "^5.0.0",
     "jquery": "^3.5.1",
+    "react-loader-spinner": "^4.0.0",
     "react-qr-code": "^1.1.1",
     "react-redux": "^7.2.2",
     "react-scripts": "^4.0.3",

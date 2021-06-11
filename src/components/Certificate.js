@@ -14,14 +14,16 @@ const onPrintCertificate = (el) => {
 const Certificate = () => {
   const eventList = useSelector((state) => state.data.eventList);
   const attributes = useSelector((state) => state.data.attributes);
-  const COVACVaccineNames = useSelector((state) => state.data.COVACVaccineNames);
+  const COVACVaccineNames = useSelector(
+    (state) => state.data.COVACVaccineNames
+  );
   const COVACDose = useSelector((state) => state.data.COVACDose);
   var ev = [];
   var attr = {};
   eventList.map((element) => {
     let obj = {};
-    if(element.eventDate) obj["eventDate"] = element.eventDate.split("T")["0"];
-    if(element.orgUnitName) obj["orgUnitName"] = element.orgUnitName;
+    if (element.eventDate) obj["eventDate"] = element.eventDate.split("T")["0"];
+    if (element.orgUnitName) obj["orgUnitName"] = element.orgUnitName;
     element.dataValues.map((val) => {
       obj[val.dataElement] = val.value;
     });
@@ -44,11 +46,17 @@ const Certificate = () => {
       <div class="container" id="printData">
         <div class="frame">
           <div class="innerFrame">
-          <div style={{padding: "10px"}}>
-             <div style={{width:"50%",float:"left",textAlign:"right"}}>وزارة الصحة العامة والسكان<br/>Ministry of Public Health Population</div>
-            <div style={{width:"50%",float:"left",textAlign:"left"}}><img src={logo} style={{height: "55px"}}/></div>
-         </div>   
-         <div stylel={{clear:"both"}}></div> 
+            <div style={{ padding: "10px" }}>
+              <div style={{ width: "50%", float: "left", textAlign: "right" }}>
+                وزارة الصحة العامة والسكان
+                <br />
+                Ministry of Public Health Population
+              </div>
+              <div style={{ width: "50%", float: "left", textAlign: "left" }}>
+                <img src={logo} style={{ height: "55px" }} />
+              </div>
+            </div>
+            <div stylel={{ clear: "both" }}></div>
             <div class="grid-container">
               <div class="item3">
                 <div>
@@ -87,7 +95,9 @@ const Certificate = () => {
                     <td>
                       <strong>Name : </strong>
                     </td>
-                    <td>{attr.TfdH5KvFmMy} {attr.aW66s2QSosT}</td>
+                    <td>
+                      {attr.TfdH5KvFmMy} {attr.aW66s2QSosT}
+                    </td>
                   </tr>
                   <tr>
                     <td>
@@ -122,7 +132,9 @@ const Certificate = () => {
                     </td>
                   </tr>
                   <tr>
-                    <td>{attr.TfdH5KvFmMy} {attr.aW66s2QSosT}</td>
+                    <td>
+                      {attr.TfdH5KvFmMy} {attr.aW66s2QSosT}
+                    </td>
                     <td>
                       <strong>:الاسم</strong>
                     </td>
@@ -180,8 +192,16 @@ const Certificate = () => {
                       <td>{element.orgUnitName}</td>
                       <td>{element.eventDate}</td>
                       <td>{element.Yp1F4txx8tm}</td>
-                      <td>{(COVACVaccineNames[element.bbnyNYD1wgS] ? COVACVaccineNames[element.bbnyNYD1wgS] : "")}</td>
-                      <td>{(COVACDose[element.LUIsbsm3okG] ? COVACDose[element.LUIsbsm3okG]: "")}</td>
+                      <td>
+                        {COVACVaccineNames[element.bbnyNYD1wgS]
+                          ? COVACVaccineNames[element.bbnyNYD1wgS]
+                          : ""}
+                      </td>
+                      <td>
+                        {COVACDose[element.LUIsbsm3okG]
+                          ? COVACDose[element.LUIsbsm3okG]
+                          : ""}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
