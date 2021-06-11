@@ -11,7 +11,7 @@ const onPrintCertificate = (el) => {
   window.location.reload();
 };
 
-const Frame = () => {
+const Certificate = () => {
   const eventList = useSelector((state) => state.data.eventList);
   const attributes = useSelector((state) => state.data.attributes);
   const COVACVaccineNames = useSelector((state) => state.data.COVACVaccineNames);
@@ -194,4 +194,4 @@ const Frame = () => {
   );
 };
 
-export default Frame;
+export default Certificate;

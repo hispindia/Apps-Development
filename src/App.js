@@ -3,10 +3,10 @@ import './App.css'
 import "bootstrap/dist/css/bootstrap.min.css";
 import store from './redux/store/store'
 import { Provider } from 'react-redux'
-import Static from './components/static'
+import TEIView from './components/TEIView'
 const MyApp = () => (
     <Provider store ={store}>
-        <Static />
+        <TEIView />
     </Provider>
 )
 export default MyApp
