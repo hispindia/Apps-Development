@@ -10,13 +10,13 @@ const requestOptions = { method: "GET", credentials: "include" };
 
 export function getTEI(valueType, value) {
   return fetch(
-    `../../trackedEntityInstances.json?program=${program}&ou=${orgUnit}&paging=false&ouMode=DESCENDANTS&filter=${trackedEntityAttributes[valueType]}:eq:${value}`,
+    `../../trackedEntityInstances.json?program=${program}&ou=${orgUnit}&paging=false&ouMode=DESCENDANTS&filter=${trackedEntityAttributes[valueType.split("-").join("")]}:eq:${value}`,
     requestOptions
   ).then((res) => res.json());
 }
 export function getEvents(id) {
   return fetch(
-    `../../events.json?program=${program}&trackedEntityInstance=${id}&paging=false`,
+    `../../events.json?program=${program}&trackedEntityInstance=${id}&order=eventDate:desc&paging=false`,
     requestOptions
   ).then((res) => res.json());
 }

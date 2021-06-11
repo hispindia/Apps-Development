@@ -37,19 +37,21 @@ const TEIView = () => {
       alert("Please enter !!!");
       return;
     }
-    ApiService.getTEI(valueType, value).then((res) => {
-      dispatch(setTEIs(res.trackedEntityInstances));
-      hasValue = false;
-      ApiService.getEvents(res.trackedEntityInstance).then((res) => {
-        dispatch(setAttribute(tei.attributes));
-        dispatch(setEvents(res.events.reverse()));
-      });
-    });
-    if (hasValue) {
-      alert("Invalid Id !!!");
-      return;
-    }
-    setLoadCertificate(true);
+    ApiService.getTEI(valueType, value).then((attrRes ) => {
+      if(!attrRes.trackedEntityInstances.length){
+        alert("Invalid Id !!!");
+        return;
+      }
+        dispatch(setTEIs(attrRes.trackedEntityInstances));
+        hasValue = false;
+        ApiService.getEvents(attrRes.trackedEntityInstances['0'].trackedEntityInstance).then((res) => {
+          dispatch(setAttribute(attrRes.trackedEntityInstances['0'].attributes));
+          dispatch(setEvents(res.events));
+          setLoadCertificate(true);
+        });
+    }).catch(err=>{
+      alert("Invalid Id !")
+    })
   };
   return (
     <>
@@ -72,10 +74,12 @@ const TEIView = () => {
             </select>
           </div>
         </div>
+        <br />
         { valueType && <div className="row">
           <div className="col-5">
             <strong>Enter {valueType.split("-").join(" ")}</strong>
           </div>
+
           <div className="col-7">
             <input
               className="form-control"
