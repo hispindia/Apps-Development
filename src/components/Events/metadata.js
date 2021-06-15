@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ApiService } from "../../services/apiService";
-import { LoadMetaData, setCondtionalOU,translationDataElements,setLanguage,loadProgramRuleCondition, programConditionCheck} from "../../redux/action/event";
+import { LoadMetaData,translationDataElements,setLanguage,loadProgramRuleCondition, dateDataElements} from "../../redux/action/event";
 
  export const MetaData = () => {
   const dispatch = useDispatch();
@@ -12,7 +12,11 @@ useEffect(() => {
     ApiService.getMe().then(result => {
     ApiService.getDETranslation().then(res => {
       let translatedDE = []
+      let dateDE = []
       for( let de of res.dataElements){
+            if(de.valueType=="DATE" ){
+              dateDE.push(de.id)
+            }
            for(let language of de.translations){
              if(language.locale == result.settings.keyDbLocale && language.property=="FORM_NAME" ){
               let obj ={}
@@ -23,6 +27,7 @@ useEffect(() => {
              }
            }
       }
+      dispatch(dateDataElements(dateDE))
       dispatch(translationDataElements(translatedDE));
 
     })

@@ -63,6 +63,6 @@ function getMe(){
 }
 function getDETranslation(){
     const requestOptions = { method: 'GET', credentials: 'include',};
-    return fetch(BaseUrl + '/api/dataElements.json?fields=[id,name,translations]&paging=false', requestOptions).then(res => res.json())
+    return fetch(BaseUrl + '/api/dataElements.json?fields=id,name,valueType,translations&paging=false', requestOptions).then(res => res.json())
 }
 

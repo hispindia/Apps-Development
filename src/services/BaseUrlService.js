@@ -1,3 +1,3 @@
 
- export const BaseUrl ='https://yesme.plan-yes.online/yesme';
+ export const BaseUrl ='https://me.yesdigital.org/yesdigital';
  

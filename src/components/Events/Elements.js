@@ -67,7 +67,6 @@ export const Element = (props) => {
       } else dispatch(validation({ id: null, type: false }));
     }
     let value;
-
     if (valueType != "DATE" && valueType != "TRUE_ONLY") {
       if (e.target.value === "true") {
         value = true;
