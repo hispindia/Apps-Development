@@ -984,7 +984,7 @@ return (
                 </Col>
 
                 <Col className ="col-md-1">
-                    <Button color="primary"  onClick={() =>this.reSetSelection()}>Cencel</Button>
+                    <Button color="primary"  onClick={() =>this.reSetSelection()}>Cancel</Button>
                 </Col>
 
             </Row>
