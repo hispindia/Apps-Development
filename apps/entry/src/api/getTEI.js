@@ -8,7 +8,7 @@ export const getTEI = async orgUnit => {
     var url = ""
     var SampleDict = {};
     var result = []
-    let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit
+    let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&paging=false"
     let api3 = '../../../api/29/sqlViews/gxov92xU7S7/data.json&paging=false' // Local Db
     let api4 = '../../../api/29/sqlViews/WKhh3qxwcPW/data.json?paging=false' // Baseline DB
 
@@ -28,14 +28,14 @@ export const getTEI = async orgUnit => {
             var orgunits = events[0]
                var trackerid = events[1]
                var labsampleid = ""
-            if (!SampleDict.hasOwnProperty(trackerid)) {                  
+            if (!SampleDict.hasOwnProperty(trackerid)) {
                     if (!events[5]) {
                     var eventdate = "No data to show"
                     }
                     else {
                     var eventdate = events[5]
                     }
-                    var outputarray = JSON.parse(events[3].value);                  
+                    var outputarray = JSON.parse(events[3].value);
                     for (const [key, value] of Object.entries(outputarray)) {
                         if (!dataElement.hasOwnProperty(key)) {
                         dataElement[key] = [value.value,value.created]
@@ -43,19 +43,19 @@ export const getTEI = async orgUnit => {
                     }
                     if (dataElement["mp5MeJ2dFQz"])
                     {
-                        var samplevalue = dataElement["mp5MeJ2dFQz"][0]   
+                        var samplevalue = dataElement["mp5MeJ2dFQz"][0]
                         eventdate = dataElement["mp5MeJ2dFQz"][1]
                     }
                     else {
                         var samplevalue = "No data to show"
                 }
                 if (dataElement["GpAu5HjWAEz"]) {
-                    labsampleid = dataElement["GpAu5HjWAEz"][0]   
+                    labsampleid = dataElement["GpAu5HjWAEz"][0]
                 }
                 SampleDict[trackerid] = [orgunits, eventdate, samplevalue,labsampleid]
                 }
             });
-        }      
+        }
             responseOne.data.trackedEntityInstances.forEach((teis, index) => {
             const trackedEntityInstance = teis.trackedEntityInstance
             const orgUnit = teis.orgUnit
@@ -87,5 +87,5 @@ export const getTEI = async orgUnit => {
   .catch(errors => {
     console.error(errors);
   });
-  
+
 }
