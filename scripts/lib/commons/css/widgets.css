@@ -457,12 +457,12 @@ div.growlUI h2
 { 
 	font-size: small 
 }
-
+/*
 .ui-autocomplete-loading 
 { 
 	background: white url('../../images/ui-anim_basic.gif') right center no-repeat; 
 }
-
+*/
 span.error 
 {
 	color: red;

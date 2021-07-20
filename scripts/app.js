@@ -15,7 +15,7 @@ var excelImport = angular.module('excelImport',['ui.bootstrap',
     'excelImportAppServices',
     'jsonFormatter'
 ])
-
+    /*
 .config(function($routeProvider,$translateProvider){
         $routeProvider.when('/', {
             templateUrl:'views/import.html',
@@ -24,6 +24,17 @@ var excelImport = angular.module('excelImport',['ui.bootstrap',
             redirectTo : '/'
         });
 
+ */
+.config(function ($routeProvider, $translateProvider) {
+        $routeProvider.when('/', {
+            templateUrl: 'views/home.html',
+            controller: 'homeController'
+        }).when('/import', {
+            templateUrl: 'views/import.html',
+            controller: 'importController'
+        }).otherwise({
+            redirectTo: '/'
+        });
         $translateProvider.preferredLanguage('en');
         $translateProvider.useSanitizeValueStrategy('escaped');
         $translateProvider.useLoader('i18nLoader');

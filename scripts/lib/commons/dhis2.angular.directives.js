@@ -34,7 +34,7 @@ var d2Directives = angular.module('d2Directives', [])
                 $("#searchSpan").toggle();
                 $("#searchField").focus();
             });
-
+            /*
             $("#searchField").autocomplete({
                 source: "../dhis-web-commons/ouwt/getOrganisationUnitsByName.action",
                 select: function (event, ui) {
@@ -42,6 +42,7 @@ var d2Directives = angular.module('d2Directives', [])
                     selection.findByName();
                 }
             });
+            */
         }
     };
 })
