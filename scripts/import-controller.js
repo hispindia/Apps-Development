@@ -1633,6 +1633,98 @@ excelImport
 
                     }
 
+                    // users post
+                    else if( sheetName === 'usersPost' ){
+                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        //var json_object = JSON.stringify(XL_row_object);
+                        //var objectKeys = Object.keys(XL_row_object["0"]);
+                        let importCount = 1;
+                        XL_row_object.forEach(row => {
+                            importCount++;
+
+                            let usersPost = {};
+                            let organisationUnits = [];
+                            let dataViewOrganisationUnits = [];
+                            let teiSearchOrganisationUnits = [];
+                            let userGroups = [];
+                            let userRoles = [];
+
+                            usersPost.firstName = row.firstName;
+                            usersPost.surname = row.surname;
+                            usersPost.userCredentials = {};
+                            usersPost.userCredentials.username = row.username;
+                            usersPost.userCredentials.password = row.password;
+
+                            organisationUnits.push({
+                                'id': row.organisationUnits
+                            });
+                            usersPost.organisationUnits = organisationUnits;
+
+                            dataViewOrganisationUnits.push({
+                                'id': row.dataViewOrganisationUnits
+                            });
+                            usersPost.dataViewOrganisationUnits = dataViewOrganisationUnits;
+
+                            teiSearchOrganisationUnits.push({
+                                'id': row.teiSearchOrganisationUnits
+                            });
+                            usersPost.teiSearchOrganisationUnits = teiSearchOrganisationUnits;
+
+                            let tempUserGroups = row.userGroups.split(",");
+                            for (let i=0;i<tempUserGroups.length;i++){
+                                userGroups.push({
+                                    'id': tempUserGroups[i]
+                                });
+                            }
+                            /*
+                            userGroups.push({
+                                'id': row.userGroups
+                            });
+                            */
+                            usersPost.userGroups = userGroups;
+
+                            let tempUserRoles = row.userRoles.split(",");
+                            for (let j=0;j<tempUserRoles.length;j++){
+                                //user.userGroups.push(this.userGroups[i]);
+                                userRoles.push({
+                                    'id': tempUserRoles[j]
+                                });
+                            }
+                            /*
+                            userRoles.push({
+                                'id': row.userRoles
+                            });
+                             */
+                            usersPost.userCredentials.userRoles = userRoles;
+
+
+                            $.ajax({
+                                type: "POST",
+                                async: false,
+                                dataType: "json",
+                                contentType: "application/json",
+                                data: JSON.stringify(usersPost),
+                                url: '../../users',
+                                success: function (response) {
+                                    //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                    console.log( "Row - " + importCount  + " response: " + JSON.stringify(response) );
+                                },
+                                error: function (response) {
+                                    console.log(  "Row - " + importCount  + " response: " + JSON.stringify(response ));
+                                },
+                                warning: function (response) {
+                                    console.log(  "Row - " + importCount  + " response: " + JSON.stringify(response ));
+                                }
+                            });
+
+                            //importCount++;
+                            //console.log( "Row - " + importCount + " update done for event " + row.event );
+                            if( importCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " import done ");
+                            }
+                        });
+
+                    }
 
 
                     // translation update
