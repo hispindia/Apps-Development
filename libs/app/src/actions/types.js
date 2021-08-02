@@ -57,10 +57,5 @@ export const SET_EVENT = "SET_EVENT"
 // export const SET_PREVALUE = "SET_PREVALUE"
 export const PAGE_FIRST = "PAGE_FIRST"
 
-
-
-
-
-
-
-
+//Added for aggregation progress
+export const AGGREGATION_ON_PROGRESS = 'AGGREGATION_ON_PROGRESS'

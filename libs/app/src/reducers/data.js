@@ -37,7 +37,8 @@ import {
     SET_PREVIOUS_EVENT,
     SET_EVENT,
     // SET_PREVALUE
-    PAGE_FIRST
+    PAGE_FIRST,
+    AGGREGATION_ON_PROGRESS,
 } from '../actions/types'
 
 const INITIAL_EVENT = {
@@ -76,11 +77,12 @@ const INITIAL_STATE = {
     },
     event: INITIAL_EVENT,
     buttonLoading: false,
+    aggregationOnProgress: false,
 }
 
 export const data = (state = INITIAL_STATE, { type, payload }) => {
     switch (type) {
-         case SET_PREVIOUS_ENTITY: 
+         case SET_PREVIOUS_ENTITY:
         return {
             ...state,
             previousValues: payload.entity
@@ -196,7 +198,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                     valid: false,
                 },
             }
-        
+
             case PAGE_FIRST: {
                 return {
                     ...state,
@@ -256,7 +258,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
             case EXISTING_TEI_DATA_RECEIVED:
             return {
                 ...state,
-                btnStatus: payload.btnStatus, 
+                btnStatus: payload.btnStatus,
                 eventEditable: payload.editable,
                 eventList: payload.eventList,
                 entity: {
@@ -272,7 +274,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
         case EXISTING_DATA_RECEIVED:
             return {
                 ...state,
-                btnStatus: payload.btnStatus, 
+                btnStatus: payload.btnStatus,
                 eventEditable: payload.editable,
                 eventList: payload.eventList,
                 entity: {
@@ -332,12 +334,12 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                         ...state,
                         event: payload
                     }
-        case SET_PREVIOUS_EVENT: 
+        case SET_PREVIOUS_EVENT:
                 return {
                     ...state,
                     previousValues: payload.eventValues
                 }
-        
+
 
         case RESET_PANEL_EVENT:
             return {
@@ -436,6 +438,11 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
             return {
                 ...state,
                 buttonLoading: payload,
+            }
+        case AGGREGATION_ON_PROGRESS:
+            return{
+                ...state,
+                aggregationOnProgress: payload,
             }
         default:
             return state

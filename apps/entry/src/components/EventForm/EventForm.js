@@ -15,7 +15,8 @@ import {
     addEntity,
     resetPreviousEntity,
     setEventValue,
-   
+    setAggregationProgress,
+
 } from '@hisp-amr/app'
 import {
     Button,
@@ -24,6 +25,9 @@ import { Entity } from './Entity'
 import { EventButtons } from './EventButtons'
 import Events from './Entity/EventList'
 import $ from "jquery"
+import {
+    Aggregate
+} from '../../api/helpers/aggregate'
 import { deleteEvent } from '@hisp-amr/api'
 import SweetAlert from 'react-bootstrap-sweetalert';
 export const EventForm = ({ history, match }) => {
@@ -35,29 +39,35 @@ export const EventForm = ({ history, match }) => {
     var eventEditable = useSelector(state => state.data.eventEditable)
     var editable = useSelector(state => state.data.editable)
     const event = useSelector(state => state.data.event)
+    const dataElementObjects = useSelector(state=> state.metadata.dataElementObjects)
+    const programs = useSelector(state=>state.metadata.programs)
+    const categoryCombos = useSelector(state=> state.metadata.categoryCombos)
+    const dataSets = useSelector(state=>state.metadata.dataSets)
     const eventIDs = useSelector(state => state.data.event.id)
     const previousValues = useSelector(state => state.data.previousValues)
+    var aggregationOnProgress = useSelector(state => state.data.aggregationOnProgress)
+    var { sampleDate } = useSelector(state => state.data.panel)
     var orgUnit = match.params.orgUnit
     const teiId = match.params.teiId;
     useEffect(() => {
         if( pageFirst ){
-            $("#a").hide(); 
+            $("#a").hide();
         } else {
-            $("#a").show(); 
+            $("#a").show();
             $("#panel").hide();
         }
         $("#btn").hide();
       if(eventEditable === true){
         $("#btn").show();
         $("#popup").show();
-        } 
+        }
         $("#msg").hide();
         $('#success').hide();
       });
     useEffect(() => {
         // let previousEvent = ""
         // if(!pageFirst) {
-        //     previousEvent = "";  
+        //     previousEvent = "";
         // }
         dispatch(resetData())
         if (teiId) {
@@ -69,7 +79,7 @@ export const EventForm = ({ history, match }) => {
         setIsFirstRender(false)
     }, [])
 
-    //for Previous event value 
+    //for Previous event value
     useEffect(()=> {
         // dispatch(PreValue(previousValues))
         if (eventIDs && editable) {
@@ -84,8 +94,8 @@ export const EventForm = ({ history, match }) => {
             // dispatch(resetPreviousEntity())
         }
     }, [eventIDs])
-    
-    // for previous entity values 
+
+    // for previous entity values
 
     useEffect(() => {
         if (previousValues.id) {
@@ -105,27 +115,48 @@ export const EventForm = ({ history, match }) => {
         e.preventDefault();
         $('#msg').show();
     }
-    
+
     const  onCancel =(e) =>{
         e.preventDefault();
         if(pageFirst){
             history.goBack()
         }
            $("#panel").hide();
-           $("#popup").hide();       
+           $("#popup").hide();
     }
-   const onConfirm=(e)=>{
-    e.preventDefault();
-    let eventID =localStorage.getItem('eventId')
-     deleteEvent(eventID).then(res => {
-        if(res.httpStatus == 'OK')
-        {
-        $('#success').show();
+
+    const changeAggregationStatus = (status)=>{
+        dispatch(setAggregationProgress(status))
+        aggregationOnProgress = status
+    }
+   const onConfirm=async(e)=>{
+        e.preventDefault();
+        let eventID =localStorage.getItem('eventId')
+        let res = await Aggregate(
+            {
+                event: event,
+                operation: "INCOMPLETE",
+                dataElements: dataElementObjects,
+                categoryCombos: categoryCombos,
+                dataSets: dataSets,
+                orgUnit: orgUnit,
+                programs: programs,
+                sampleDate: sampleDate,
+                changeStatus: changeAggregationStatus
+            }
+        )
+        changeAggregationStatus(false);
+        if(res.response){
+            await deleteEvent(eventID).then(res => {
+                if(res.httpStatus == 'OK')
+                {
+                    $('#success').show();
+                }
+            })
+            $("#popup").hide();
+            $("#panel").hide();
+            $('#msg').hide();
         }
-   })
-     $("#popup").hide();
-     $("#panel").hide();
-     $('#msg').hide();
     }
    const onNo =(e) =>{
           e.preventDefault();
@@ -166,9 +197,9 @@ export const EventForm = ({ history, match }) => {
                 >
                 <Panel />
                 <Event />
-               </SweetAlert> 
+               </SweetAlert>
                 </div> :
-                <div id="panel"> 
+                <div id="panel">
                 <Panel showEdit={panelValid} />
                 <Event />
                 <EventButtons history={history} existingEvent={teiId} />
@@ -183,8 +214,8 @@ export const EventForm = ({ history, match }) => {
                 title="Are you sure?"
                 customButtons={
                     <React.Fragment>
-                      <Button primary={true} onClick={(e)=>onConfirm(e)}>Yes</Button>&emsp;&emsp;&emsp;
-                      <Button onClick={(e)=>onNo(e)}>No</Button>
+                      <Button disabled={aggregationOnProgress} primary={true} onClick={(e)=>onConfirm(e)}>Yes</Button>&emsp;&emsp;&emsp;
+                      <Button disabled={aggregationOnProgress} onClick={(e)=>onNo(e)}>No</Button>
                     </React.Fragment>
                   }
                 >
@@ -192,7 +223,7 @@ export const EventForm = ({ history, match }) => {
                 </SweetAlert>
             </div>
             <div id='success'>
-            <SweetAlert success title="Event Delete Success"   
+            <SweetAlert success title="Event Delete Success"
              customButtons={
                 <React.Fragment>
                   <Button primary={true} onClick={(e)=>onYes(e)}>Ok</Button>&emsp;&emsp;&emsp;

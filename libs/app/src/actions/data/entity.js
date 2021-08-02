@@ -8,7 +8,9 @@ import {
     SET_EDITING,
     RESET_PREVIOUS_ENTITY,
     SET_PREVIOUS_ENTITY,
-    ADD_ENTITY
+    ADD_ENTITY,
+    AGGREGATION_ON_PROGRESS
+
 
 } from '../types'
 import { showAlert } from '../alert'
@@ -19,18 +21,24 @@ export const addPreviousEntity = () =>  (
     dispatch,
     getState
 ) => {
-    const state = getState() 
+    const state = getState()
     const entity = state.data.entity;
-    dispatch(createAction(SET_PREVIOUS_ENTITY, {entity})) 
+    dispatch(createAction(SET_PREVIOUS_ENTITY, {entity}))
 }
 export const addEntity = () =>  (
     dispatch,
     getState
 ) => {
-    const state = getState() 
+    const state = getState()
     const previousValues = state.data.previousValues;
-    dispatch(createAction(ADD_ENTITY, {previousValues})) 
+    dispatch(createAction(ADD_ENTITY, {previousValues}))
 }
+
+export const setAggregationProgress = status=>(dispatch, getState)=>{
+    const state = getState();
+    dispatch(createAction(AGGREGATION_ON_PROGRESS,status))
+}
+
 export const getEntity = id => async (dispatch, getState) => {
     dispatch(createAction(SET_MODAL_LOADING, true))
     const optionSets = getState().metadata.optionSets

@@ -2,48 +2,92 @@ import React, { useEffect } from 'react'
 import { CardSection } from '@hisp-amr/app'
 import { useSelector, useDispatch } from 'react-redux'
 import {Table,TableBody,TableRow,TableCell,Button} from '@dhis2/ui-core'
-import {getExistingEvent,addPreviousEntity} from '@hisp-amr/app'
+import {getEventObject, getExistingEvent,addPreviousEntity, setAggregationProgress} from '@hisp-amr/app'
 import { withRouter } from 'react-router-dom'
 import './main.css'
 import $ from "jquery"
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { deleteTEI, deleteEvent } from '@hisp-amr/api'
+
+import {Aggregate} from '../../../api/helpers/aggregate'
+
 const Events = ({match, history }) => {
     var data = [];
     const dispatch = useDispatch()
+    var metadata = useSelector(state => state.metadata);
     var events = useSelector(state => state.data.eventList);
     var programs = useSelector(state => state.metadata.programs);
     var teiId = match.params.teiId
     var orgUnit = match.params.orgUnit
+    const categoryCombos = useSelector(state=> state.metadata.categoryCombos)
+    const dataElementObjects = useSelector(state=> state.metadata.dataElementObjects)
+    const dataSets = useSelector(state=>state.metadata.dataSets)
+    var aggregationOnProgress = useSelector(state => state.data.aggregationOnProgress)
+
     useEffect(() => {
         $("#msg1").hide();
         $('#succes1').hide();
       });
-      const onConfirm=(e)=>{
+      const onConfirm= async (e)=>{
         e.preventDefault();
-        events.forEach(element => {
-            deleteEvent(element.event).then( res =>{
-            })
-        });
-        deleteTEI(teiId).then(res => {
-            if(res.httpStatus == 'OK')
-            {
-            $('#succes1').show();
+
+        let allStatus = true
+        for(let index in events){
+            let event = events[index]
+            //first get the event object as expected from aggregate
+            let eventObject = await getEventObject(metadata, event.orgUnit, event.trackedEntityInstance, event.event, true, false)
+            let sampleDate = event.eventDate
+            //call aggregate
+            let res = await Aggregate(
+                {
+                    event: eventObject,
+                    operation: "INCOMPLETE",
+                    dataElements: dataElementObjects,
+                    categoryCombos: categoryCombos,
+                    dataSets: dataSets,
+                    orgUnit: orgUnit,
+                    programs: programs,
+                    sampleDate: sampleDate,
+                    changeStatus: changeAggregationStatus
+                }
+            )
+            if(res.response){
+                await deleteEvent(eventObject.eventId).then(response=>{
+                    if(response.httpStatus!=="OK"){
+                        allStatus = false
+                    }
+                })
+            }else{
+                allStatus =false
             }
-       })
+
+        }
+        changeAggregationStatus(false);
+        if(allStatus ){
+            deleteTEI(teiId).then(res => {
+                if(res.httpStatus == 'OK'){
+                    $('#succes1').show();
+                }
+           })
+        }
          $('#msg1').hide();
         }
-    
+
        const onNo =(e) =>{
               e.preventDefault();
               $('#msg1').hide();
         }
         const onYes =(e) =>{
             history.goBack()
-      }
-  
+    }
+
+    const changeAggregationStatus = (status)=>{
+        dispatch(setAggregationProgress(status))
+        aggregationOnProgress = status
+    }
+
     const onEdit = (ou, eventId, dataValues) => {
-        localStorage.setItem('eventId', eventId) 
+        localStorage.setItem('eventId', eventId)
         let btnStatus= false
         for (let dataValue of dataValues) {
             let dataElement = dataValue.dataElement;
@@ -62,7 +106,7 @@ const Events = ({match, history }) => {
         history.push(`/orgUnit/${orgUnit}/event/`)
      }
      const OnDelete =() => {
-         $('#msg1').show()         
+         $('#msg1').show()
      }
     var val = () => {
         if (events != undefined) {
@@ -92,35 +136,35 @@ const Events = ({match, history }) => {
                             dataValue['4'] =value;
                         }
                         dataValue['5']=date
-                     }   
+                     }
                             if (!dataValue['1']){
                               let data = [ {value: ''}]
                               dataValue['1']=data
-                            } 
+                            }
                             if (!dataValue['2']){
                                 let data = [ {value: ''}]
                                 dataValue['2']=data
-                              } 
+                              }
                             if (!dataValue['3']){
                                 let data = [ {value: ''}]
                                 dataValue['3']=data
-                              } 
+                              }
                               if (!dataValue['4']){
                                 let data = [ {value: ''}]
                                 dataValue['4']=data
-                              }  
+                              }
                            if(dataValue['4'].value !== 'Detected'){
                                 data = dataValue;
                         }
-                    return (  
+                    return (
                         <>
-                        { data.length ? 
+                        { data.length ?
                          <TableRow >
                             {data.map(ele =>(<TableCell>{ele.value}</TableCell>))}
                             <Button primary={true} onClick={() => onEdit(ele.orgUnit, ele.event, ele.dataValues)}>Edit</Button>
-                        </TableRow> 
+                        </TableRow>
                         : ''}
-                        </>)  
+                        </>)
                 }
             })
             return v
@@ -136,11 +180,11 @@ const Events = ({match, history }) => {
                 <div className='sidebar'>
                     <Table>
                     <TableRow>
-                    <TableCell><b>Program Name</b></TableCell> 
-                    <TableCell><b>Location</b></TableCell> 
-                    <TableCell><b>Lap Sample ID</b></TableCell> 
-                    <TableCell><b>Sample Type</b></TableCell> 
-                    <TableCell><b>Organism</b></TableCell> 
+                    <TableCell><b>Program Name</b></TableCell>
+                    <TableCell><b>Location</b></TableCell>
+                    <TableCell><b>Lap Sample ID</b></TableCell>
+                    <TableCell><b>Sample Type</b></TableCell>
+                    <TableCell><b>Organism</b></TableCell>
                     <TableCell><b>Event Date</b></TableCell>
                     </TableRow>
                         <TableBody>
@@ -157,8 +201,8 @@ const Events = ({match, history }) => {
                 title="Are you sure?"
                 customButtons={
                     <React.Fragment>
-                      <Button primary={true} onClick={(e)=>onConfirm(e)}>Yes</Button>&emsp;&emsp;&emsp;
-                      <Button onClick={(e)=>onNo(e)}>No</Button>
+                      <Button disabled={aggregationOnProgress} primary={true} onClick={(e)=>onConfirm(e)}>Yes</Button>&emsp;&emsp;&emsp;
+                      <Button disabled={aggregationOnProgress} onClick={(e)=>onNo(e)}>No</Button>
                     </React.Fragment>
                   }
                 >
@@ -166,7 +210,7 @@ const Events = ({match, history }) => {
                 </SweetAlert>
             </div>
             <div id='succes1'>
-            <SweetAlert success title="TEI Delete success" 
+            <SweetAlert success title="TEI Delete success"
              customButtons={
                 <React.Fragment>
                   <Button primary={true} onClick={(e)=>onYes(e)}>Ok</Button>&emsp;&emsp;&emsp;
