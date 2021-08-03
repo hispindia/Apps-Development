@@ -233,6 +233,8 @@ excelUpload.controller('ImportFacilitywiseController',
                         periods = yearly(stDate, endDate);
                     else if (periodType == "Quarterly")
                         periods = quartly(stDate, endDate);
+                    else if (periodType == "FinancialApril")
+                        periods = financialApril(stDate, endDate);
 
                     $("#importPeriod").html("");
                     periods.split(";").forEach(function (p) {

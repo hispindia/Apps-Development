@@ -154,3 +154,30 @@
 
 		return dateString;
     }
+
+	//period type : yearly
+	function financialApril(sD , eD)
+	{
+		var today = new Date();
+		var stDate = "01/01/" + "2012";
+		var endDate = "01/01/" + (today.getFullYear());
+
+		var sDate = new Date(stDate);
+		sDate.setDate(1);
+		sDate.setMonth(0);
+		var eDate = new Date(endDate);
+		eDate.setDate(1);
+		eDate.setMonth(0);
+
+		var dateString = "";
+
+		while(sDate <= eDate)
+		{
+			var financialStartMonth = "April";
+			var dhisDate = sDate.getFullYear() + "" + financialStartMonth;
+			dateString = ( dateString == "" ) ? dhisDate : ( dateString + ";" + dhisDate );
+			sDate.setYear( sDate.getFullYear() + 1 );
+		}
+
+		return dateString;
+	}
