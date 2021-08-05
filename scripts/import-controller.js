@@ -140,8 +140,8 @@ excelImport
                         let importCount = 1;
                         XL_row_object.forEach(row => {
                             //console.log( row );
-                            //latitude: row.coordinates.split(",")[1],
-                            //longitude: row.coordinates.split(",")[0]
+                            //latitude: row.coordinates.split(",")[1], small
+                            //longitude: row.coordinates.split(",")[0] big
                             $.ajax({
                                 type: "GET",
                                 async: false,
@@ -1655,48 +1655,59 @@ excelImport
                             usersPost.userCredentials.username = row.username;
                             usersPost.userCredentials.password = row.password;
 
-                            organisationUnits.push({
-                                'id': row.organisationUnits
-                            });
-                            usersPost.organisationUnits = organisationUnits;
-
-                            dataViewOrganisationUnits.push({
-                                'id': row.dataViewOrganisationUnits
-                            });
-                            usersPost.dataViewOrganisationUnits = dataViewOrganisationUnits;
-
-                            teiSearchOrganisationUnits.push({
-                                'id': row.teiSearchOrganisationUnits
-                            });
-                            usersPost.teiSearchOrganisationUnits = teiSearchOrganisationUnits;
-
-                            let tempUserGroups = row.userGroups.split(",");
-                            for (let i=0;i<tempUserGroups.length;i++){
-                                userGroups.push({
-                                    'id': tempUserGroups[i]
+                            if( row.organisationUnits !== undefined  && row.organisationUnits !== "" ){
+                                organisationUnits.push({
+                                    'id': row.organisationUnits
                                 });
+                                usersPost.organisationUnits = organisationUnits;
                             }
+
+                            if( row.dataViewOrganisationUnits !== undefined  && row.dataViewOrganisationUnits !== "" ){
+                                dataViewOrganisationUnits.push({
+                                    'id': row.dataViewOrganisationUnits
+                                });
+                                usersPost.dataViewOrganisationUnits = dataViewOrganisationUnits;
+                            }
+
+                            if( row.teiSearchOrganisationUnits !== undefined && row.teiSearchOrganisationUnits !== "" ){
+                                teiSearchOrganisationUnits.push({
+                                    'id': row.teiSearchOrganisationUnits
+                                });
+                                usersPost.teiSearchOrganisationUnits = teiSearchOrganisationUnits;
+                            }
+
+                            if( row.userGroups !== undefined  && row.userGroups !== "" ){
+                                let tempUserGroups = row.userGroups.split(",");
+                                for (let i=0;i<tempUserGroups.length;i++){
+                                    userGroups.push({
+                                        'id': tempUserGroups[i]
+                                    });
+                                }
+                                usersPost.userGroups = userGroups;
+                            }
+
                             /*
                             userGroups.push({
                                 'id': row.userGroups
                             });
                             */
-                            usersPost.userGroups = userGroups;
 
-                            let tempUserRoles = row.userRoles.split(",");
-                            for (let j=0;j<tempUserRoles.length;j++){
-                                //user.userGroups.push(this.userGroups[i]);
-                                userRoles.push({
-                                    'id': tempUserRoles[j]
-                                });
+                            if( row.userRoles !== undefined  && row.userRoles !== "" ){
+                                let tempUserRoles = row.userRoles.split(",");
+                                for (let j=0;j<tempUserRoles.length;j++){
+                                    //user.userGroups.push(this.userGroups[i]);
+                                    userRoles.push({
+                                        'id': tempUserRoles[j]
+                                    });
+                                }
+                                usersPost.userCredentials.userRoles = userRoles;
                             }
+
                             /*
                             userRoles.push({
                                 'id': row.userRoles
                             });
                              */
-                            usersPost.userCredentials.userRoles = userRoles;
-
 
                             $.ajax({
                                 type: "POST",
