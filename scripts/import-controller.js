@@ -875,7 +875,7 @@ excelImport
                             //importCount++;
                             //console.log( "Row - " + importCount + " update done for event " + row.event );
                             if( deleteCount === parseInt(XL_row_object.length) + 1 ){
-                                console.log( " delete done ");
+                                console.log( " indicator delete done ");
                             }
                         });
 
@@ -1033,7 +1033,7 @@ excelImport
                             //importCount++;
                             //console.log( "Row - " + importCount + " update done for event " + row.event );
                             if( deleteCount === parseInt(XL_row_object.length) + 1 ){
-                                console.log( " delete done ");
+                                console.log( " datavalue delete done ");
                             }
                         });
                     }
@@ -1316,10 +1316,7 @@ excelImport
                         });
 
                     }
-
-
-
-
+                    
                     // dataElements  update
                     else if( sheetName === 'dataElementsPUT' ){
                         var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
