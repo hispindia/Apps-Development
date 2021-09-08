@@ -55,21 +55,27 @@ export const EventButtons = ({ history, existingEvent }) => {
     }
 
     const onSubmit = async addMore => {
-        let res = await Aggregate({
-            event:event,
-            operation:"COMPLETE",
-            dataElements:dataElementObjects,
-            categoryCombos: categoryCombos,
-            dataSets: dataSets,
-            orgUnit: orgUnit.id,
-            programs: programs,
-            sampleDate: sampleDate,
-            changeStatus : changeAggregationStatus
-        })
-        if(res.response){
+        if (!removeButtton) {
+            let res = await Aggregate({
+                event: event,
+                operation: "COMPLETE",
+                dataElements: dataElementObjects,
+                categoryCombos: categoryCombos,
+                dataSets: dataSets,
+                orgUnit: orgUnit.id,
+                programs: programs,
+                sampleDate: sampleDate,
+                changeStatus: changeAggregationStatus
+            })
+            if (res.response) {
+                console.log(" Aggregation response ", res, res.response)
+                await dispatch(submitEvent(addMore))
+            }
+                    changeAggregationStatus(false);
+        }
+        else {
             await dispatch(submitEvent(addMore))
         }
-        changeAggregationStatus(false);
     }
 
     const submitExit = async () => await onSubmit(false)

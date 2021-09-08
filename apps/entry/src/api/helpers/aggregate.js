@@ -7,18 +7,18 @@ import {
     Result
 } from 'antd'
 
-const CONSTANTS = {
+var CONSTANTS = {
     customAttributeMetadataTypeIdentifier: 'metadata_type',
-    locationCode: "location",
-    pathogenCode: "pathogen",
-    sampleTypeCode: "sample_type",
+    locationCode: "Location",
+    pathogenCode: "Organism",
+    sampleTypeCode: "SampleType",
     sampleAndLocationCC_Code: "sampleAndLocation",
-    antibioticCC_Code: "antibiotic",
+    antibioticCC_Code: "Antibiotic",
     defaultCC_code: "default",
-    antibioticAttributeCode: 'antibiotic',
+    antibioticAttributeCode: 'Antibiotic',
     defaultDataSetCode: 'organismsIsolated',
     antibioticWiseDataSetCode: 'organismsIsolatedAntibioticWise',
-    codesOfProgramsToAggregate: ["Gram negative", "Gram positive"] //TODO change this to a code
+    codesOfProgramsToAggregate: [] //TODO change this to a code
 
 }
 
@@ -69,8 +69,8 @@ let getValue = async ({
 
 
 /**
- * 
- * @param {{event,operation}} operation event and operation operation is either "COMPLETE" or "INCOMPLETE" 
+ *
+ * @param {{event,operation}} operation event and operation operation is either "COMPLETE" or "INCOMPLETE"
  */
 export const Aggregate = async ({
     event,
@@ -92,6 +92,7 @@ export const Aggregate = async ({
                 programCode = program.code
             }
         })
+        CONSTANTS.codesOfProgramsToAggregate.push(program.code)
     })
 
     //check if program is part of the programs to aggregate
@@ -103,7 +104,7 @@ export const Aggregate = async ({
         }
     }
     changeStatus(true);
-    //first get the metadata from the evens 
+    //first get the metadata from the evens
     let locationDataElement = dataElements.attributeGroups[CONSTANTS.locationCode][0] //There is only one DataElement
     let locationData = event.values[locationDataElement]
 
@@ -122,7 +123,7 @@ export const Aggregate = async ({
                 message: "Mandatory fields missing"
             }
         }else if (operation === "INCOMPLETE"){
-            //if there is a missing data and incomplete is called, then don't 
+            //if there is a missing data and incomplete is called, then don't
             //enforce aggregation because the operation might be delete.
 
             return {
@@ -160,7 +161,7 @@ export const Aggregate = async ({
 
             if (dataElements[value][CONSTANTS.customAttributeMetadataTypeIdentifier] === CONSTANTS.antibioticAttributeCode) {
                 //This means that this data elemnt is an antibiotic result therefore add it to important values.
-                
+
                 let tempArray = [dataElements[value].code, event.values[value]]
                 tempArray = tempArray.sort();
                 let categoryOptionCombo = tempArray.join("");
@@ -169,16 +170,15 @@ export const Aggregate = async ({
             }
         }
     })
-
-    let de = dataElements[pathogenData].id
-    let deAntibioticWise = dataElements[pathogenData + '_AW'].id
+    let de = dataElements[pathogenData + '_O'].id
+    let deAntibioticWise = dataElements[pathogenData + '_D'].id
 
     let coDefault = categoryCombos[CONSTANTS.defaultCC_code].categoryOptionCombos[CONSTANTS.defaultCC_code]
     let defaultDataSet = dataSets[CONSTANTS.defaultDataSetCode]
     let antibioticWiseDataSet = dataSets[CONSTANTS.antibioticWiseDataSetCode]
 
     let period = sampleDate.substring(0, 7).replace('-', "");
-    
+
     //now every metadata is fetched so for each get and update the data.
     let defaultResponse = await getValue({
         period: period,
@@ -276,7 +276,7 @@ export const Aggregate = async ({
             }
         } catch (error) {
             if (error.toString().startsWith("SyntaxError: Unexpected end of JSON")) {
-                //this is because post request doesn't send back a response and 
+                //this is because post request doesn't send back a response and
                 //The syntax error is because of a successfull post request.
             } else {
                 //This means that the post is working properly
