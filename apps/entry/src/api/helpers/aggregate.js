@@ -8,13 +8,13 @@ import {
 } from 'antd'
 
 var CONSTANTS = {
-    customAttributeMetadataTypeIdentifier: 'metadata_type',
+    customAttributeMetadataTypeIdentifier: 'Metadata_type',
     locationCode: "Location",
     departmentCode: "Department",
     pathogenCode: "Organism",
     sampleTypeCode: "SampleType",
     sampleAndLocationCC_Code: "sampleAndLocation",
-    antibioticCC_Code: "Antibiotic",
+    antibioticCC_Code: "antibiotic",
     defaultCC_code: "default",
     antibioticAttributeCode: 'Antibiotic',
     defaultDataSetCode: 'organismsIsolated',
