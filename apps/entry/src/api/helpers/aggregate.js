@@ -10,6 +10,7 @@ import {
 var CONSTANTS = {
     customAttributeMetadataTypeIdentifier: 'metadata_type',
     locationCode: "Location",
+    departmentCode: "Department",
     pathogenCode: "Organism",
     sampleTypeCode: "SampleType",
     sampleAndLocationCC_Code: "sampleAndLocation",
@@ -114,8 +115,10 @@ export const Aggregate = async ({
     let sampleTypeDataElement = dataElements.attributeGroups[CONSTANTS.sampleTypeCode][0]
     let sampleTypeData = event.values[sampleTypeDataElement]
 
+    let departmentDataElement = dataElements.attributeGroups[CONSTANTS.departmentCode][0]
+    let departmentData = event.values[departmentDataElement]
 
-    if(!(locationData && pathogenData && sampleTypeData)){
+    if(!(locationData && pathogenData && sampleTypeData && departmentData)){
         //if there is any missing data don't process the aggregation
         if(operation === "COMPLETE"){
             return {
@@ -153,6 +156,8 @@ export const Aggregate = async ({
     let cc = categoryCombos[CONSTANTS.sampleAndLocationCC_Code].id
     let cp = categoryCombos[CONSTANTS.sampleAndLocationCC_Code].categoryOptions[locationData]
     cp = cp + ";" + categoryCombos[CONSTANTS.sampleAndLocationCC_Code].categoryOptions[sampleTypeData]
+    cp = cp + ";" + categoryCombos[CONSTANTS.sampleAndLocationCC_Code].categoryOptions[departmentData]
+
 
     let importantValues = []
     Object.keys(event.values).forEach(value => {
@@ -170,8 +175,8 @@ export const Aggregate = async ({
             }
         }
     })
-    let de = dataElements[pathogenData + '_O'].id
-    let deAntibioticWise = dataElements[pathogenData + '_D'].id
+    let de = dataElements[pathogenData].id
+    let deAntibioticWise = dataElements[pathogenData + '_AW'].id
 
     let coDefault = categoryCombos[CONSTANTS.defaultCC_code].categoryOptionCombos[CONSTANTS.defaultCC_code]
     let defaultDataSet = dataSets[CONSTANTS.defaultDataSetCode]
