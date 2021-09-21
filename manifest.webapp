@@ -1,0 +1,29 @@
+{
+    "activities": {
+        "dhis": {
+            "href": "*",
+            "namespace": null
+        }
+    },
+    "baseUrl": null,
+    "default_locale": "en",
+    "description": "Dashboard",
+    "developer": {
+        "company": null,
+        "email": null,
+        "name": "HISP",
+        "url": "http://dhis2.org"
+    },
+    "folderName": null,
+    "icons": {
+        "128": "/img/favicon-16x16.png",
+        "16": "/img/favicon-32x32.png",
+        "48": "/img/favicon-48x48.png"
+    },
+    "installs_allowed_from": null,
+    "key": null,
+    "launchUrl": null,
+    "launch_path": "index.html",
+    "name": "Dashboard",
+    "version": "2.27"
+}

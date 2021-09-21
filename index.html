@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html ng-app="excelImport">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<style>
+.card2{
+  height: 250px;
+  width: 80px;
+  display: inline-block;
+  border-radius: 8px;
+  margin: 10px;
+  color: white;
+  box-shadow: 10px 10px;
+}
+ .card2:hover {
+  color: white;
+}
+.card1{
+  height: 250px;
+  width: 80px;
+  display: inline-block;
+  background-color:rgb(255, 208, 0);
+  border-radius: 8px;
+  margin: 10px;
+}
+.card1:hover {
+  color: #020202;
+}
+.link { color: black; }
+.link1 { color:white; }
+.bold {
+  font-weight: bold;
+  color: #020202;
+  text-align: left;
+}
+
+.flip-card {
+  background-color: transparent;
+  width: 200px;
+  height: 300px;
+  border: 1px solid #f1f1f1;
+  perspective: 1000px;
+  border-radius: 8px;
+  margin: 10px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+  border-radius: 8px; 
+
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden; 
+  backface-visibility: hidden;
+  border-radius: 8px; 
+}
+
+.flip-card-front {
+  background-color: #f0ecec;
+  color: black;
+  border-radius: 8px; 
+
+}
+
+.flip-card-back {
+  background-color: #A0D6B4;
+  color: white;
+  transform: rotateY(180deg);
+  border-radius: 8px; 
+
+}
+.header-class{
+margin-top:70px;
+}
+</style
+
+</head>
+
+<body>
+
+      <div>
+        <div item xs={12} class="text-center m-2">
+          <h3 class="header-class">
+            <u>Integrated Public Health Dashboard: Maharashtra</u>
+          </h3>
+        </div>
+        <br />
+
+        <div class="container">
+          <div class="row">
+              <div class="flip-card ">
+                <div class="flip-card-inner">
+                  <div class="flip-card-front">
+                    <h6 class="text-center p-3 bold">NPCB1</h6>
+                    <img
+                      src="./img/first_logo.png"
+                      width="190px"
+                      height="220px"
+                    />
+                  </div>
+                  <div class="flip-card-back">
+                    <h6 class="text-center p-2 bold">NPCB1</h6>
+                    <ol class="m-1">
+                      <a
+                        class="link1"
+                        href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/PeiaxeKvmVd"
+                        target="_blank"
+                      >
+                      <li class="bold">Screening of children</li>
+                      </a>
+                      <a
+                        class="link1"
+                        href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/jltq3ohosJ1"
+                        target="_blank"
+                      >
+                      <li class="bold">
+                        Identification of refractive errors
+                      </li>
+                    </a>
+                      <a
+                        class="link1"
+                        href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/NC4l3hcTd3I"
+                        target="_blank"
+                      >
+                      <li class="bold">Spectacle distribution</li>
+                    </a>
+
+                    </ol>
+                  </div>
+                </div>
+              </div>
+          
+              <div class="flip-card">
+                <div class="flip-card-inner">
+                  <div class="flip-card-front">
+                    <h6 class="text-center p-3 bold"> NPCB2</h6>
+                    <img
+                      src="./img/first_logo.png"
+                      width="190px"
+                      height="220px"
+                    />
+                  </div>
+                  <div class="flip-card-back">
+                    <h6 class="text-center p-2 bold"> NPCB2</h6>
+                    <ol class="m-1">
+                    <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/Pqtv894NZ7P"
+                      target="_blank"
+                    >
+                      <li class="bold">Cataract Surgeries</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/zly6E8JBW3M"
+                      target="_blank"
+                    >
+                      <li class="bold">Eyeball collection</li>
+                   </a>
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/VIpf21mKYq2"
+                      target="_blank"
+                    >
+
+                      <li class="bold"> Keratoplasty surgeries</li>
+                   </a>
+
+                    </ol>
+
+                  </div>
+                </div>
+              </div>
+            <div class="flip-card">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                <h6 class="text-center p-3 bold">HWC</h6>
+                    <img
+                      src="./img/logo1.png"
+                      width="190px"
+                      height="220px"
+                    />
+                </div>
+                <div class="flip-card-back">
+                <h6 class="text-center p-2 bold">HWC</h6>
+                    <ol class="m-1">
+                    <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/ItbF6kQLUJN"
+                      target="_blank"
+                    >
+                      <li class="bold">HWC PHC operationalization</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/szhXujlm9Ck"
+                      target="_blank"
+                    >
+                      <li class="bold">HWC SC operationalization</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/gQu0R5Rilmt"
+                      target="_blank"
+                    >
+                      <li class="bold">HWC UPHC operationalization</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/SW8v2w0BDcb"
+                      target="_blank"
+                    >
+                      <li class="bold">HWC Financial expenditure</li>
+                   </a> 
+                   </ol>
+
+
+                </div>
+              </div>
+            </div>
+            <div class="flip-card">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                <h6 class="text-center p-3 bold">NTEP1</h6>
+                    <img
+                      src="./img/logo2.png"
+                      width="190px"
+                      height="220px"
+                    />
+
+                </div>
+                <div class="flip-card-back">
+                <h6 class="text-center p-2 bold">NTEP1</h6>
+                  <ol>
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/ihvjHAPA5KQ"
+                      target="_blank"
+                    >
+                      <li class="bold">Case notification </li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/xByIoIZgSg9"
+                      target="_blank"
+                    >
+                      <li class="bold">UDST and HIV testing </li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/uSsw7pbNKYp"
+                      target="_blank"
+                    >
+                      <li class="bold">MDR TB treatment </li>
+                   </a> 
+                  </ol>
+                </div>
+              </div>
+            </div>
+            <div class="flip-card">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                <h6 class="text-center p-3 bold">NTEP2</h6>
+                    <img
+                      src="./img/logo2.png"
+                      width="190px"
+                      height="220px"
+                    />
+                </div>
+                <div class="flip-card-back">
+                <h6 class="text-center p-2 bold">NTEP2</h6>
+                  <ol>
+                  <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/mFGgGkSxX4G"
+                      target="_blank"
+                    >
+                      <li class="bold">DBT payment (NPY) </li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/sHeTOahSwq3"
+                      target="_blank"
+                    >
+                      <li class="bold">Diabetes and chemoprophylaxis (&lt;6yo)</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/f6MVvtW1kY7"
+                      target="_blank"
+                    >
+                      <li class="bold">Treatment success rate</li>
+                   </a> 
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="flip-card">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                <h6 class="text-center p-3 bold">NLEP</h6>
+                    <img
+                      src="./img/logo3.png"
+                      width="190px"
+                      height="220px"
+                    />
+                </div>
+                <div class="flip-card-back">
+                <h6 class="text-center p-2 bold">NLEP</h6>
+                  <ol>
+                  <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/u0F1AxsCz6M"
+                      target="_blank"
+                    >
+                      <li class="bold">Annual new case detection rate</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/lK2IpMTL0ai"
+                      target="_blank"
+                    >
+                      <li class="bold">MB case incidence</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/MUbySo2UUZm"
+                      target="_blank"
+                    >
+                      <li class="bold">Grade 2 disability incidence</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/SRrrh4OXvI8"
+                      target="_blank"
+                    >
+                      <li class="bold">Childhood leprosy</li>
+                   </a> 
+                  </ol>
+                </div>
+              </div>
+            </div>
+            <div class="flip-card">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                <h6 class="text-center p-3 bold">RCH</h6>
+                    <img
+                      src="./img/logo5.png"
+                      width="190px"
+                      height="220px"
+                    />
+                </div>
+                <div class="flip-card-back">
+                <h6 class="text-center p-2 bold"></h6>
+                  <ol>
+                  <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/i44KN9He5fI"
+                      target="_blank"
+                    >
+                      <li class="bold">First referral units</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/hgcPxOHQpBq"
+                      target="_blank"
+                    >
+                      <li class="bold">ANC severe anaemia</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/rXXadVyX4Vu"
+                      target="_blank"
+                    >
+                      <li class="bold">Maternal death audits</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/ot2wMZYzoTI"
+                      target="_blank"
+                    >
+                      <li class="bold">Child death reviews</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/I3iJmFClSbm"
+                      target="_blank"
+                    >
+                      <li class="bold">Antenatal care services</li>
+                   </a> 
+                  </ol>
+                </div>
+              </div>
+            </div>
+            <div class="flip-card">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                <h6 class="text-center p-3 bold">RBSK</h6>
+                    <img
+                      src="./img/logo6.png"
+                      width="190px"
+                      height="220px"
+                    />
+                </div>
+                <div class="flip-card-back">
+                <h6 class="text-center p-2 bold">RBSK</h6>
+                  <ol>
+                  <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/hkClVbTDt78"
+                      target="_blank"
+                    >
+                      <li class="bold">Child screening</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/eH2vsr9MXPC"
+                      target="_blank"
+                    >
+                      <li class="bold">Surgeries conducted</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/EZOljmK4DJt"
+                      target="_blank"
+                    >
+                      <li class="bold">Newborn screening</li>
+                   </a> 
+                  </ol>
+                </div>
+              </div>
+            </div>
+            <div class="flip-card">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                <h6 class="text-center p-3 bold">PMMVY</h6>
+                    <img
+                      src="./img/logo7.png"
+                      width="190px"
+                      height="220px"
+                    />
+                </div>
+                <div class="flip-card-back">
+                <h6 class="text-center p-2 bold">PMMVY</h6>
+                  <ol>
+                  <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/WiBdKnU2KBp"
+                      target="_blank"
+                    >
+                      <li class="bold">Beneficiary enrolment achievement</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/nWKMxipBFuQ"
+                      target="_blank"
+                    >
+                      <li class="bold">Due instalments</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/xndHcc4C3dL"
+                      target="_blank"
+                    >
+                      <li class="bold">Less performing field functionaries</li>
+                   </a> 
+                  </ol>
+                </div>
+              </div>
+            </div>
+            <div class="flip-card">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                <h6 class="text-center p-3 bold">LAQSHYA</h6>
+                    <img
+                      src="./img/logo8.png"
+                      width="190px"
+                      height="220px"
+                    />
+                </div>
+                <div class="flip-card-back">
+                <h6 class="text-center p-2 bold">LAQSHYA</h6>
+                  <ol>
+                  <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/sYQVqG6aCeC"
+                      target="_blank"
+                    >
+                      <li class="bold">National-level Certification</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/DQx8jtGZ6cf"
+                      target="_blank"
+                    >
+                      <li class="bold">State-level Certification</li>
+                   </a> 
+                   
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+        <div class="row">
+            <div class="flip-card">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                <h6 class="text-center p-3 bold">NQAS</h6>
+                    <img
+                      src="./img/logo9.png"
+                      width="190px"
+                      height="220px"
+                    />
+                </div>
+                <div class="flip-card-back">
+                <h6 class="text-center p-2 bold">NQAS</h6>
+                  <ol>
+                  <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/rx8rxAAfOTh"
+                      target="_blank"
+                    >
+                      <li class="bold">Internal assessment</li>
+                   </a>  
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/OPNMf2Cmvxg"
+                      target="_blank"
+                    >
+                      <li class="bold">State certification</li>
+                   </a>  
+                     <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/oRVbh95lTCq"
+                      target="_blank"
+                    >
+                      <li class="bold">National certification</li>
+                   </a>  
+                    
+                  </ol>
+                </div>
+              </div>
+            </div>
+
+            <div class="flip-card">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                <h6 class="text-center p-3 bold">NCD1</h6>
+                    <img
+                      src="./img/NCD1.jpg"
+                      width="190px"
+                      height="220px"
+                    />
+                </div>
+                <div class="flip-card-back">
+                <h6 class="text-center p-2 bold">NCD1</h6>
+                  <ol>
+                  <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/ZoSvJP4v3YU"
+                      target="_blank"
+                    >
+                      <li class="bold">Hypertension & Diabetes screening</li>
+                   </a>  
+                     <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/hPvWogrjBmU"
+                      target="_blank"
+                    >
+                      <li class="bold">Hypertension diagnosis and treatment</li>
+                   </a> 
+                      <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/zARSgvlP327"
+                      target="_blank"
+                    >
+                      <li class="bold">Diabetes diagnosis and treatment</li>
+                   </a>   
+                    <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/Ub0TfWB1syL"
+                      target="_blank"
+                    >
+                      <li class="bold">Tablet entry status</li>
+                   </a>  
+                  </ol>
+                </div>
+              </div>
+            </div>
+            <div class="flip-card">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                <h6 class="text-center p-3 bold">NCD2</h6>
+                    <img
+                      src="./img/NCD1.jpg"
+                      width="190px"
+                      height="220px"
+                    />
+                </div>
+                <div class="flip-card-back">
+                <h6 class="text-center p-2 bold">NCD2</h6>
+                  <ol>
+                  <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/BReZoPPZI7O"
+                      target="_blank"
+                    >
+                      <li class="bold">Oral Cancer screening</li>
+                   </a>  
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/PeI4Udmvuip"
+                      target="_blank"
+                    >
+                      <li class="bold">Oral Cancer diagnosis and treatment</li>
+                   </a>  
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/LkbG4KnNxuE"
+                      target="_blank"
+                    >
+                      <li class="bold">Cervical & Breast cancer screening</li>
+                   </a>  
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/XCq6fxRlKQ8"
+                      target="_blank"
+                    >
+                      <li class="bold">Cervical & Breast cancer treatment</li>
+                   </a>  
+
+                  </ol>
+                </div>
+              </div>
+            </div>
+            <div class="flip-card">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                <h6 class="text-center p-3 bold">DMHP</h6>
+                    <img
+                      src="./img/logo11.png"
+                      width="190px"
+                      height="220px"
+                    />
+                </div>
+                <div class="flip-card-back">
+                <h6 class="text-center p-2 bold">DMHP</h6>
+                  <ol>
+                    <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/WuuUvrvYSmq"
+                      target="_blank"
+                    >
+                      <li class="bold">Medical staff training</li>
+                   </a>  
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/cwfFeKGe7mZ"
+                      target="_blank"
+                    >
+                      <li class="bold">Mental health clinics at PHC</li>
+                   </a>  
+
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/CI2PQv3VyqZ"
+                      target="_blank"
+                    >
+                      <li class="bold">Mental health clinics at SDH/RH</li>
+                   </a>  
+                  </ol>
+                </div>
+              </div>
+            </div>
+            <div class="flip-card">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                <h6 class="text-center p-3 bold">Specialist services</h6>
+                    <img
+                      src="./img/logo12.png"
+                      width="190px"
+                      height="220px"
+                    />
+                </div>
+                <div class="flip-card-back">
+                <h6 class="text-center p-2 bold">Specialist services</h6>
+                  <ol>
+                  <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/PjceEGfHDbr"
+                      target="_blank"
+                    >
+                      <li class="bold">Anaesthetics</li>
+                   </a>  
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/Djay17kGQdR"
+                      target="_blank"
+                    >
+                      <li class="bold">Gynaecology</li>
+                   </a>  
+
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/T6Lpe0g9OU9"
+                      target="_blank"
+                    >
+                      <li class="bold">Ophthalmology</li>
+                   </a>  
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/qW8EeTLlOfk"
+                      target="_blank"
+                    >
+                      <li class="bold">Paediatrics</li>
+                   </a>  
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+        <div class="row">
+            <div class="flip-card">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                <h6 class="text-center p-3 bold">Finance</h6>
+                    <img
+                      src="./img/logo13.png"
+                      width="190px"
+                      height="220px"
+                    />
+                </div>
+                <div class="flip-card-back">
+                <h6 class="text-center p-2 bold">Finance</h6>
+                  <ol>
+                  <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/tIytrSjoz9C"
+                      target="_blank"
+                    >
+                      <li class="bold">Funds available</li>
+                   </a>  
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/c4X0mMtMfuD"
+                      target="_blank"
+                    >
+                      <li class="bold">Expenditure against funds</li>
+                   </a>  
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/yac04gMrNr8"
+                      target="_blank"
+                    >
+                      <li class="bold">Expenditure against PIP</li>
+                   </a>  
+                  </ol>
+                </div>
+              </div>
+            </div>
+
+            <div class="flip-card">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                <h6 class="text-center p-3 bold">E-Hospital</h6>
+                    <img
+                      src="./img/E-Hospital1.jpg"
+                      width="190px"
+                      height="220px"
+                    />
+                </div>
+                <div class="flip-card-back">
+                <h6 class="text-center p-2 bold">E-Hospital</h6>
+                  <ol>
+                  <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/pWOj25k7T3D"
+                      target="_blank"
+                    >
+                      <li class="bold">OPD consultation</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/HLBG2WuncDA"
+                      target="_blank"
+                    >
+                      <li class="bold">Lab diagnostic services</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/BkgAU3BSbYO"
+                      target="_blank"
+                    >
+                      <li class="bold">IPD registration</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/TusptuqJdS6"
+                      target="_blank"
+                    >
+                      <li class="bold">Patient Satisfaction</li>
+                   </a> 
+                  </ol>
+                </div>
+              </div>
+            </div>
+            <div class="flip-card">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                <h6 class="text-center p-3 bold">ASHA1</h6>
+                    <img
+                      src="./img/logo15.png"
+                      width="190px"
+                      height="220px"
+                    />
+                </div>
+                <div class="flip-card-back">
+                <h6 class="text-center p-2 bold">ASHA1</h6>
+                  <ol>
+                  <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/Po3I9q6L8H4"
+                      target="_blank"
+                    >
+                      <li class="bold">Incentive payment</li>
+                   </a>
+                    <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/zbcULKWNGFm"
+                      target="_blank"
+                    >
+                      <li class="bold">Training</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/g9DGTb2IQIY"
+                      target="_blank"
+                    >
+                      <li class="bold">HBNC kit distribution</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/xz9zWsymROU"
+                      target="_blank"
+                    >
+                      <li class="bold">Performing staff</li>
+                   </a> 
+
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/d5qVgf3ndx5"
+                      target="_blank"
+                    >
+                      <li class="bold">AADHAR card linking</li>
+                   </a> 
+
+                  </ol>
+                </div>
+              </div>
+            </div>
+            <div class="flip-card">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                <h6 class="text-center p-3 bold">ASHA2</h6>
+                    <img
+                      src="./img/logo15.png"
+                      width="190px"
+                      height="220px"
+                    />
+                </div>
+                <div class="flip-card-back">
+                <h6 class="text-center p-2 bold">ASHA2</h6>
+                  <ol>
+                  <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/laFNN3O6qaH"
+                      target="_blank"
+                    >
+                      <li class="bold">Performance – ANC and HBNC</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/fh5aGnoHu6Z"
+                      target="_blank"
+                    >
+                      <li class="bold">Performance – IFA supplementation</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/u7wi57LhnBH"
+                      target="_blank"
+                    >
+                      <li class="bold">Performance – Screening of newborns</li>
+                   </a> 
+                  </ol>
+                </div>
+              </div>
+            </div>
+            <div class="flip-card">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                <h6 class="text-center p-3 bold">ASHA3</h6>
+                    <img
+                      src="./img/logo15.png"
+                      width="190px"
+                      height="220px"
+                    />
+                </div>
+                <div class="flip-card-back">
+                <h6 class="text-center p-2 bold">ASHA3</h6>
+                  <ol>
+                 <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/dNmUGIL2tBt"
+                      target="_blank"
+                    >
+                      <li class="bold">Case identification – Leprosy and TB</li>
+                   </a> 
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/Kayya7F2bZJ"
+                      target="_blank"
+                    >
+                      <li class="bold">Case identification – Newborn (&lt;42 days)</li>
+                   </a> 
+
+                   <a
+                      class="link"
+                      href="http://115.124.111.208/mh/api/apps/a1c43aa3-510a-49f4-9eb1-c73ba6a54efc/index.html#/dashboards/iP9JjBfsfaN"
+                      target="_blank"
+                    >
+                      <li class="bold">Referral of SAM cases</li>
+                   </a> 
+                 
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  <!-- Menu dependencies -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
+	<script type="text/javascript" src="../../../dhis-web-core-resource/react-15/react-15.min.js"></script>
+    <script type="text/javascript" src="../../../dhis-web-core-resource/rxjs/4.1.0/rx.lite.min.js"></script>
+    <script type="text/javascript" src="../../../dhis-web-core-resource/lodash/4.15.0/lodash.min.js"></script>
+    <script type="text/javascript" src="../../../dhis-web-core-resource/lodash-functional/lodash-functional.js"></script>
+    <script type="text/javascript" src="../../../dhis-web-commons/javascripts/header-bar/babel-polyfill.js?_rev=0.1.7"></script>
+    <script type="text/javascript" src="../../../dhis-web-commons/javascripts/header-bar/header-bar.js?_rev=0.1.7"></script>
+    
+    
+    <div id="header">
+      <img id="headerBanner" src="../../../api/staticContent/logo_banner" onclick="window.location.href='../dhis-web-commons-about/redirect.action'" style="cursor:pointer" title="View home page">
+      
+      <div id="dhisDropDownMenu"></div>
+    </div>
+
+    <script>
+      
+      window.onload = function(){
+      try {
+      if ('Dhis2HeaderBar' in window) {
+      Dhis2HeaderBar.initHeaderBar(document.querySelector('#header'), '../../../api', { noLoadingIndicator: true });
+      }
+      } catch (e) {
+      if ('console' in window) {
+      console.error(e);
+      }
+      }
+      
+      }
+      
+    </script>
+
+    <!-- // End menu -->
+  <d2-header-bar></d2-header-bar>
+
+<div ng-view></div>
+
+</body>
+</html>
