@@ -1695,6 +1695,68 @@ excelImport
 
                     }
 
+                    // users  teiSearchOrganisationUnits  usersUpdate Update
+                    else if( sheetName === 'usersUpdate' ){
+                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        var json_object = JSON.stringify(XL_row_object);
+                        var objectKeys = Object.keys(XL_row_object["0"]);
+                        var updateCount = 1;
+                        XL_row_object.forEach(row => {
+                            updateCount++;
+                            //console.log( row );
+                            // for point coordinates: [row.coordinates.split(",")[0], row.coordinates.split(",")[1]]
+                            // for polygon coordinates: row.coordinates
+                            $.ajax({
+                                type: "GET",
+                                async: false,
+                                url: '../../users/' + row.userInfoUid + ".json?paging=false",
+                                success: function (userResponse) {
+                                    var updateUser = userResponse;
+                                    let teiSearchOrganisationUnits = [];
+
+                                    if( row.teiSearchOrganisationUnits !== undefined && row.teiSearchOrganisationUnits !== "" ){
+                                        teiSearchOrganisationUnits.push({
+                                            'id': row.teiSearchOrganisationUnits
+                                        });
+                                        updateUser.teiSearchOrganisationUnits = teiSearchOrganisationUnits;
+                                    }
+                                    $.ajax({
+                                        type: "PUT",
+                                        async: false,
+                                        dataType: "json",
+                                        contentType: "application/json",
+                                        data: JSON.stringify(updateUser),
+                                        url: '../../users/' + row.userInfoUid,
+
+                                        success: function (response) {
+                                            //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                            console.log(  "Row - " + updateCount + " update done response: " + JSON.stringify(response) );
+                                        },
+                                        error: function (response) {
+                                            console.log(  "Row - " + updateCount + " error response: " + JSON.stringify(response ));
+                                        },
+                                        warning: function (response) {
+                                            console.log( "Row - " + updateCount + "Warning response : " +  JSON.stringify(response ) );
+                                        }
+
+                                    });
+                                },
+                                error: function (userResponse) {
+                                    console.log( JSON.stringify( row.userInfoUid ) +  " -- "+ "Error!: " +  JSON.stringify( userResponse ) );
+                                },
+                                warning: function (userResponse) {
+                                    console.log( JSON.stringify( row.userInfoUid ) +  " -- "+ "Error!: " +  JSON.stringify( userResponse ) );
+                                }
+                            });
+
+                            //console.log( "Row - " + importCount + " update done for organisationUnit " + row.uid );
+                            if( updateCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " update complete ");
+
+                            }
+                        });
+
+                    }
                     // users post
                     else if( sheetName === 'usersPost' ){
                         var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
@@ -1713,6 +1775,8 @@ excelImport
 
                             usersPost.firstName = row.firstName;
                             usersPost.surname = row.surname;
+                            usersPost.email = row.email;
+                            usersPost.phoneNumber = row.phoneNumber;
                             usersPost.userCredentials = {};
                             usersPost.userCredentials.username = row.username;
                             usersPost.userCredentials.password = row.password;
