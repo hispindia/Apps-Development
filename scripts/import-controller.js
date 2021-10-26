@@ -133,6 +133,68 @@ excelImport
 
                     }
 
+                    // event status update
+                    else if( sheetName === 'eventStatusUpdate' ){
+                        let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        let json_object = JSON.stringify(XL_row_object);
+                        let objectKeys = Object.keys(XL_row_object["0"]);
+                        let updateCount = 1;
+                        XL_row_object.forEach(row => {
+                            //console.log( row );
+                            //latitude: row.coordinates.split(",")[1], small
+                            //longitude: row.coordinates.split(",")[0] big
+                            $.ajax({
+                                type: "GET",
+                                async: false,
+                                url: '../../events/' + row.event + ".json?paging=false",
+                                success: function (eventResponse) {
+
+                                    var updateEventStatus = eventResponse;
+
+                                    updateEventStatus.status = row.status;
+                                    updateEventStatus.completedBy = row.completedBy;
+                                    updateEventStatus.completedDate = row.completedDate;
+
+                                    $.ajax({
+                                        type: "PUT",
+                                        dataType: "json",
+                                        contentType: "application/json",
+                                        data: JSON.stringify(updateEventStatus),
+                                        url: '../../events/' + row.event,
+
+                                        success: function (response) {
+                                            //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                            console.log( JSON.stringify(row) + " updated value " + row.event + " response: " + JSON.stringify(response) );
+                                        },
+                                        error: function (response) {
+                                            console.log(  JSON.stringify(row) +  " not updated value " + row.event + " response: " + JSON.stringify(response ));
+                                        },
+                                        warning: function (response) {
+                                            console.log( JSON.stringify(row ) +  " -- "+ "Warning!: " +  JSON.stringify(response ) );
+                                        }
+
+                                    });
+                                },
+                                error: function (eventResponse) {
+                                    console.log( JSON.stringify( row.event ) +  " -- "+ "Error!: " +  JSON.stringify( eventResponse ) );
+                                },
+                                warning: function (eventResponse) {
+                                    console.log( JSON.stringify( row.event ) +  " -- "+ "Error!: " +  JSON.stringify( eventResponse ) );
+                                }
+                            });
+                            updateCount++;
+                            console.log( "Row - " + updateCount + " update done for event " + row.event );
+                            if( updateCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " update done ");
+
+                            }
+                        });
+
+                    }
+
+
+
+
                     else if( sheetName === 'eventCoordinate' ){
                         let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
                         let json_object = JSON.stringify(XL_row_object);
