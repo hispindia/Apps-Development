@@ -39,6 +39,8 @@ import {
     // SET_PREVALUE
     PAGE_FIRST,
     AGGREGATION_ON_PROGRESS,
+    COMPLETED_CLICKED,
+    RESET_SAMPLE_PANEL_EVENT,
 } from '../actions/types'
 
 const INITIAL_EVENT = {
@@ -78,6 +80,7 @@ const INITIAL_STATE = {
     event: INITIAL_EVENT,
     buttonLoading: false,
     aggregationOnProgress: false,
+    completeClicked: false,
 }
 
 export const data = (state = INITIAL_STATE, { type, payload }) => {
@@ -196,10 +199,29 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                     organism: '',
                     sampleDate: '',
                     valid: false,
+                    completeClicked:false,
                 },
             }
-
-            case PAGE_FIRST: {
+        case RESET_SAMPLE_PANEL_EVENT:
+            return {
+                ...state,
+                panel: {
+                    ...state.panel,
+                    program: '',
+                    programStage: '',
+                    organism: '',
+                    sampleDate:'',
+                    valid: false,
+                },
+                event: INITIAL_EVENT,
+                buttonsDisabled: false,
+            }
+        case COMPLETED_CLICKED:
+            return {
+                ...state,
+                completeClicked:payload,
+            }
+        case PAGE_FIRST: {
                 return {
                     ...state,
                     pageFirst:payload
@@ -354,6 +376,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                 },
                 event: INITIAL_EVENT,
                 buttonsDisabled: false,
+                completeClicked:false
             }
         case SET_INCOMPLETED:
             return {

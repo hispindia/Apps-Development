@@ -346,11 +346,11 @@ export const initMetadata = async isIsolate => {
         categoryCombo.categoryOptionCombos.forEach(categoryOptionCombo=>{
             //use the code of the options as the identifier for the categoryOptionCode
             let categoryOptionCodes = []
-            categoryOptionCombo.categoryOptions.forEach(categoryOption=>{
-                categoryOptionCodes.push(categoryOption.code)
+            categoryOptionCombo.categoryOptions.forEach(categoryOption => {
 
+                categoryOptionCodes.push(categoryOption.code)
                 //This adds the categoryOptions as a child of the catCombo it is usefull for DS attributes.
-                if(!categoryCombo.categoryOptions[categoryOption.code]){
+                if (!categoryCombo.categoryOptions[categoryOption.code]) {
                     categoryCombo.categoryOptions[categoryOption.code]=categoryOption.id
                 }
             })

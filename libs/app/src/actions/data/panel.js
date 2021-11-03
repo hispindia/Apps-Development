@@ -5,11 +5,32 @@ export const panelEditable = () => dispatch => dispatch(createAction(PANEL_EDITA
 export const setPanel = () =>async(dispatch,getState) =>{
     dispatch(createAction(RESET_PANEL_EVENT))
 }
+
+function dynamicSort(property) {
+    var sortOrder = 1;
+
+    if(property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+
+    return function (a,b) {
+        if(sortOrder == -1){
+            return b[property].localeCompare(a[property]);
+        }else{
+            return a[property].localeCompare(b[property]);
+        }
+    }
+}
+
 export const setProgram = program => (dispatch, getState) => {
     const { programOrganisms, optionSets, stageLists } = getState().metadata
-    const organisms = []
+    var organisms = []
     optionSets[programOrganisms[program]].forEach(o => {
-        if (!organisms.find(org => org.value === o.value)) organisms.push(o)
+        if (!organisms.find(org => org.value === o.value)) {
+            organisms.push(o)
+            organisms.sort(dynamicSort("label"))
+        }
     })
     const programStage =
         stageLists[program].length > 1 ? '' : stageLists[program][0].value

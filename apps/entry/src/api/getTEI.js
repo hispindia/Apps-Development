@@ -8,7 +8,7 @@ export const getTEI = async orgUnit => {
     var url = ""
     var SampleDict = {};
     var result = []
-    let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&paging=false"
+    let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&lastUpdatedStartDate=2021-01-01&paging=false"
     let api3 = '../../../api/29/sqlViews/gxov92xU7S7/data.json&paging=false' // Local Db
     let api4 = '../../../api/29/sqlViews/WKhh3qxwcPW/data.json?paging=false' // Baseline DB
 

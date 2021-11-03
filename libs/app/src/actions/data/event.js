@@ -23,7 +23,10 @@ import {
     REMOVE_BUTTONS,
     SET_PREVIOUS_EVENT,
     SET_EVENT,
-    PAGE_FIRST
+    PAGE_FIRST,
+    COMPLETED_CLICKED,
+    INCOMPLETED_CLICKED,
+    RESET_SAMPLE_PANEL_EVENT
 } from '../types'
 import { deleteEvent } from '@hisp-amr/api'
 
@@ -344,6 +347,10 @@ export const submitEvent = addMore => async (dispatch, getState) => {
             }
         }
         dispatch(createAction(SET_COMPLETED))
+        if (eventValues[ORGANISM_DETECTED] != "Detected") {
+            dispatch(createAction(COMPLETED_CLICKED, true))
+        }
+        dispatch(createAction(COMPLETED_CLICKED, true))
 
         dispatch(showAlert('Submitted successfully.', { success: true }))
     } catch (error) {
@@ -463,4 +470,118 @@ export const checkDuplicacy = sampleId => async (dispatch, getState) => {
         sampleId,
     })
     dispatch(createAction(DUPLICACY, duplicate))
+}
+
+
+export const inCompleteEvent = () => async (dispatch, getState) => {
+    batch(() => {
+        dispatch(disableButtons())
+        dispatch(createAction(SET_BUTTON_LOADING, 'incomplete'))
+    })
+    const eventId = getState().data.event.id
+
+    try {
+        await setEventStatus(eventId,false)
+        dispatch(createAction(SET_INCOMPLETED))
+        dispatch(showAlert('Record is editable.'))
+        dispatch(createAction(COMPLETED_CLICKED,false))
+
+    } catch (error) {
+        console.error(error)
+        dispatch(showAlert('Failed to edit record.', { critical: true }))
+    } finally {
+        batch(() => {
+            dispatch(createAction(SET_BUTTON_LOADING, false))
+            dispatch(enableButtons())
+        })
+    }
+}
+
+export const nextEvent = (next,addMoreSample,addMoreIso) => async (dispatch, getState) => {
+
+    const eventId = getState().data.event.id;
+    const eventValues = getState().data.event.values;
+    var eveStatus = getState().data.event.invalid == false ? true:false;
+    // var eveStatus = next;
+
+    try {
+        await setEventStatus(eventId, eveStatus)
+        if (addMoreSample) { dispatch(createAction(RESET_SAMPLE_PANEL_EVENT)) }
+        if (addMoreIso) dispatch(createAction(RESET_PANEL_EVENT))
+        else {
+            if (eventValues[ORGANISM_DETECTED] == "Detected") {
+                dispatch(createAction(SET_PREVIOUS_EVENT, { eventValues }))
+                dispatch(AddAndSubmit(false))
+                dispatch(createAction(PANEL_EDITABLE))
+                dispatch(createAction(RESET_PANEL_EVENT))
+                dispatch(createAction(PAGE_FIRST, true))
+            } else {
+                dispatch(createAction(EXIT))
+            }
+        }
+        if (!eveStatus) {
+            dispatch(createAction(SET_COMPLETED))
+        }
+        // dispatch(createAction(SET_COMPLETED))
+
+        // dispatch(showAlert('Submitted successfully.', { success: true }))
+    } catch (error) {
+        console.error(error)
+        dispatch(showAlert('Failed to submit.', { critical: true }))
+        dispatch(createAction(ENABLE_BUTTONS))
+    } finally {
+        batch(() => {
+            dispatch(enableButtons())
+            dispatch(createAction(SET_BUTTON_LOADING, false))
+        })
+    }
+}
+
+export const saveEvent = (submitBtn,saveBtn) => async (dispatch, getState) => {
+    var addMore = false
+    batch(() => {
+        dispatch(disableButtons())
+        dispatch(
+            createAction(SET_BUTTON_LOADING, addMore ? 'submitAdd' : 'submit')
+        )
+    })
+    const eventId = getState().data.event.id;
+    const eventValues = getState().data.event.values;
+    var eveStatus = getState().data.event.invalid == false ? true:false;
+    try {
+        if (saveBtn) {
+            await setEventStatus(eventId, !saveBtn)
+        }
+        if (submitBtn) {
+            await setEventStatus(eventId, submitBtn)
+        }
+        if (addMore) dispatch(createAction(RESET_PANEL_EVENT))
+        else {
+            if (eventValues[ORGANISM_DETECTED] == "Detected") {
+                dispatch(createAction(SET_PREVIOUS_EVENT, { eventValues }))
+                dispatch(AddAndSubmit(false))
+                dispatch(createAction(PANEL_EDITABLE))
+                dispatch(createAction(RESET_PANEL_EVENT))
+                dispatch(createAction(PAGE_FIRST, true))
+            } else {
+                dispatch(createAction(EXIT))
+            }
+        }
+
+        if (submitBtn) {
+            dispatch(createAction(SET_COMPLETED))
+        }
+
+
+        dispatch(showAlert('Event Saved', { success: true }))
+    } catch (error) {
+        console.error(error)
+        dispatch(showAlert('Failed to submit.', { critical: true }))
+        dispatch(createAction(ENABLE_BUTTONS))
+    } finally {
+        batch(() => {
+            dispatch(enableButtons())
+            dispatch(createAction(SET_BUTTON_LOADING, false))
+        })
+    }
 }
