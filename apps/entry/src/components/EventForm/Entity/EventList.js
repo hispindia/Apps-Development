@@ -182,7 +182,7 @@ const Events = ({match, history }) => {
                     <TableRow>
                     <TableCell><b>Program Name</b></TableCell>
                     <TableCell><b>Location</b></TableCell>
-                    <TableCell><b>Lap Sample ID</b></TableCell>
+                    <TableCell><b>Lab Sample ID</b></TableCell>
                     <TableCell><b>Sample Type</b></TableCell>
                     <TableCell><b>Organism</b></TableCell>
                     <TableCell><b>Event Date</b></TableCell>
