@@ -93,7 +93,11 @@ excelImport
                                         program: eventResponse.program,
                                         dataValues: [{
                                             dataElement: row.dataElement,
-                                            value: row.value
+                                            value: row.value,
+                                            created: row.created,
+                                            lastUpdated: row.lastUpdated,
+                                            providedElsewhere: row.providedElsewhere,
+                                            storedBy: row.storedBy
                                         }]
                                     };
 
