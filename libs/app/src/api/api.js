@@ -210,6 +210,8 @@ export const addPersonWithEvent = async (
         trackedEntityInstance: teiResponse.response.importSummaries[0].reference,
         trackedEntityType: PERSON_TYPE,
         program: event.program,
+        enrollmentDate: sampleDate,
+        incidentDate: sampleDate,
     };
 
     const enrollmentResponse = await post('enrollments', newEnrollmentPayLoad)
