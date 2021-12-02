@@ -909,8 +909,8 @@ excelImport
                         });
                     }
 
-                    // indicator update
-                    else if( sheetName === 'indicatorUpdate' ){
+                    // indicator name/short-name update
+                    else if( sheetName === 'indicatorNameShortNameUpdate' ){
                         var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
                         var json_object = JSON.stringify(XL_row_object);
                         var objectKeys = Object.keys(XL_row_object["0"]);
@@ -930,11 +930,6 @@ excelImport
                                     updateIndicator.id = row.uid;
                                     updateIndicator.name = row.name;
                                     updateIndicator.shortName = row.shortName;
-                                    updateIndicator.numerator = row.numerator;
-                                    updateIndicator.numeratorDescription = row.numeratorDescription;
-                                    updateIndicator.denominator = row.denominator;
-                                    updateIndicator.denominatorDescription = row.denominatorDescription;
-                                    updateIndicator.indicatorType=  { id:  row.indicatorType };
 
                                     $.ajax({
                                         type: "PUT",
@@ -974,6 +969,9 @@ excelImport
                         });
 
                     }
+
+
+
 
                     // indicator delete
                     else if( sheetName === 'indicatorDelete' ){
@@ -1771,7 +1769,6 @@ excelImport
 
                             }
                         });
-
                     }
 
                     // dataElements  name/shortName update
@@ -1795,7 +1792,6 @@ excelImport
                                     updateDataElement.id = row.uid;
                                     updateDataElement.name = row.name;
                                     updateDataElement.shortName = row.shortName;
-                                    updateDataElement.zeroIsSignificant = row.dataValueSet;
 
                                     $.ajax({
                                         type: "PUT",
@@ -1960,6 +1956,71 @@ excelImport
                         });
 
                     }
+
+                    // users  userGroups  Update
+                    else if( sheetName === 'userGroupsUpdate' ){
+                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        var json_object = JSON.stringify(XL_row_object);
+                        var objectKeys = Object.keys(XL_row_object["0"]);
+                        var importCount = 1;
+                        XL_row_object.forEach(row => {
+                            importCount++;
+
+                            $.ajax({
+                                type: "GET",
+                                async: false,
+                                url: '../../users/' + row.uid + ".json?paging=false",
+                                success: function (userResponse) {
+                                    let updateUserGroups = userResponse;
+                                    let userGroups = [];
+
+                                    if( row.userGroups !== undefined  && row.userGroups !== "" ){
+                                        let tempUserGroups = row.userGroups.split(",");
+                                        for (let i=0;i<tempUserGroups.length;i++){
+                                            userGroups.push({
+                                                'id': tempUserGroups[i]
+                                            });
+                                        }
+                                        updateUserGroups.userGroups = userGroups;
+                                    }
+
+                                    $.ajax({
+                                        type: "PUT",
+                                        async: false,
+                                        dataType: "json",
+                                        contentType: "application/json",
+                                        data: JSON.stringify(updateUserGroups),
+                                        url: '../../users/' + row.uid,
+
+                                        success: function (response) {
+                                            //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                            console.log(  "Row - " + importCount + " update done response: " + JSON.stringify(response) );
+                                        },
+                                        error: function (response) {
+                                            console.log(  "Row - " + importCount + " error response: " + JSON.stringify(response ));
+                                        },
+                                        warning: function (response) {
+                                            console.log( "Row - " + importCount + "Warning response : " +  JSON.stringify(response ) );
+                                        }
+
+                                    });
+                                },
+                                error: function (userResponse) {
+                                    console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( userResponse ) );
+                                },
+                                warning: function (userResponse) {
+                                    console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( userResponse ) );
+                                }
+                            });
+
+                            //console.log( "Row - " + importCount + " update done for organisationUnit " + row.uid );
+                            if( importCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " update complete ");
+
+                            }
+                        });
+                    }
+
                     // users post
                     else if( sheetName === 'usersPost' ){
                         var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
@@ -1967,6 +2028,13 @@ excelImport
                         //var objectKeys = Object.keys(XL_row_object["0"]);
                         let importCount = 1;
                         XL_row_object.forEach(row => {
+
+
+
+
+
+
+
                             importCount++;
 
                             let usersPost = {};
@@ -2063,7 +2131,6 @@ excelImport
                                 console.log( " import done ");
                             }
                         });
-
                     }
 
 
