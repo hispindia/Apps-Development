@@ -196,9 +196,6 @@ excelImport
 
                     }
 
-
-
-
                     else if( sheetName === 'eventCoordinate' ){
                         let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
                         let json_object = JSON.stringify(XL_row_object);
@@ -1831,7 +1828,6 @@ excelImport
 
                     }
 
-
                     // users  dataViewOrganisationUnits  Update
                     else if( sheetName === 'userDataViewOrganisationUnits' ){
                         var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
@@ -1893,7 +1889,6 @@ excelImport
                         });
 
                     }
-
                     // users  teiSearchOrganisationUnits  usersUpdate Update
                     else if( sheetName === 'usersUpdate' ){
                         var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
@@ -1954,7 +1949,6 @@ excelImport
 
                             }
                         });
-
                     }
 
                     // users  userGroups  Update
@@ -2021,118 +2015,213 @@ excelImport
                         });
                     }
 
-                    // users post
+                    // users post check if user already taken
                     else if( sheetName === 'usersPost' ){
                         var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
-                        //var json_object = JSON.stringify(XL_row_object);
-                        //var objectKeys = Object.keys(XL_row_object["0"]);
-                        let importCount = 1;
+                        var json_object = JSON.stringify(XL_row_object);
+                        var objectKeys = Object.keys(XL_row_object["0"]);
+                        var importCount = 1;
                         XL_row_object.forEach(row => {
 
-
-
-
-
-
-
-                            importCount++;
-
-                            let usersPost = {};
-                            let organisationUnits = [];
-                            let dataViewOrganisationUnits = [];
-                            let teiSearchOrganisationUnits = [];
-                            let userGroups = [];
-                            let userRoles = [];
-
-                            usersPost.firstName = row.firstName;
-                            usersPost.surname = row.surname;
-                            usersPost.email = row.email;
-                            usersPost.phoneNumber = row.phoneNumber;
-                            usersPost.userCredentials = {};
-                            usersPost.userCredentials.username = row.username;
-                            usersPost.userCredentials.password = row.password;
-
-                            if( row.organisationUnits !== undefined  && row.organisationUnits !== "" ){
-                                organisationUnits.push({
-                                    'id': row.organisationUnits
-                                });
-                                usersPost.organisationUnits = organisationUnits;
-                            }
-
-                            if( row.dataViewOrganisationUnits !== undefined  && row.dataViewOrganisationUnits !== "" ){
-                                dataViewOrganisationUnits.push({
-                                    'id': row.dataViewOrganisationUnits
-                                });
-                                usersPost.dataViewOrganisationUnits = dataViewOrganisationUnits;
-                            }
-
-                            if( row.teiSearchOrganisationUnits !== undefined && row.teiSearchOrganisationUnits !== "" ){
-                                teiSearchOrganisationUnits.push({
-                                    'id': row.teiSearchOrganisationUnits
-                                });
-                                usersPost.teiSearchOrganisationUnits = teiSearchOrganisationUnits;
-                            }
-
-                            if( row.userGroups !== undefined  && row.userGroups !== "" ){
-                                let tempUserGroups = row.userGroups.split(",");
-                                for (let i=0;i<tempUserGroups.length;i++){
-                                    userGroups.push({
-                                        'id': tempUserGroups[i]
-                                    });
-                                }
-                                usersPost.userGroups = userGroups;
-                            }
-
-                            /*
-                            userGroups.push({
-                                'id': row.userGroups
-                            });
-                            */
-
-                            if( row.userRoles !== undefined  && row.userRoles !== "" ){
-                                let tempUserRoles = row.userRoles.split(",");
-                                for (let j=0;j<tempUserRoles.length;j++){
-                                    //user.userGroups.push(this.userGroups[i]);
-                                    userRoles.push({
-                                        'id': tempUserRoles[j]
-                                    });
-                                }
-                                usersPost.userCredentials.userRoles = userRoles;
-                            }
-
-                            /*
-                            userRoles.push({
-                                'id': row.userRoles
-                            });
-                             */
-
                             $.ajax({
-                                type: "POST",
+                                type: "GET",
                                 async: false,
-                                dataType: "json",
-                                contentType: "application/json",
-                                data: JSON.stringify(usersPost),
-                                url: '../../users',
-                                success: function (response) {
-                                    //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
-                                    console.log( "Row - " + importCount  + " response: " + JSON.stringify(response) );
+                                //api/users.json?filter=userCredentials.username:eq:norbur_LT&fields=id,name&paging=false
+                                url: '../../users.json?filter=userCredentials.username:eq:' + row.username + "&fields=id,name&paging=false",
+                                success: function (userResponse) {
+
+                                    //console.log( userResponse.users.length);
+                                    if( userResponse.users.length === 0 && userResponse.users[0] === undefined ){
+                                        importCount++;
+
+                                        let usersPost = {};
+                                        let organisationUnits = [];
+                                        let dataViewOrganisationUnits = [];
+                                        let teiSearchOrganisationUnits = [];
+                                        let userGroups = [];
+                                        let userRoles = [];
+
+                                        usersPost.id = row.userInfoUid;
+                                        usersPost.firstName = row.firstName;
+                                        usersPost.surname = row.surname;
+                                        usersPost.email = row.email;
+                                        usersPost.phoneNumber = row.phoneNumber;
+                                        usersPost.userCredentials = {};
+                                        usersPost.userCredentials.username = row.username;
+                                        usersPost.userCredentials.password = row.password;
+
+                                        if( row.organisationUnits !== undefined  && row.organisationUnits !== "" ){
+                                            organisationUnits.push({
+                                                'id': row.organisationUnits
+                                            });
+                                            usersPost.organisationUnits = organisationUnits;
+                                        }
+                                        if( row.dataViewOrganisationUnits !== undefined  && row.dataViewOrganisationUnits !== "" ){
+                                            dataViewOrganisationUnits.push({
+                                                'id': row.dataViewOrganisationUnits
+                                            });
+                                            usersPost.dataViewOrganisationUnits = dataViewOrganisationUnits;
+                                        }
+
+                                        if( row.teiSearchOrganisationUnits !== undefined && row.teiSearchOrganisationUnits !== "" ){
+                                            teiSearchOrganisationUnits.push({
+                                                'id': row.teiSearchOrganisationUnits
+                                            });
+                                            usersPost.teiSearchOrganisationUnits = teiSearchOrganisationUnits;
+                                        }
+                                        if( row.userGroups !== undefined  && row.userGroups !== "" ){
+                                            let tempUserGroups = row.userGroups.split(",");
+                                            for (let i=0;i<tempUserGroups.length;i++){
+                                                userGroups.push({
+                                                    'id': tempUserGroups[i]
+                                                });
+                                            }
+                                            usersPost.userGroups = userGroups;
+                                        }
+                                        if( row.userRoles !== undefined  && row.userRoles !== "" ){
+                                            let tempUserRoles = row.userRoles.split(",");
+                                            for (let j=0;j<tempUserRoles.length;j++){
+                                                //user.userGroups.push(this.userGroups[i]);
+                                                userRoles.push({
+                                                    'id': tempUserRoles[j]
+                                                });
+                                            }
+                                            usersPost.userCredentials.userRoles = userRoles;
+                                        }
+                                        $.ajax({
+                                            type: "POST",
+                                            async: false,
+                                            dataType: "json",
+                                            contentType: "application/json",
+                                            data: JSON.stringify(usersPost),
+                                            url: '../../users',
+                                            success: function (response) {
+                                                //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                                console.log( "Row - " + importCount  + " response: " + JSON.stringify(response) );
+                                            },
+                                            error: function (response) {
+                                                console.log(  "Row - " + importCount  + " response: " + JSON.stringify(response ));
+                                            },
+                                            warning: function (response) {
+                                                console.log(  "Row - " + importCount  + " response: " + JSON.stringify(response ));
+                                            }
+                                        });
+
+                                    }
+                                    else{
+                                        //console.log( userResponse.users[0].id);
+                                        console.log( " Username already taken with user id " + userResponse.users[0].id + " and name " + userResponse.users[0].name);
+                                    }
                                 },
-                                error: function (response) {
-                                    console.log(  "Row - " + importCount  + " response: " + JSON.stringify(response ));
+                                error: function (userResponse) {
+                                    console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( userResponse ) );
                                 },
-                                warning: function (response) {
-                                    console.log(  "Row - " + importCount  + " response: " + JSON.stringify(response ));
+                                warning: function (userResponse) {
+                                    console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( userResponse ) );
                                 }
                             });
-
-                            //importCount++;
-                            //console.log( "Row - " + importCount + " update done for event " + row.event );
+                            //console.log( "Row - " + importCount + " update done for organisationUnit " + row.uid );
                             if( importCount === parseInt(XL_row_object.length) + 1 ){
                                 console.log( " import done ");
+
                             }
                         });
                     }
 
+                        /*
+                        else if( sheetName === 'usersPost' ){
+                            var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                            //var json_object = JSON.stringify(XL_row_object);
+                            //var objectKeys = Object.keys(XL_row_object["0"]);
+                            let importCount = 1;
+                            XL_row_object.forEach(row => {
+
+                                importCount++;
+
+                                let usersPost = {};
+                                let organisationUnits = [];
+                                let dataViewOrganisationUnits = [];
+                                let teiSearchOrganisationUnits = [];
+                                let userGroups = [];
+                                let userRoles = [];
+
+                                usersPost.firstName = row.firstName;
+                                usersPost.surname = row.surname;
+                                usersPost.email = row.email;
+                                usersPost.phoneNumber = row.phoneNumber;
+                                usersPost.userCredentials = {};
+                                usersPost.userCredentials.username = row.username;
+                                usersPost.userCredentials.password = row.password;
+
+                                if( row.organisationUnits !== undefined  && row.organisationUnits !== "" ){
+                                    organisationUnits.push({
+                                        'id': row.organisationUnits
+                                    });
+                                    usersPost.organisationUnits = organisationUnits;
+                                }
+
+                                if( row.dataViewOrganisationUnits !== undefined  && row.dataViewOrganisationUnits !== "" ){
+                                    dataViewOrganisationUnits.push({
+                                        'id': row.dataViewOrganisationUnits
+                                    });
+                                    usersPost.dataViewOrganisationUnits = dataViewOrganisationUnits;
+                                }
+
+                                if( row.teiSearchOrganisationUnits !== undefined && row.teiSearchOrganisationUnits !== "" ){
+                                    teiSearchOrganisationUnits.push({
+                                        'id': row.teiSearchOrganisationUnits
+                                    });
+                                    usersPost.teiSearchOrganisationUnits = teiSearchOrganisationUnits;
+                                }
+
+                                if( row.userGroups !== undefined  && row.userGroups !== "" ){
+                                    let tempUserGroups = row.userGroups.split(",");
+                                    for (let i=0;i<tempUserGroups.length;i++){
+                                        userGroups.push({
+                                            'id': tempUserGroups[i]
+                                        });
+                                    }
+                                    usersPost.userGroups = userGroups;
+                                }
+
+                                if( row.userRoles !== undefined  && row.userRoles !== "" ){
+                                    let tempUserRoles = row.userRoles.split(",");
+                                    for (let j=0;j<tempUserRoles.length;j++){
+                                        //user.userGroups.push(this.userGroups[i]);
+                                        userRoles.push({
+                                            'id': tempUserRoles[j]
+                                        });
+                                    }
+                                    usersPost.userCredentials.userRoles = userRoles;
+                                }
+
+                                $.ajax({
+                                    type: "POST",
+                                    async: false,
+                                    dataType: "json",
+                                    contentType: "application/json",
+                                    data: JSON.stringify(usersPost),
+                                    url: '../../users',
+                                    success: function (response) {
+                                        //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                        console.log( "Row - " + importCount  + " response: " + JSON.stringify(response) );
+                                    },
+                                    error: function (response) {
+                                        console.log(  "Row - " + importCount  + " response: " + JSON.stringify(response ));
+                                    },
+                                    warning: function (response) {
+                                        console.log(  "Row - " + importCount  + " response: " + JSON.stringify(response ));
+                                    }
+                                });
+
+                                //importCount++;
+                                //console.log( "Row - " + importCount + " update done for event " + row.event );
+                                if( importCount === parseInt(XL_row_object.length) + 1 ){
+                                    console.log( " import done ");
+                                }
+                            });
+                        }
+                        */
 
                     // translation update
                     else{
