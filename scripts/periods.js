@@ -125,7 +125,7 @@
 	}
 
     //period type : quartly
-    function quartly(sD , eD)
+    function quarterly(sD , eD)
     {
 
         //var dateString = "2014Q1;2014Q2;2014Q3;2014Q4;2015Q1;2015Q2;2015Q3;2015Q4;2016Q1;2016Q2;2016Q3;2016Q4";
@@ -147,7 +147,9 @@
 		{
 			//var dhisDate = sDate.getFullYear();
 
-			var dhisDate = sDate.getFullYear() + "" + "Q1" + ";" + sDate.getFullYear() + "" + "Q2" + ";" + sDate.getFullYear() + "" + "Q3" + ";" + sDate.getFullYear() + "" + "Q4";
+			//var dhisDate = sDate.getFullYear() + "" + "Q1" + "##" + "January - March " + sDate.getFullYear() + ";" + sDate.getFullYear() + "" + "Q2" + "##" + "April - June " + sDate.getFullYear() + ";" + sDate.getFullYear() + "" + "Q3" + "##" + "July - September " + sDate.getFullYear() + ";" + sDate.getFullYear() + "" + "Q4" + "##" + "October - December " + sDate.getFullYear();
+			let dhisDate = sDate.getFullYear() + "" + "Q1" + ";" + sDate.getFullYear() + "" + "Q2" + ";" + sDate.getFullYear() + "" + "Q3" + ";" + sDate.getFullYear() + "" + "Q4";
+
 			dateString = ( dateString == "" ) ? dhisDate : ( dateString + ";" + dhisDate );
 			sDate.setYear( sDate.getFullYear() + 1 );
 		}

@@ -4,6 +4,11 @@ var authority = '';
 excelUpload.controller('HomeController',function($scope,$http,$rootScope) {
 	
 	//loads components html file according to the click
+
+	$scope.downloadsTemplateAction =  function(){
+		window.location.assign("#download-templates");
+	};
+
 	$scope.manageTemplateAction =  function(){
 		window.location.assign("#manage-templates");
 	};

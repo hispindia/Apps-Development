@@ -1,13 +1,13 @@
 
 	<div id="logo"></div>
 	<div id="buttonsHolder">
-	
+		<div class="selButton" ng-click = "downloadsTemplateAction()"> Download Templates </div>
 		<div class="selButton" ng-style= "showStyle()"  onclick = "window.location.assign('#manage-templates')"> Manage Templates </div>
 		<div class="selButton" onclick = "window.location.assign('#facilitywise')"> Import Facility-wise </div>
 		<div class="selButton" onclick = "window.location.assign('#logs')"> Logs and Statistics </div>
-		<div class="selButton active" ng-style= "showStyle()" onclick = "location.reload()"> Settings </div>
+		<div class="selButton" ng-style= "showStyle()"  active" onclick = "location.reload()"> Settings </div>
 	</div>
-
+	
 	<style>
 		#tblSet tr
 		{
@@ -27,18 +27,18 @@
 	</style>
 	
 	<div id="content">
-		<table id="tblSet" class="table">
-			<tr> <td> Clear All Inport History </td>  <td> <button  class="btn btn-warning"  ng-click="clearHistory()"> Clear</button></td></tr>
-			<tr> <td> Reset All </td>  <td> <button  class="btn btn-danger"  ng-click="reset()"> Reset</button></td></tr>
+		<table class="table">
+			<tr><td> <a ng-href="components/download_templates/templates/Kaykalp_Excel_Import_Templates.rar">Kaykalp Excel Import Templates </a></td></tr>
+			<tr><td> <a ng-href="components/download_templates/templates/Quality_Assurance_KPI_PHC.xlsx">Quality Assurance KPI PHC </a></td></tr>
+			<tr><td> <a ng-href="components/download_templates/templates/Quality_Assurance_KPI_PHC.xlsx">Quality Assurance KPI PHC </a></td></tr>
+			<tr><td> <a ng-href="components/download_templates/templates/Quality_Assurance_KPI_RH_CH.xlsx">Quality Assurance KPI RH CH </a></td></tr>
 		</table>
 	</div>
 	
 	<div id="loader"> <image class="loadImageBig" src="images/loader.gif"/></div>
 	
 	<div id="footer" > </div>
-	
-	
-		  <script type="text/javascript">
+	<script type="text/javascript">
     var config = {
       '.chosen-select'           : {},
       '.chosen-select-deselect'  : {allow_single_deselect:true},

@@ -223,22 +223,39 @@ excelUpload.controller('ImportFacilitywiseController',
 
                     var periods = "";
 
-                    if (periodType == "Daily")
+                    if (periodType === "Daily")
                         periods = daily(stDate, endDate);
-                    else if (periodType == "Weekly")
+                    else if (periodType === "Weekly")
                         periods = weekly(stDate, endDate);
-                    else if (periodType == "Monthly")
+                    else if (periodType === "Monthly")
                         periods = monthly(stDate, endDate);
-                    else if (periodType == "Yearly")
+                    else if (periodType === "Yearly")
                         periods = yearly(stDate, endDate);
-                    else if (periodType == "Quarterly")
-                        periods = quartly(stDate, endDate);
+                    else if (periodType === "Quarterly")
+                        periods = quarterly(stDate, endDate);
 
                     $("#importPeriod").html("");
                     periods.split(";").forEach(function (p) {
+                        var optionString = "";
+                        if( periodType === 'Monthly'){
+                            //var ps = periodType == 'Monthly' ? $scope.monthString(p) : p;
+                            let monthlyPeriodString = $scope.monthString(p);
+                            optionString = "<option value='" + p + "'>" + monthlyPeriodString + "</option>";
+                        }
+                        else if(periodType === 'Quarterly' ){
+                            var qtrPeriodString = $scope.quarterlyPeriodString(p);
+                            optionString = "<option value='" + p + "'>" + qtrPeriodString + "</option>";
+                        }
+                       else{
+                            optionString = "<option value='" + p + "'>" + p + "</option>";
+                        }
+                        $("#importPeriod").append(optionString);
+
+                        /*
                         var ps = periodType == 'Monthly' ? $scope.monthString(p) : p;
                         var h = "<option value='" + p + "'>" + ps + "</option>";
                         $("#importPeriod").append(h);
+                         */
                     });
 
                     //prining templates ---------------------
@@ -323,32 +340,47 @@ excelUpload.controller('ImportFacilitywiseController',
             var month = pst.substring(4, 6);
             var ms = "";
 
-            if (month == "01")
+            if (month === "01")
                 ms = "Jan";
-            else if (month == "02")
+            else if (month === "02")
                 ms = "Feb";
-            else if (month == "03")
+            else if (month === "03")
                 ms = "Mar";
-            else if (month == "04")
+            else if (month === "04")
                 ms = "Apr";
-            else if (month == "05")
+            else if (month === "05")
                 ms = "May";
-            else if (month == "06")
+            else if (month === "06")
                 ms = "Jun";
-            else if (month == "07")
+            else if (month === "07")
                 ms = "Jul";
-            else if (month == "08")
+            else if (month === "08")
                 ms = "Aug";
-            else if (month == "09")
+            else if (month === "09")
                 ms = "Sep";
-            else if (month == "10")
+            else if (month === "10")
                 ms = "Oct";
-            else if (month == "11")
+            else if (month === "11")
                 ms = "Nov";
-            else if (month == "12")
+            else if (month === "12")
                 ms = "Dec";
 
             return ms + " " + pst.substring(0, 4);
+        };
+        $scope.quarterlyPeriodString = function (pst) {
+            let quarter = pst.substring(4, 6);
+            let tempQuarter = "";
+
+            if (quarter === "Q1")
+                tempQuarter = "January - March";
+            else if (quarter === "Q2")
+                tempQuarter = "April - June";
+            else if (quarter === "Q3")
+                tempQuarter = "July - September";
+            else if (quarter === "Q4")
+                tempQuarter = "October - December";
+
+            return tempQuarter + " " + pst.substring(0, 4);
         };
 
         //*****************************************************************************************

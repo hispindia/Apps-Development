@@ -30,6 +30,9 @@ var excelUpload = angular.module('excelUpload',
     $routeProvider.when('/home', {
         templateUrl: 'components/home/home.html',
         controller: 'HomeController'
+    }).when('/download-templates', {
+        templateUrl: 'components/download_templates/downloadTemplate.html',
+        controller: 'DownLoadTemplateController'
     }).when('/manage-templates', {
         templateUrl: 'components/templates/templates.html',
         controller: 'TemplateController'
