@@ -11,10 +11,20 @@ import { EntityInput } from './EntityInput'
  * Entity information section.
  */
 export const Entity = ({ showEdit }) => {
+
+    const entityValid = useSelector(state => state.data.entity.valid)
     const { person } = useSelector(state => state.metadata)
     const id = useSelector(state => state.data.entity.id)
     const attributes = useSelector(state => state.data.entity.attributes)
     const editing = useSelector(state => state.data.entity.editing)
+    const programs = useSelector(state => state.metadata.programs)
+    var userAccess = false;
+
+    programs.forEach(p => {
+        p.programStages.forEach(ps => {
+            userAccess = ps.access.data.write
+        })
+    })
 
     const [half] = useState(
         Math.floor(person.trackedEntityTypeAttributes.length / 2)
@@ -25,7 +35,7 @@ export const Entity = ({ showEdit }) => {
     return (
         <CardSection
             heading="Person"
-            buttons={id && !editing && showEdit && <EntityButtons />}
+            buttons={userAccess && <EntityButtons entityValid={entityValid} showEdit={showEdit} id={id}/>}
         >
             <EntityModal />
             <Grid container spacing={0}>

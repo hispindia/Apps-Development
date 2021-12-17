@@ -14,7 +14,7 @@ import {
 
 } from '../types'
 import { showAlert } from '../alert'
-import { getPersonValues, checkUnique } from 'api'
+import { getPersonValues, checkUnique,updatePerson } from 'api'
 import { entityRules } from 'helpers'
 export const resetPreviousEntity = () => dispatch => dispatch(createAction(RESET_PREVIOUS_ENTITY))
 export const addPreviousEntity = () =>  (
@@ -74,9 +74,12 @@ export const getEntity = id => async (dispatch, getState) => {
     }
 }
 
-export const setEntityValue = (key, value) => (dispatch, getState) => {
+export const setEntityValue = (key, value) => async (dispatch, getState) => {
     const optionSets = getState().metadata.optionSets
     const state = getState()
+    var editableVal = state.data.entity.editing
+    var entityID = state.data.entity.id
+    var updateData = {};
     const [values, attributes, valid] = entityRules(
         { ...state.data.entity.values, [key]: value },
         state.data.entity.attributes,
@@ -87,6 +90,11 @@ export const setEntityValue = (key, value) => (dispatch, getState) => {
         }
     )
     dispatch(createAction(SET_ENTITY_VALUE, { values, attributes, valid }))
+    if (editableVal) {
+        updateData[key] = value
+        var editResp = await updatePerson(entityID, updateData)
+        dispatch(showAlert('Updated successfully.', { success: true }))
+    }
 }
 export const validateUnique = (id, value, label) => async (
     dispatch,
@@ -126,7 +134,10 @@ export const removeModal = importEntity => async (dispatch, getState) => {
         )
 }
 
-export const setEditing = () => dispatch => dispatch(createAction(SET_EDITING))
+export const setEditing = () => dispatch => {
+    dispatch(createAction(SET_EDITING))
+    dispatch(showAlert("Fill entries now", { success: true }))
+}
 
 export const resetEntity = () => (dispatch, getState) => {
     const entityMetadata = getState().metadata.person
