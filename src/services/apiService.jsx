@@ -60,9 +60,9 @@ function getEvents(eventParam) {
 }
 
 // get trackedEntityInstance and its enrollments
-function getTrackedEntityInstanceDetails(tei) {
+function getTrackedEntityInstanceDetails(tei,programId) {
     const requestOptions = { method: 'GET' };
-    return fetch(BaseUrl + '/api/trackedEntityInstances/' + tei + '.json?fields=*&paging=false', requestOptions).then(res => res.json());
+    return fetch(BaseUrl + '/api/trackedEntityInstances/' + tei + '.json?fields=*&program=' + programId+ '&paging=false', requestOptions).then(res => res.json());
 }
 
 // get trackedEntityInstance and its enrollments

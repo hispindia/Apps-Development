@@ -267,7 +267,7 @@ class Enrollment extends React.Component {
                             if (eventDataValue.dataElement !== undefined && eventDataValue.value === selectedValues.optionCode) {
                                 //trackedEntityInstances.push(tempEvent.trackedEntityInstance);
                                 let tempTeiAttrObj = [];
-                                ApiService.getTrackedEntityInstanceDetails(tempEvent.trackedEntityInstance).then(
+                                ApiService.getTrackedEntityInstanceDetails(tempEvent.trackedEntityInstance, pram.programId).then(
                                     (teiResponse) => {
                                         teiResponse.enrollments.forEach(teiEnrollment => {
                                             if (teiEnrollment.program === pram.programId && teiEnrollment.status === 'ACTIVE') {
