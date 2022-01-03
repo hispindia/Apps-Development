@@ -793,7 +793,7 @@ excelImport
                                     orgUnitResponse.code = row.code;
                                     orgUnitResponse.openingDate = row.openingDate;
                                     */
-
+                                    /*
                                     var updateOrgUnit = {
                                         id: row.uid,
                                         name:orgUnitResponse.name,
@@ -814,6 +814,13 @@ excelImport
                                             coordinates: [row.longitude, row.latitude]
                                         }
                                     };
+                                    */
+                                  var updateOrgUnit = orgUnitResponse;
+
+                                   updateOrgUnit.geometry = {
+                                       type: row.featureType,
+                                       coordinates: [row.longitude, row.latitude]
+                                   }
 
                                     $.ajax({
                                         type: "PUT",
@@ -2312,7 +2319,7 @@ excelImport
                     }
                     // Here is your object
 
-                    //    console.log('here is data', data);    
+                    //    console.log('here is data', data);
                 })
             }
         }
