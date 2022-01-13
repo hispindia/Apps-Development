@@ -815,12 +815,12 @@ excelImport
                                         }
                                     };
                                     */
-                                  var updateOrgUnit = orgUnitResponse;
+                                    var updateOrgUnit = orgUnitResponse;
 
-                                   updateOrgUnit.geometry = {
-                                       type: row.featureType,
-                                       coordinates: [row.longitude, row.latitude]
-                                   }
+                                    updateOrgUnit.geometry = {
+                                        type: row.featureType,
+                                        coordinates: [row.longitude, row.latitude]
+                                    }
 
                                     $.ajax({
                                         type: "PUT",
@@ -974,9 +974,6 @@ excelImport
 
                     }
 
-
-
-
                     // indicator delete
                     else if( sheetName === 'indicatorDelete' ){
                         var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
@@ -1013,8 +1010,140 @@ excelImport
                         });
 
                     }
+                    // dataValues post
+                    else if( sheetName === 'dataValuesPost' ){
+                        let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        //let json_object = JSON.stringify(XL_row_object);
+                        //let objectKeys = Object.keys(XL_row_object["0"]);
+                        let importCount = 1;
+                        let dataValues = [];
+                        XL_row_object.forEach(row => {
+                            importCount++;
+                            let dataValuePost = {
+                                'de': row.dataElementUID,
+                                'co': row.categoryoptioncomboUID,
+                                'ou': row.organisationunitUID,
+                                'pe': row.isoPeriod,
+                                'value': row.dataValue
+                            };
+                            //ds: c8Q3QiX5He3
+                            $.ajax({
+                                type: "POST",
+                                async: false,
+                                //dataType: "json",
+                                //contentType: "application/json",
+                                //data: JSON.stringify(dataValueDelete),
+                                data: dataValuePost,
+                                url: '../../dataValues',
+                                success: function (response) {
+                                    //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                    console.log( "Row - " + importCount  + " response: " + JSON.stringify(response) );
+                                },
+                                error: function (response) {
+                                    console.log(  "Row - " + importCount  + " response: " + JSON.stringify(response ));
+                                },
+                                warning: function (response) {
+                                    console.log(  "Row - " + importCount  + " response: " + JSON.stringify(response ));
+                                }
+                            });
 
-                    //
+                            //importCount++;
+                            //console.log( "Row - " + importCount + " update done for event " + row.event );
+                            if( importCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " datavalue import done ");
+                            }
+                        });
+                    }
+                        // dataValueSetTemp post
+                    /*
+                     else if( sheetName === 'dataValueSetTemp' ){
+                         let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                         //let json_object = JSON.stringify(XL_row_object);
+                         let objectKeys = Object.keys(XL_row_object["0"]);
+                         console.log("objectKeys : " + objectKeys );
+                         //let importCount = 1;
+
+                         let dataElementUIds = [
+                             {"id": "aUZ4ddiK158"},
+                             {"id": "FxxTnas9FMs"},
+                             {"id": "EWu5rMuulrX"},
+                             {"id": "tNaOziMOmfN"},
+                             {"id": "fPyrcgudzke"},
+                             {"id": "JMFgo0ObPPm"},
+                             {"id": "Cn2HHo2jVQk"},
+                             {"id": "S2G8IMUsOQ5"},
+                             {"id": "cG96DfItKGv"},
+                             {"id": "Ir1CsEYYNe4"},
+                             {"id": "DME8vdexgvm"},
+                             {"id": "erDbDhYaVMF"}
+                         ];
+
+                         let dataValues = [];
+
+                         //for (let i = 0; i < objectKeys.length; i++) {
+
+                         XL_row_object.forEach(row => {
+                             //for (let i = 0; i < objectKeys.length; i++) {
+                             // let dataValue = {};
+                             // dataValue.orgUnit = row[objectKeys[0]];
+                             // dataValue.dataElement = objectKeys[i];
+
+                             for (let i = 0; i < objectKeys.length; i++) {
+
+                                 for (let k = 0; k < dataElementUIds.length; k++) {
+                                     let dataValue = {};
+                                     if (dataElementUIds[k].id === objectKeys[i]) {
+                                         if (row[objectKeys[i]] !== undefined && row[objectKeys[i]] !== "") {
+                                             dataValue.period = row[objectKeys[1]];
+                                             dataValue.dataElement = dataElementUIds[k].id;
+                                             dataValue.categoryOptionCombo = row[objectKeys[0]];
+                                             dataValue.orgUnit = row[objectKeys[2]];
+                                             dataValue.value = row[objectKeys[i]];
+                                             dataValues.push(dataValue);
+                                         }
+                                     }
+                                 }
+                             }
+                             //}
+                         });
+                         //}
+
+                         let dataValueSet = {};
+                         dataValueSet.dataValues = dataValues;
+                         console.log( " final dataValues length : " + dataValues.length + " final dataValueSet length : " + dataValueSet.length);
+                         console.log(" final dataValueSet : " + JSON.stringify(dataValueSet) );
+                         let dataJSON = JSON.stringify(dataValueSet);
+
+                         $.ajax({
+                             type: "POST",
+                             async: false,
+                             dataType: "json",
+                             contentType: "application/json",
+                             data: dataJSON,
+                             url: '../../dataValueSets',
+
+                             success: function (response) {
+                                 //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+
+                                 console.log("response : " + response);
+                                 console.log("conflicts : " + response.conflicts);
+
+                                 let impCount = response.importCount.imported;
+                                 let upCount = response.importCount.updated;
+                                 let igCount = response.importCount.ignored;
+                                 let conflictsDetails   = response.conflicts;
+
+                                 console.log(  "impCount - " + impCount + " upCount - " + upCount + " igCount - " + igCount + " conflictsDetails - " + conflictsDetails  );
+                             },
+                             error: function (response) {
+                                 console.log("error : " + response.conflicts );
+                             },
+                             warning: function (response) {
+                                 console.log("warning : " + response.conflicts );
+                             }
+                         });
+                     }
+                     */
                     else if( sheetName === 'dataValueSetTemp' ){
                         let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
                         //let json_object = JSON.stringify(XL_row_object);
@@ -1022,50 +1151,21 @@ excelImport
                         console.log("objectKeys : " + objectKeys );
                         //let importCount = 1;
 
-                        let dataElementUIds = [
-                            {"id": "aUZ4ddiK158"},
-                            {"id": "FxxTnas9FMs"},
-                            {"id": "EWu5rMuulrX"},
-                            {"id": "tNaOziMOmfN"},
-                            {"id": "fPyrcgudzke"},
-                            {"id": "JMFgo0ObPPm"},
-                            {"id": "Cn2HHo2jVQk"},
-                            {"id": "S2G8IMUsOQ5"},
-                            {"id": "cG96DfItKGv"},
-                            {"id": "Ir1CsEYYNe4"},
-                            {"id": "DME8vdexgvm"},
-                            {"id": "erDbDhYaVMF"}
-                        ];
-
                         let dataValues = [];
-
-                        //for (let i = 0; i < objectKeys.length; i++) {
-
-                        XL_row_object.forEach(row => {
-                            //for (let i = 0; i < objectKeys.length; i++) {
-                            // let dataValue = {};
-                            // dataValue.orgUnit = row[objectKeys[0]];
-                            // dataValue.dataElement = objectKeys[i];
-
-                            for (let i = 0; i < objectKeys.length; i++) {
-
-                                for (let k = 0; k < dataElementUIds.length; k++) {
-                                    let dataValue = {};
-                                    if (dataElementUIds[k].id === objectKeys[i]) {
-                                        if (row[objectKeys[i]] !== undefined && row[objectKeys[i]] !== "") {
-                                            dataValue.period = row[objectKeys[1]];
-                                            dataValue.dataElement = dataElementUIds[k].id;
-                                            dataValue.categoryOptionCombo = row[objectKeys[0]];
-                                            dataValue.orgUnit = row[objectKeys[2]];
-                                            dataValue.value = row[objectKeys[i]];
-                                            dataValues.push(dataValue);
-                                        }
-                                    }
+                        //XL_row_object.forEach(row => {
+                        for(let row = 0; row < XL_row_object.length; row++) {
+                            for (let i = 3; i < objectKeys.length; i++) {
+                                let dataValue = {};
+                                if (XL_row_object[row][objectKeys[i]] !== undefined && XL_row_object[row][objectKeys[i]] !== "") {
+                                    dataValue.categoryOptionCombo = XL_row_object[row][objectKeys[0]];
+                                    dataValue.period = XL_row_object[row][objectKeys[1]];
+                                    dataValue.orgUnit = XL_row_object[row][objectKeys[2]];
+                                    dataValue.dataElement = objectKeys[i].split("-")[1];
+                                    dataValue.value = XL_row_object[row][objectKeys[i]];
+                                    dataValues.push(dataValue);
                                 }
                             }
-                            //}
-                        });
-                        //}
+                        }
 
                         let dataValueSet = {};
                         dataValueSet.dataValues = dataValues;
@@ -1100,9 +1200,7 @@ excelImport
                             warning: function (response) {
                                 console.log("warning : " + response.conflicts );
                             }
-
                         });
-
                     }
 
                     // dataValueSet post
