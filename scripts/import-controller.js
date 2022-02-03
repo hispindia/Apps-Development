@@ -1150,7 +1150,9 @@ excelImport
                         let objectKeys = Object.keys(XL_row_object["0"]);
                         console.log("objectKeys : " + objectKeys );
                         //let importCount = 1;
-
+                        //let str = '2022-01-01';
+                        //let res = str.replace(/-/g, "");
+                        //res = 20220101
                         let dataValues = [];
                         //XL_row_object.forEach(row => {
                         for(let row = 0; row < XL_row_object.length; row++) {
