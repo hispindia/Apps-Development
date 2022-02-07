@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <style>
+        .custom{
+            margin-top:50px;
+            width:100%;
+            padding:10px;
+        }
+        .custom-table{
+            width:75%;
+            font-size:16px;
+            margin:auto;
+            text-align:center;
+        }
+        .custom-drop{
+            text-align:center;
+        }
+    </style>
+    <style>
+        thead>tr>td {
+            font-weight: bold;
+        }
+        tbody>tr>td {
+            font-weight: bold;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            opacity: 1;
+        }
+
+        /* Center the loader  */
+        #loader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            width: 150px;
+            height: 150px;
+            margin: -75px 0 0 -75px;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #34B4DB;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        /* Add animation to "page content" */
+
+        .animate-bottom {
+            position: relative;
+            -webkit-animation-name: animatebottom;
+            -webkit-animation-duration: 1s;
+            animation-name: animatebottom;
+            animation-duration: 1s
+        }
+
+        @-webkit-keyframes animatebottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
+            to {
+                bottom: 0px;
+                opacity: 1
+            }
+        }
+
+        @keyframes animatebottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
+            to {
+                bottom: 0;
+                opacity: 1
+            }
+        }
+
+        #printing {
+
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div  id="importButton">
+            <br>
+			<label for="importDateLabel">Import Date:</label>
+			<input type="text" id="importDate" name="importDate"  style="margin-left: 1%">
+            <button onClick="readAPI()" disabled id="Import" style="margin-left: 5%">Start Importing Data</button>
+
+        </div>
+
+        <div id="resultDiv">
+            <h4 id ="importMsg"></h4>
+        </div>
+
+        <!--<div id="loader"> <h4 id = "templateProgress"></h4></div>-->
+
+    </div>
+    <br><br>
+    <div id="loader"></div>
+</div>
+</body>
+  <script>
+  $( function() {
+    $( "#importDate" ).datepicker();
+  } );
+  </script>
+<script type="text/javascript">
+    var teiLIST = [];
+    var orgUnitMap = [];
+    var dataElementMap = [];
+    var impCount = "";
+    var upCount = "";
+    var igCount = "";
+    var conflictsDetails = [];
+    var regOrgUnitList = [];
+    var regPeriodList = [];
+
+    var cdsr = { completeDataSetRegistrations: [] };
+    var dataSetCompleteRegistration = "";
+    $(document).ready(function(){
+    document.getElementById("loader").style.display = "none";
+
+
+    loadTEIList();
+    //getPageCount();
+	console.log( teiLIST );
+	document.getElementById("Import").disabled = false;
+	//document.getElementById('importButton').style.display = 'block';
+	document.getElementById('resultDiv').style.display = 'none';
+
+	//console.log( dataElementsMapping );
+
+    });
+
+    function readAPI() {
+        //document.getElementById("loader").fadeIn();
+        //document.getElementById("templateProgress").html(" -> preparing data values to import");
+		
+		 if( document.getElementById("importDate").value === ""){
+            return alert("Please Select Date");
+        }
+		else{
+		
+			var tempSelectedPeriod = document.getElementById("importDate").value;
+			document.getElementById("Import").disabled = true;
+			document.getElementById('importButton').style.display = 'none';
+			document.getElementById('resultDiv').style.display = 'block';
+			var strMsg = " Import Start.... ";
+			var resultMsg = strMsg.bold();
+			document.getElementById("importMsg").innerHTML = " Import Start.... for date -- " + tempSelectedPeriod.split("/")[2]+ "-" + tempSelectedPeriod.split("/")[0]+ "-" + tempSelectedPeriod.split("/")[1];
+			/*
+			showLoader();
+			lockScreen();
+			setTimeout(function(){ startImporting() }, 0);
+			*/
+			$('#loader').show();
+			setTimeout(function () {
+				startImporting();
+			}, 1000);
+		}	
+
+    }
+
+
+    //res.setHeader('Access-Control-Allow-Origin', '*');
+    function startImporting() {
+
+	var selectedPeriod = document.getElementById("importDate").value;
+	var currentDate = new Date();
+	var currentYear = currentDate.getFullYear();
+	var nextYear = currentDate.getFullYear() + 1;
+	var currentFinancialYear = currentYear + "-" + nextYear;
+	//console.log( "currentFinancialYear -- " + currentFinancialYear );
+    var programUid = 'EAY7CYYkrpi';
+    var ancDetailsPrgStage = 'cWdLqEKJvCY';
+
+    var proxyURL = "https://cors-anywhere.herokuapp.com/";
+	//var todayDate = '2021-01-27';
+	var tempImportDate = selectedPeriod.split("/")[2]+ "-" + selectedPeriod.split("/")[0]+ "-" + selectedPeriod.split("/")[1];
+	alert( tempImportDate );
+	var isoPeriod = selectedPeriod.split("/")[2] + selectedPeriod.split("/")[0] + selectedPeriod.split("/")[1];
+
+    let postEvents = [];
+	//alert( tempImportDate + " - " + isoPeriod );
+
+    var initialBodyPostDataJson = {
+            "userId":"KMlqOKItgwnl8WIxSxFC",
+            "apiKey":"ay7px0rjojzbtz0ym0",
+            "synchDate": tempImportDate,
+            "page":1
+    }
+    $.ajax({
+        url: 'https://caremother.co:3009/api/mis/all_anc_visits_details',
+        async: false,
+        type: 'POST',
+        crossDomain: true,
+        contentType: 'application/json',
+        data: JSON.stringify(initialBodyPostDataJson),
+        success: function ( initialAPIResponse )
+        {
+            console.log( " Api Response length --  " + initialAPIResponse );
+            //var pageCount =  apiResponse.totalPages;
+            alert( "pageCount -- " + initialAPIResponse.totalPages );
+            alert( "total-PNC-Records -- " + initialAPIResponse.total );
+            if( initialAPIResponse.totalPages >= 1 ){
+                for (let pageNo = 1; pageNo <= initialAPIResponse.totalPages; pageNo++) {
+
+                    var bodyPostDataJson = {
+                        "userId":"KMlqOKItgwnl8WIxSxFC",
+                        "apiKey":"ay7px0rjojzbtz0ym0",
+                        "synchDate": tempImportDate,
+                        "page":pageNo
+                    }
+                    $.ajax({
+                        url: 'https://caremother.co:3009/api/mis/all_anc_visits_details',
+                        async: false,
+                        type: 'POST',
+                        crossDomain: true,
+                        contentType: 'application/json',
+                        data: JSON.stringify(bodyPostDataJson),
+
+                        success: function ( apiResponse )
+                        {
+                            if( apiResponse.data != null ){
+                                for (let i = 0; i < apiResponse.data.length; i++) {
+                                    console.log( " motherId 1 --  " + apiResponse.data[i].motherId);
+                                    for (let j = 0; j < teiLIST.length; j++) {
+                                        let postEvent = {};
+                                        if( teiLIST[j].careMotherId === apiResponse.data[i].motherId){
+                                            console.log( " motherId 2 --  " + apiResponse.data[i].motherId);
+
+                                            postEvent.trackedEntityInstance = teiLIST[j].tei;
+                                            postEvent.enrollment = teiLIST[j].enrollment;
+                                            postEvent.orgUnit = teiLIST[j].orgUnit;
+                                            postEvent.status = "ACTIVE";
+                                            postEvent.program = teiLIST[j].program;
+                                            postEvent.programStage = ancDetailsPrgStage;
+                                            postEvent.eventDate = apiResponse.data[i].ancTestDate.substring(0, 10);
+                                            postEvent.dataValues =[
+                                                {
+                                                    // bloodSugar
+                                                    "dataElement": "OSIhs30rFQK",
+                                                    "value": apiResponse.data[i].ancTest.bloodSugar
+                                                },
+                                                {
+                                                    //bpDia
+                                                    "dataElement": "JwC0Yyo18U1",
+                                                    "value": apiResponse.data[i].ancTest.bpDia
+                                                },
+                                                {
+                                                    //bpSys
+                                                    "dataElement": "RNrGHYHaeXN",
+                                                    "value": apiResponse.data[i].ancTest.bpSys
+                                                },
+                                                {
+                                                    //fhr
+                                                    "dataElement": "dKZsEnR8s9C",
+                                                    "value": apiResponse.data[i].ancTest.fhr
+                                                },
+                                                {
+                                                    //fundalHeight
+                                                    "dataElement": "lyV4xaK35cS",
+                                                    "value": apiResponse.data[i].ancTest.fundalHeight
+                                                },
+                                                {
+                                                    //hb
+                                                    "dataElement": "NWAbJmZi5ey",
+                                                    "value": apiResponse.data[i].ancTest.hb
+                                                },
+                                                {
+                                                    //pulse
+                                                    "dataElement": "eabkOm49r3O",
+                                                    "value": apiResponse.data[i].ancTest.pulse
+                                                },
+                                                {
+                                                    //temperature
+                                                    "dataElement": "fDUINIR160n",
+                                                    "value": apiResponse.data[i].ancTest.temperature
+                                                },
+                                                {
+                                                    //urineProtein
+                                                    "dataElement": "GPnKb9raUcp",
+                                                    "value": apiResponse.data[i].ancTest.urineProtein
+                                                },
+                                                {
+                                                    //urineSugar
+                                                    "dataElement": "nYxitbqPTef",
+                                                    "value": apiResponse.data[i].ancTest.urineSugar
+                                                },
+                                                {
+                                                    //weight
+                                                    "dataElement": "po1GFTfA34n",
+                                                    "value": apiResponse.data[i].ancTest.weight
+                                                },
+                                                {
+                                                    //blurring
+                                                    "dataElement": "DydwGIj66rN",
+                                                    "value": apiResponse.data[i].symptoms.blurring
+                                                },
+                                                {
+                                                    //bodySwelling
+                                                    "dataElement": "EWJM9HLaqgV",
+                                                    "value": apiResponse.data[i].symptoms.bodySwelling
+                                                },
+                                                {
+                                                    //breathLessness
+                                                    "dataElement": "vmbJENp3FyW",
+                                                    "value": apiResponse.data[i].symptoms.breathLessness
+                                                },
+                                                {
+                                                    //convulsions
+                                                    "dataElement": "HSskD4Y7FTe",
+                                                    "value": apiResponse.data[i].symptoms.convulsions
+                                                },
+                                                {
+                                                    //convulsionsCount
+                                                    "dataElement": "pg0QXhFh5Zq",
+                                                    "value": apiResponse.data[i].symptoms.convulsionsCount
+                                                },
+                                                {
+                                                    //foulSmellDischarge
+                                                    "dataElement": "LorN1USfSww",
+                                                    "value": apiResponse.data[i].symptoms.foulSmellDischarge
+                                                },
+                                                {
+                                                    //headache
+                                                    "dataElement": "RHlmFqQe7Gg",
+                                                    "value": apiResponse.data[i].symptoms.headache
+                                                },
+                                                {
+                                                    //severeAbdomenPain
+                                                    "dataElement": "jOMRr6U4Km0",
+                                                    "value": apiResponse.data[i].symptoms.severeAbdomenPain
+                                                },
+                                                {
+                                                    //vaginalBleeding
+                                                    "dataElement": "YM56qqf1qtH",
+                                                    "value": apiResponse.data[i].ancTest.vaginalBleeding
+                                                },
+                                                {
+                                                    //vaginalBleedingType
+                                                    "dataElement": "vf6VnfOJUTL",
+                                                    "value": apiResponse.data[i].ancTest.vaginalBleedingType
+                                                },
+                                                {
+                                                    //vomitCount
+                                                    "dataElement": "ltzRdzHsJST",
+                                                    "value": apiResponse.data[i].ancTest.vomitCount
+                                                },
+                                                {
+                                                    //vomitting
+                                                    "dataElement": "CLAR667oKdA",
+                                                    "value": apiResponse.data[i].ancTest.vomitting
+                                                },
+                                                {
+                                                    //fetalMovements
+                                                    "dataElement": "eEWu7FKtO6j",
+                                                    "value": apiResponse.data[i].ancTest.fetalMovements
+                                                }
+
+                                            ]
+                                            postEvents.push(postEvent);
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        error: function (err) {
+                        console.log("org error" + JSON.stringify(err));
+                        }
+                    });
+                }
+            }
+            else{
+                alert( "no ANC found");
+                console.log(" no ANC found, ANC count -- ",  initialAPIResponse.total );
+            }
+            /*
+            console.log( " total-pages --  " + apiResponse.totalPages);
+            console.log( " total-records --  " + apiResponse.total);
+            console.log( " data --  " + apiResponse.data);
+            let tempLmpDate = "";
+            if( apiResponse.data != null ){
+                for (let i = 0; i < apiResponse.data.length; i++) {
+                    console.log( " motherId 1 --  " + apiResponse.data[i].motherId);
+                    for (let j = 0; j < teiLIST.length; j++) {
+                        let postEvent = {};
+
+                        if( teiLIST[j].careMotherId === apiResponse.data[i].motherId){
+                            console.log( " motherId 2 --  " + apiResponse.data[i].motherId);
+
+                            postEvent.trackedEntityInstance = teiLIST[j].tei;
+                            postEvent.enrollment = teiLIST[j].enrollment;
+                            postEvent.orgUnit = teiLIST[j].orgUnit;
+                            postEvent.status = "ACTIVE";
+                            postEvent.program = teiLIST[j].program;
+                            postEvent.programStage = ancDetailsPrgStage;
+                            postEvent.eventDate = apiResponse.data[i].ancTestDate.substring(0, 10),
+                            postEvent.dataValues =[
+                                {
+                                    // bloodSugar
+                                    "dataElement": "OSIhs30rFQK",
+                                    "value": apiResponse.data[i].ancTest.bloodSugar
+                                },
+                                {
+                                    //bpDia
+                                    "dataElement": "JwC0Yyo18U1",
+                                    "value": apiResponse.data[i].ancTest.bpDia
+                                },
+                                {
+                                    //bpSys
+                                    "dataElement": "RNrGHYHaeXN",
+                                    "value": apiResponse.data[i].ancTest.bpSys
+                                },
+                                {
+                                    //fhr
+                                    "dataElement": "dKZsEnR8s9C",
+                                    "value": apiResponse.data[i].ancTest.fhr
+                                },
+                                {
+                                    //fundalHeight
+                                    "dataElement": "lyV4xaK35cS",
+                                    "value": apiResponse.data[i].ancTest.fundalHeight
+                                },
+                                {
+                                    //hb
+                                    "dataElement": "NWAbJmZi5ey",
+                                    "value": apiResponse.data[i].ancTest.hb
+                                },
+                                {
+                                    //pulse
+                                    "dataElement": "eabkOm49r3O",
+                                    "value": apiResponse.data[i].ancTest.pulse
+                                },
+                                {
+                                    //temperature
+                                    "dataElement": "fDUINIR160n",
+                                    "value": apiResponse.data[i].ancTest.temperature
+                                },
+                                {
+                                    //urineProtein
+                                    "dataElement": "GPnKb9raUcp",
+                                    "value": apiResponse.data[i].ancTest.urineProtein
+                                },
+                                {
+                                    //urineSugar
+                                    "dataElement": "nYxitbqPTef",
+                                    "value": apiResponse.data[i].ancTest.urineSugar
+                                },
+                                {
+                                    //weight
+                                    "dataElement": "po1GFTfA34n",
+                                    "value": apiResponse.data[i].ancTest.weight
+                                },
+                                {
+                                    //blurring
+                                    "dataElement": "DydwGIj66rN",
+                                    "value": apiResponse.data[i].symptoms.blurring
+                                },
+                                {
+                                    //bodySwelling
+                                    "dataElement": "EWJM9HLaqgV",
+                                    "value": apiResponse.data[i].symptoms.bodySwelling
+                                },
+                                {
+                                    //breathLessness
+                                    "dataElement": "vmbJENp3FyW",
+                                    "value": apiResponse.data[i].symptoms.breathLessness
+                                },
+                                {
+                                    //convulsions
+                                    "dataElement": "HSskD4Y7FTe",
+                                    "value": apiResponse.data[i].symptoms.convulsions
+                                },
+                                {
+                                    //convulsionsCount
+                                    "dataElement": "pg0QXhFh5Zq",
+                                    "value": apiResponse.data[i].symptoms.convulsionsCount
+                                },
+                                {
+                                    //foulSmellDischarge
+                                    "dataElement": "LorN1USfSww",
+                                    "value": apiResponse.data[i].symptoms.foulSmellDischarge
+                                },
+                                {
+                                    //headache
+                                    "dataElement": "RHlmFqQe7Gg",
+                                    "value": apiResponse.data[i].symptoms.headache
+                                },
+                                {
+                                    //severeAbdomenPain
+                                    "dataElement": "jOMRr6U4Km0",
+                                    "value": apiResponse.data[i].symptoms.severeAbdomenPain
+                                },
+                                {
+                                    //vaginalBleeding
+                                    "dataElement": "YM56qqf1qtH",
+                                    "value": apiResponse.data[i].ancTest.vaginalBleeding
+                                },
+                                {
+                                    //vaginalBleedingType
+                                    "dataElement": "vf6VnfOJUTL",
+                                    "value": apiResponse.data[i].ancTest.vaginalBleedingType
+                                },
+                                {
+                                    //vomitCount
+                                    "dataElement": "ltzRdzHsJST",
+                                    "value": apiResponse.data[i].ancTest.vomitCount
+                                },
+                                {
+                                    //vomitting
+                                    "dataElement": "CLAR667oKdA",
+                                    "value": apiResponse.data[i].ancTest.vomitting
+                                },
+                                {
+                                    //fetalMovements
+                                    "dataElement": "eEWu7FKtO6j",
+                                    "value": apiResponse.data[i].ancTest.fetalMovements
+                                }
+
+                            ]
+                            postEvents.push(postEvent);
+                        }
+                    }
+                }
+
+                let postBulkEvents = {};
+                postBulkEvents.events = postEvents;
+                console.log(" final events : " + postBulkEvents );
+                $.ajax({
+                    type: "POST",
+                    crossDomain: true,
+                    url: '../api/events',
+                    async: false,
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    data: JSON.stringify(postBulkEvents),
+                    success: function (response) {
+
+                        console.log("reference---importSummaries", response.response.importSummaries[0].reference);
+                        //console.log("refe-distt",district_array[dista]+ "---"+ s_today.toJSON().substring(0, 10));
+
+                    },
+                    error: function (response) {
+                        console.log("not Save TEI:", response);
+                    }
+                });
+
+            }
+            */
+        },
+        error: function (initialAPIResponse)
+        {
+            console.log( "Error" );
+            //unLockScreen();
+        }
+    });
+
+    if( postEvents.length > 0 ){
+        let postBulkEvents = {};
+        postBulkEvents.events = postEvents;
+        console.log(" final events : " + JSON.stringify(postBulkEvents) );
+        $.ajax({
+            type: "POST",
+            crossDomain: true,
+            url: '../api/events',
+            async: false,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(postBulkEvents),
+            success: function (response) {
+                console.log("reference---importSummaries", response.response.importSummaries[0].reference);
+                alert( "Total ANC Event Registered -- " + postEvents.length );
+                //console.log("refe-distt",district_array[dista]+ "---"+ s_today.toJSON().substring(0, 10));
+            },
+            error: function (response) {
+                console.log("not Save TEI:", response);
+            }
+        });
+    }
+    else{
+        console.log(" no Event created for ANC --  ",  postEvents.length );
+        alert( "no Event created for ANC");
+    }
+    $('#loader').hide();
+
+  }
+
+function loadTEIList() {
+    $.ajax({
+        url: "../api/29/sqlViews/VUfWZn8ZQy5/data?paging=false",
+        dataType: "json",
+        async: false,
+        success: function (sqlViewResponse) {
+            sqlViewResponse.listGrid.rows.forEach(row => {
+                //let values = JSON.parse(row["7"]["value"]);
+                //let values = JSON.parse(row["7"]);
+                teiLIST.push({
+                    'tei': row["0"],
+                    'enrollment': row["1"],
+                    'program': row["2"],
+                    'orgUnit': row["3"],
+                    'careMotherId': row["4"]
+                });
+                //orgUnitMap[row["2"]] = row["3"];
+            })
+        },
+        error: function (err) {
+            console.log("org error" + JSON.stringify(err));
+        }
+    });
+}
+
+// Defining function to get unique values from an array
+function getUnique(array){
+    var uniqueArray = [];
+
+    // Loop through array values
+    for(i=0; i < array.length; i++){
+        if(uniqueArray.indexOf(array[i]) === -1) {
+            uniqueArray.push(array[i]);
+        }
+    }
+    return uniqueArray;
+}
+
+</script>
+</html>

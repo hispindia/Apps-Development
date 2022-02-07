@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <style>
+        .custom{
+            margin-top:50px;
+            width:100%;
+            padding:10px;
+        }
+        .custom-table{
+            width:75%;
+            font-size:16px;
+            margin:auto;
+            text-align:center;
+        }
+        .custom-drop{
+            text-align:center;
+        }
+    </style>
+    <style>
+        thead>tr>td {
+            font-weight: bold;
+        }
+        tbody>tr>td {
+            font-weight: bold;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            opacity: 1;
+        }
+
+        /* Center the loader  */
+        #loader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            width: 150px;
+            height: 150px;
+            margin: -75px 0 0 -75px;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #34B4DB;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        /* Add animation to "page content" */
+
+        .animate-bottom {
+            position: relative;
+            -webkit-animation-name: animatebottom;
+            -webkit-animation-duration: 1s;
+            animation-name: animatebottom;
+            animation-duration: 1s
+        }
+
+        @-webkit-keyframes animatebottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
+            to {
+                bottom: 0px;
+                opacity: 1
+            }
+        }
+
+        @keyframes animatebottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
+            to {
+                bottom: 0;
+                opacity: 1
+            }
+        }
+
+        #printing {
+
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div  id="importButton">
+            <br>
+			<label for="importDateLabel">Import Date:</label>
+			<input type="text" id="importDate" name="importDate"  style="margin-left: 1%">
+            <button onClick="readAPI()" disabled id="Import" style="margin-left: 5%">Start Importing Data</button>
+
+        </div>
+
+        <div id="resultDiv">
+            <h4 id ="importMsg"></h4>
+        </div>
+
+        <!--<div id="loader"> <h4 id = "templateProgress"></h4></div>-->
+
+    </div>
+    <br><br>
+    <div id="loader"></div>
+</div>
+</body>
+  <script>
+  $( function() {
+    $( "#importDate" ).datepicker();
+  } );
+  </script>
+<script type="text/javascript">
+    var teiLIST = [];
+    var orgUnitMap = [];
+    var dataElementMap = [];
+    var impCount = "";
+    var upCount = "";
+    var igCount = "";
+    var conflictsDetails = [];
+    var regOrgUnitList = [];
+    var regPeriodList = [];
+
+    var cdsr = { completeDataSetRegistrations: [] };
+    var dataSetCompleteRegistration = "";
+    $(document).ready(function(){
+    document.getElementById("loader").style.display = "none";
+
+
+    loadTEIList();
+    //getPageCount();
+	console.log( teiLIST );
+    alert( teiLIST.length);
+	document.getElementById("Import").disabled = false;
+	//document.getElementById('importButton').style.display = 'block';
+	document.getElementById('resultDiv').style.display = 'none';
+
+	//console.log( dataElementsMapping );
+
+    });
+
+    function readAPI() {
+        //document.getElementById("loader").fadeIn();
+        //document.getElementById("templateProgress").html(" -> preparing data values to import");
+		
+		 if( document.getElementById("importDate").value === ""){
+            return alert("Please Select Date");
+        }
+		else{
+		
+			var tempSelectedPeriod = document.getElementById("importDate").value;
+			document.getElementById("Import").disabled = true;
+			document.getElementById('importButton').style.display = 'none';
+			document.getElementById('resultDiv').style.display = 'block';
+			var strMsg = " Import Start.... ";
+			var resultMsg = strMsg.bold();
+			document.getElementById("importMsg").innerHTML = " Import Start.... for date -- " + tempSelectedPeriod.split("/")[2]+ "-" + tempSelectedPeriod.split("/")[0]+ "-" + tempSelectedPeriod.split("/")[1];
+			/*
+			showLoader();
+			lockScreen();
+			setTimeout(function(){ startImporting() }, 0);
+			*/
+			$('#loader').show();
+			setTimeout(function () {
+				startImporting();
+			}, 1000);
+		}	
+
+    }
+
+
+    //res.setHeader('Access-Control-Allow-Origin', '*');
+    function startImporting() {
+
+	var selectedPeriod = document.getElementById("importDate").value;
+	var currentDate = new Date();
+	var currentYear = currentDate.getFullYear();
+	var nextYear = currentDate.getFullYear() + 1;
+	var currentFinancialYear = currentYear + "-" + nextYear;
+	//console.log( "currentFinancialYear -- " + currentFinancialYear );
+    var programUid = 'EAY7CYYkrpi';
+    var ancDetailsPrgStage = 'cWdLqEKJvCY';
+    var outcomePrgStage = 'sYfdGvfonW6';
+    var proxyURL = "https://cors-anywhere.herokuapp.com/";
+	//var todayDate = '2021-01-27';
+	var tempImportDate = selectedPeriod.split("/")[2]+ "-" + selectedPeriod.split("/")[0]+ "-" + selectedPeriod.split("/")[1];
+	alert( tempImportDate );
+	var isoPeriod = selectedPeriod.split("/")[2] + selectedPeriod.split("/")[0] + selectedPeriod.split("/")[1];
+
+    let postOutcomeEvents = [];
+	//alert( tempImportDate + " - " + isoPeriod );
+
+    var initialBodyPostDataJson = {
+            "userId":"KMlqOKItgwnl8WIxSxFC",
+            "apiKey":"ay7px0rjojzbtz0ym0",
+            "synchDate": tempImportDate,
+            "page":1
+    }
+    $.ajax({
+        url: 'https://caremother.co:3009/api/mis/all_mother_details',
+        async: false,
+        type: 'POST',
+        crossDomain: true,
+        contentType: 'application/json',
+        data: JSON.stringify(initialBodyPostDataJson),
+        success: function ( initialAPIResponse )
+        {
+            console.log( " Api Response length --  " + initialAPIResponse );
+            //var pageCount =  apiResponse.totalPages;
+            alert( "pageCount -- " + initialAPIResponse.totalPages );
+            alert( "total-PNC-Records -- " + initialAPIResponse.total );
+            if( initialAPIResponse.totalPages >= 1 ){
+                for (let pageNo = 1; pageNo <= initialAPIResponse.totalPages; pageNo++) {
+
+                    var bodyPostDataJson = {
+                        "userId":"KMlqOKItgwnl8WIxSxFC",
+                        "apiKey":"ay7px0rjojzbtz0ym0",
+                        "synchDate": tempImportDate,
+                        "page":pageNo
+                    }
+                    $.ajax({
+                        url: 'https://caremother.co:3009/api/mis/all_mother_details',
+                        async: false,
+                        type: 'POST',
+                        crossDomain: true,
+                        contentType: 'application/json',
+                        data: JSON.stringify(bodyPostDataJson),
+                        success: function ( apiResponse )
+                        {
+                            if( apiResponse.message !== 'Fetching posts failed!' && apiResponse.data != null && apiResponse.data.length > 0 ){
+                                for (let i = 0; i < apiResponse.data.length; i++) {
+                                    if( JSON.stringify(apiResponse.data[i].outcome).length > 2 && apiResponse.data[i].outcome.outcomeDate !== null){
+                                        console.log( " motherId 1 --  " + apiResponse.data[i].motherId);
+                                        for (let j = 0; j < teiLIST.length; j++) {
+                                            let postOutcomeEvent = {};
+                                            if( teiLIST[j].careMotherId === apiResponse.data[i].motherId){
+                                                console.log( " motherId 2 --  " + apiResponse.data[i].motherId);
+                                                let firstChildWeight = "";
+                                                let firstChildGender = "";
+                                                let firstChildTypeOfBirth = "";
+                                                for (let k = 0; k < apiResponse.data[i].outcome.children.length; k++) {
+                                                    firstChildWeight = apiResponse.data[i].outcome.children[k].weight;
+                                                    firstChildGender = apiResponse.data[i].outcome.children[k].gender;
+                                                    firstChildTypeOfBirth = apiResponse.data[i].outcome.children[k].typeOfBirth;
+                                                }
+                                                postOutcomeEvent.trackedEntityInstance = teiLIST[j].tei;
+                                                postOutcomeEvent.enrollment = teiLIST[j].enrollment;
+                                                postOutcomeEvent.orgUnit = teiLIST[j].orgUnit;
+                                                postOutcomeEvent.status = "ACTIVE";
+                                                postOutcomeEvent.program = teiLIST[j].program;
+                                                postOutcomeEvent.programStage = outcomePrgStage;
+                                                //postOutcomeEvent.eventDate = apiResponse.data[i].synchDate.substring(0, 10),
+                                                postOutcomeEvent.eventDate = apiResponse.data[i].outcome.outcomeDate.substring(0, 10);
+                                                postOutcomeEvent.dataValues =[
+                                                    {
+                                                        // weight
+                                                        "dataElement": "po1GFTfA34n",
+                                                        "value": firstChildWeight
+                                                    },
+                                                    {
+                                                        //sex
+                                                        "dataElement": "cJsG5c5CEGL",
+                                                        "value": firstChildGender
+                                                    },
+                                                    {
+                                                        // birthType
+                                                        "dataElement": "V8ePtj0Yf84",
+                                                        "value": firstChildTypeOfBirth
+                                                    },
+                                                    {
+                                                        // natureOfDelivery
+                                                        "dataElement": "vt0v4xOqVmj",
+                                                        "value": apiResponse.data[i].outcome.natureOfDelivery
+                                                    },
+                                                    {
+                                                        // numberOfChild
+                                                        "dataElement": "j8TQozMZ5dq",
+                                                        "value": apiResponse.data[i].outcome.numberOfChild
+                                                    },
+                                                    {
+                                                        // deliveryComplications
+                                                        "dataElement": "ZrZjlTh0XjE",
+                                                        "value": apiResponse.data[i].outcome.deliveryComplications
+                                                    },
+                                                    {
+                                                        // Place of delivery I
+                                                        "dataElement": "K1eZc4yOfGU",
+                                                        "value": apiResponse.data[i].outcome.placeOfDelivery
+                                                    },
+                                                    {
+                                                        // deliveryStatus
+                                                        "dataElement": "UIAJVzwOlCH",
+                                                        "value": apiResponse.data[i].outcome.deliveryStatus
+                                                    },
+                                                    {
+                                                        // reason
+                                                        "dataElement": "RE5lr3B8FgA",
+                                                        "value": apiResponse.data[i].outcome.reasonOfOutcome
+                                                    },
+                                                    {
+                                                        // labourDuration
+                                                        "dataElement": "bYLRLJBwsK0",
+                                                        "value": apiResponse.data[i].outcome.labourDuration
+                                                    },
+                                                    {
+                                                        // deliveryConductedBy
+                                                        "dataElement": "EvCMd2juaDN",
+                                                        "value": apiResponse.data[i].outcome.deliveryConductedBy
+                                                    },
+                                                    {
+                                                        // Presentation of baby
+                                                        "dataElement": "HoSJ8MK15SY",
+                                                        "value": apiResponse.data[i].outcome.presentationOfBaby
+                                                    }
+                                                ]
+                                                postOutcomeEvents.push(postOutcomeEvent);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        error: function (err) {
+                        console.log("org error" + JSON.stringify(err));
+                        }
+                    });
+                }
+            }
+            else{
+                alert( "no Outcome found");
+                console.log(" no outcome found, Outcome count -- ",  initialAPIResponse.total );
+            }
+        },
+        error: function (initialAPIResponse)
+        {
+            console.log( "Error" );
+            //unLockScreen();
+        }
+    });
+
+    if( postOutcomeEvents.length > 0 ){
+        let postBulkEvents = {};
+        postBulkEvents.events = postOutcomeEvents;
+        console.log(" final events : " + JSON.stringify(postBulkEvents).length );
+        $.ajax({
+            type: "POST",
+            crossDomain: true,
+            url: '../api/events',
+            async: false,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(postBulkEvents),
+            success: function (response) {
+
+                console.log("reference---importSummaries", response.response.importSummaries[0].reference);
+                alert( "Total Outcome Event Registered -- " + postOutcomeEvents.length );
+                //console.log("refe-distt",district_array[dista]+ "---"+ s_today.toJSON().substring(0, 10));
+
+            },
+            error: function (response) {
+                console.log("events not created :", response);
+            }
+        });
+    }
+    else{
+        console.log(" no Event created for Outcome --  ",  postOutcomeEvents.length );
+        alert( "no Event created for Outcome");
+    }
+    $('#loader').hide();
+
+  }
+
+function loadTEIList() {
+    $.ajax({
+        url: "../api/29/sqlViews/VUfWZn8ZQy5/data?paging=false",
+        dataType: "json",
+        async: false,
+        success: function (sqlViewResponse) {
+            sqlViewResponse.listGrid.rows.forEach(row => {
+                //let values = JSON.parse(row["7"]["value"]);
+                //let values = JSON.parse(row["7"]);
+                teiLIST.push({
+                    'tei': row["0"],
+                    'enrollment': row["1"],
+                    'program': row["2"],
+                    'orgUnit': row["3"],
+                    'careMotherId': row["4"]
+                });
+                //orgUnitMap[row["2"]] = row["3"];
+            })
+        },
+        error: function (err) {
+            console.log("org error" + JSON.stringify(err));
+        }
+    });
+}
+
+// Defining function to get unique values from an array
+function getUnique(array){
+    var uniqueArray = [];
+
+    // Loop through array values
+    for(i=0; i < array.length; i++){
+        if(uniqueArray.indexOf(array[i]) === -1) {
+            uniqueArray.push(array[i]);
+        }
+    }
+    return uniqueArray;
+}
+
+</script>
+</html>

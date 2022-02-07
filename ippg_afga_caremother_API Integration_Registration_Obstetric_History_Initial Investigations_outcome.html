@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <style>
+        .custom{
+            margin-top:50px;
+            width:100%;
+            padding:10px;
+        }
+        .custom-table{
+            width:75%;
+            font-size:16px;
+            margin:auto;
+            text-align:center;
+        }
+        .custom-drop{
+            text-align:center;
+        }
+    </style>
+    <style>
+        thead>tr>td {
+            font-weight: bold;
+        }
+        tbody>tr>td {
+            font-weight: bold;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            opacity: 1;
+        }
+
+        /* Center the loader  */
+        #loader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            width: 150px;
+            height: 150px;
+            margin: -75px 0 0 -75px;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #34B4DB;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        /* Add animation to "page content" */
+
+        .animate-bottom {
+            position: relative;
+            -webkit-animation-name: animatebottom;
+            -webkit-animation-duration: 1s;
+            animation-name: animatebottom;
+            animation-duration: 1s
+        }
+
+        @-webkit-keyframes animatebottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
+            to {
+                bottom: 0px;
+                opacity: 1
+            }
+        }
+
+        @keyframes animatebottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
+            to {
+                bottom: 0;
+                opacity: 1
+            }
+        }
+
+        #printing {
+
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div  id="importButton">
+            <br>
+			<label for="importDateLabel">Import Date:</label>
+			<input type="text" id="importDate" name="importDate"  style="margin-left: 1%">
+            <button onClick="readAPI()" disabled id="Import" style="margin-left: 5%">Start Importing Data</button>
+
+        </div>
+
+        <div id="resultDiv">
+            <h4 id ="importMsg"></h4>
+        </div>
+
+        <!--<div id="loader"> <h4 id = "templateProgress"></h4></div>-->
+
+    </div>
+    <br><br>
+    <div id="loader"></div>
+</div>
+</body>
+  <script>
+  $( function() {
+    $( "#importDate" ).datepicker();
+  } );
+  </script>
+<script type="text/javascript">
+    var finalOu = [];
+    var orgUnitMap = [];
+    var dataElementMap = [];
+    var impCount = "";
+    var upCount = "";
+    var igCount = "";
+    var conflictsDetails = [];
+    var regOrgUnitList = [];
+    var regPeriodList = [];
+    var dataSetUid = 'hxC8LQlCua5';
+    var cdsr = { completeDataSetRegistrations: [] };
+    var dataSetCompleteRegistration = "";
+    $(document).ready(function(){
+    document.getElementById("loader").style.display = "none";
+
+
+	loadOrgUnits();
+	console.log( finalOu );
+	document.getElementById("Import").disabled = false;
+	//document.getElementById('importButton').style.display = 'block';
+	document.getElementById('resultDiv').style.display = 'none';
+
+	//console.log( dataElementsMapping );
+
+    });
+
+    function readAPI() {
+        //document.getElementById("loader").fadeIn();
+        //document.getElementById("templateProgress").html(" -> preparing data values to import");
+		
+		 if( document.getElementById("importDate").value === ""){
+            return alert("Please Select Date");
+        }
+		else{
+		
+			var tempSelectedPeriod = document.getElementById("importDate").value;
+			document.getElementById("Import").disabled = true;
+			document.getElementById('importButton').style.display = 'none';
+			document.getElementById('resultDiv').style.display = 'block';
+			var strMsg = " Import Start.... ";
+			var resultMsg = strMsg.bold();
+			document.getElementById("importMsg").innerHTML = " Import Start.... for date -- " + tempSelectedPeriod.split("/")[2]+ "-" + tempSelectedPeriod.split("/")[0]+ "-" + tempSelectedPeriod.split("/")[1];
+			/*
+			showLoader();
+			lockScreen();
+			setTimeout(function(){ startImporting() }, 0);
+			*/
+			$('#loader').show();
+			setTimeout(function () {
+				startImporting();
+			}, 1000);
+		}	
+
+    }
+
+
+    //res.setHeader('Access-Control-Allow-Origin', '*');
+    function startImporting() {
+
+	var selectedPeriod = document.getElementById("importDate").value;
+	//alert( selectedPeriod );
+    var dataValues = [];
+	var currentDate = new Date();
+	var currentYear = currentDate.getFullYear();
+	var nextYear = currentDate.getFullYear() + 1;
+	var currentFinancialYear = currentYear + "-" + nextYear;
+	console.log( "currentFinancialYear -- " + currentFinancialYear );
+    var programUid = 'EAY7CYYkrpi';
+    var obstetricHistoryPrgStage = 'K0UDTi7AeQP';
+    var outcomePrgStage = 'sYfdGvfonW6';
+    var teTypeUid = 'MCPQUTHX1Ze';
+    var proxyURL = "https://cors-anywhere.herokuapp.com/";
+	//var todayDate = '2021-01-27';
+	var tempImportDate = selectedPeriod.split("/")[2]+ "-" + selectedPeriod.split("/")[0]+ "-" + selectedPeriod.split("/")[1];
+	alert( tempImportDate );
+	//var isoPeriod = selectedPeriod.split("/")[2] + selectedPeriod.split("/")[0] + selectedPeriod.split("/")[1];
+	//alert( tempImportDate + " - " + isoPeriod );
+    let postTEIsEnrollEvent = [];
+    var initialBodyPostDataJson = {
+        "userId":"KMlqOKItgwnl8WIxSxFC",
+        "apiKey":"ay7px0rjojzbtz0ym0",
+        "synchDate": tempImportDate,
+        "page":1
+    }
+    $.ajax({
+        url: 'https://caremother.co:3009/api/mis/all_mother_details',
+        async: false,
+        type: 'POST',
+        crossDomain: true,
+        contentType: 'application/json',
+        data: JSON.stringify(initialBodyPostDataJson),
+
+        success: function ( initialAPIResponse )
+        {
+            console.log( " Api Response length --  " + initialAPIResponse );
+            //console.log( " Api Response length --  " + initialAPIResponse );
+            //var pageCount =  apiResponse.totalPages;
+            alert( "pageCount -- " + initialAPIResponse.totalPages );
+            alert( "total-Records -- " + initialAPIResponse.total );
+            if( initialAPIResponse.totalPages >= 1 ){
+                //initialAPIResponse.totalPages
+                for (let pageNo = 1; pageNo <= initialAPIResponse.totalPages; pageNo++) {
+                    var bodyPostDataJson = {
+                        "userId":"KMlqOKItgwnl8WIxSxFC",
+                        "apiKey":"ay7px0rjojzbtz0ym0",
+                        "synchDate": tempImportDate,
+                        "page":pageNo
+                    }
+                    $.ajax({
+                        url: 'https://caremother.co:3009/api/mis/all_mother_details',
+                        async: false,
+                        type: 'POST',
+                        crossDomain: true,
+                        contentType: 'application/json',
+                        data: JSON.stringify(bodyPostDataJson),
+                        success: function ( apiResponse )
+                        {
+                            let tempLmpDate = "";
+                            if( apiResponse.data != null ){
+                                for (let i = 0; i < apiResponse.data.length; i++) {
+                                    //if( apiResponse.data[i].midwife !== undefined || apiResponse.data[i].midwife !== null){}
+                                    if( JSON.stringify(apiResponse.data[i].obstetricsHistory).length > 2 ){
+                                        tempLmpDate = apiResponse.data[i].obstetricsHistory.lmpDate.substring(0, 10);
+                                        console.log( " tempLmpDate 1 --  " + tempLmpDate);
+                                    }
+                                    else{
+                                        tempLmpDate = "";
+                                        //console.log( " tempLmpDate 2 --  " + tempLmpDate);
+                                    }
+                                    if( JSON.stringify(apiResponse.data[i].outcome).length > 2 && apiResponse.data[i].outcome.outcomeDate !== null){
+                                        console.log( " apiResponse.data[i].outcome).length --  " + JSON.stringify(apiResponse.data[i].outcome).length);
+                                        let firstChildWeight = "";
+                                        let firstChildGender = "";
+                                        let firstChildTypeOfBirth = "";
+                                        for (let j = 0; j < apiResponse.data[i].outcome.children.length; j++) {
+                                            firstChildWeight = apiResponse.data[i].outcome.children[j].weight;
+                                            firstChildGender = apiResponse.data[i].outcome.children[j].gender;
+                                            firstChildTypeOfBirth = apiResponse.data[i].outcome.children[j].typeOfBirth;
+                                        }
+                                        let teiOutComeEnrollEvent = {};
+                                        //let teiOutComeEnrollEvent = {
+                                        teiOutComeEnrollEvent.trackedEntityType = teTypeUid;
+                                        teiOutComeEnrollEvent.orgUnit = orgUnitMap[apiResponse.data[i].midwife.refId];
+                                        teiOutComeEnrollEvent.attributes =[
+                                            {
+                                                "attribute": "aSpasplLgMf",
+                                                "value": apiResponse.data[i].age
+                                            },
+                                            {
+                                                "attribute": "yDaWsAZcr8K",
+                                                "value": apiResponse.data[i].motherId
+                                            },
+
+                                            {
+                                                "attribute": "avyOleUut0w",
+                                                "value": apiResponse.data[i].govtPortalNo
+                                            },
+
+                                            {
+                                                "attribute": "OtlvScDjzcR",
+                                                "value": apiResponse.data[i].motherAddress.addressLine
+                                            },
+                                            {
+                                                "attribute": "Qhs4ooRuAJk",
+                                                "value": apiResponse.data[i].motherAddress.town
+                                            },
+                                            {
+                                                "attribute": "NSKp6BgoWyp",
+                                                "value": apiResponse.data[i].motherAddress.village
+                                            },
+                                            {
+                                                "attribute": "Ju7MEdETxsV",
+                                                "value": apiResponse.data[i].fullName
+                                            }
+                                        ];
+                                        teiOutComeEnrollEvent.enrollments = [{
+                                            "orgUnit": orgUnitMap[apiResponse.data[i].midwife.refId],
+                                            "program": programUid,
+                                            "status": "ACTIVE",
+                                            //"enrollmentDate": apiResponse.data[i].synchDate.substring(0, 10),
+                                            //"incidentDate": apiResponse.data[i].synchDate.substring(0, 10),
+                                            "enrollmentDate": apiResponse.data[i].registrationDate.substring(0, 10),
+                                            "incidentDate": apiResponse.data[i].registrationDate.substring(0, 10),
+                                            "events": [
+                                                {
+                                                    "program": programUid,
+                                                    "orgUnit": orgUnitMap[apiResponse.data[i].midwife.refId],
+                                                    //"eventDate": apiResponse.data[i].synchDate.substring(0, 10),
+                                                    "eventDate": apiResponse.data[i].registrationDate.substring(0, 10),
+                                                    "status": "ACTIVE",
+                                                    "programStage": obstetricHistoryPrgStage,
+                                                    "dataValues": [
+                                                        {
+                                                            // bloodGroup
+                                                            "dataElement": "XMgjul9gxTr",
+                                                            "value": apiResponse.data[i].initialInvestigations.bloodGroup
+                                                        },
+                                                        {
+                                                            //height
+                                                            "dataElement": "GtMYJt5Qc67",
+                                                            "value": apiResponse.data[i].initialInvestigations.height
+                                                        },
+                                                        {
+                                                            //hepatitis
+                                                            "dataElement": "rKKtKP8AZzc",
+                                                            "value": apiResponse.data[i].initialInvestigations.hepatitis
+                                                        },
+                                                        {
+                                                            //hiv
+                                                            "dataElement": "ST3PGBkvnuf",
+                                                            "value": apiResponse.data[i].initialInvestigations.hiv
+                                                        },
+                                                        {
+                                                            //sickleCellAnemia
+                                                            "dataElement": "kKUepZ99QSm",
+                                                            "value": apiResponse.data[i].initialInvestigations.sickleCellAnemia
+                                                        },
+                                                        {
+                                                            //tb
+                                                            "dataElement": "ti77lqF7ZnB",
+                                                            "value": apiResponse.data[i].initialInvestigations.tb
+                                                        },
+                                                        {
+                                                            //thyroid
+                                                            "dataElement": "CUAqpQ4wlxC",
+                                                            "value": apiResponse.data[i].initialInvestigations.thyroid
+                                                        },
+                                                        {
+                                                            //vdrl
+                                                            "dataElement": "OmCoyhWGQ6o",
+                                                            "value": apiResponse.data[i].initialInvestigations.vdrl
+                                                        },
+                                                        {
+                                                            //pastBirthDefect
+                                                            "dataElement": "V8EC5BsoUwt",
+                                                            "value": apiResponse.data[i].obstetricsHistory.pastBirthDefect
+                                                        },
+                                                        {
+                                                            //lmpDate
+                                                            "dataElement": "lxYbPIsThd5",
+                                                            "value": tempLmpDate
+                                                        },
+                                                        {
+                                                            //previousDeliveryNature
+                                                            "dataElement": "KqC28J4scDW",
+                                                            "value": apiResponse.data[i].obstetricsHistory.previousDeliveryNature
+                                                        },
+                                                        {
+                                                            //firstPregnancy
+                                                            "dataElement": "QY74vYSE0Xz",
+                                                            "value": apiResponse.data[i].obstetricsHistory.firstPregnancy
+                                                        },
+                                                        {
+                                                            //livingChildren
+                                                            "dataElement": "zIZNO9wl0XB",
+                                                            "value": apiResponse.data[i].obstetricsHistory.livingChildren
+                                                        },
+                                                        {
+                                                            //abortionsData
+                                                            "dataElement": "oBYcDDitDkG",
+                                                            "value": apiResponse.data[i].obstetricsHistory.abortionsData
+                                                        },
+                                                        {
+                                                            //stillBirths
+                                                            "dataElement": "kTuDlvsNkRR",
+                                                            "value": apiResponse.data[i].obstetricsHistory.stillBirths
+                                                        },
+                                                        {
+                                                            //ttAtLastPregnancy
+                                                            "dataElement": "C1alHuIIVfC",
+                                                            "value": apiResponse.data[i].obstetricsHistory.ttAtLastPregnancy
+                                                        },
+                                                        {
+                                                            //ttAtThisPregnancy
+                                                            "dataElement": "iW9l8r0eV2x",
+                                                            "value": apiResponse.data[i].obstetricsHistory.ttAtThisPregnancy
+                                                        },
+                                                        {
+                                                            //pastLabour
+                                                            "dataElement": "kA9TIohUSFO",
+                                                            "value": apiResponse.data[i].obstetricsHistory.pastLabour
+                                                        },
+                                                        {
+                                                            //youngestChildAge
+                                                            "dataElement": "PBX3soYHjrV",
+                                                            "value": apiResponse.data[i].obstetricsHistory.youngestChildAge
+                                                        },
+                                                        {
+                                                            //abortions
+                                                            "dataElement": "EGsI3O71NwA",
+                                                            "value": apiResponse.data[i].obstetricsHistory.abortions
+                                                        },
+                                                        {
+                                                            //previousDeliveryState
+                                                            "dataElement": "nfY3gQ4wsaU",
+                                                            "value": apiResponse.data[i].obstetricsHistory.previousDeliveryState
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "program": programUid,
+                                                    "orgUnit": orgUnitMap[apiResponse.data[i].midwife.refId],
+                                                    //"eventDate": apiResponse.data[i].synchDate.substring(0, 10),
+                                                    "eventDate": apiResponse.data[i].outcome.outcomeDate.substring(0, 10),
+                                                    "status": "ACTIVE",
+                                                    "programStage": outcomePrgStage,
+                                                    "dataValues": [
+
+                                                        {
+                                                            // weight
+                                                            "dataElement": "po1GFTfA34n",
+                                                            "value": firstChildWeight
+                                                        },
+                                                        {
+                                                            //sex
+                                                            "dataElement": "cJsG5c5CEGL",
+                                                            "value": firstChildGender
+                                                        },
+                                                        {
+                                                            // birthType
+                                                            "dataElement": "V8ePtj0Yf84",
+                                                            "value": firstChildTypeOfBirth
+                                                        },
+                                                        {
+                                                            // natureOfDelivery
+                                                            "dataElement": "vt0v4xOqVmj",
+                                                            "value": apiResponse.data[i].outcome.natureOfDelivery
+                                                        },
+                                                        {
+                                                            // numberOfChild
+                                                            "dataElement": "j8TQozMZ5dq",
+                                                            "value": apiResponse.data[i].outcome.numberOfChild
+                                                        },
+                                                        {
+                                                            // deliveryComplications
+                                                            "dataElement": "ZrZjlTh0XjE",
+                                                            "value": apiResponse.data[i].outcome.deliveryComplications
+                                                        },
+                                                        {
+                                                            // Place of delivery I
+                                                            "dataElement": "K1eZc4yOfGU",
+                                                            "value": apiResponse.data[i].outcome.placeOfDelivery
+                                                        },
+                                                        {
+                                                            // deliveryStatus
+                                                            "dataElement": "UIAJVzwOlCH",
+                                                            "value": apiResponse.data[i].outcome.deliveryStatus
+                                                        },
+                                                        {
+                                                            // reason
+                                                            "dataElement": "RE5lr3B8FgA",
+                                                            "value": apiResponse.data[i].outcome.reasonOfOutcome
+                                                        },
+                                                        {
+                                                            // labourDuration
+                                                            "dataElement": "bYLRLJBwsK0",
+                                                            "value": apiResponse.data[i].outcome.labourDuration
+                                                        },
+                                                        {
+                                                            // deliveryConductedBy
+                                                            "dataElement": "EvCMd2juaDN",
+                                                            "value": apiResponse.data[i].outcome.deliveryConductedBy
+                                                        },
+                                                        {
+                                                            // Presentation of baby
+                                                            "dataElement": "HoSJ8MK15SY",
+                                                            "value": apiResponse.data[i].outcome.presentationOfBaby
+                                                        }
+                                                    ]
+
+                                                }
+                                            ]
+                                        }];
+                                        postTEIsEnrollEvent.push( teiOutComeEnrollEvent );
+                                        /*
+                                        $.ajax({
+                                            type: "POST",
+                                            crossDomain: true,
+                                            url: '../api/trackedEntityInstances',
+                                            async: false,
+                                            headers: {
+                                                'Accept': 'application/json',
+                                                'Content-Type': 'application/json'
+                                            },
+                                            data: JSON.stringify(teiOutComeEnrollEvent),
+                                            success: function (response) {
+
+                                                console.log("reference---importSummaries", response.response.importSummaries[0].reference);
+                                                //console.log("refe-distt",district_array[dista]+ "---"+ s_today.toJSON().substring(0, 10));
+
+                                            },
+                                            error: function (response) {
+                                                console.log("not Save TEI:", response);
+                                            }
+                                        });
+                                        */
+                                    }
+                                    else{
+                                        let teiEnrollEvent = {};
+                                        teiEnrollEvent.trackedEntityType = teTypeUid;
+                                        teiEnrollEvent.orgUnit = orgUnitMap[apiResponse.data[i].midwife.refId];
+                                        teiEnrollEvent.attributes =[
+                                            {
+                                                "attribute": "aSpasplLgMf",
+                                                "value": apiResponse.data[i].age
+                                            },
+                                            {
+                                                "attribute": "yDaWsAZcr8K",
+                                                "value": apiResponse.data[i].motherId
+                                            },
+                                            {
+                                                "attribute": "avyOleUut0w",
+                                                "value": apiResponse.data[i].govtPortalNo
+                                            },
+
+                                            {
+                                                "attribute": "OtlvScDjzcR",
+                                                "value": apiResponse.data[i].motherAddress.addressLine
+                                            },
+                                            {
+                                                "attribute": "Qhs4ooRuAJk",
+                                                "value": apiResponse.data[i].motherAddress.town
+                                            },
+                                            {
+                                                "attribute": "NSKp6BgoWyp",
+                                                "value": apiResponse.data[i].motherAddress.village
+                                            },
+                                            {
+                                                "attribute": "Ju7MEdETxsV",
+                                                "value": apiResponse.data[i].fullName
+                                            }
+                                        ];
+                                        teiEnrollEvent.enrollments = [{
+                                            "orgUnit": orgUnitMap[apiResponse.data[i].midwife.refId],
+                                            "program": programUid,
+                                            "status": "ACTIVE",
+                                            "enrollmentDate": apiResponse.data[i].registrationDate.substring(0, 10),
+                                            "incidentDate": apiResponse.data[i].registrationDate.substring(0, 10),
+                                            "events": [
+                                                {
+                                                    "program": programUid,
+                                                    "orgUnit": orgUnitMap[apiResponse.data[i].midwife.refId],
+                                                    //"eventDate": apiResponse.data[i].synchDate.substring(0, 10),
+                                                    "eventDate": apiResponse.data[i].registrationDate.substring(0, 10),
+                                                    "status": "ACTIVE",
+                                                    "programStage": obstetricHistoryPrgStage,
+                                                    "dataValues": [
+                                                        {
+                                                            // bloodGroup
+                                                            "dataElement": "XMgjul9gxTr",
+                                                            "value": apiResponse.data[i].initialInvestigations.bloodGroup
+                                                        },
+                                                        {
+                                                            //height
+                                                            "dataElement": "GtMYJt5Qc67",
+                                                            "value": apiResponse.data[i].initialInvestigations.height
+                                                        },
+                                                        {
+                                                            //hepatitis
+                                                            "dataElement": "rKKtKP8AZzc",
+                                                            "value": apiResponse.data[i].initialInvestigations.hepatitis
+                                                        },
+                                                        {
+                                                            //hiv
+                                                            "dataElement": "ST3PGBkvnuf",
+                                                            "value": apiResponse.data[i].initialInvestigations.hiv
+                                                        },
+                                                        {
+                                                            //sickleCellAnemia
+                                                            "dataElement": "kKUepZ99QSm",
+                                                            "value": apiResponse.data[i].initialInvestigations.sickleCellAnemia
+                                                        },
+                                                        {
+                                                            //tb
+                                                            "dataElement": "ti77lqF7ZnB",
+                                                            "value": apiResponse.data[i].initialInvestigations.tb
+                                                        },
+                                                        {
+                                                            //thyroid
+                                                            "dataElement": "CUAqpQ4wlxC",
+                                                            "value": apiResponse.data[i].initialInvestigations.thyroid
+                                                        },
+                                                        {
+                                                            //vdrl
+                                                            "dataElement": "OmCoyhWGQ6o",
+                                                            "value": apiResponse.data[i].initialInvestigations.vdrl
+                                                        },
+                                                        {
+                                                            //pastBirthDefect
+                                                            "dataElement": "V8EC5BsoUwt",
+                                                            "value": apiResponse.data[i].obstetricsHistory.pastBirthDefect
+                                                        },
+                                                        {
+                                                            //lmpDate
+                                                            "dataElement": "lxYbPIsThd5",
+                                                            "value": tempLmpDate
+                                                        },
+                                                        {
+                                                            //previousDeliveryNature
+                                                            "dataElement": "KqC28J4scDW",
+                                                            "value": apiResponse.data[i].obstetricsHistory.previousDeliveryNature
+                                                        },
+                                                        {
+                                                            //firstPregnancy
+                                                            "dataElement": "QY74vYSE0Xz",
+                                                            "value": apiResponse.data[i].obstetricsHistory.firstPregnancy
+                                                        },
+                                                        {
+                                                            //livingChildren
+                                                            "dataElement": "zIZNO9wl0XB",
+                                                            "value": apiResponse.data[i].obstetricsHistory.livingChildren
+                                                        },
+                                                        {
+                                                            //abortionsData
+                                                            "dataElement": "oBYcDDitDkG",
+                                                            "value": apiResponse.data[i].obstetricsHistory.abortionsData
+                                                        },
+                                                        {
+                                                            //stillBirths
+                                                            "dataElement": "kTuDlvsNkRR",
+                                                            "value": apiResponse.data[i].obstetricsHistory.stillBirths
+                                                        },
+                                                        {
+                                                            //ttAtLastPregnancy
+                                                            "dataElement": "C1alHuIIVfC",
+                                                            "value": apiResponse.data[i].obstetricsHistory.ttAtLastPregnancy
+                                                        },
+                                                        {
+                                                            //ttAtThisPregnancy
+                                                            "dataElement": "iW9l8r0eV2x",
+                                                            "value": apiResponse.data[i].obstetricsHistory.ttAtThisPregnancy
+                                                        },
+                                                        {
+                                                            //pastLabour
+                                                            "dataElement": "kA9TIohUSFO",
+                                                            "value": apiResponse.data[i].obstetricsHistory.pastLabour
+                                                        },
+                                                        {
+                                                            //youngestChildAge
+                                                            "dataElement": "PBX3soYHjrV",
+                                                            "value": apiResponse.data[i].obstetricsHistory.youngestChildAge
+                                                        },
+                                                        {
+                                                            //abortions
+                                                            "dataElement": "EGsI3O71NwA",
+                                                            "value": apiResponse.data[i].obstetricsHistory.abortions
+                                                        },
+                                                        {
+                                                            //previousDeliveryState
+                                                            "dataElement": "nfY3gQ4wsaU",
+                                                            "value": apiResponse.data[i].obstetricsHistory.previousDeliveryState
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }]
+                                        postTEIsEnrollEvent.push(teiEnrollEvent);
+                                        /*
+                                        $.ajax({
+                                            type: "POST",
+                                            crossDomain: true,
+                                            url: '../api/trackedEntityInstances',
+                                            async: false,
+                                            headers: {
+                                                'Accept': 'application/json',
+                                                'Content-Type': 'application/json'
+                                            },
+                                            data: JSON.stringify(teiEnrollEvent),
+                                            success: function (response) {
+
+                                                console.log("reference---importSummaries", response.response.importSummaries[0].reference);
+                                                //console.log("refe-distt",district_array[dista]+ "---"+ s_today.toJSON().substring(0, 10));
+
+                                            },
+                                            error: function (response) {
+                                                console.log("not Save TEI:", response);
+                                            }
+                                        });
+                                        */
+                                    }
+                                }
+                            }
+                        },
+                        error: function (err) {
+                            console.log("org error" + JSON.stringify(err));
+                        }
+                    });
+                }
+            }
+            else{
+                alert( "no mother found");
+                console.log(" no mother found, mother count -- ",  initialAPIResponse.total );
+            }
+        },
+        error: function (initialAPIResponse)
+        {
+            console.log( "Error" );
+            //unLockScreen();
+        }
+    });
+
+
+    if( postTEIsEnrollEvent.length > 0 ){
+        let postBulkTEIEnrollEvent = {};
+        postBulkTEIEnrollEvent.trackedEntityInstances = postTEIsEnrollEvent;
+        console.log(" final events : " + JSON.stringify(postBulkTEIEnrollEvent).length );
+        $.ajax({
+            type: "POST",
+            crossDomain: true,
+            url: '../api/trackedEntityInstances',
+            async: false,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(postBulkTEIEnrollEvent),
+            success: function (response) {
+
+                console.log("reference---importSummaries", response.response.importSummaries[0].reference);
+
+                console.log("not Save TEI:", response.responseJSON.message);
+                console.log("TOTAL-TEI COUNT ", response.responseJSON.response.total);
+                console.log("TOTAL-TEI imported ", response.responseJSON.response.imported);
+                console.log("TOTAL-TEI ignored ", response.responseJSON.response.ignored);
+                console.log("TOTAL-TEI deleted ", response.responseJSON.response.deleted);
+                //alert( "Total TEI Registered -- " + postTEIsEnrollEvent.length );
+                alert("TOTAL-TEI COUNT " + response.responseJSON.response.total + " -- TOTAL-TEI imported " + response.responseJSON.response.imported + " "
+                    + " TOTAL-TEI ignored " + response.responseJSON.response.ignored + " TOTAL-TEI deleted " + response.responseJSON.response.deleted )
+
+            },
+            error: function (response) {
+                console.log("not Save TEI:", response);
+                //console.log( "not Save TEI:", JSON.stringify(response.responseJSON));
+                console.log("not Save TEI:", response.responseJSON.message);
+                console.log("TOTAL-TEI COUNT ", response.responseJSON.response.total);
+                console.log("TOTAL-TEI imported ", response.responseJSON.response.imported);
+                console.log("TOTAL-TEI ignored ", response.responseJSON.response.ignored);
+                console.log("TOTAL-TEI deleted ", response.responseJSON.response.deleted);
+                //alert( "Total TEI Registered -- " + postTEIsEnrollEvent.length );
+                alert("TOTAL-TEI COUNT " + response.responseJSON.response.total + " -- TOTAL-TEI imported " + response.responseJSON.response.imported + " "
+                    + " TOTAL-TEI ignored " + response.responseJSON.response.ignored + " TOTAL-TEI deleted " + response.responseJSON.response.deleted )
+            }
+        });
+    }
+    else{
+        console.log(" no TEI registered TEI Count --  ",  postTEIsEnrollEvent.length );
+        alert( " no TEI registered");
+    }
+
+    $('#loader').hide();
+
+  }
+
+function loadOrgUnits() {
+
+    $.ajax({
+        url: "../api/29/sqlViews/ShsS5OZt7kc/data?paging=false",
+        dataType: "json",
+        async: false,
+        success: function (sqlViewResponse) {
+            sqlViewResponse.listGrid.rows.forEach(row => {
+                //let values = JSON.parse(row["7"]["value"]);
+                //let values = JSON.parse(row["7"]);
+                finalOu.push({
+                    'id': row["0"],
+                    'name': row["1"],
+                    'shortName': row["2"],
+                    'code': row["3"]
+                });
+                orgUnitMap[row["1"]] = row["0"];
+            })
+        },
+        error: function (err) {
+            console.log("org error" + JSON.stringify(err));
+        }
+    });
+
+    /*
+    $.ajax({
+        url: "../api/organisationUnits.json?fields=id,name,code,level&filter=level:eq:6&sortOrder=ASC&paging=false",
+        dataType: "json",
+        async: false,
+        success: function (orgUnitResponse) {
+            for (var i = 0; i < orgUnitResponse.organisationUnits.length; i++) {
+                finalOu.push({
+                    'id': orgUnitResponse.organisationUnits[i].id,
+                    'name': orgUnitResponse.organisationUnits[i].name,
+                    'code': orgUnitResponse.organisationUnits[i].code
+                });
+                orgUnitMap[orgUnitResponse.organisationUnits[i].name] = orgUnitResponse.organisationUnits[i].id;
+            }
+        },
+        error: function (err) {
+            console.log("org error" + JSON.stringify(err));
+        }
+    });
+    */
+    /*
+    $.ajax({
+        url: "../api/29/sqlViews/G71tG9U4iqV/data?paging=false",
+        dataType: "json",
+        async: false,
+        success: function (sqlViewResponse) {
+            sqlViewResponse.listGrid.rows.forEach(row => {
+                //let values = JSON.parse(row["7"]["value"]);
+                //let values = JSON.parse(row["7"]);
+                finalOu.push({
+                    'id': row["3"],
+                    'name': row["4"],
+                    'code': row["5"]
+                });
+                orgUnitMap[row["2"]] = row["3"];
+            })
+        },
+        error: function (err) {
+            console.log("org error" + JSON.stringify(err));
+        }
+    });
+    */
+}
+
+// Defining function to get unique values from an array
+function getUnique(array){
+    var uniqueArray = [];
+
+    // Loop through array values
+    for(i=0; i < array.length; i++){
+        if(uniqueArray.indexOf(array[i]) === -1) {
+            uniqueArray.push(array[i]);
+        }
+    }
+    return uniqueArray;
+}
+
+</script>
+</html>

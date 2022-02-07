@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <style>
+        .custom{
+            margin-top:50px;
+            width:100%;
+            padding:10px;
+        }
+        .custom-table{
+            width:75%;
+            font-size:16px;
+            margin:auto;
+            text-align:center;
+        }
+        .custom-drop{
+            text-align:center;
+        }
+    </style>
+    <style>
+        thead>tr>td {
+            font-weight: bold;
+        }
+        tbody>tr>td {
+            font-weight: bold;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            opacity: 1;
+        }
+
+        /* Center the loader  */
+        #loader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            width: 150px;
+            height: 150px;
+            margin: -75px 0 0 -75px;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #34B4DB;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        /* Add animation to "page content" */
+
+        .animate-bottom {
+            position: relative;
+            -webkit-animation-name: animatebottom;
+            -webkit-animation-duration: 1s;
+            animation-name: animatebottom;
+            animation-duration: 1s
+        }
+
+        @-webkit-keyframes animatebottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
+            to {
+                bottom: 0px;
+                opacity: 1
+            }
+        }
+
+        @keyframes animatebottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
+            to {
+                bottom: 0;
+                opacity: 1
+            }
+        }
+
+        #printing {
+
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div  id="importButton">
+            <br>
+			<label for="importDateLabel">Import Date:</label>
+			<input type="text" id="importDate" name="importDate"  style="margin-left: 1%">
+            <button onClick="readAPI()" disabled id="Import" style="margin-left: 5%">Start Importing Data</button>
+
+        </div>
+
+        <div id="resultDiv">
+            <h4 id ="importMsg"></h4>
+        </div>
+
+        <!--<div id="loader"> <h4 id = "templateProgress"></h4></div>-->
+
+    </div>
+    <br><br>
+    <div id="loader"></div>
+</div>
+</body>
+  <script>
+  $( function() {
+    $( "#importDate" ).datepicker();
+  } );
+  </script>
+<script type="text/javascript">
+    var teiLIST = [];
+    var orgUnitMap = [];
+    var dataElementMap = [];
+    var impCount = "";
+    var upCount = "";
+    var igCount = "";
+    var conflictsDetails = [];
+    var regOrgUnitList = [];
+    var regPeriodList = [];
+
+    var cdsr = { completeDataSetRegistrations: [] };
+    var dataSetCompleteRegistration = "";
+    $(document).ready(function(){
+    document.getElementById("loader").style.display = "none";
+
+
+    loadTEIList();
+    //getPageCount();
+	console.log( teiLIST );
+	document.getElementById("Import").disabled = false;
+	//document.getElementById('importButton').style.display = 'block';
+	document.getElementById('resultDiv').style.display = 'none';
+
+	//console.log( dataElementsMapping );
+
+    });
+
+    function readAPI() {
+        //document.getElementById("loader").fadeIn();
+        //document.getElementById("templateProgress").html(" -> preparing data values to import");
+		
+		 if( document.getElementById("importDate").value === ""){
+            return alert("Please Select Date");
+        }
+		else{
+		
+			var tempSelectedPeriod = document.getElementById("importDate").value;
+			document.getElementById("Import").disabled = true;
+			document.getElementById('importButton').style.display = 'none';
+			document.getElementById('resultDiv').style.display = 'block';
+			var strMsg = " Import Start.... ";
+			var resultMsg = strMsg.bold();
+			document.getElementById("importMsg").innerHTML = " Import Start.... for date -- " + tempSelectedPeriod.split("/")[2]+ "-" + tempSelectedPeriod.split("/")[0]+ "-" + tempSelectedPeriod.split("/")[1];
+			/*
+			showLoader();
+			lockScreen();
+			setTimeout(function(){ startImporting() }, 0);
+			*/
+			$('#loader').show();
+			setTimeout(function () {
+				startImporting();
+			}, 1000);
+		}	
+
+    }
+
+
+    //res.setHeader('Access-Control-Allow-Origin', '*');
+    function startImporting() {
+
+	var selectedPeriod = document.getElementById("importDate").value;
+	var currentDate = new Date();
+	var currentYear = currentDate.getFullYear();
+	var nextYear = currentDate.getFullYear() + 1;
+	var currentFinancialYear = currentYear + "-" + nextYear;
+	//console.log( "currentFinancialYear -- " + currentFinancialYear );
+    var programUid = 'EAY7CYYkrpi';
+    var motherPNCPrgStage = 'C4WTi3EyqHe';
+    var childPNCPrgStage = 'H1uTDSYjkQD';
+
+
+    var proxyURL = "https://cors-anywhere.herokuapp.com/";
+	//var todayDate = '2021-01-27';
+	var tempImportDate = selectedPeriod.split("/")[2]+ "-" + selectedPeriod.split("/")[0]+ "-" + selectedPeriod.split("/")[1];
+	alert( tempImportDate );
+	var isoPeriod = selectedPeriod.split("/")[2] + selectedPeriod.split("/")[0] + selectedPeriod.split("/")[1];
+
+    let postEvents = [];
+	//alert( tempImportDate + " - " + isoPeriod );
+
+    var initialBodyPostDataJson = {
+            "userId":"KMlqOKItgwnl8WIxSxFC",
+            "apiKey":"ay7px0rjojzbtz0ym0",
+            "synchDate": tempImportDate,
+            "page":1
+    }
+    $.ajax({
+        url: 'https://caremother.co:3009/api/mis/all_pnc_visits_details',
+        async: false,
+        type: 'POST',
+        crossDomain: true,
+        contentType: 'application/json',
+        data: JSON.stringify(initialBodyPostDataJson),
+        success: function ( initialAPIResponse )
+        {
+            console.log( " Api Response length --  " + initialAPIResponse );
+            //var pageCount =  apiResponse.totalPages;
+            alert( "pageCount -- " + initialAPIResponse.totalPages );
+            alert( "total-PNC-Records -- " + initialAPIResponse.total );
+            if( initialAPIResponse.totalPages >= 1 ){
+                for (let pageNo = 1; pageNo <= initialAPIResponse.totalPages; pageNo++) {
+
+                    var bodyPostDataJson = {
+                        "userId":"KMlqOKItgwnl8WIxSxFC",
+                        "apiKey":"ay7px0rjojzbtz0ym0",
+                        "synchDate": tempImportDate,
+                        "page":pageNo
+                    }
+                    $.ajax({
+                        url: 'https://caremother.co:3009/api/mis/all_pnc_visits_details',
+                        async: false,
+                        type: 'POST',
+                        crossDomain: true,
+                        contentType: 'application/json',
+                        data: JSON.stringify(bodyPostDataJson),
+
+                        success: function ( apiResponse )
+                        {
+                            if( apiResponse.data != null ){
+                                for (let i = 0; i < apiResponse.data.length; i++) {
+                                    console.log( " motherId 1 --  " + apiResponse.data[i].motherId);
+                                    for (let j = 0; j < teiLIST.length; j++) {
+                                        let postEventMotherPNC = {};
+                                        let postEventChildPNC = {};
+                                        if( teiLIST[j].careMotherId === apiResponse.data[i].motherId){
+                                            console.log( " motherId matched --  " + apiResponse.data[i].motherId);
+                                            if( apiResponse.data[i].mothersPNC !== null) {
+                                                postEventMotherPNC.trackedEntityInstance = teiLIST[j].tei;
+                                                postEventMotherPNC.enrollment = teiLIST[j].enrollment;
+                                                postEventMotherPNC.orgUnit = teiLIST[j].orgUnit;
+                                                postEventMotherPNC.status = "ACTIVE";
+                                                postEventMotherPNC.program = teiLIST[j].program;
+                                                postEventMotherPNC.programStage = motherPNCPrgStage;
+                                                //postEventMotherPNC.eventDate = apiResponse.data[i].synchDate.substring(0, 10),
+                                                postEventMotherPNC.eventDate = apiResponse.data[i].pncTestDate.substring(0, 10),
+                                                postEventMotherPNC.dataValues =[
+                                                    {
+                                                        // dangerSigns
+                                                        "dataElement": "si32r1Flc8f",
+                                                        "value": apiResponse.data[i].mothersPNC.dangerSigns
+                                                    },
+                                                    {
+                                                        //bpSys
+                                                        "dataElement": "RNrGHYHaeXN",
+                                                        "value": apiResponse.data[i].mothersPNC.bpSys
+                                                    },
+                                                    {
+                                                        //ppcMethods
+                                                        "dataElement": "N6ftDnruKoG",
+                                                        "value": apiResponse.data[i].mothersPNC.ppcMethods
+                                                    },
+                                                    {
+                                                        //hb
+                                                        "dataElement": "NWAbJmZi5ey",
+                                                        "value": apiResponse.data[i].mothersPNC.hb
+                                                    },
+                                                    {
+                                                        //weight
+                                                        "dataElement": "uMCICpXcB44",
+                                                        "value": apiResponse.data[i].mothersPNC.weight
+                                                    },
+                                                    {
+                                                        //bloodGlucose
+                                                        "dataElement": "Z2KCGcpPyHB",
+                                                        "value": apiResponse.data[i].mothersPNC.bloodGlucose
+                                                    },
+                                                    {
+                                                        //temperature
+                                                        "dataElement": "fDUINIR160n",
+                                                        "value": apiResponse.data[i].mothersPNC.temperature
+                                                    },
+                                                    {
+                                                        //abdomenExam
+                                                        "dataElement": "NPFLHis5Qnl",
+                                                        "value": apiResponse.data[i].mothersPNC.abdomenExam
+                                                    },
+                                                    {
+                                                        //bpDia
+                                                        "dataElement": "JwC0Yyo18U1",
+                                                        "value": apiResponse.data[i].mothersPNC.bpDia
+                                                    },
+                                                    {
+                                                        //pncTestDate
+                                                        "dataElement": "kiC0rYql454",
+                                                        "value": apiResponse.data[i].mothersPNC.pncTestDate.substring(0, 10)
+                                                    },
+                                                    {
+                                                        //vaginalBleeding
+                                                        "dataElement": "B2Pbh1bkQY0",
+                                                        "value": apiResponse.data[i].mothersPNC.vaginalBleeding
+                                                    },
+                                                    {
+                                                        //nippleCrack
+                                                        "dataElement": "uF84mQtvlmR",
+                                                        "value": apiResponse.data[i].mothersPNC.nippleCrack
+                                                    },
+                                                    {
+                                                        //pulseRate
+                                                        "dataElement": "XCVF4Od77tB",
+                                                        "value": apiResponse.data[i].mothersPNC.pulseRate
+                                                    },
+                                                    {
+                                                        //ifaTabletsGiven
+                                                        "dataElement": "S289YKm0YVI",
+                                                        "value": apiResponse.data[i].mothersPNC.ifaTabletsGiven
+                                                    },
+                                                    {
+                                                        //breastExamination
+                                                        "dataElement": "exzLwsPF6T8",
+                                                        "value": apiResponse.data[i].mothersPNC.breastExamination
+                                                    }
+                                                ]
+                                                postEvents.push(postEventMotherPNC);
+                                            }
+                                            //let pncChildDataValues = [];
+                                            //alert( "apiResponse.data[i].childsPNC -- " + apiResponse.data[i].childsPNC );
+                                            if( apiResponse.data[i].childsPNC !== null) {
+                                                let childNo =""; let childId = ""; let temperature = ""; let vomiting = "";
+                                                let breastFeeding = ""; let headCircumference = ""; let weight = "";
+                                                let dangerSigns = ""; let other = ""; let height = "";
+                                                for (let k = 0; k < apiResponse.data[i].childsPNC.length; k++) {
+                                                    childNo = apiResponse.data[i].childsPNC[k].childNo;
+                                                    childId = apiResponse.data[i].childsPNC[k].childId;
+                                                    temperature = apiResponse.data[i].childsPNC[k].temperature;
+                                                    vomiting =  apiResponse.data[i].childsPNC[k].vomiting;
+                                                    breastFeeding = apiResponse.data[i].childsPNC[k].breastFeeding;
+                                                    headCircumference = apiResponse.data[i].childsPNC[k].headCircumference;
+                                                    weight = apiResponse.data[i].childsPNC[k].weight;
+                                                    dangerSigns = apiResponse.data[i].childsPNC[k].dangerSigns;
+                                                    other = apiResponse.data[i].childsPNC[k].other;
+                                                    height = apiResponse.data[i].childsPNC[k].height;
+                                                }
+                                                postEventChildPNC.trackedEntityInstance = teiLIST[j].tei;
+                                                postEventChildPNC.enrollment = teiLIST[j].enrollment;
+                                                postEventChildPNC.orgUnit = teiLIST[j].orgUnit;
+                                                postEventChildPNC.status = "ACTIVE";
+                                                postEventChildPNC.program = teiLIST[j].program;
+                                                postEventChildPNC.programStage = childPNCPrgStage;
+                                                postEventChildPNC.eventDate = apiResponse.data[i].pncTestDate.substring(0, 10);
+                                                postEventChildPNC.dataValues =[
+                                                    {
+                                                        //pncTestDate
+                                                        "dataElement": "kiC0rYql454",
+                                                        "value": apiResponse.data[i].pncTestDate.substring(0, 10)
+                                                    },
+                                                    {
+                                                        //childNo
+                                                        "dataElement": "wiYtQhzpfBC",
+                                                        "value": childNo
+                                                    },
+                                                    {
+                                                        //childId
+                                                        "dataElement": "WLfvkxvntq9",
+                                                        "value": childId
+                                                    },
+                                                    {
+                                                        //temperature
+                                                        "dataElement": "fDUINIR160n",
+                                                        "value": temperature
+                                                    },
+                                                    {
+                                                        //vomiting
+                                                        "dataElement": "CLAR667oKdA",
+                                                        "value": vomiting
+                                                    },
+                                                    {
+                                                        //breastFeeding
+                                                        "dataElement": "LBIPJ7Vb5k5",
+                                                        "value": breastFeeding
+                                                    },
+                                                    {
+                                                        //headCircumference
+                                                        "dataElement": "dG5Lxn3OIVf",
+                                                        "value": headCircumference
+                                                    },
+                                                    {
+                                                        //weight
+                                                        "dataElement": "po1GFTfA34n",
+                                                        "value": weight
+                                                    },
+                                                    {
+                                                        //dangerSigns
+                                                        "dataElement": "si32r1Flc8f",
+                                                        "value": dangerSigns
+                                                    },
+                                                    {
+                                                        //other
+                                                        "dataElement": "bTkSrxE2Dli",
+                                                        "value": other
+                                                    },
+                                                    {
+                                                        //height
+                                                        "dataElement": "fXUJMeK0Y2T",
+                                                        "value": height
+                                                    }
+                                                ]
+                                                postEvents.push(postEventChildPNC);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        error: function (err) {
+                        console.log("org error" + JSON.stringify(err));
+                        }
+                    });
+                }
+            }
+            else{
+                alert( "no PNC found");
+                console.log(" no PNC found, PNC count -- ",  initialAPIResponse.total );
+            }
+        },
+        error: function (initialAPIResponse)
+        {
+            console.log( "Error" );
+            //unLockScreen();
+        }
+    });
+
+    if( postEvents.length > 0){
+        let postBulkEvents = {};
+        postBulkEvents.events = postEvents;
+        console.log(" final events : " + JSON.stringify(postBulkEvents) );
+
+        $.ajax({
+            type: "POST",
+            crossDomain: true,
+            url: '../api/events',
+            async: false,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(postBulkEvents),
+            success: function (response) {
+
+                console.log("reference---importSummaries", response.response.importSummaries[0].reference);
+                alert( "Total PNC Event Registered -- " + postEvents.length );
+                //console.log("refe-distt",district_array[dista]+ "---"+ s_today.toJSON().substring(0, 10));
+
+            },
+            error: function (response) {
+                console.log("not Save TEI:", response);
+            }
+        });
+    }
+    else{
+        console.log(" no Event created for PNC --  ",  postEvents.length );
+        alert( "no Event created for PNC");
+    }
+
+    $('#loader').hide();
+
+  }
+
+function loadTEIList() {
+    $.ajax({
+        url: "../api/29/sqlViews/VUfWZn8ZQy5/data?paging=false",
+        dataType: "json",
+        async: false,
+        success: function (sqlViewResponse) {
+            sqlViewResponse.listGrid.rows.forEach(row => {
+                //let values = JSON.parse(row["7"]["value"]);
+                //let values = JSON.parse(row["7"]);
+                teiLIST.push({
+                    'tei': row["0"],
+                    'enrollment': row["1"],
+                    'program': row["2"],
+                    'orgUnit': row["3"],
+                    'careMotherId': row["4"]
+                });
+                //orgUnitMap[row["2"]] = row["3"];
+            })
+        },
+        error: function (err) {
+            console.log("org error" + JSON.stringify(err));
+        }
+    });
+}
+
+// Defining function to get unique values from an array
+function getUnique(array){
+    var uniqueArray = [];
+
+    // Loop through array values
+    for(i=0; i < array.length; i++){
+        if(uniqueArray.indexOf(array[i]) === -1) {
+            uniqueArray.push(array[i]);
+        }
+    }
+    return uniqueArray;
+}
+
+</script>
+</html>
