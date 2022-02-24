@@ -110,6 +110,10 @@
 <body>
 <div class="container-fluid">
     <div class="row">
+        <div>
+            <br>
+            <label for="outcome">Care Mother Outcome</label>
+        </div>
         <div  id="importButton">
             <br>
 			<label for="importDateLabel">Import Date:</label>
@@ -154,7 +158,7 @@
     loadTEIList();
     //getPageCount();
 	console.log( teiLIST );
-    alert( teiLIST.length);
+    //alert( teiLIST.length);
 	document.getElementById("Import").disabled = false;
 	//document.getElementById('importButton').style.display = 'block';
 	document.getElementById('resultDiv').style.display = 'none';
@@ -254,11 +258,11 @@
                             if( apiResponse.message !== 'Fetching posts failed!' && apiResponse.data != null && apiResponse.data.length > 0 ){
                                 for (let i = 0; i < apiResponse.data.length; i++) {
                                     if( JSON.stringify(apiResponse.data[i].outcome).length > 2 && apiResponse.data[i].outcome.outcomeDate !== null){
-                                        console.log( " motherId 1 --  " + apiResponse.data[i].motherId);
+                                        console.log( " fetch motherId --  " + apiResponse.data[i].motherId);
                                         for (let j = 0; j < teiLIST.length; j++) {
                                             let postOutcomeEvent = {};
                                             if( teiLIST[j].careMotherId === apiResponse.data[i].motherId){
-                                                console.log( " motherId 2 --  " + apiResponse.data[i].motherId);
+                                                console.log( " matched motherId  --  "  + apiResponse.data[i].motherId);
                                                 let firstChildWeight = "";
                                                 let firstChildGender = "";
                                                 let firstChildTypeOfBirth = "";

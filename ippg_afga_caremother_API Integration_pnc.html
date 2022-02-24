@@ -110,6 +110,10 @@
 <body>
 <div class="container-fluid">
     <div class="row">
+        <div>
+            <br>
+            <label for="pnc">Care Mother PNC( Mother and CHILD )</label>
+        </div>
         <div  id="importButton">
             <br>
 			<label for="importDateLabel">Import Date:</label>
@@ -255,12 +259,19 @@
                         {
                             if( apiResponse.data != null ){
                                 for (let i = 0; i < apiResponse.data.length; i++) {
-                                    console.log( " motherId 1 --  " + apiResponse.data[i].motherId);
+                                    console.log(  " fetch motherId --  " + apiResponse.data[i].motherId);
                                     for (let j = 0; j < teiLIST.length; j++) {
                                         let postEventMotherPNC = {};
                                         let postEventChildPNC = {};
                                         if( teiLIST[j].careMotherId === apiResponse.data[i].motherId){
-                                            console.log( " motherId matched --  " + apiResponse.data[i].motherId);
+                                            console.log( " matched motherId  --  " + apiResponse.data[i].motherId);
+                                            let tempPNCDate = "";
+                                            if( apiResponse.data[i].pncTestDate !== null ) {
+                                                tempPNCDate = apiResponse.data[i].pncTestDate.substring(0, 10);
+                                            }
+                                            else{
+                                                tempPNCDate = apiResponse.data[i].synchDate.substring(0, 10);
+                                            }
                                             if( apiResponse.data[i].mothersPNC !== null) {
                                                 postEventMotherPNC.trackedEntityInstance = teiLIST[j].tei;
                                                 postEventMotherPNC.enrollment = teiLIST[j].enrollment;
@@ -269,7 +280,8 @@
                                                 postEventMotherPNC.program = teiLIST[j].program;
                                                 postEventMotherPNC.programStage = motherPNCPrgStage;
                                                 //postEventMotherPNC.eventDate = apiResponse.data[i].synchDate.substring(0, 10),
-                                                postEventMotherPNC.eventDate = apiResponse.data[i].pncTestDate.substring(0, 10),
+                                                //postEventMotherPNC.eventDate = apiResponse.data[i].pncTestDate.substring(0, 10),
+                                                postEventMotherPNC.eventDate = tempPNCDate,
                                                 postEventMotherPNC.dataValues =[
                                                     {
                                                         // dangerSigns
@@ -319,7 +331,8 @@
                                                     {
                                                         //pncTestDate
                                                         "dataElement": "kiC0rYql454",
-                                                        "value": apiResponse.data[i].mothersPNC.pncTestDate.substring(0, 10)
+                                                        "value": tempPNCDate
+
                                                     },
                                                     {
                                                         //vaginalBleeding
@@ -373,12 +386,13 @@
                                                 postEventChildPNC.status = "ACTIVE";
                                                 postEventChildPNC.program = teiLIST[j].program;
                                                 postEventChildPNC.programStage = childPNCPrgStage;
-                                                postEventChildPNC.eventDate = apiResponse.data[i].pncTestDate.substring(0, 10);
+                                                //postEventChildPNC.eventDate = apiResponse.data[i].pncTestDate.substring(0, 10);
+                                                postEventChildPNC.eventDate = tempPNCDate,
                                                 postEventChildPNC.dataValues =[
                                                     {
                                                         //pncTestDate
                                                         "dataElement": "kiC0rYql454",
-                                                        "value": apiResponse.data[i].pncTestDate.substring(0, 10)
+                                                        "value": tempPNCDate
                                                     },
                                                     {
                                                         //childNo

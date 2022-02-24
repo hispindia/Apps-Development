@@ -110,6 +110,10 @@
 <body>
 <div class="container-fluid">
     <div class="row">
+        <div>
+            <br>
+            <label for="anc">Care Mother ANC Details</label>
+        </div>
         <div  id="importButton">
             <br>
 			<label for="importDateLabel">Import Date:</label>
@@ -231,7 +235,7 @@
             console.log( " Api Response length --  " + initialAPIResponse );
             //var pageCount =  apiResponse.totalPages;
             alert( "pageCount -- " + initialAPIResponse.totalPages );
-            alert( "total-PNC-Records -- " + initialAPIResponse.total );
+            alert( "total-ANC-Records -- " + initialAPIResponse.total );
             if( initialAPIResponse.totalPages >= 1 ){
                 for (let pageNo = 1; pageNo <= initialAPIResponse.totalPages; pageNo++) {
 
@@ -253,11 +257,11 @@
                         {
                             if( apiResponse.data != null ){
                                 for (let i = 0; i < apiResponse.data.length; i++) {
-                                    console.log( " motherId 1 --  " + apiResponse.data[i].motherId);
+                                    console.log( " fetch motherId --  " + apiResponse.data[i].motherId);
                                     for (let j = 0; j < teiLIST.length; j++) {
                                         let postEvent = {};
                                         if( teiLIST[j].careMotherId === apiResponse.data[i].motherId){
-                                            console.log( " motherId 2 --  " + apiResponse.data[i].motherId);
+                                            console.log( " matched motherId  --  "  + apiResponse.data[i].motherId);
 
                                             postEvent.trackedEntityInstance = teiLIST[j].tei;
                                             postEvent.enrollment = teiLIST[j].enrollment;
