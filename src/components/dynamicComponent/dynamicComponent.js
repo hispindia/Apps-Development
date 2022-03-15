@@ -6,29 +6,30 @@ class DynamicComponent extends React.Component {
         super(props);
         this.state={
             jsonData: null,
-            isvisibleDJB: false,
+            isVisibleDJB: false,
             loading: false,
             ouId:null, 
             indicatorGroups: null
         }
     }
     componentDidMount(){
-        ApiService.getOrgUnits().then(res =>{
+        let cbdOrgUnitGrp =  'GhuHmwRnPBs';
+        ApiService.getOrgUnits( cbdOrgUnitGrp ).then(res =>{
         ApiService.getIndicatorGroups().then(data =>{
           this.setState({ouId :res.organisationUnits.map(ele =>ele.id).join(";"),indicatorGroups:data.indicatorGroups})
         })
       })
     }
     generateJson(){
-       let date =  $("#date").val()
+        let date =  $("#date").val()
         let obj = {dataValues: []}
         this.state.indicatorGroups.forEach((element,i) => {
           ApiService.getJsonData(element.name.split("(")[1].split(")")[0],this.state.ouId, date.replace(/-/g, "")).then(data =>{
                 data.dataValues.forEach(ele =>{
                     obj['dataValues'].push(ele)
                   })
-                   if(i == (this.state.indicatorGroups.length-1)){
-                    this.setState({isvisibleDJB: true}) 
+                   if(i === (this.state.indicatorGroups.length-1)){
+                    this.setState({isVisibleDJB: true})
                 }
            })
           
@@ -59,7 +60,7 @@ class DynamicComponent extends React.Component {
                   <div style={{textAlign: 'center', marginTop: '10'}}>
                      <button className='btn btn-success m-2 pt-2' onClick={e=>{this.generateJson(e)}} >Generate JSON</button>
                   </div>
-                {this.state.isvisibleDJB ? <div style={{textAlign: 'center', marginTop: '10'}}> <button className='btn btn-success m-2 pt-2' onClick={e=>{this.downloadToJson(e)}} >Download as JSON</button></div> : this.state.loading ? <div id="loader" style={{display:"block"}}></div>: ""}
+                {this.state.isVisibleDJB ? <div style={{textAlign: 'center', marginTop: '10'}}> <button className='btn btn-success m-2 pt-2' onClick={e=>{this.downloadToJson(e)}} >Download as JSON</button></div> : this.state.loading ? <div id="loader" style={{display:"block"}}></div>: ""}
             </div>
          </div>
          );

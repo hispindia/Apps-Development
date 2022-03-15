@@ -1,5 +1,5 @@
 {
-  "name": "app-skeleton",
+  "name": "JSON-Data-Downloader",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -11,7 +11,7 @@
     "company": "HISP India"
   },
   "manifest.webapp": {
-    "name": "App-skeleton",
+    "name": "JSON-Data-Downloader",
     "description": "Basic layout for react app develop.",
     "appType": "APP",
     "activities": {
