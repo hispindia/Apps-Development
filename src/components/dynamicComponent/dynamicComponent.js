@@ -21,18 +21,27 @@ class DynamicComponent extends React.Component {
       })
     }
     generateJson(){
-        let date =  $("#date").val()
+        let date =  $("#date").val();
+        this.setState({isVisibleDJB: false})
         let obj = {dataValues: []}
         this.state.indicatorGroups.forEach((element,i) => {
           ApiService.getJsonData(element.name.split("(")[1].split(")")[0],this.state.ouId, date.replace(/-/g, "")).then(data =>{
-                data.dataValues.forEach(ele =>{
-                    obj['dataValues'].push(ele)
-                  })
-                   if(i === (this.state.indicatorGroups.length-1)){
-                    this.setState({isVisibleDJB: true})
-                }
+              console.log( "data-value length ", Object.keys(data).length );
+              if( Object.keys(data).length !== 0 ){
+                  console.log( "data-valueSet length ", data.dataValues.length );
+                  if( data.dataValues.length > 0 ){
+                      //Object.keys(object).length === 0
+                      //if( data.length !== undefined ) {
+                      data.dataValues.forEach(ele => {
+                          obj['dataValues'].push(ele)
+                      })
+                  }
+              }
+              if(i === (this.state.indicatorGroups.length-1)){
+                  this.setState({isVisibleDJB: true})
+              }
+
            })
-          
         });   
         this.setState({jsonData: obj, loading: true}) 
     }
