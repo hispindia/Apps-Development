@@ -488,6 +488,58 @@ excelImport
                                 email: row.email,
                                 address: row.address,
                                 contactPerson: row.contactPerson,
+                                openingDate: row.openingDate
+                            };
+
+                            $.ajax({
+                                type: "POST",
+                                async: false,
+                                dataType: "json",
+                                contentType: "application/json",
+                                data: JSON.stringify(orgUnitPostRequest),
+                                url: '../../organisationUnits',
+                                success: function (response) {
+                                    //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                    console.log( "Row - " + importCount  + " response: " + JSON.stringify(response) );
+                                },
+                                error: function (response) {
+                                    console.log(  "Row - " + importCount  + " response: " + JSON.stringify(response ));
+                                },
+                                warning: function (response) {
+                                    console.log(  "Row - " + importCount  + " response: " + JSON.stringify(response ));
+                                }
+                            });
+
+                            //importCount++;
+                            //console.log( "Row - " + importCount + " update done for event " + row.event );
+                            if( importCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " import done ");
+                            }
+                        });
+                    }
+
+                    // organisationUnits post
+                    else if( sheetName === 'orgUnitsPostWithAttributeValue' ){
+                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        //var json_object = JSON.stringify(XL_row_object);
+                        //var objectKeys = Object.keys(XL_row_object["0"]);
+                        let importCount = 1;
+                        XL_row_object.forEach(row => {
+                            importCount++;
+
+                            let orgUnitPostRequest = {
+                                id : row.uid,
+                                name: row.name,
+                                shortName: row.shortName,
+                                parent: { id:  row.parent },
+                                code: row.code,
+                                comment: row.comment,
+                                description: row.description,
+                                level: row.level,
+                                phoneNumber: row.phoneNumber,
+                                email: row.email,
+                                address: row.address,
+                                contactPerson: row.contactPerson,
                                 attributeValues:[
                                     {   value:row.attributeValue,
                                         attribute:{
