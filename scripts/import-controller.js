@@ -1327,6 +1327,7 @@ excelImport
                             dataValue.period = row.isoPeriod;
                             dataValue.value = row.dataValue;
                             dataValue.storedBy = row.storedBy;
+                            dataValue.created = row.created;
                             dataValue.lastUpdated = row.lastUpdated;
                             dataValues.push(dataValue);
 
