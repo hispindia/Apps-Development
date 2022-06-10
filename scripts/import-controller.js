@@ -1257,6 +1257,67 @@ excelImport
                         });
                     }
 
+                    else if( sheetName === 'dataValueSetOrgUnitColumn' ){
+                        let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        //let json_object = JSON.stringify(XL_row_object);
+                        let objectKeys = Object.keys(XL_row_object["0"]);
+                        console.log("objectKeys : " + objectKeys );
+                        //let importCount = 1;
+                        //let str = '2022-01-01';
+                        //let res = str.replace(/-/g, "");
+                        //res = 20220101
+                        let dataValues = [];
+                        //XL_row_object.forEach(row => {
+                        for(let row = 0; row < XL_row_object.length; row++) {
+                            for (let i = 3; i < objectKeys.length; i++) {
+                                let dataValue = {};
+                                if (XL_row_object[row][objectKeys[i]] !== undefined && XL_row_object[row][objectKeys[i]] !== "") {
+                                    dataValue.dataElement = XL_row_object[row][objectKeys[0]];
+                                    dataValue.categoryOptionCombo = XL_row_object[row][objectKeys[1]];
+                                    dataValue.period = XL_row_object[row][objectKeys[2]];
+                                    dataValue.orgUnit = objectKeys[i];
+                                    dataValue.value = XL_row_object[row][objectKeys[i]];
+                                    dataValues.push(dataValue);
+                                }
+                            }
+                        }
+                        let dataValueSet = {};
+                        dataValueSet.dataValues = dataValues;
+                        console.log( " final dataValues length : " + dataValues.length + " final dataValueSet length : " + dataValueSet.length);
+                        console.log(" final dataValueSet : " + JSON.stringify(dataValueSet) );
+                        let dataJSON = JSON.stringify(dataValueSet);
+
+                        $.ajax({
+                            type: "POST",
+                            async: false,
+                            dataType: "json",
+                            contentType: "application/json",
+                            data: dataJSON,
+                            url: '../../dataValueSets',
+
+                            success: function (response) {
+                                //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+
+                                console.log("response : " + response);
+                                console.log("conflicts : " + response.conflicts);
+
+                                let impCount = response.importCount.imported;
+                                let upCount = response.importCount.updated;
+                                let igCount = response.importCount.ignored;
+                                let conflictsDetails   = response.conflicts;
+
+                                console.log(  "impCount - " + impCount + " upCount - " + upCount + " igCount - " + igCount + " conflictsDetails - " + conflictsDetails  );
+                            },
+                            error: function (response) {
+                                console.log("error : " + response.conflicts );
+                            },
+                            warning: function (response) {
+                                console.log("warning : " + response.conflicts );
+                            }
+                        });
+
+                    }
+
                     // dataValueSet post
                     else if( sheetName === 'dataValueSet' ){
                         let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
