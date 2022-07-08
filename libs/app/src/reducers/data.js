@@ -41,6 +41,7 @@ import {
     AGGREGATION_ON_PROGRESS,
     COMPLETED_CLICKED,
     RESET_SAMPLE_PANEL_EVENT,
+    SET_INITIAL_PROGRAM
 } from '../actions/types'
 
 const INITIAL_EVENT = {
@@ -90,6 +91,13 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
             ...state,
             previousValues: payload.entity
         }
+        case SET_INITIAL_PROGRAM:
+            return {
+                ...state,
+                panel: {
+                    defaultProgram:payload
+                },
+            }
         // case SET_PREVALUE:
         //     return {
         //         ...state,
@@ -266,7 +274,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                     programStage: '',
                     organism: '',
                     sampleDate: '',
-                    defaultProgram: SAMPLE_TESTING_PROGRAM,
+                    defaultProgram: state.panel.defaultProgram,
                     valid: false,
                 },
                 event: INITIAL_EVENT,

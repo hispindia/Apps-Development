@@ -26,7 +26,8 @@ import {
     PAGE_FIRST,
     COMPLETED_CLICKED,
     INCOMPLETED_CLICKED,
-    RESET_SAMPLE_PANEL_EVENT
+    RESET_SAMPLE_PANEL_EVENT,
+    SET_INITIAL_PROGRAM
 } from '../types'
 import { deleteEvent } from '@hisp-amr/api'
 
@@ -49,6 +50,8 @@ export const enableButtons = () => dispatch =>dispatch(createAction(ENABLE_BUTTO
 export const AddAndSubmit = val => dispatch =>dispatch(createAction(REMOVE_BUTTONS, val))
 export const setButtonLoading = payload => dispatch =>dispatch(createAction(SET_BUTTONS, payload))
 export const addExistingEvent = payload => dispatch =>dispatch(createAction(SET_EVENT, payload))
+export const addSelectedProgramOfOrgUnits = payload => dispatch =>dispatch(createAction(SET_INITIAL_PROGRAM, payload))
+
 // export const PreValue = payload => dispatch=> dispatch(createAction(SET_PREVALUE, payload))
 export const initNewEvent = orgUnit => (dispatch, getState) => {
     const entityMetadata = getState().metadata.person

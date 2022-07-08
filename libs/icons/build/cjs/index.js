@@ -5,26 +5,26 @@ Object.defineProperty(exports, "__esModule", {
 });
 Object.defineProperty(exports, "Icon", {
   enumerable: true,
-  get: function get() {
+  get: function () {
     return _Icon.Icon;
   }
 });
 Object.defineProperty(exports, "LoadingIcon", {
   enumerable: true,
-  get: function get() {
+  get: function () {
     return _LoadingIcon.LoadingIcon;
-  }
-});
-Object.defineProperty(exports, "icons", {
-  enumerable: true,
-  get: function get() {
-    return _icons.icons;
   }
 });
 Object.defineProperty(exports, "colors", {
   enumerable: true,
-  get: function get() {
+  get: function () {
     return _colors.colors;
+  }
+});
+Object.defineProperty(exports, "icons", {
+  enumerable: true,
+  get: function () {
+    return _icons.icons;
   }
 });
 

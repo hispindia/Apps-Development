@@ -44,6 +44,7 @@
         "@hisp-amr/icons": "*",
         "@hisp-amr/inputs": "*",
         "@hisp-amr/org-unit-tree": "*",
+        "antd": "^4.21.5",
         "jquery": "^3.4.1",
         "react": "^16.9.0",
         "react-bootstrap-sweetalert": "^5.1.9",
