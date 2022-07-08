@@ -51,8 +51,10 @@
         "source-map-explorer": "^2.0.1"
     },
     "dependencies": {
+        "antd": "^4.21.0",
         "axios": "^0.21.1",
         "cross-env": "^7.0.0",
+        "flag": "^5.0.1",
         "sync-request": "^6.1.0"
     }
 }
