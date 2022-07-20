@@ -30,6 +30,8 @@ import {
 } from '../../api/helpers/aggregate'
 import { deleteEvent } from '@hisp-amr/api'
 import SweetAlert from 'react-bootstrap-sweetalert';
+import EventPrint from "./Entity/EventPrint";
+
 export const EventForm = ({ history, match }) => {
     const [isFirstRender, setIsFirstRender] = useState(true)
     const dispatch = useDispatch()
@@ -47,8 +49,18 @@ export const EventForm = ({ history, match }) => {
     const previousValues = useSelector(state => state.data.previousValues)
     var aggregationOnProgress = useSelector(state => state.data.aggregationOnProgress)
     var { sampleDate } = useSelector(state => state.data.panel)
+    var clinicianPsList = useSelector((state) => state.metadata.clinicianPsList);
+     var [dialog, setDialog] = useState(false);
+
     var orgUnit = match.params.orgUnit
     const teiId = match.params.teiId;
+    const onPrint = (check) => {
+        if (!check) {
+          setDialog(check);
+        } else {
+          setDialog(true);
+        }
+      };
     useEffect(() => {
         if( pageFirst ){
             $("#a").hide();
@@ -132,6 +144,7 @@ export const EventForm = ({ history, match }) => {
    const onConfirm=async(e)=>{
         e.preventDefault();
         let eventID =localStorage.getItem('eventId')
+
         let res = await Aggregate(
             {
                 event: event,
@@ -187,7 +200,7 @@ export const EventForm = ({ history, match }) => {
                 closeAnim={{ name: 'hideSweetAlert', duration: 2000 }}
                 customButtons={
                     <React.Fragment>
-                         <EventButtons history={history} existingEvent={teiId} />&emsp;&emsp;&emsp;&emsp;&emsp;
+                         <EventButtons history={history} existingEvent={teiId} />&emsp;&emsp;&emsp;&emsp;&emsp;                         
                         <div id="btn">
                         <Button  destructive={true} onClick={(e)=>onDelete(e)}>Delete</Button>&emsp;&emsp;&emsp;&emsp;&emsp;
                         </div>
@@ -204,6 +217,12 @@ export const EventForm = ({ history, match }) => {
                 <Event />
                 <EventButtons history={history} existingEvent={teiId} />
                 </div>}
+                {dialog && (
+                <div id="btn">
+                    <EventPrint onPrint={onPrint} />
+
+                </div>
+                )}
             </form>
             <div id="msg">
             <SweetAlert
