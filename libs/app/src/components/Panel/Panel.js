@@ -13,6 +13,8 @@ import { PanelButtons } from './PanelButtons'
 export const Panel = ({ showEdit }) => {
     const entityValid = useSelector(state => state.data.entity.valid)
     const editable = useSelector(state => state.data.editable)
+    const previousValues  = useSelector(state => state.data.previousValues)
+
     const dispatch = useDispatch()
     const { stageLists } = useSelector(state => state.metadata)
     const {
@@ -29,10 +31,8 @@ export const Panel = ({ showEdit }) => {
     /**
      * Called when a new program is selected.
      */
-    const onProgramChange = async (name, value) =>{
-        dispatch(setProgram(value))
-    }
-
+    const onProgramChange = async (name, value) =>dispatch(setProgram(value))
+    
     /**
      * Called when something other than program is changed
      */
