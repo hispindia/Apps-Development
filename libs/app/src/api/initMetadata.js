@@ -219,7 +219,6 @@ export const initMetadata = async isIsolate => {
     const programList = []
     const stageLists = {}
     const programOrganisms = {}
-    var clinicianPsList = []
     programs.forEach(p => {
         programList.push({
             value: p.id,
@@ -238,9 +237,6 @@ export const initMetadata = async isIsolate => {
                     value: ps.id,
                     label: ps.displayName,
                 })
-                if (ps.displayName.toLowerCase().includes("clinician")) {
-                    clinicianPsList.push(ps.id)
-                }
                 ps.dataElements = {}
                 ps.programStageDataElements.forEach(
                     d =>
@@ -389,7 +385,6 @@ export const initMetadata = async isIsolate => {
         orgUnits,
         user,
         eventRules,
-        calculatedVariables,
-        clinicianPsList
+        calculatedVariables
     }
 }

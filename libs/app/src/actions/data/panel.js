@@ -34,15 +34,13 @@ export const setProgram = program => (dispatch, getState) => {
             organisms.sort(dynamicSort("label"))
         }
     })
-    const programStage =
-        stageLists[program].length > 1 ? '' : stageLists[program][0].value
-    let valueShow = false 
-    if(val && sampleDate){
-        if(Object.keys(val).length>0){
-            valueShow = true
+    const programStage = stageLists[program].length > 1 ? '' : stageLists[program][0].value
+        let valueShow = false 
+        if(val && sampleDate){
+            if(Object.keys(val).length>0){
+                valueShow = true
+            }
         }
-    }
-    
     dispatch(
         createAction(SET_PANEL, {
             program,
@@ -63,16 +61,33 @@ export const setPanelValue = (key, value) => (dispatch, getState) => {
         organisms,
         sampleDate,
     } = getState().data.panel
-    const values = { program, programStage, sampleDate }
-    if (values[key] === value) return
-    const valid = !Object.values({ ...values, [key]: value }).includes('')
-    dispatch(
-        createAction(SET_PANEL_VALUE, {
-            key,
-            value,
-            valid,
-        })
-    )
+    // var isPresentOrganism= false;
+    const previousValues = getState().data.previousValues;
+    if(Object.keys(previousValues).length>0){
+        // previousValues = true
+      const values = { program, programStage, organism, sampleDate }
+      if (values[key] === value) return
+      const valid = !Object.values({ ...values, [key]: value }).includes('')
+      dispatch(
+          createAction(SET_PANEL_VALUE, {
+              key,
+              value,
+              valid,
+          })
+      )
+    }else{
+        const values = { program, programStage, sampleDate }
+        if (values[key] === value) return
+        const valid = !Object.values({ ...values, [key]: value }).includes('')
+        dispatch(
+            createAction(SET_PANEL_VALUE, {
+                key,
+                value,
+                valid,
+            })
+        )
+    }
+
 }
 
 export const resetPanel = () => dispatch => dispatch(createAction(RESET_PANEL))

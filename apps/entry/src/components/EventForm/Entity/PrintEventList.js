@@ -302,7 +302,7 @@ export default function EventListPrint(props) {
             <span
               style={{
                 padding: "15px",
-                marginLeft: "100px",
+                marginLeft: "10px",
                 marginRight: "150px",
                 fontWeight: "bold",
               }}

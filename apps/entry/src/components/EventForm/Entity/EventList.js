@@ -8,19 +8,9 @@ import './main.css'
 import $ from "jquery"
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { deleteTEI, deleteEvent } from '@hisp-amr/api'
-import {
-    SAMPLE_TYPEID,
-    COMPLETED,
-    PATHOGEN_ID,
-    SAMPLE_RESULT_ID,
-    PATHOGEN_DETECTED,
-    LOCATION_ID,
-    LAB,
-    SAMPLE,
-  } from "./constants";
-  
+
 import {Aggregate} from '../../../api/helpers/aggregate'
-import EventListPrint from "./EventListPrint";
+import EventListPrint from "./PrintEventList";
 
 const Events = ({match, history }) => {
     var data = [];
@@ -28,28 +18,18 @@ const Events = ({match, history }) => {
     var metadata = useSelector(state => state.metadata);
     var events = useSelector(state => state.data.eventList);
     var programs = useSelector(state => state.metadata.programs);
+    var [dialog, setDialog] = useState(false);
     var teiId = match.params.teiId
     var orgUnit = match.params.orgUnit
     const categoryCombos = useSelector(state=> state.metadata.categoryCombos)
     const dataElementObjects = useSelector(state=> state.metadata.dataElementObjects)
     const dataSets = useSelector(state=>state.metadata.dataSets)
     var aggregationOnProgress = useSelector(state => state.data.aggregationOnProgress)
-    var clinicianPsList = useSelector((state) => state.metadata.clinicianPsList);
-    var userAccess = false;
-    const { programOrganisms, optionSets } = useSelector(
-        (state) => state.metadata
-      );
-    var [dialog, setDialog] = useState(false);
-    var [eventShow, setEventShow] = useState([]);
-    var [eventCliShow, setEventCliShow] = useState([]);
-    var [showReport, setShowReport] = useState(false);
-    
-      programs.forEach((p) => {
-        p.programStages.forEach((ps) => {
-          userAccess = ps.access.data.write;
-        });
+
+    useEffect(() => {
+        $("#msg1").hide();
+        $('#succes1').hide();
       });
-    
       const onPrint = (check) => {
         if (!check) {
           setDialog(check);
@@ -57,136 +37,6 @@ const Events = ({match, history }) => {
           setDialog(true);
         }
       };
-      useEffect(() => {
-        $("#msg1").hide();
-        $('#succes1').hide();
-      });
-      useEffect(() => {
-        const eveValue = () => {
-          var eventL = [];
-          if (events != undefined) {
-            const v = events.map((ele, index) => {
-              if (!clinicianPsList.includes(ele.programStage)) {
-                if (ele.status == COMPLETED) {
-                  var proId = ele.program;
-                  var name = [],
-                    dataValue = [],
-                    data = [],
-                    date = [];
-                  var listorganisms = [];
-                  var orgValue = [];
-                  var orgn = "";
-                  var sampleVal = [];
-                  //date['value'] =  JSON.stringify(new Date(ele.eventDate)).slice(1,11);
-                  date["value"] = ele.eventDate.substring(0, 10);
-                  for (let program of programs) {
-                    if (program.id == proId) {
-                      name["value"] = program.name;
-                      optionSets[programOrganisms[program.id]].forEach((o) => {
-                        if (!listorganisms.find((org) => org.value === o.value))
-                          listorganisms.push(o);
-                      });
-                    }
-                  }
-    
-                  for (let value of ele.dataValues) {
-                    if (value.dataElement === PATHOGEN_ID || value.dataElement === SAMPLE_RESULT_ID) {
-                      // id of organism detected data element in sample testing
-    
-                      if (listorganisms.length > 0) {
-                        orgn = listorganisms.find((element) => {
-                          return element.value == value.value;
-                        });
-                        if (orgn) {
-                          value.value = orgn.label;
-                        }
-                      }
-                      orgValue["value"] = value.value;
-                      dataValue["4"] = orgValue;
-                    }
-                    dataValue["5"] = date;
-                  }
-                  if (dataValue["4"]) {
-                    if (dataValue["4"].value !== PATHOGEN_DETECTED) {
-                      data = dataValue;
-                      eventL.push(ele.event);
-                      setShowReport(true);
-                    }
-                  }
-                }
-              }
-            });
-            if (eventL.length != 0) {
-              setEventShow([...eventShow, eventL]);
-            }
-            return v;
-          }
-        };
-    
-        const eveCliValue = () => {
-          var eventClini = [];
-          if (events != undefined) {
-            const v = events.map((ele, index) => {
-              if (clinicianPsList.includes(ele.programStage)) {
-                var proId = ele.program;
-                var name = [],
-                  dataValue = [],
-                  data = [],
-                  date = [];
-                var listorganisms = [];
-                var orgValue = [];
-                var orgn = "";
-                var sampleVal = [];
-                //date['value'] =  JSON.stringify(new Date(ele.eventDate)).slice(1,11);
-                date["value"] = ele.eventDate.substring(0, 10);
-                for (let program of programs) {
-                  if (program.id == proId) {
-                    name["value"] = program.name;
-                    optionSets[programOrganisms[program.id]].forEach((o) => {
-                      if (!listorganisms.find((org) => org.value === o.value))
-                        listorganisms.push(o);
-                    });
-                  }
-                }
-    
-                for (let value of ele.dataValues) {
-                  //if ( value.dataElement === PATHOGEN_ID || value.dataElement === SAMPLE_RESULT_ID) {
-                    // id of organism detected data element in sample testing
-    
-                    if (listorganisms.length > 0) {
-                      orgn = listorganisms.find((element) => {
-                        return element.value === value.value;
-                      });
-                      if (orgn) {
-                        value.value = orgn.label;
-                      }
-                    }
-                    orgValue["value"] = value.value;
-                    dataValue["4"] = orgValue;
-                  //}
-                  dataValue["5"] = date;
-                }
-                if (dataValue["4"]) {
-                    if (dataValue["4"].value !== PATHOGEN_DETECTED) {
-                        data = dataValue;
-                        eventClini.push(ele.event);
-                      }
-                }
-             
-              }
-            });
-    
-            if (eventClini.length !== 0) {
-              setEventCliShow([...eventCliShow, eventClini]);
-            }
-            return v;
-          }
-        };
-    
-        eveValue();
-        eveCliValue();
-      }, [events]);
-    
       const onConfirm= async (e)=>{
         e.preventDefault();
 
@@ -333,16 +183,15 @@ const Events = ({match, history }) => {
     return (
             <CardSection heading="Event List">
                 <div  className="btn">
-                <Button destructive={true} onClick={() => OnDelete()}>Delete Record</Button>&nbsp;&nbsp;&nbsp;
-                <Button primary={true} onClick={onPrint} disabled={showReport}>Report</Button>&nbsp;&nbsp;&nbsp;
+                <Button primary={true} onClick={onPrint}>Report</Button>&nbsp;&nbsp;&nbsp;
                 <Button primary={true} onClick={() => onAddClick()}>Add Sample</Button>&nbsp;&nbsp;&nbsp;
+                <Button destructive={true} onClick={() => OnDelete()}>Delete Record</Button>&nbsp;&nbsp;&nbsp;
                 {dialog && (
                     <div id="btn">
                           <EventListPrint onPrint={onPrint}  />
                     </div>
                     )}
                  </div>
-               
                 <div className='sidebar'>
                     <Table>
                     <TableRow>

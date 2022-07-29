@@ -28,7 +28,6 @@ import {
     INCOMPLETED_CLICKED,
     RESET_SAMPLE_PANEL_EVENT,
     LOAD_DATAELEMENTS
-
 } from '../types'
 import { deleteEvent } from '@hisp-amr/api'
 
@@ -38,7 +37,8 @@ import {
     setEventStatus,
     updateEventValue,
     isDuplicateRecord,
-    existingRecordTei
+    existingRecordTei,
+    
 } from 'api'
 import { entityRules, eventRules, getRules } from 'helpers'
 import { DUPLICATE_CHECKING } from 'constants/duplicacy'
@@ -52,6 +52,9 @@ export const AddAndSubmit = val => dispatch =>dispatch(createAction(REMOVE_BUTTO
 export const setButtonLoading = payload => dispatch =>dispatch(createAction(SET_BUTTONS, payload))
 export const addExistingEvent = payload => dispatch =>dispatch(createAction(SET_EVENT, payload))
 export const setDataELments = payload => dispatch=> dispatch(createAction(LOAD_DATAELEMENTS, payload))
+
+// export const addSelectedProgramOfOrgUnits = payload => dispatch =>dispatch(createAction(SET_INITIAL_PROGRAM, payload)
+// export const PreValue = payload => dispatch=> dispatch(createAction(SET_PREVALUE, payload))
 export const initNewEvent = orgUnit => (dispatch, getState) => {
     const entityMetadata = getState().metadata.person
     const optionSets = getState().metadata.optionSets

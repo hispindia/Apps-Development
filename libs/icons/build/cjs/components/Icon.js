@@ -15,10 +15,12 @@ var _StyledSvg = require("./StyledSvg");
 
 var _propTypes2 = require("../propTypes");
 
-var Icon = function Icon(_ref) {
-  var icon = _ref.icon,
-      color = _ref.color,
-      size = _ref.size;
+const Icon = _ref => {
+  let {
+    icon,
+    color,
+    size
+  } = _ref;
   return /*#__PURE__*/_react.default.createElement(_StyledSvg.StyledSvg, {
     xmlns: "http://www.w3.org/2000/svg",
     viewBox: "0 0 24 24",

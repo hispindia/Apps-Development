@@ -11,11 +11,7 @@ var _colors = require("./colors");
 
 var _icons = require("./icons");
 
-var colorsPropType = (0, _propTypes.oneOf)(Object.keys(_colors.colors).map(function (key) {
-  return _colors.colors[key];
-}));
+const colorsPropType = (0, _propTypes.oneOf)(Object.keys(_colors.colors).map(key => _colors.colors[key]));
 exports.colorsPropType = colorsPropType;
-var iconsPropType = (0, _propTypes.oneOf)(Object.keys(_icons.icons).map(function (key) {
-  return _icons.icons[key];
-}));
+const iconsPropType = (0, _propTypes.oneOf)(Object.keys(_icons.icons).map(key => _icons.icons[key]));
 exports.iconsPropType = iconsPropType;

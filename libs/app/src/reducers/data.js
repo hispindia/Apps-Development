@@ -92,20 +92,27 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
             ...state,
             previousValues: payload.entity
         }
+        // case SET_INITIAL_PROGRAM:
+        //     return {
+        //         ...state,
+        //         panel: {
+        //             defaultProgram:payload
+        //         },
+        //     }
         // case SET_PREVALUE:
         //     return {
         //         ...state,
         //         preValues: payload
         //     }
+        case LOAD_DATAELEMENTS:
+            return {
+                ...state,
+                dataElements: payload
+           }
             case RESET_PREVIOUS_ENTITY:
                 return {
                     ...state,
                     previousValues: {}
-                }
-            case LOAD_DATAELEMENTS:
-                    return {
-                        ...state,
-                        dataElements: payload
                 }
         case ADD_ENTITY:
             return {
@@ -205,7 +212,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                     programStage: '',
                     organism: '',
                     sampleDate: state.panel.sampleDate,
-                    valid: true,
+                    valid: false,
                     completeClicked:false,
                 },
             }
@@ -218,7 +225,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                     programStage: '',
                     organism: '',
                     sampleDate:state.panel.sampleDate,
-                    valid: true,
+                    valid: false,
                 },
                 event: INITIAL_EVENT,
                 buttonsDisabled: false,
@@ -274,7 +281,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                     organism: '',
                     sampleDate: state.panel.sampleDate,
                     defaultProgram: SAMPLE_TESTING_PROGRAM,
-                    valid: true,
+                    valid: false,
                 },
                 event: INITIAL_EVENT,
                 buttonLoading: false,

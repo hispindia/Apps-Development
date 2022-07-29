@@ -24,14 +24,14 @@ import {
 import { Entity } from './Entity'
 import { EventButtons } from './EventButtons'
 import Events from './Entity/EventList'
+import EventPrint from './Entity/EventPrint'
+
 import $ from "jquery"
 import {
     Aggregate
 } from '../../api/helpers/aggregate'
 import { deleteEvent } from '@hisp-amr/api'
 import SweetAlert from 'react-bootstrap-sweetalert';
-import EventPrint from "./Entity/EventPrint";
-
 export const EventForm = ({ history, match }) => {
     const [isFirstRender, setIsFirstRender] = useState(true)
     const dispatch = useDispatch()
@@ -49,11 +49,10 @@ export const EventForm = ({ history, match }) => {
     const previousValues = useSelector(state => state.data.previousValues)
     var aggregationOnProgress = useSelector(state => state.data.aggregationOnProgress)
     var { sampleDate } = useSelector(state => state.data.panel)
-    var clinicianPsList = useSelector((state) => state.metadata.clinicianPsList);
-     var [dialog, setDialog] = useState(false);
-
     var orgUnit = match.params.orgUnit
     const teiId = match.params.teiId;
+    var [dialog, setDialog] = useState(false);
+    var showReport = false;
     const onPrint = (check) => {
         if (!check) {
           setDialog(check);
@@ -96,6 +95,7 @@ export const EventForm = ({ history, match }) => {
         // dispatch(PreValue(previousValues))
         if (eventIDs && editable) {
             var isPrev = true
+            showReport = true
             for (let eventValues in previousValues) {
                     if (event["values"][eventValues] == "") {
                         dispatch(setEventValue(eventValues, previousValues[eventValues],isPrev))
@@ -144,7 +144,6 @@ export const EventForm = ({ history, match }) => {
    const onConfirm=async(e)=>{
         e.preventDefault();
         let eventID =localStorage.getItem('eventId')
-
         let res = await Aggregate(
             {
                 event: event,
@@ -200,8 +199,9 @@ export const EventForm = ({ history, match }) => {
                 closeAnim={{ name: 'hideSweetAlert', duration: 2000 }}
                 customButtons={
                     <React.Fragment>
-                         <EventButtons history={history} existingEvent={teiId} />&emsp;&emsp;&emsp;&emsp;&emsp;                         
+                         <EventButtons history={history} existingEvent={teiId} />&emsp;&emsp;&emsp;&emsp;&emsp;
                         <div id="btn">
+                            { showReport ? <Button primary={true} onClick={onPrint}> Report </Button>:""}&nbsp;&nbsp;&nbsp;
                         <Button  destructive={true} onClick={(e)=>onDelete(e)}>Delete</Button>&emsp;&emsp;&emsp;&emsp;&emsp;
                         </div>
                       <Button onClick={(e)=>onCancel(e)}>Cancel</Button>
@@ -217,13 +217,13 @@ export const EventForm = ({ history, match }) => {
                 <Event />
                 <EventButtons history={history} existingEvent={teiId} />
                 </div>}
-                {dialog && (
-                <div id="btn">
-                    <EventPrint onPrint={onPrint} />
-
-                </div>
-                )}
             </form>
+                  {dialog && (
+                    <div id="btn">
+                          <EventPrint onPrint={onPrint}  />
+                    </div>
+                    )}
+                 
             <div id="msg">
             <SweetAlert
                 warning
