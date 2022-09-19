@@ -123,7 +123,9 @@ export default function EventListPrint(props) {
         let val = parseInt(ele.value)
         let isNumber = Number.isInteger(val)
          if(!isNumber){
-          oarr.push(ele)
+          if(ele.id != "DeFdBFxsFcj" && ele.id != "tQa6uU1t6s3" && ele.id != "YoCmEMUlZxb"){
+            oarr.push(ele)
+          }
          }
        }
       obj["dataValue"] = oarr;
