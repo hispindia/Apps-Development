@@ -44,9 +44,16 @@
         "@hisp-amr/icons": "*",
         "@hisp-amr/inputs": "*",
         "@hisp-amr/org-unit-tree": "*",
+        "@mui/material": "^5.2.7",
+        "@mui/styles": "^5.2.3",
         "jquery": "^3.4.1",
+        "antd": "^4.15.2",
+        "material-design-icons": "^3.0.1",
         "react": "^16.9.0",
         "react-bootstrap-sweetalert": "^5.1.9",
-        "react-dom": "^16.9.0"
+        "react-dom": "^16.9.0",
+        "react-to-print": "^2.14.3",
+        "@emotion/react": "^11.7.1",
+        "@emotion/styled": "^11.6.0"
     }
 }

@@ -1,15 +1,18 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+
 import {
     MainSection,
     LoadingSection,
     TitleRow,
     RichButton,
+    setDataELments
 } from '@hisp-amr/app'
+
 import { Table } from './Table'
 import { useEvents } from './useEvents'
 import { icmr, tanda } from 'config'
-
+import {DataElements} from '../../api/dataElements'
 if (!process.env.REACT_APP_DHIS2_TABLE_CONFIG)
     throw new Error(
         'The environment variable REACT_APP_DHIS2_TABLE_CONFIG must be set'
@@ -29,8 +32,17 @@ const title = {
  */
 export const EventOverview = ({ match, history }) => {
     const status = match.params.status
+    const dispatch = useDispatch()
     const selected = useSelector(state => state.selectedOrgUnit)
     const { rows, loading, addButtonDisabled, error } = useEvents(status)
+    useEffect(() => {
+        DataElements.loadDataElements().then(res =>{
+            dispatch(setDataELments(res.dataElements));
+        })
+    })
+
+
+
 
     /**
      * Called when table row is clicked.

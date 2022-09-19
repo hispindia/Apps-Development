@@ -1,6 +1,5 @@
 import { get } from '@hisp-amr/api'
 import axios from 'axios'
-
 export const getTEI = async orgUnit => {
     var teiRows = []
     var tracklist = []
@@ -27,9 +26,11 @@ export const getTEI = async orgUnit => {
     let api3 = '../../../api/29/sqlViews/gxov92xU7S7/data.json&paging=false' // Local Db
     let api4 = '../../../api/sqlViews/WKhh3qxwcPW/data.json?paging=false' // Baseline DB
 
+    let apiForProgram = '../../../api/organisationUnits/'+orgUnit+'.json?fields=id,name,programs[id,name]&paging=false' // loading program for the ou
+
     const requestOne = axios.get(api1);
     const requestThree = axios.get(api4);
-
+    
    return axios
   .all([requestOne, requestThree])
   .then(

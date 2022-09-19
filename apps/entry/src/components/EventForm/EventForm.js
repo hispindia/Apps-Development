@@ -24,6 +24,8 @@ import {
 import { Entity } from './Entity'
 import { EventButtons } from './EventButtons'
 import Events from './Entity/EventList'
+import EventPrint from './Entity/EventPrint'
+
 import $ from "jquery"
 import {
     Aggregate
@@ -49,6 +51,15 @@ export const EventForm = ({ history, match }) => {
     var { sampleDate } = useSelector(state => state.data.panel)
     var orgUnit = match.params.orgUnit
     const teiId = match.params.teiId;
+    var [dialog, setDialog] = useState(false);
+    var showReport = false;
+    const onPrint = (check) => {
+        if (!check) {
+          setDialog(check);
+        } else {
+          setDialog(true);
+        }
+      };
     useEffect(() => {
         if( pageFirst ){
             $("#a").hide();
@@ -84,6 +95,7 @@ export const EventForm = ({ history, match }) => {
         // dispatch(PreValue(previousValues))
         if (eventIDs && editable) {
             var isPrev = true
+            showReport = true
             for (let eventValues in previousValues) {
                     if (event["values"][eventValues] == "") {
                         dispatch(setEventValue(eventValues, previousValues[eventValues],isPrev))
@@ -189,6 +201,7 @@ export const EventForm = ({ history, match }) => {
                     <React.Fragment>
                          <EventButtons history={history} existingEvent={teiId} />&emsp;&emsp;&emsp;&emsp;&emsp;
                         <div id="btn">
+                            { showReport ? <Button primary={true} onClick={onPrint}> Report </Button>:""}&nbsp;&nbsp;&nbsp;
                         <Button  destructive={true} onClick={(e)=>onDelete(e)}>Delete</Button>&emsp;&emsp;&emsp;&emsp;&emsp;
                         </div>
                       <Button onClick={(e)=>onCancel(e)}>Cancel</Button>
@@ -205,6 +218,12 @@ export const EventForm = ({ history, match }) => {
                 <EventButtons history={history} existingEvent={teiId} />
                 </div>}
             </form>
+                  {dialog && (
+                    <div id="btn">
+                          <EventPrint onPrint={onPrint}  />
+                    </div>
+                    )}
+                 
             <div id="msg">
             <SweetAlert
                 warning
