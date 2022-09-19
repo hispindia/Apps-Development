@@ -54,13 +54,15 @@ export default function EventListPrint(props) {
     (state) => state.metadata.dataElementObjects
   );
   var eventsList = useSelector((state) => state.data.eventList);
-  const dataElements = useSelector((state) => state.data.dataElements);
+  var tempDataElements = useSelector((state) => state.data.dataElements);
+  //console.log( "gayn DE List " + tempDataElements);
+  //console.log( "gayn Event List " + eventsList);
   let eventL = [];
-  let dateElements = Object.values(dataElementObjects);
-  let completeEvent = eventsList.filter((ev) => ev.program != "L7bu48EI54J");
+  let metaDataDataElement = Object.values(dataElementObjects);
+  let completeEvent = eventsList.filter((ev) => ev.program !== "L7bu48EI54J");
   let registrationDate={"Reg Date":""}
   completeEvent.forEach((event) => {
-    if (event.status == "COMPLETED") {
+    if (event.status === "COMPLETED") {
       let obj = {
         "Hospital department": "",
         "Lab ID": "",
@@ -78,43 +80,52 @@ export default function EventListPrint(props) {
       registrationDate["Reg Date"]= event.created.split("T")[0]
       // obj["program"] = program[0].name;
       event.dataValues.forEach((dv) => {
-        let deObj = dateElements.filter((de) => {
-          if (de.id == dv.dataElement) {
+        let deObj = metaDataDataElement.filter((de) => {
+          if (de.id === dv.dataElement) {
               de["value"] = dv.value;
               return de;
           }
         });
         if (
-          deObj[0].id != "B7XuDaXPv10" &&
-          deObj[0].id != "GpAu5HjWAEz" &&
-          deObj[0].id != "mp5MeJ2dFQz" &&
-          deObj[0].id != "dRKIjwIDab4" &&
-          deObj[0].id != "SaQe2REkGVw" &&
-          deObj[0].id != "dRKIjwIDab4" &&
-          deObj[0].id != "lIkk661BLpG"
+          deObj[0].id !== "B7XuDaXPv10" &&
+          deObj[0].id !== "GpAu5HjWAEz" &&
+          deObj[0].id !== "mp5MeJ2dFQz" &&
+          deObj[0].id !== "dRKIjwIDab4" &&
+          deObj[0].id !== "SaQe2REkGVw" &&
+          deObj[0].id !== "dRKIjwIDab4" &&
+          deObj[0].id !== "lIkk661BLpG"
         ) {
           arr.push(deObj[0]);
         }
-        if (dv.dataElement == "B7XuDaXPv10") {
+        if (dv.dataElement === "B7XuDaXPv10") {
           obj["Patient Location"] = dv.value;
         }
-        if (dv.dataElement == "dRKIjwIDab4") {
+        if (dv.dataElement === "dRKIjwIDab4") {
           obj["Hospital department"] = dv.value;
         }
-        if (dv.dataElement == "GpAu5HjWAEz") {
+        if (dv.dataElement === "GpAu5HjWAEz") {
           obj["Lab ID"] = dv.value;
         }
-        if (dv.dataElement == "mp5MeJ2dFQz") {
+        if (dv.dataElement === "mp5MeJ2dFQz") {
           obj["Sample type"] = dv.value;
         }
-        if (dv.dataElement == "dRKIjwIDab4") {
+        if (dv.dataElement === "dRKIjwIDab4") {
           obj["Hospital department"] = dv.value;
         }
-        if (dv.dataElement == "SaQe2REkGVw") {
-            let dele= dataElements.filter(de=>de.code == dv.value)
-          obj["Organism"] = dele[0].name;
+        if (dv.dataElement === "SaQe2REkGVw") {
+            // tempDataElements.forEach(de => {
+            //     if(de.code !== undefined && de.code === dv.value){
+            //       obj["Organism"] = de.name;
+            //     }
+            //     else{
+            //       obj["Organism"] = dv.value;
+            //     }
+            //   })
+            let tempDeName= tempDataElements.filter(de=> de.code === dv.value)
+              obj["Organism"] = tempDeName[0].name;
+              //obj["Organism"] = dv.value;
         }
-        if (dv.dataElement == "lIkk661BLpG") {
+        if (dv.dataElement === "lIkk661BLpG") {
           obj["AMR ID"] = dv.value;
         }
       });
@@ -123,7 +134,7 @@ export default function EventListPrint(props) {
         let val = parseInt(ele.value)
         let isNumber = Number.isInteger(val)
          if(!isNumber){
-          if(ele.id != "DeFdBFxsFcj" && ele.id != "tQa6uU1t6s3" && ele.id != "YoCmEMUlZxb"){
+          if(ele.id !== "DeFdBFxsFcj" && ele.id !== "tQa6uU1t6s3" && ele.id !== "YoCmEMUlZxb"){
             oarr.push(ele)
           }
          }
