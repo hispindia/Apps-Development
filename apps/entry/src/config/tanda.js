@@ -11,7 +11,8 @@ export const tanda = {
             name: 'Name of the Patient',
         },
         {
-            name: 'Ward',
+            //name: 'Ward',
+            name : 'Location',
         },
         {
             name: 'Age',
@@ -29,15 +30,15 @@ export const tanda = {
         {
             name: 'Tracked Entity Instance ID',
             options: { display: false },
-    },
-                {
+        },
+        {
             name: 'Sample Collection Date',
-    },
-                                {
-            name: 'Sample Type',
         },
-                                                                {
-            name: 'Lab ID',
+        {
+        name: 'Sample Type',
         },
-    ],
+        {
+        name: 'Lab ID',
+        },
+    ]
 }

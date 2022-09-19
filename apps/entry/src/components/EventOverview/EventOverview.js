@@ -43,13 +43,17 @@ export const EventOverview = ({ match, history }) => {
                 label: "Sample Testing"
             }]
             dispatch(addSelectedProgramOfOrgUnits(sampleProgram))
-           } 
+           }
+        else{
+               let sampleProgram = [{
+                   value: "L7bu48EI54J",
+                   label: "Sample Testing"
+               }]
+               dispatch(addSelectedProgramOfOrgUnits(sampleProgram))
+           }
         })
         
     })
-
-
-
 
     /**
      * Called when table row is clicked.
