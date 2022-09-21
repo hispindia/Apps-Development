@@ -326,10 +326,83 @@ excelImport
                         });
 
                     }
+                    // for update TEI attribute value
+                    else if( sheetName === 'teiAttributeValueUpdate' ){
+                        let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        let json_object = JSON.stringify(XL_row_object);
+                        let objectKeys = Object.keys(XL_row_object["0"]);
+                        let importCount = 1;
+                        for(let row = 0; row < XL_row_object.length; row++) {
+                        //XL_row_object.forEach(row => {
+                            //console.log( row );
+                            //latitude: row.coordinates.split(",")[1], small
+                            //longitude: row.coordinates.split(",")[0] big
 
+                            $.ajax({
+                                type: "GET",
+                                async: false,
+                                url: '../../trackedEntityInstances/' + XL_row_object[row][objectKeys[1]] + ".json?program=" + XL_row_object[row][objectKeys[0]],
+                                success: function (teiResponse) {
 
+                                    //let teiAttributeValue = [];
+                                    let teiAttributeValues = [...teiResponse.attributes];
+                                    /*
+                                    teiAttributeValues.push({
+                                        "attribute": row.attribute,
+                                        "value": row.value
+                                    });
+                                     */
+                                    for (let i = 2; i < objectKeys.length; i++) {
+                                        let teiAttributeValue = {};
+                                        if (XL_row_object[row][objectKeys[i]] !== undefined && XL_row_object[row][objectKeys[i]] !== "") {
+                                            teiAttributeValue.attribute = objectKeys[i].split("-")[1];
+                                            teiAttributeValue.value = XL_row_object[row][objectKeys[i]];
+                                            teiAttributeValues.push(teiAttributeValue);
+                                        }
+                                    }
+
+                                    let updateTEIAttributeValue = {
+                                        attributes: teiAttributeValues,
+                                        orgUnit: teiResponse.orgUnit
+                                    };
+
+                                    $.ajax({
+                                        type: "PUT",
+                                        dataType: "json",
+                                        contentType: "application/json",
+                                        data: JSON.stringify(updateTEIAttributeValue),
+                                        url: '../../trackedEntityInstances/' + XL_row_object[row][objectKeys[1]] + ".json?program=" + XL_row_object[row][objectKeys[0]],
+                                        success: function (response) {
+                                            //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                            //console.log( JSON.stringify(row) + " updated value " + row.value + " response: " + JSON.stringify(response) );
+                                        },
+                                        error: function (response) {
+                                            console.log(JSON.stringify(row) + " not updated value " +  XL_row_object[row][objectKeys[1]] + " response: " + JSON.stringify(response));
+                                        },
+                                        warning: function (response) {
+                                            console.log(JSON.stringify(row) + " -- " + "Warning!: " + JSON.stringify(response));
+                                        }
+
+                                    });
+                                },
+                                error: function (teiResponse) {
+                                    console.log(JSON.stringify(XL_row_object[row][objectKeys[1]]) + " -- " + "Error!: " + JSON.stringify(teiResponse));
+                                },
+                                warning: function (teiResponse) {
+                                    console.log(JSON.stringify(XL_row_object[row][objectKeys[1]]) + " -- " + "Error!: " + JSON.stringify(teiResponse));
+                                }
+                            });
+                            importCount++;
+                            console.log("Row - " + importCount + " update done for tei " + XL_row_object[row][objectKeys[1]]);
+                            if (importCount === parseInt(XL_row_object.length) + 1) {
+                                console.log(" update done ");
+
+                            }
+                        }
+                        //});
+                    }
                     // organisationUnits coordinate update 2.32
-                    else if( sheetName === 'organisationUnits' ){
+                    else if( sheetName === 'orgUnitCoordinateUpdate' ){
                         var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
                         var json_object = JSON.stringify(XL_row_object);
                         var objectKeys = Object.keys(XL_row_object["0"]);
