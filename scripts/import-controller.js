@@ -136,6 +136,58 @@ excelImport
                         });
 
                     }
+                    // event update with multiple dataValue
+                    else if( sheetName === 'eventDataValuesUpdate' ){
+                        let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        //let json_object = JSON.stringify(XL_row_object);
+                        let objectKeys = Object.keys(XL_row_object["0"]);
+                        console.log("objectKeys : " + objectKeys );
+                        let importCount = 1;
+
+                        for(let row = 0; row < XL_row_object.length; row++) {
+                        //XL_row_object.forEach(row => {
+                            importCount++;
+                            //console.log( row );
+                            let updateEventDataValue = {};
+                            updateEventDataValue.event = XL_row_object[row][objectKeys[0]];
+                            updateEventDataValue.program = XL_row_object[row][objectKeys[1]];
+                            let eventDataValues = [];
+                            for (let i = 2; i < objectKeys.length; i++) {
+                                let eventDataValue = {};
+                                if (XL_row_object[row][objectKeys[i]] !== undefined && XL_row_object[row][objectKeys[i]] !== "") {
+                                    eventDataValue.dataElement = objectKeys[i].split("-")[1];
+                                    eventDataValue.value = XL_row_object[row][objectKeys[i]];
+                                    eventDataValues.push(eventDataValue);
+                                }
+                            }
+                            updateEventDataValue.dataValues = eventDataValues;
+
+                            $.ajax({
+                                type: "PUT",
+                                async: false,
+                                dataType: "json",
+                                contentType: "application/json",
+                                data: JSON.stringify(updateEventDataValue),
+                                url: '../../events/' + XL_row_object[row][objectKeys[0]],
+                                success: function (response) {
+                                    //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                    //console.log("Row - " + importCount + JSON.stringify(row) + " updated value " + row.value + " response: " + JSON.stringify(response));
+                                },
+                                error: function (response) {
+                                    console.log("Row - " + importCount + JSON.stringify(row) + " not updated value " + "response: " + JSON.stringify(response));
+                                },
+                                warning: function (response) {
+                                    console.log("Row - " + importCount + JSON.stringify(row) + " -- " + "Warning!: " + JSON.stringify(response));
+                                }
+                            });
+                            //importCount++;
+                            console.log( "Row - " + importCount + " update done for event " + XL_row_object[row][objectKeys[0]] );
+                            if (importCount === parseInt(XL_row_object.length) + 1) {
+                                console.log(" update done  for all events");
+                            }
+                        }
+                        //});
+                    }
 
                     // event update from one instance to another instance
                     else if( sheetName === 'eventDataValuesUpdate' ){
