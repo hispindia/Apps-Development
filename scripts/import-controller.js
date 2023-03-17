@@ -629,6 +629,64 @@ excelImport
                         }
                         //});
                     }
+
+
+                    // programIndicators  name update
+                    else if( sheetName === 'programIndicatorsNameUpdate' ){
+                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        var json_object = JSON.stringify(XL_row_object);
+                        var objectKeys = Object.keys(XL_row_object["0"]);
+                        var updateCount = 1;
+                        XL_row_object.forEach(row => {
+                            updateCount++;
+                            //console.log( row );
+                            // for point coordinates: [row.coordinates.split(",")[0], row.coordinates.split(",")[1]]
+                            // for polygon coordinates: row.coordinates
+                            $.ajax({
+                                type: "GET",
+                                async: false,
+                                url: '../../programIndicators/' + row.uid + ".json?paging=false",
+                                success: function (programIndicatorResponse) {
+                                    var updateProgramIndicatorNameFilter = programIndicatorResponse;
+
+                                    updateProgramIndicatorNameFilter.name = row.name;
+                                    updateProgramIndicatorNameFilter.filter = row.filter;
+
+                                    $.ajax({
+                                        type: "PUT",
+                                        async: false,
+                                        dataType: "json",
+                                        contentType: "application/json",
+                                        data: JSON.stringify(updateProgramIndicatorNameFilter),
+
+                                        url: '../../programIndicators/' + row.uid + "?mergeMode=REPLACE",
+                                        success: function (putResponse) {
+                                            //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                            console.log(  "Row - " + updateCount + " update done response: " + JSON.stringify(putResponse) );
+                                        },
+                                        error: function (putResponse) {
+                                            console.log(  "Row - " + updateCount + " error response: " + JSON.stringify(putResponse ));
+                                        },
+                                        warning: function (putResponse) {
+                                            console.log( "Row - " + updateCount + "Warning response : " +  JSON.stringify(putResponse ) );
+                                        }
+                                    });
+                                },
+                                error: function (programIndicatorResponse) {
+                                    console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( programIndicatorResponse ) );
+                                },
+                                warning: function (programIndicatorResponse) {
+                                    console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( programIndicatorResponse ) );
+                                }
+                            });
+                            //console.log( "Row - " + importCount + " update done for organisationUnit " + row.uid );
+                            if( updateCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " update programIndicator complete ");
+                            }
+                        });
+                    }
+                    // end programIndicators  name update
+
                     // organisationUnits coordinate update 2.32
                     else if( sheetName === 'orgUnitCoordinateUpdate' ){
                         var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
