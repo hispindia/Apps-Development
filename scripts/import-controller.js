@@ -2790,6 +2790,78 @@ excelImport
                         });
                     }
 
+
+                    // update user password
+                    else if( sheetName === 'userPasswordUpdate' ){
+                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        var json_object = JSON.stringify(XL_row_object);
+                        var objectKeys = Object.keys(XL_row_object["0"]);
+                        var importCount = 1;
+                        XL_row_object.forEach(row => {
+                            importCount++;
+                            $.ajax({
+                                type: "GET",
+                                async: false,
+                                //api/users.json?filter=userCredentials.username:eq:norbur_LT&fields=id,name&paging=false
+                                url: '../../users.json?filter=userCredentials.username:eq:' + row.username + "&fields=id,name&paging=false",
+                                success: function (userResponse) {
+
+                                    //console.log( userResponse.users.length);
+                                    if( userResponse.users.length !== 0 && userResponse.users[0] !== undefined ){
+                                        console.log( " Username taken with user id " + userResponse.users[0].id + " and name " + userResponse.users[0].name);
+                                        $.ajax({
+                                            type: "GET",
+                                            async: false,
+                                            url: '../../users/' + userResponse.users[0].id + ".json?paging=false",
+                                            success: function (tempUserResponse) {
+                                                let updateUserPassword = tempUserResponse;
+
+                                                //updateUserPassword.email = "";
+                                                updateUserPassword.userCredentials.password = row.password;
+
+                                                $.ajax({
+                                                    type: "PUT",
+                                                    async: false,
+                                                    dataType: "json",
+                                                    contentType: "application/json",
+                                                    data: JSON.stringify(updateUserPassword),
+                                                    url: '../../users/' + updateUserPassword.id,
+
+                                                    success: function (putResponse) {
+                                                        //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                                        console.log(  "Row - " + importCount + " update done response: " + JSON.stringify(putResponse) );
+                                                    },
+                                                    error: function (putResponse) {
+                                                        console.log(  "Row - " + importCount + " error response: " + JSON.stringify(putResponse));
+                                                    },
+                                                    warning: function (putResponse) {
+                                                        console.log( "Row - " + importCount + "Warning response : " +  JSON.stringify(putResponse) );
+                                                    }
+                                                });
+                                            },
+                                            error: function (tempUserResponse) {
+                                                console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( tempUserResponse ) );
+                                            },
+                                            warning: function (tempUserResponse) {
+                                                console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( tempUserResponse ) );
+                                            }
+                                        });
+                                    }
+                                    else{
+                                        //console.log( userResponse.users[0].id);
+                                        console.log( " Username not present  " );
+                                    }
+                                },
+                            });
+                            //console.log( "Row - " + importCount + " update done for organisationUnit " + row.uid );
+                            if( importCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " update done ");
+
+                            }
+                        });
+                    }
+
+
                     // users post check if user already taken
                     else if( sheetName === 'usersPost' ){
                         var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
