@@ -27,11 +27,7 @@ Object.defineProperty(exports, "icons", {
     return _icons.icons;
   }
 });
-
 var _Icon = require("./components/Icon.js");
-
 var _LoadingIcon = require("./components/LoadingIcon.js");
-
 var _icons = require("./icons.js");
-
 var _colors = require("./colors.js");

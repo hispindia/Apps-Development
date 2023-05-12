@@ -25,6 +25,8 @@ function dynamicSort(property) {
 
 export const setProgram = program => (dispatch, getState) => {
     const { programOrganisms, optionSets, stageLists } = getState().metadata
+    const sampleDate = getState().data.panel.sampleDate;
+    const  val = getState().data.previousValues;
     var organisms = []
     optionSets[programOrganisms[program]].forEach(o => {
         if (!organisms.find(org => org.value === o.value)) {
@@ -32,15 +34,19 @@ export const setProgram = program => (dispatch, getState) => {
             organisms.sort(dynamicSort("label"))
         }
     })
-    const programStage =
-        stageLists[program].length > 1 ? '' : stageLists[program][0].value
-
+    const programStage =stageLists[program].length > 1 ? '' : stageLists[program][0].value
+        let valueShow = false 
+        if(val && sampleDate){
+            if(Object.keys(val).length>0){
+                valueShow = true
+            }
+        }
     dispatch(
         createAction(SET_PANEL, {
             program,
             programStage,
             organism: '',
-            sampleDate: '',
+            sampleDate: valueShow ? sampleDate :"",
             organisms,
             valid: false,
         })

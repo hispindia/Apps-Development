@@ -41,10 +41,12 @@ import {
     AGGREGATION_ON_PROGRESS,
     COMPLETED_CLICKED,
     RESET_SAMPLE_PANEL_EVENT,
-    SET_INITIAL_PROGRAM
+    SET_INITIAL_PROGRAM,
+    LOAD_DATAELEMENTS
 } from '../actions/types'
 
 const INITIAL_EVENT = {
+    dataElements:null,
     values: null,
     programStage: null,
     status: {},
@@ -103,6 +105,11 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
         //         ...state,
         //         preValues: payload
         //     }
+        case LOAD_DATAELEMENTS:
+            return {
+                ...state,
+                dataElements: payload
+        }
             case RESET_PREVIOUS_ENTITY:
                 return {
                     ...state,
@@ -205,7 +212,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                     program: '',
                     programStage: '',
                     organism: '',
-                    sampleDate: '',
+                    sampleDate: state.panel.sampleDate,
                     valid: false,
                     completeClicked:false,
                 },
@@ -218,7 +225,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                     program: '',
                     programStage: '',
                     organism: '',
-                    sampleDate:'',
+                    sampleDate:state.panel.sampleDate,
                     valid: false,
                 },
                 event: INITIAL_EVENT,
@@ -273,7 +280,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                     program: '',
                     programStage: '',
                     organism: '',
-                    sampleDate: '',
+                    sampleDate: state.panel.sampleDate,
                     defaultProgram: state.panel.defaultProgram,
                     valid: false,
                 },
@@ -379,7 +386,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                     program: '',
                     programStage: '',
                     organism: '',
-                    sampleDate: '',
+                    sampleDate: state.panel.sampleDate,
                     valid: false,
                 },
                 event: INITIAL_EVENT,

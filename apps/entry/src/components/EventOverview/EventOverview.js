@@ -6,12 +6,14 @@ import {
     LoadingSection,
     TitleRow,
     RichButton,
-    addSelectedProgramOfOrgUnits
+    addSelectedProgramOfOrgUnits,
+    setDataELments
 } from '@hisp-amr/app'
 import { Table } from './Table'
 import { useEvents } from './useEvents'
 import { icmr, tanda } from 'config'
 import {SelectedOrgUnit} from '../../api/programs'
+import {DataElements} from '../../api/dataElements'
 if (!process.env.REACT_APP_DHIS2_TABLE_CONFIG)
     throw new Error(
         'The environment variable REACT_APP_DHIS2_TABLE_CONFIG must be set'
@@ -35,6 +37,9 @@ export const EventOverview = ({ match, history }) => {
     const selected = useSelector(state => state.selectedOrgUnit)
     const { rows, loading, addButtonDisabled, error } = useEvents(status)
     useEffect(() => {
+        DataElements.loadDataElements().then(res =>{
+            dispatch(setDataELments(res.dataElements));
+        })
         SelectedOrgUnit.programs(selected.id).then(res =>{
           let selectedProgram = res.programs.filter(program => program.name == "Sample Testing_HP")
            if(selectedProgram){
@@ -51,10 +56,9 @@ export const EventOverview = ({ match, history }) => {
                }]
                dispatch(addSelectedProgramOfOrgUnits(sampleProgram))
            }
-        })
-        
+        }) 
     })
-
+  
     /**
      * Called when table row is clicked.
      */

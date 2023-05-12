@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import { CardSection } from '@hisp-amr/app'
 import { useSelector, useDispatch } from 'react-redux'
 import {Table,TableBody,TableRow,TableCell,Button} from '@dhis2/ui-core'
@@ -8,7 +8,7 @@ import './main.css'
 import $ from "jquery"
 import SweetAlert from 'react-bootstrap-sweetalert';
 import { deleteTEI, deleteEvent } from '@hisp-amr/api'
-
+import EventListPrint from "./PrintEventList";
 import {Aggregate} from '../../../api/helpers/aggregate'
 
 const Events = ({match, history }) => {
@@ -17,6 +17,8 @@ const Events = ({match, history }) => {
     var metadata = useSelector(state => state.metadata);
     var events = useSelector(state => state.data.eventList);
     var programs = useSelector(state => state.metadata.programs);
+    var [dialog, setDialog] = useState(false);
+
     var teiId = match.params.teiId
     var orgUnit = match.params.orgUnit
     const categoryCombos = useSelector(state=> state.metadata.categoryCombos)
@@ -28,6 +30,13 @@ const Events = ({match, history }) => {
         $("#msg1").hide();
         $('#succes1').hide();
       });
+      const onPrint = (check) => {
+        if (!check) {
+          setDialog(check);
+        } else {
+          setDialog(true);
+        }
+      };
       const onConfirm= async (e)=>{
         e.preventDefault();
 
@@ -174,8 +183,14 @@ const Events = ({match, history }) => {
     return (
             <CardSection heading="Event List">
                 <div  className="btn">
-                <Button destructive={true} onClick={() => OnDelete()}>Delete Record</Button>&nbsp;&nbsp;&nbsp;
                 <Button primary={true} onClick={() => onAddClick()}>Add Sample</Button>&nbsp;&nbsp;&nbsp;
+                <Button primary={true} onClick={onPrint}>Report</Button>&nbsp;&nbsp;&nbsp;
+                <Button destructive={true} onClick={() => OnDelete()}>Delete Record</Button>&nbsp;&nbsp;&nbsp;
+                {dialog && (
+                    <div id="btn">
+                          <EventListPrint onPrint={onPrint}  />
+                    </div>
+                    )}
                  </div>
                 <div className='sidebar'>
                     <Table>

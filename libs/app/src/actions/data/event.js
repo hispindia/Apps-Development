@@ -27,7 +27,8 @@ import {
     COMPLETED_CLICKED,
     INCOMPLETED_CLICKED,
     RESET_SAMPLE_PANEL_EVENT,
-    SET_INITIAL_PROGRAM
+    SET_INITIAL_PROGRAM,
+    LOAD_DATAELEMENTS
 } from '../types'
 import { deleteEvent } from '@hisp-amr/api'
 
@@ -51,6 +52,7 @@ export const AddAndSubmit = val => dispatch =>dispatch(createAction(REMOVE_BUTTO
 export const setButtonLoading = payload => dispatch =>dispatch(createAction(SET_BUTTONS, payload))
 export const addExistingEvent = payload => dispatch =>dispatch(createAction(SET_EVENT, payload))
 export const addSelectedProgramOfOrgUnits = payload => dispatch =>dispatch(createAction(SET_INITIAL_PROGRAM, payload))
+export const setDataELments = payload => dispatch=> dispatch(createAction(LOAD_DATAELEMENTS, payload))
 
 // export const PreValue = payload => dispatch=> dispatch(createAction(SET_PREVALUE, payload))
 export const initNewEvent = orgUnit => (dispatch, getState) => {

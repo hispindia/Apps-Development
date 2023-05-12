@@ -26,15 +26,12 @@
     },
     "scripts": {
         "start": "cross-env REACT_APP_DHIS2_TABLE_CONFIG=tanda PORT=3001 react-scripts start",
-        "build": "yarn build:icmr && yarn build:tanda",
-        "build:icmr": "cross-env REACT_APP_DHIS2_TABLE_CONFIG=icmr react-scripts build",
+        "build": "yarn build:tanda",
         "build:tanda": "cross-env REACT_APP_DHIS2_TABLE_CONFIG=tanda react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "prebuild:icmr": "rimraf build ../../amr-entry-icmr.zip && d2-manifest package.json public/manifest.webapp",
-        "postbuild:icmr": "cd build && bestzip ../../../amr-entry-icmr.zip *",
-        "prebuild:tanda": "rimraf build ../../amr-entry-tanda.zip && d2-manifest package.json public/manifest.webapp",
-        "postbuild:tanda": "cd build && bestzip ../../../amr-entry-tanda.zip *",
+        "prebuild:tanda": "rimraf build ../../equity-amr.zip && d2-manifest package.json public/manifest.webapp",
+        "postbuild:tanda": "cd build && bestzip ../../../equity-amr.zip *",
         "analyze": "source-map-explorer build/static/js/*.js'"
     },
     "dependencies": {
@@ -44,10 +41,18 @@
         "@hisp-amr/icons": "*",
         "@hisp-amr/inputs": "*",
         "@hisp-amr/org-unit-tree": "*",
+        "@mui/material": "^5.2.7",
+        "@mui/styles": "^5.2.3",
         "antd": "^4.21.5",
         "jquery": "^3.4.1",
         "react": "^16.9.0",
         "react-bootstrap-sweetalert": "^5.1.9",
-        "react-dom": "^16.9.0"
+        "react-dom": "^16.9.0",
+        "react-to-print": "^2.14.3",
+        "@emotion/react": "^11.7.1",
+        "@emotion/styled": "^11.6.0",
+        "@mui/x-date-pickers": "latest",
+        "date-fns": "latest",
+        "dayjs": "latest"
     }
 }

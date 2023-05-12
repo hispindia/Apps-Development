@@ -1,5 +1,4 @@
 var _circle;
-
 import React from 'react';
 import styled, { css } from 'styled-components';
 const StyledSvg = styled.svg`

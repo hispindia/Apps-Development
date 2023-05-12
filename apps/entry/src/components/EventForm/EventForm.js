@@ -30,8 +30,10 @@ import {
 } from '../../api/helpers/aggregate'
 import { deleteEvent } from '@hisp-amr/api'
 import SweetAlert from 'react-bootstrap-sweetalert';
+import ClinicianNote from "./Entity/ClinicianNote";
 export const EventForm = ({ history, match }) => {
     const [isFirstRender, setIsFirstRender] = useState(true)
+    const [isSave, setIsSave] = useState(false)
     const dispatch = useDispatch()
     const error = useSelector(state => state.data.status) === ERROR
     const panelValid = useSelector(state => state.data.panel.valid)
@@ -49,6 +51,7 @@ export const EventForm = ({ history, match }) => {
     var { sampleDate } = useSelector(state => state.data.panel)
     var orgUnit = match.params.orgUnit
     const teiId = match.params.teiId;
+    var [dialogNote, setDialogNote] = useState(false);
     useEffect(() => {
         if( pageFirst ){
             $("#a").hide();
@@ -110,12 +113,21 @@ export const EventForm = ({ history, match }) => {
     useEffect(() => {
         if (!isFirstRender && panelValid && pageFirst) dispatch(createNewEvent())
     }, [panelValid, pageFirst])
-
+    const onClickNote = (e) => {
+          e.preventDefault();
+          setDialogNote(true);
+      };
     const onDelete =(e) =>{
         e.preventDefault();
         $('#msg').show();
     }
-
+    const onClickSave =(e)=>{
+        e.preventDefault();
+        setIsSave(true)
+        setTimeout(()=>{
+        setIsSave(false)
+        },2000)
+    }
     const  onCancel =(e) =>{
         e.preventDefault();
         if(pageFirst){
@@ -160,6 +172,7 @@ export const EventForm = ({ history, match }) => {
     }
    const onNo =(e) =>{
           e.preventDefault();
+          setDialogNote(false);
           $("#popup").hide();
           $("#panel").hide();
           $('#msg').hide();
@@ -168,6 +181,7 @@ export const EventForm = ({ history, match }) => {
         window.location.reload(false)
         $("#popup").hide();
         $("#panel").hide();
+        $("#cnote").hide();     
   }
     if (isFirstRender) return <TitleRow title="Record" history={history} />
     return (
@@ -187,9 +201,10 @@ export const EventForm = ({ history, match }) => {
                 closeAnim={{ name: 'hideSweetAlert', duration: 2000 }}
                 customButtons={
                     <React.Fragment>
-                         <EventButtons history={history} existingEvent={teiId} />&emsp;&emsp;&emsp;&emsp;&emsp;
+                         <EventButtons history={history} existingEvent={teiId} />&emsp;&emsp;
+                      <Button  primary={true} onClick={e=>onClickNote(e)}>Follow-up Notes</Button>&emsp;&emsp;
                         <div id="btn">
-                        <Button  destructive={true} onClick={(e)=>onDelete(e)}>Delete</Button>&emsp;&emsp;&emsp;&emsp;&emsp;
+                        <Button  destructive={true} onClick={(e)=>onDelete(e)}>Delete</Button>&emsp;&emsp;
                         </div>
                       <Button onClick={(e)=>onCancel(e)}>Cancel</Button>
                     </React.Fragment>
@@ -205,6 +220,23 @@ export const EventForm = ({ history, match }) => {
                 <EventButtons history={history} existingEvent={teiId} />
                 </div>}
             </form>
+            {dialogNote ? 
+            <SweetAlert
+            style={{
+                width: '60%'
+            }}
+            openAnim={{ name: 'showSweetAlert', duration: 2000 }}
+            closeAnim={{ name: 'hideSweetAlert', duration: 2000 }}
+            customButtons={
+                <React.Fragment>
+                  <Button primary={true} onClick={(e)=>onClickSave(e)} >Save</Button>&emsp;&emsp;&emsp;
+                  <Button disabled={aggregationOnProgress} onClick={(e)=>onNo(e)}>Cancel</Button>
+                </React.Fragment>
+              }
+            >
+            <ClinicianNote />
+            </SweetAlert>
+            :""}
             <div id="msg">
             <SweetAlert
                 warning
@@ -232,6 +264,18 @@ export const EventForm = ({ history, match }) => {
             >
             </SweetAlert>
             </div>
+            { isSave ?
+            <div id="cnote">
+           <SweetAlert success title="Event save Success"
+           customButtons={
+              <React.Fragment>
+                <Button primary={true} onClick={(e)=>onYes(e)}>Ok</Button>&emsp;&emsp;&emsp;
+              </React.Fragment>
+            }
+          >
+          </SweetAlert>
+          </div>
+            :""}
         </MainSection>
     )
 }

@@ -233,10 +233,12 @@ export const initMetadata = async isIsolate => {
         p.programStages
             .filter(ps => ps.access.data.write)
             .forEach(ps => {
-                stages.push({
-                    value: ps.id,
-                    label: ps.displayName,
-                })
+                if(ps.displayName != "Follow-up Notes"){
+                    stages.push({
+                        value: ps.id,
+                        label: ps.displayName,
+                    })
+                }
                 ps.dataElements = {}
                 ps.programStageDataElements.forEach(
                     d =>
