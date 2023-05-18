@@ -1,4 +1,4 @@
-#  Apps and libs for the AMR Surveillance System
+#  Apps and libs for the AMR Surveillance System for TANDA in 2.38
 #test commit for notify
 # Developer Guide for AMR Data Entry app
 
