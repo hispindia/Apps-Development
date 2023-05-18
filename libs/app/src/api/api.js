@@ -356,15 +356,10 @@ export const updateEventValue = async (eventId, dataElementId, value, programID,
         trackedEntityInstance:trackerID.id,
         dataValues: [{ dataElement: dataElementId, value: value , providedElsewhere: false}]
     }
-    console.log("DATA TO SEND",dataBody)
-    //return await axios.put(`../../../api/events/${eventId}/${dataElementId}`, dataBody);
-
-    // yarn add  sync-request -W
     let postResponse = syncRequest('PUT', `../../../api/events/${eventId}/${dataElementId}`, {
         json: dataBody
     });
     let apiResponse = JSON.parse( postResponse.getBody('utf8'));
-    console.log( 'apiResponse -- ' , apiResponse )
 }
 
 

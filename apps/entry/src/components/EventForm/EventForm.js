@@ -34,6 +34,7 @@ import ClinicianNote from "./Entity/ClinicianNote";
 export const EventForm = ({ history, match }) => {
     const [isFirstRender, setIsFirstRender] = useState(true)
     const [isSave, setIsSave] = useState(false)
+    const [isOrganismDetected, setIsOrganismDetected] = useState(false)
     const dispatch = useDispatch()
     const error = useSelector(state => state.data.status) === ERROR
     const panelValid = useSelector(state => state.data.panel.valid)
@@ -41,6 +42,7 @@ export const EventForm = ({ history, match }) => {
     var eventEditable = useSelector(state => state.data.eventEditable)
     var editable = useSelector(state => state.data.editable)
     const event = useSelector(state => state.data.event)
+    const eventValue = useSelector(state => state.data.event.values)
     const dataElementObjects = useSelector(state=> state.metadata.dataElementObjects)
     const programs = useSelector(state=>state.metadata.programs)
     const categoryCombos = useSelector(state=> state.metadata.categoryCombos)
@@ -53,6 +55,9 @@ export const EventForm = ({ history, match }) => {
     const teiId = match.params.teiId;
     var [dialogNote, setDialogNote] = useState(false);
     useEffect(() => {
+        if( (eventValue?.u8VDCIwa3w4  == "Sterile") || (eventValue?.u8VDCIwa3w4 == "Insignificant Growth")  ||  (eventValue?.u8VDCIwa3w4 == "Commensals") || (eventValue?.u8VDCIwa3w4  == "Growth of contaminants")){
+            setIsOrganismDetected(true)
+        }
         if( pageFirst ){
             $("#a").hide();
         } else {
@@ -202,7 +207,7 @@ export const EventForm = ({ history, match }) => {
                 customButtons={
                     <React.Fragment>
                          <EventButtons history={history} existingEvent={teiId} />&emsp;&emsp;
-                      <Button  primary={true} onClick={e=>onClickNote(e)}>Follow-up Notes</Button>&emsp;&emsp;
+                         <Button  disabled={isOrganismDetected} primary={true} onClick={e=>onClickNote(e)}>Follow-up Notes</Button>&emsp;&emsp;
                         <div id="btn">
                         <Button  destructive={true} onClick={(e)=>onDelete(e)}>Delete</Button>&emsp;&emsp;
                         </div>

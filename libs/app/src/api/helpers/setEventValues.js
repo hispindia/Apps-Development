@@ -24,6 +24,5 @@ export const setEventValues = async (event, values, uploadedprevious) => {
     {
         event.dataValues.push.apply(event.dataValues, uploadedprevious.dataValues) 
     }
-    console.log("RETURNED EVENTS IS",event)
     return event
 }

@@ -49,14 +49,11 @@ export default function EventListPrint(props) {
   const [open, setOpen] = React.useState(true);
   const ref = useRef();
   var entityValues = useSelector((state) => state.data.entity.values);
-  // var programs = useSelector((state) => state.metadata.programs);
   const dataElementObjects = useSelector(
     (state) => state.metadata.dataElementObjects
   );
   var eventsList = useSelector((state) => state.data.eventList);
   var tempDataElements = useSelector((state) => state.data.dataElements);
-  //console.log( "gayn DE List " + tempDataElements);
-  //console.log( "gayn Event List " + eventsList);
   let eventL = [];
   let metaDataDataElement = Object.values(dataElementObjects);
   let completeEvent = eventsList.filter((ev) => ev.program !== "L7bu48EI54J");
@@ -113,17 +110,8 @@ export default function EventListPrint(props) {
           obj["Hospital department"] = dv.value;
         }
         if (dv.dataElement === "SaQe2REkGVw") {
-            // tempDataElements.forEach(de => {
-            //     if(de.code !== undefined && de.code === dv.value){
-            //       obj["Organism"] = de.name;
-            //     }
-            //     else{
-            //       obj["Organism"] = dv.value;
-            //     }
-            //   })
             let tempDeName= tempDataElements.filter(de=> de.code === dv.value)
               obj["Organism"] = tempDeName[0].name;
-              //obj["Organism"] = dv.value;
         }
         if (dv.dataElement === "lIkk661BLpG") {
           obj["AMR ID"] = dv.value;

@@ -247,7 +247,6 @@ export const createNewEvent = () => async (dispatch, getState) => {
     var values_to_send = []
     var UpdatedEventPayload = {}
     if (Object.keys(prevStateValues).length != 0) {
-        console.log("GETDATA", getState().data)
         Object.keys(prevStateValues).forEach(function (previouskey) {
             if (prevStateValues[previouskey] != "") {
                 if (prevStateValues[previouskey] != "Detected") {
@@ -430,7 +429,6 @@ export const setEventValue = (key, value,isPrev) => (dispatch, getState) => {
     const trackerID = getState().data.entity;
     const tempProgramStage = getState().data.panel.programStage;
     const tempStatus = "ACTIVE";
-    console.log("ORG UNITS",getState())
     var dID = ["mp5MeJ2dFQz", "dRKIjwIDab4", "GpAu5HjWAEz", "B7XuDaXPv10"];
     if (isPrev != true) {
         updateEventValue(event.id, key, value, programId,orgUnit,trackerID,tempStatus,tempProgramStage)
