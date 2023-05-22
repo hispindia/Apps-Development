@@ -1,0 +1,58 @@
+{
+    "name": "amr-entry",
+    "version": "0.4.1",
+    "description": "AMR data entry app for DHIS2",
+    "main": "index.js",
+    "license": "BSD-3-Clause",
+    "homepage": ".",
+    "developer": {
+        "name": "Gyan Bahadur Tamang",
+        "company": "HISP India"
+    },
+    "manifest.webapp": {
+        "name": "AMR Data Entry- Patient Overview",
+        "description": "Enter AMR data.",
+        "appType": "APP",
+        "activities": {
+            "dhis": {
+                "href": "*"
+            }
+        }
+    },
+    "icons": {
+        "16": "appicon-16x16.svg",
+        "32": "appicon-32x32.svg",
+        "48": "appicon-48x48.svg"
+    },
+    "scripts": {
+        "start": "cross-env REACT_APP_DHIS2_TABLE_CONFIG=tanda PORT=3001 react-scripts start",
+        "build": "yarn build:tanda",
+        "build:tanda": "cross-env REACT_APP_DHIS2_TABLE_CONFIG=tanda react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
+        "prebuild:tanda": "rimraf build ../../varanasi-amr.zip && d2-manifest package.json public/manifest.webapp",
+        "postbuild:tanda": "cd build && bestzip ../../../varanasi-amr.zip *",
+        "analyze": "source-map-explorer build/static/js/*.js'"
+    },
+    "dependencies": {
+        "@dhis2/ui-core": "^3.12.0",
+        "@hisp-amr/api": "*",
+        "@hisp-amr/app": "*",
+        "@hisp-amr/icons": "*",
+        "@hisp-amr/inputs": "*",
+        "@hisp-amr/org-unit-tree": "*",
+        "@mui/material": "^5.2.7",
+        "@mui/styles": "^5.2.3",
+        "antd": "^4.21.5",
+        "jquery": "^3.4.1",
+        "react": "^16.9.0",
+        "react-bootstrap-sweetalert": "^5.1.9",
+        "react-dom": "^16.9.0",
+        "react-to-print": "^2.14.3",
+        "@emotion/react": "^11.7.1",
+        "@emotion/styled": "^11.6.0",
+        "@mui/x-date-pickers": "latest",
+        "date-fns": "latest",
+        "dayjs": "latest"
+    }
+}
