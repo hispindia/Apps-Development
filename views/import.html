@@ -1,0 +1,21 @@
+
+<div id="leftBar">
+    <d2-left-bar></d2-left-bar>
+
+</div>
+<div id="mainPage">
+    <h2></h2>
+    <div style="margin-top: 55px;" enctype="multipart/form-data">
+        <input id="upload" type=file  name="files[]">
+
+    </div>
+    <div>
+        <button ng-click="getSet()" style="margin-top:5px;background-color: #008CBA;color:white;border:none;">Submit</button><br>
+
+            <div ng-repeat="log in logs track by $index">
+               <h3 > {{$index}} : {{log.head}} </h3>
+               <p style="color:gray" ng-repeat="logbody in log.body track by $index"> {{logbody}}</p>
+               <h4 style="color:green"> {{log.tail}} </h4></div>
+    </div>
+</div>
+ 
