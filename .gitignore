@@ -40,3 +40,6 @@ npm-debug.log
 build/
 target/
 nbproject/*
+*.lock
+package-lock.json
+yarn.lock
