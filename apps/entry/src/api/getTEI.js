@@ -17,7 +17,6 @@ export const getTEI = async orgUnit => {
     }
     var isoDateFormat = tempYear + "-" + mm + "-" + tempDate;
     var twoMonthBeforeDate = new Date(new Date().setDate(new Date().getDate() - 60));
-
     //api/trackedEntityInstances.json?ouMode=DESCENDANTS&ou=ANGhR1pa8I5&paging=false&lastUpdatedStartDate=2022-07-13&&lastUpdatedEndDate=2022-09-13
     //let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&lastUpdatedStartDate=2021-01-01&skipPaging=true"
     let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&lastUpdatedStartDate=" + isoDateFormat +"&skipPaging=true"
