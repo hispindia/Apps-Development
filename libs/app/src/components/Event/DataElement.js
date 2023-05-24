@@ -68,6 +68,7 @@ export const DataElement = ({ id }) => {
          dispatch(setEventValue(key, value,false))
         }
         else {
+            dispatch(AddAndSubmit(false))
             dispatch(setEventValue(key, value,false))
         }
     }
