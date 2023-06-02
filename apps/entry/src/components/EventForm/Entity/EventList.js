@@ -39,7 +39,6 @@ const Events = ({match, history }) => {
       };
       const onConfirm= async (e)=>{
         e.preventDefault();
-
         let allStatus = true
         for(let index in events){
             let event = events[index]
