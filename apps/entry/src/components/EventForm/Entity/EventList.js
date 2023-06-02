@@ -18,7 +18,6 @@ const Events = ({match, history }) => {
     var events = useSelector(state => state.data.eventList);
     var programs = useSelector(state => state.metadata.programs);
     var [dialog, setDialog] = useState(false);
-
     var teiId = match.params.teiId
     var orgUnit = match.params.orgUnit
     const categoryCombos = useSelector(state=> state.metadata.categoryCombos)
@@ -141,7 +140,7 @@ const Events = ({match, history }) => {
                         if(value.dataElement == 'mp5MeJ2dFQz'){
                             dataValue['3'] =value;
                         }
-                        if((value.dataElement == 'SaQe2REkGVw') || (value.dataElement  =='u8VDCIwa3w4')){  // id of organism detected data element in sample testing
+                        if((value.dataElement == 'SaQe2REkGVw') || (value.dataElement  =="MOsgkq0ptBm")){  // id of organism detected data element in sample testing
                             dataValue['4'] =value;
                         }
                         dataValue['5']=date
@@ -162,7 +161,7 @@ const Events = ({match, history }) => {
                                 let data = [ {value: ''}]
                                 dataValue['4']=data
                               }
-                           if(dataValue['4'].value !== 'Pathogens'){
+                           if((dataValue['4'].value !== 'Pathogens')  && (dataValue['4'].value !== 'Suspected colonizer')){
                                 data = dataValue;
                         }
                     return (

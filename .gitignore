@@ -32,3 +32,5 @@ coverage
 dist
 node_modules
 **/rebel.xml
+yarn.lock
+

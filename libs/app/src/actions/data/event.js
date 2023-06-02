@@ -249,7 +249,7 @@ export const createNewEvent = () => async (dispatch, getState) => {
     if (Object.keys(prevStateValues).length != 0) {
         Object.keys(prevStateValues).forEach(function (previouskey) {
             if (prevStateValues[previouskey] != "") {
-                if (prevStateValues[previouskey] != "Pathogens") {
+                if (prevStateValues[previouskey] != "Pathogens"  || prevStateValues[previouskey] != "Suspected colonizer") {
                     values_to_send.push({
                         dataElement: previouskey,
                         value: prevStateValues[previouskey]
@@ -340,7 +340,7 @@ export const submitEvent = addMore => async (dispatch, getState) => {
         await setEventStatus(eventId, true)
         if (addMore) dispatch(createAction(RESET_PANEL_EVENT))
         else {
-            if (eventValues[ORGANISM_DETECTED] == "Pathogens") {
+            if (eventValues[ORGANISM_DETECTED] == "Pathogens" || eventValues[ORGANISM_DETECTED] == "Suspected colonizer") {
                 dispatch(createAction(SET_PREVIOUS_EVENT, { eventValues }))
                 dispatch(AddAndSubmit(false))
                 dispatch(createAction(PANEL_EDITABLE))
@@ -512,7 +512,7 @@ export const nextEvent = (next,addMoreSample,addMoreIso) => async (dispatch, get
         if (addMoreSample) { dispatch(createAction(RESET_SAMPLE_PANEL_EVENT)) }
         if (addMoreIso) dispatch(createAction(RESET_PANEL_EVENT))
         else {
-            if (eventValues[ORGANISM_DETECTED] == "Pathogens") {
+            if (eventValues[ORGANISM_DETECTED] == "Pathogens" || eventValues[ORGANISM_DETECTED] == "Suspected colonizer") {
                 dispatch(createAction(SET_PREVIOUS_EVENT, { eventValues }))
                 dispatch(AddAndSubmit(false))
                 dispatch(createAction(PANEL_EDITABLE))
@@ -560,7 +560,7 @@ export const saveEvent = (submitBtn,saveBtn) => async (dispatch, getState) => {
         }
         if (addMore) dispatch(createAction(RESET_PANEL_EVENT))
         else {
-            if (eventValues[ORGANISM_DETECTED] == "Pathogens") {
+            if (eventValues[ORGANISM_DETECTED] == "Pathogens" || eventValues[ORGANISM_DETECTED] == "Suspected colonizer" ) {
                 dispatch(createAction(SET_PREVIOUS_EVENT, { eventValues }))
                 dispatch(AddAndSubmit(false))
                 dispatch(createAction(PANEL_EDITABLE))

@@ -62,6 +62,9 @@ export const DataElement = ({ id }) => {
         {
          dispatch(AddAndSubmit(true))
          dispatch(setEventValue(key, value,false))
+        }else if((key == ORGANISM_DETECTED) && (value == 'Suspected colonizer')){
+         dispatch(AddAndSubmit(true))
+         dispatch(setEventValue(key, value,false)) 
         }
         else {
             dispatch(AddAndSubmit(false))

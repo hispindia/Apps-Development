@@ -61,7 +61,7 @@ export const setPanelValue = (key, value) => (dispatch, getState) => {
         organisms,
         sampleDate,
     } = getState().data.panel
-    const values = { program, programStage, sampleDate }
+    const values = program== "L7bu48EI54J" ? { program, programStage, sampleDate } : { program, programStage, sampleDate,organism }
     if (values[key] === value) return
     const valid = !Object.values({ ...values, [key]: value }).includes('')
     dispatch(
