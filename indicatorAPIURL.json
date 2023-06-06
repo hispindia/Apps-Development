@@ -1,0 +1,105 @@
+{
+  "indicatorAPIURL": [
+    {
+	  "apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:VtMffWN7ZIM&dimension=ou:USER_ORGUNIT&dimension=pe:THIS_MONTH&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+    },
+    {
+	  "apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:VtMffWN7ZIM&dimension=ou:USER_ORGUNIT_CHILDREN&dimension=pe:THIS_MONTH&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+    },
+    {
+	  "apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:LJeA97Qxve6&dimension=ou:USER_ORGUNIT&dimension=pe:THIS_MONTH&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+    },
+	{
+	  "apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:LJeA97Qxve6&dimension=ou:USER_ORGUNIT_CHILDREN&dimension=pe:THIS_MONTH&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+    },
+    {
+	  "apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:r0edQdZlogI&dimension=ou:USER_ORGUNIT&dimension=pe:LAST_YEAR&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+    },
+    {
+	  "apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:r0edQdZlogI&dimension=ou:USER_ORGUNIT_CHILDREN&dimension=pe:LAST_YEAR&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+    },
+	{
+	  "apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:dyVaodqebsx;FT9oYMkFHQp;GmgNmZqqmQh&dimension=ou:USER_ORGUNIT&dimension=pe:THIS_MONTH&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+    },
+    {
+	  "apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:dyVaodqebsx;FT9oYMkFHQp;GmgNmZqqmQh&dimension=ou:USER_ORGUNIT_CHILDREN&dimension=pe:THIS_MONTH&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+    },
+	{
+		"apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:zjmnw7ofdzG&dimension=ou:USER_ORGUNIT&dimension=pe:THIS_MONTH&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+	},
+	{
+		"apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:zjmnw7ofdzG&dimension=ou:USER_ORGUNIT_CHILDREN&dimension=pe:THIS_MONTH&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+	},
+	{
+		"apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:Q6yYYsXS4jB&dimension=ou:cCTQiGkKcTk;OU_GROUP-pW6owR4oRKb&dimension=pe:2022&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&completedOnly=false"
+	},
+	{
+		"apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:mdLbmu8dUpY;xjrwG3agtFO;p0wTMpztiqg&dimension=pe:THIS_MONTH&dimension=ou:USER_ORGUNIT&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+	},
+	{
+		"apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:mdLbmu8dUpY;xjrwG3agtFO;p0wTMpztiqg&dimension=pe:THIS_MONTH&dimension=ou:USER_ORGUNIT_CHILDREN&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+	},
+	{
+		"apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:wrGwqu0ybBh&dimension=ou:USER_ORGUNIT&dimension=pe:THIS_YEAR&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+	},
+	{
+		"apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:wrGwqu0ybBh&dimension=ou:USER_ORGUNIT_CHILDREN&dimension=pe:THIS_YEAR&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+	},
+	{
+		"apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:GpiKTSMr9cT;ks2XmKnTumm;NgYO0OJ1oAG&dimension=pe:THIS_MONTH&dimension=ou:USER_ORGUNIT&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+	},
+	{
+		"apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:GpiKTSMr9cT;ks2XmKnTumm;NgYO0OJ1oAG&dimension=pe:THIS_MONTH&dimension=ou:USER_ORGUNIT_CHILDREN&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+	},	
+	{
+		"apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:ikyD4ElBnY6&dimension=pe:THIS_MONTH&dimension=ou:USER_ORGUNIT&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+	},
+	{
+		"apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:ikyD4ElBnY6&dimension=pe:THIS_MONTH&dimension=ou:USER_ORGUNIT_CHILDREN&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+	},
+	{
+		"apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:sPcUxHnZD5S;nY6dwGOr0Sy&dimension=pe:THIS_MONTH&dimension=ou:USER_ORGUNIT&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+	},
+	{
+		"apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:sPcUxHnZD5S;nY6dwGOr0Sy&dimension=pe:THIS_MONTH&dimension=ou:USER_ORGUNIT_CHILDREN&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+	},
+	{
+		"apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:PFRK0hsXRDS&dimension=pe:THIS_YEAR&dimension=ou:USER_ORGUNIT&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+	},
+	{
+		"apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:PFRK0hsXRDS&dimension=pe:THIS_YEAR&dimension=ou:USER_ORGUNIT_CHILDREN&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+	},
+	{
+		"apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:A0eBDBqFBHR&dimension=pe:THIS_YEAR&dimension=ou:USER_ORGUNIT&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+	},
+	{
+		"apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:A0eBDBqFBHR&dimension=pe:THIS_YEAR&dimension=ou:USER_ORGUNIT_CHILDREN&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+	},
+
+	{
+		"apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:tHEAHM2JGDr;DjQzl4fes17;nkbQbqUuons&dimension=ou:USER_ORGUNIT&dimension=pe:THIS_YEAR&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+	},
+	{
+		"apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:tHEAHM2JGDr;DjQzl4fes17;nkbQbqUuons&dimension=ou:USER_ORGUNIT_CHILDREN&dimension=pe:THIS_YEAR&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+	},
+	{
+		"apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:SeqGBOy7Wh6;KvigUWjoSvM;I6ZMnMP684A;Xi9xEomUGBZ;uPfF4Kat1oG;ULbXn4nJYYt;A0jVfNZUW5f;T2OpeejXpuL&dimension=pe:THIS_MONTH&dimension=ou:USER_ORGUNIT&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+	},
+	{
+		"apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:SeqGBOy7Wh6;KvigUWjoSvM;I6ZMnMP684A;Xi9xEomUGBZ;uPfF4Kat1oG;ULbXn4nJYYt;A0jVfNZUW5f;T2OpeejXpuL&dimension=pe:THIS_MONTH&dimension=ou:USER_ORGUNIT_CHILDREN&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+	},
+	{
+	   "apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:rcKdW3PTGEb;FmZpfzqE8rL&dimension=ou:USER_ORGUNIT&dimension=pe:THIS_MONTH&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+	},
+	{
+	   "apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:rcKdW3PTGEb;FmZpfzqE8rL&dimension=ou:USER_ORGUNIT_CHILDREN&dimension=pe:THIS_MONTH&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+	},
+	{
+		"apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:xt1SLd4ZRQ5;W9ZQbalepaj;TUmKWp2LRrk;JvLU38fLEqW;dvVvavpocYv;MMEYNfSWifO;qMvQsZMejyJ;FLn1VLKIgd8;LnEYG01WE7F;bEK1432OO9G;L2OlQdRnBLM&dimension=ou:USER_ORGUNIT&dimension=pe:THIS_MONTH&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+	},
+	{
+		"apiURL" : "/api/analytics/dataValueSet.json?dimension=dx:xt1SLd4ZRQ5;W9ZQbalepaj;TUmKWp2LRrk;JvLU38fLEqW;dvVvavpocYv;MMEYNfSWifO;qMvQsZMejyJ;FLn1VLKIgd8;LnEYG01WE7F;bEK1432OO9G;L2OlQdRnBLM&dimension=ou:USER_ORGUNIT_CHILDREN&dimension=pe:THIS_MONTH&showHierarchy=false&hierarchyMeta=false&includeMetadataDetails=true&includeNumDen=true&skipRounding=false&aggregationType=LAST&completedOnly=false"
+	}	
+	
+  ]
+}
