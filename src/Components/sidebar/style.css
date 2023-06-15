@@ -1,0 +1,11 @@
+.side-bar {
+    height:100vh;
+    width:15vw;
+    border-right: 1px solid #D3D3D3;
+    cursor: pointer;
+}
+
+.active {
+    background-color: #B1D0D0 ;
+    color:white;
+}
