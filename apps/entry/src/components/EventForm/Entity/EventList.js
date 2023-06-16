@@ -24,7 +24,9 @@ const Events = ({match, history }) => {
     const categoryCombos = useSelector(state=> state.metadata.categoryCombos)
     const dataElementObjects = useSelector(state=> state.metadata.dataElementObjects)
     const dataSets = useSelector(state=>state.metadata.dataSets)
+    const teiAttributeValues = useSelector(state=>state.data.entity.values)
     var aggregationOnProgress = useSelector(state => state.data.aggregationOnProgress)
+
 
     useEffect(() => {
         $("#msg1").hide();
@@ -50,6 +52,7 @@ const Events = ({match, history }) => {
             let res = await Aggregate(
                 {
                     event: eventObject,
+                    teiAttributeValues : teiAttributeValues,
                     operation: "INCOMPLETE",
                     dataElements: dataElementObjects,
                     categoryCombos: categoryCombos,

@@ -30,8 +30,8 @@
         "build:tanda": "cross-env REACT_APP_DHIS2_TABLE_CONFIG=tanda react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "prebuild:tanda": "rimraf build ../../amr-equity-v38.zip && d2-manifest package.json public/manifest.webapp",
-        "postbuild:tanda": "cd build && bestzip ../../../amr-equity-v38.zip *",
+        "prebuild:tanda": "rimraf build ../../amr-entry-tanda-v38.zip && d2-manifest package.json public/manifest.webapp",
+        "postbuild:tanda": "cd build && bestzip ../../../amr-entry-tanda-v38.zip *",
         "analyze": "source-map-explorer build/static/js/*.js'"
     },
     "dependencies": {

@@ -1,4 +1,4 @@
-import { batch } from 'react-redux'
+import {batch, useSelector} from 'react-redux'
 import { createAction } from '../createAction'
 import {
     SET_ENTITY_AND_ORG_UNIT,
@@ -101,6 +101,7 @@ export const getExistingEvent = (orgUnit, tieId, eventId, editStatus, btnStatus)
     const programs = state.metadata.programs
     const optionSets = state.metadata.optionSets
     const { trackedEntityTypeAttributes, rules } = state.metadata.person
+
     try {
         const data = await existingRecord(programs, orgUnit, tieId, eventId)
         const [entityValues, attributes] = entityRules(
@@ -115,7 +116,7 @@ export const getExistingEvent = (orgUnit, tieId, eventId, editStatus, btnStatus)
         data.TeiID = tieId;
         data.btnStatus=btnStatus;
         data.editable = editStatus;
-        if(data.eventList.length==0){
+        if(data.eventList.length===0){
             data.entityValues = entityValues
             data.entityAttributes = attributes
             data.orgUnit = {
@@ -148,6 +149,21 @@ export const getExistingEvent = (orgUnit, tieId, eventId, editStatus, btnStatus)
                     updateEventValue(data.eventId, key, value,data.program,orgUnit,tieId,tempSTATUS,data.programStage.id),
                 }
             )
+            /*
+            let tempOrganismDataValue = eventValues["SaQe2REkGVw"];
+            if(tempOrganismDataValue){
+                let age_dob = entityValues["DfXY7WHFzyc"];
+                let sex = entityValues["VXRRpqAdrdK"];
+                console.log(age_dob, sex,  tempOrganismDataValue );
+                //alert ( age_dob + " -- " + sex + " -- " + tempOrganismDataValue + " -- " + key);
+                let tempValue = 'ARIF18-45';
+                let tempKey = 'Lc7YC95p0km';
+                alert ( age_dob + " -- " + sex + " -- " + tempOrganismDataValue + " -- " + tempKey );
+                //updateEventValue(data.eventId, tempKey, tempValue, programId,orgUnit,trackerID,tempStatus,tempProgramStage)
+                updateEventValue(data.eventId, tempKey, tempValue, data.program,orgUnit,tieId,tempSTATUS,data.programStage.id);
+            }
+             */
+
             data.entityValues = entityValues
             data.entityAttributes = attributes
             data.eventValues = eventValues
@@ -296,6 +312,7 @@ export const createNewEvent = () => async (dispatch, getState) => {
                 if ((key != variables.id) && panel.program == variables.program) data.eventValues[variables.id] = "";
         })
         const tempNEWStatus = "ACTIVE"
+
         const [values, programStage, invalid] = eventRules(
             data.eventValues,
             data.programStage,
@@ -340,7 +357,7 @@ export const submitEvent = addMore => async (dispatch, getState) => {
         await setEventStatus(eventId, true)
         if (addMore) dispatch(createAction(RESET_PANEL_EVENT))
         else {
-            if (eventValues[ORGANISM_DETECTED] == "Detected") {
+            if (eventValues[ORGANISM_DETECTED] === "Detected") {
                 dispatch(createAction(SET_PREVIOUS_EVENT, { eventValues }))
                 dispatch(AddAndSubmit(false))
                 dispatch(createAction(PANEL_EDITABLE))
@@ -351,7 +368,7 @@ export const submitEvent = addMore => async (dispatch, getState) => {
             }
         }
         dispatch(createAction(SET_COMPLETED))
-        if (eventValues[ORGANISM_DETECTED] != "Detected") {
+        if (eventValues[ORGANISM_DETECTED] !== "Detected") {
             dispatch(createAction(COMPLETED_CLICKED, true))
         }
         dispatch(createAction(COMPLETED_CLICKED, true))
@@ -428,18 +445,36 @@ export const setEventValue = (key, value,isPrev) => (dispatch, getState) => {
     const orgUnit = getState().data.orgUnit.id;
     const trackerID = getState().data.entity;
     const tempProgramStage = getState().data.panel.programStage;
+    //var teiAttributeValues = getState().data.entity.values;
+    //var eventDataValues = getState().data.event.values;
+
     const tempStatus = "ACTIVE";
     var dID = ["mp5MeJ2dFQz", "dRKIjwIDab4", "GpAu5HjWAEz", "B7XuDaXPv10"];
-    if (isPrev != true) {
+    if (isPrev !== true) {
         updateEventValue(event.id, key, value, programId,orgUnit,trackerID,tempStatus,tempProgramStage)
     }
-    else if (isPrev == true) {
+    else if (isPrev === true) {
     if (!dID.includes(key)) {
         updateEventValue(event.id, key, value, programId,orgUnit,trackerID,tempStatus,tempProgramStage)
     }
     }
 
-    if (key === SAMPLE_ID_ELEMENT && programId == SAMPLE_TESTING_PROGRAM["0"].value) dispatch(checkDuplicacy(value))
+    /*
+    let organismDataValue = eventDataValues["SaQe2REkGVw"];
+    if(organismDataValue){
+        let age_dob = teiAttributeValues["DfXY7WHFzyc"];
+        let sex = teiAttributeValues["VXRRpqAdrdK"];
+        console.log(age_dob, sex,  organismDataValue );
+        alert ( age_dob + " -- " + sex + " -- " + organismDataValue + " -- " + key);
+        let tempValue = 'ARIF18-45';
+        let tempKey = 'Lc7YC95p0km';
+
+        updateEventValue(event.id, tempKey, tempValue, programId,orgUnit,trackerID,tempStatus,tempProgramStage)
+    }
+     */
+
+
+    if (key === SAMPLE_ID_ELEMENT && programId === SAMPLE_TESTING_PROGRAM["0"].value) dispatch(checkDuplicacy(value))
 
     const [values, programStage, invalid] = eventRules(
         { ...event.values, [key]: value },
@@ -512,7 +547,7 @@ export const nextEvent = (next,addMoreSample,addMoreIso) => async (dispatch, get
         if (addMoreSample) { dispatch(createAction(RESET_SAMPLE_PANEL_EVENT)) }
         if (addMoreIso) dispatch(createAction(RESET_PANEL_EVENT))
         else {
-            if (eventValues[ORGANISM_DETECTED] == "Detected") {
+            if (eventValues[ORGANISM_DETECTED] === "Detected") {
                 dispatch(createAction(SET_PREVIOUS_EVENT, { eventValues }))
                 dispatch(AddAndSubmit(false))
                 dispatch(createAction(PANEL_EDITABLE))
@@ -560,7 +595,7 @@ export const saveEvent = (submitBtn,saveBtn) => async (dispatch, getState) => {
         }
         if (addMore) dispatch(createAction(RESET_PANEL_EVENT))
         else {
-            if (eventValues[ORGANISM_DETECTED] == "Detected") {
+            if (eventValues[ORGANISM_DETECTED] === "Detected") {
                 dispatch(createAction(SET_PREVIOUS_EVENT, { eventValues }))
                 dispatch(AddAndSubmit(false))
                 dispatch(createAction(PANEL_EDITABLE))

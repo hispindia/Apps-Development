@@ -7,6 +7,7 @@ import {
     Result
 } from 'antd'
 
+
 var CONSTANTS = {
     customAttributeMetadataTypeIdentifier: 'Metadata_type',
     locationCode: "Location",
@@ -75,6 +76,7 @@ let getValue = async ({
  */
 export const Aggregate = async ({
     event,
+    teiAttributeValues,
     operation,
     dataElements,
     categoryCombos,
@@ -110,7 +112,64 @@ export const Aggregate = async ({
     let locationData = event.values[locationDataElement]
 
     let pathogenDataElement = dataElements.attributeGroups[CONSTANTS.pathogenCode][0] //There is only one dataElements
-    let pathogenData = event.values[pathogenDataElement]
+    let pathogenData_old = event.values[pathogenDataElement];
+
+    console.log( pathogenData_old );
+
+    let organismDataValue = event.values["SaQe2REkGVw"]; // organism tracker-dataelement-value
+    //let tei = trackedEntityInstance;
+
+    let sex = teiAttributeValues["VXRRpqAdrdK"];
+    let tempSex = '';
+    if( sex === 'Male'){
+        tempSex = 'M'
+    }
+    else if( sex === 'Female' ){
+        tempSex = 'F'
+    }
+    else if( sex === 'Transgender' ){
+        tempSex = 'T'
+    }
+
+    let age_dob = teiAttributeValues["DfXY7WHFzyc"];
+    console.log(age_dob, sex,  organismDataValue);
+
+    //let dateDiff_ms = Date.now() - new Date(age_dob).getTime();
+    let dateDiff_ms = new Date(sampleDate).getTime() - new Date(age_dob).getTime();
+    let age_diff = new Date(dateDiff_ms);
+
+    let calculatedAge = Math.abs(age_diff.getUTCFullYear() - 1970);
+    let age_range = "";
+    if ( calculatedAge < 18 ){
+        age_range = "0-17";
+    }
+    else if( calculatedAge > 17 && calculatedAge < 46 ){
+        age_range = "18-45";
+    }
+    else if( calculatedAge > 45 && calculatedAge < 61 ){
+        age_range = "46-60";
+    }
+    else if( calculatedAge > 60 && calculatedAge < 76 ){
+        age_range = "61-75";
+    }
+    else if( calculatedAge > 75 ){
+        age_range = ">75";
+    }
+    /*
+    function calculate_age(dob) {
+        var diff_ms = Date.now() - dob.getTime();
+        var age_dt = new Date(diff_ms);
+
+        return Math.abs(age_dt.getUTCFullYear() - 1970);
+    }
+    */
+
+    //alert ( age_dob + " -- " + sex + " -- " + organismDataValue + " -- " + key);
+    //let tempValue = 'ARIF18-45';
+    //let tempKey = 'Lc7YC95p0km';
+
+    let pathogenData = organismDataValue + tempSex + age_range; // aggregated dataelement code
+    console.log(age_range, tempSex,  organismDataValue, pathogenData );
 
     let sampleTypeDataElement = dataElements.attributeGroups[CONSTANTS.sampleTypeCode][0]
     let sampleTypeData = event.values[sampleTypeDataElement]

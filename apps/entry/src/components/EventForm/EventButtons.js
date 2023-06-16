@@ -50,6 +50,7 @@ export const EventButtons = ({ history, existingEvent }) => {
     var aggregationOnProgress = useSelector(state => state.data.aggregationOnProgress)
     var { program } = useSelector(state => state.data.panel);
     var programCheck = program == "L7bu48EI54J" ? false : true;
+    var teiAttributeValues = useSelector(state=>state.data.entity.values)
     var userAccess = false;
     programs.forEach(p => {
         p.programStages.forEach(ps => {
@@ -76,6 +77,7 @@ export const EventButtons = ({ history, existingEvent }) => {
     const onSubmit = async addMore => {
         let res = await Aggregate({
             event:event,
+            teiAttributeValues : teiAttributeValues,
             operation:"COMPLETE",
             dataElements:dataElementObjects,
             categoryCombos: categoryCombos,
@@ -94,6 +96,7 @@ export const EventButtons = ({ history, existingEvent }) => {
     const onEdit = async () => {
         let res = await Aggregate({
             event:event,
+            teiAttributeValues : teiAttributeValues,
             operation:"INCOMPLETE",
             dataElements:dataElementObjects,
             categoryCombos: categoryCombos,
@@ -124,6 +127,7 @@ export const EventButtons = ({ history, existingEvent }) => {
         let res = await Aggregate(
             {
                 event: event,
+                teiAttributeValues : teiAttributeValues,
                 operation: "INCOMPLETE",
                 dataElements: dataElementObjects,
                 categoryCombos: categoryCombos,
