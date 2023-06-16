@@ -2373,6 +2373,7 @@ excelImport
                                 domainType: row.domainType,
                                 valueType: row.valueType,
                                 zeroIsSignificant: row.zeroIsSignificant,
+                                publicAccess: row.publicAccess,
                                 legendSets: []
                             };
 
@@ -3349,3 +3350,30 @@ excelImport
 
         }
     })
+
+/*
+age calculation on current date and date of birth
+    let age_dob = teiAttributeValues["DfXY7WHFzyc"]; // date format - '2023-01-01'
+    console.log(age_dob, sex,  organismDataValue);
+
+    let dateDiff_ms = Date.now() - new Date(age_dob).getTime();
+    let age_diff = new Date(dateDiff_ms);
+
+    let calculatedAge = Math.abs(age_diff.getUTCFullYear() - 1970);
+
+    function calculate_age(dob) {
+    var diff_ms = Date.now() - dob.getTime();
+    var age_dt = new Date(diff_ms);
+
+    return Math.abs(age_dt.getUTCFullYear() - 1970);
+}
+
+console.log(calculate_age(new Date(1982, 11, 4)));
+
+console.log(calculate_age(new Date(1962, 1, 1)));
+
+    let dateDiff_ms = new Date(sampleDate).getTime() - new Date(age_dob).getTime();
+    let age_diff = new Date(dateDiff_ms);
+
+    let calculatedAge = Math.abs(age_diff.getUTCFullYear() - 1970);
+ */
