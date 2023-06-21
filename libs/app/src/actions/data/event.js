@@ -174,6 +174,12 @@ export const getExistingEvent = (orgUnit, tieId, eventId, editStatus, btnStatus)
             }
             data.programs = state.metadata.programList
             data.organisms = optionSets[ORGANISM_SET]
+            data.eventList.forEach(ev =>{
+                ev.dataValues.forEach(dv=>{
+                    let dataValue = data.organisms.find(o=>o.value == dv.value)
+                   if(dataValue) dv.value=dataValue.label
+                })
+            })
             data.invalid = invalid
             data.rules = getRules(
                 state.metadata.eventRules,

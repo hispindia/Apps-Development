@@ -113,7 +113,17 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
             case RESET_PREVIOUS_ENTITY:
                 return {
                     ...state,
-                    previousValues: {}
+                    previousValues: {},
+                    panel: {
+                        ...state.panel,
+                        defaultProgram: SAMPLE_TESTING_PROGRAM,
+                        program: '',
+                        programStage: '',
+                        organism: '',
+                        sampleDate:"",
+                        valid: false,
+                        completeClicked:false,
+                    },
                 }
         case ADD_ENTITY:
             return {
@@ -324,6 +334,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                 },
                 panel: {
                     ...state.panel,
+                    defaultProgram:[],
                     program: payload.program,
                     programStage: payload.programStage.id,
                     organism: payload.eventValues[ORGANISM_ELEMENT],

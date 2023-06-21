@@ -220,11 +220,13 @@ export const initMetadata = async isIsolate => {
     const stageLists = {}
     const programOrganisms = {}
     programs.forEach(p => {
-        programList.push({
-            value: p.id,
-            label: p.name,
-            orgUnits: p.organisationUnits.map(o => o.id),
-        })
+        if(p.id != "L7bu48EI54J"){
+            programList.push({
+                value: p.id,
+                label: p.name,
+                orgUnits: p.organisationUnits.map(o => o.id),
+            })
+        }
         const stages = []
         programOrganisms[p.id] = data.optionGroups.find(
             og => og.name === p.name
@@ -292,7 +294,7 @@ export const initMetadata = async isIsolate => {
                     s => !remove.includes(s.id)
                 )
             })
-        stageLists[p.id] = stages
+          stageLists[p.id] = stages
     })
 
     let eventRules = []

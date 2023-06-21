@@ -63,11 +63,11 @@ export const eventRules = (
                 )
             ) {
                 dataElement.color = ''
-                dataElement.warning = 'MIC is prioritized over DD'
+                dataElement.warning = 'MIC is prioritized over DD/ Two similar DD antibiotics have Data'
             } else {
                 dataElement.color =
                     values[id] === '' || !testValue ? '' : getColor(testValue)
-                if ((dataElement.warning = 'MIC is prioritized over DD'))
+                if ((dataElement.warning = 'MIC is prioritized over DD/ Two similar DD antibiotics have Data'))
                     dataElement.warning = ''
             }
         })
