@@ -126,13 +126,13 @@ export const Panel = ({ showEdit }) => {
         <CardSection heading="Panel" buttons={showEdit && <PanelButtons />}>
             <Grid container spacing={0}>
                 <Grid item xs>
-                    {(defaultProgram.length>0 && !editable) ?  getDataElement('defaultProgram'): getDataElement('program')}
+                    { (program=="L7bu48EI54J" || program == "") && !editable ? getDataElement('defaultProgram'): getDataElement('program')}
                     {program &&
                         stageLists[program].length >= 1 &&
                         getDataElement('programStage')}
                 </Grid>
                 <Grid item xs>
-                    {(program && organisms.length) ? getDataElement('organism') : ""}
+                    {(program && organisms.length) ? program !== "L7bu48EI54J" ? getDataElement('organism') : "" :  ""}
                     {getDataElement('sampleDate')}
                 </Grid>
             </Grid>

@@ -98,17 +98,9 @@ const Events = ({match, history }) => {
         aggregationOnProgress = status
     }
 
-    const onEdit = (ou, eventId, dataValues) => {
+    const onEdit = (ou, eventId) => {
         localStorage.setItem('eventId', eventId)
-        let btnStatus= false
-        for (let dataValue of dataValues) {
-            let dataElement = dataValue.dataElement;
-            if( dataElement == 'u8VDCIwa3w4'){  // id of organism detected data element in sample testing
-                btnStatus = true;
-            }
-        }
-        let editStatus = true;
-        dispatch(getExistingEvent(ou, teiId, eventId, editStatus, btnStatus))
+        dispatch(getExistingEvent(ou, teiId, eventId, true, false))
     }
     if (events != undefined) {
         data = events
@@ -173,7 +165,7 @@ const Events = ({match, history }) => {
                         { data.length ?
                          <TableRow >
                             {data.map(ele =>(<TableCell>{ele.value}</TableCell>))}
-                            <Button primary={true} onClick={() => onEdit(ele.orgUnit, ele.event, ele.dataValues)}>Edit</Button>
+                            <Button primary={true} onClick={() => onEdit(ele.orgUnit, ele.event)}>Edit</Button>
                         </TableRow>
                         : ''}
                         </>)

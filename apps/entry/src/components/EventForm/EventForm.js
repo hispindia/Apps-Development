@@ -150,6 +150,7 @@ export const EventForm = ({ history, match }) => {
    const onConfirm=async(e)=>{
         e.preventDefault();
         let eventID =localStorage.getItem('eventId')
+         if(Object.keys(event.values).length>5){
         let res = await Aggregate(
             {
                 event: event,
@@ -166,6 +167,17 @@ export const EventForm = ({ history, match }) => {
         )
         changeAggregationStatus(false);
         if(res.response){
+            await deleteEvent(eventID).then(res => {
+                if(res.httpStatus == 'OK')
+                {
+                    $('#success').show();
+                }
+            })
+            $("#popup").hide();
+            $("#panel").hide();
+            $('#msg').hide();
+        }
+    }else{
             await deleteEvent(eventID).then(res => {
                 if(res.httpStatus == 'OK')
                 {

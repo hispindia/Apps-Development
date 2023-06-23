@@ -334,7 +334,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                 },
                 panel: {
                     ...state.panel,
-                    defaultProgram:[],
+                    defaultProgram:SAMPLE_TESTING_PROGRAM,
                     program: payload.program,
                     programStage: payload.programStage.id,
                     organism: payload.eventValues[ORGANISM_ELEMENT],

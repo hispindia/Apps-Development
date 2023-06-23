@@ -51,6 +51,9 @@ export const EventButtons = ({ history, existingEvent }) => {
     var { program } = useSelector(state => state.data.panel);
     var programCheck = program == "L7bu48EI54J" ? false : true;
     var teiAttributeValues = useSelector(state=>state.data.entity.values)
+    const eventValue = useSelector(state => state.data.event.values)
+    var subAndAddNewSampleBtn = true;
+    if (eventValue) if(eventValue.B7XuDaXPv10 && eventValue.GpAu5HjWAEz && eventValue.dRKIjwIDab4 && eventValue.mp5MeJ2dFQz && eventValue.u8VDCIwa3w4) subAndAddNewSampleBtn=false
     var userAccess = false;
     programs.forEach(p => {
         p.programStages.forEach(ps => {
@@ -94,6 +97,7 @@ export const EventButtons = ({ history, existingEvent }) => {
     }
     const submitExit = async () => await onSubmit(false)
     const onEdit = async () => {
+        if(Object.keys(event.values).length>5){
         let res = await Aggregate({
             event:event,
             teiAttributeValues : teiAttributeValues,
@@ -111,6 +115,9 @@ export const EventButtons = ({ history, existingEvent }) => {
             await dispatch(editEvent())
         }
         changeAggregationStatus(false);
+    }else {
+        await dispatch(editEvent())
+    }
     }
 
     // Next button ,Submit and Add New ISO, Submit and Add New Sample, Save start
@@ -147,7 +154,7 @@ export const EventButtons = ({ history, existingEvent }) => {
     const submitAddButton = {
         label: 'Submit and add new sample',
         onClick: submitAddSample,
-        disabled: addSampleValid,
+        disabled: addSampleValid || subAndAddNewSampleBtn,
         icon: 'add',
         primary: true,
         tooltip:
@@ -177,7 +184,7 @@ export const EventButtons = ({ history, existingEvent }) => {
     const submitButton = {
         label: 'Submit',
         onClick: onSubmitClick,
-        disabled: addSampleValid || aggregationOnProgress,
+        disabled: addSampleValid || aggregationOnProgress || subAndAddNewSampleBtn,
         icon: 'done',
         primary: true,
         tooltip:

@@ -114,11 +114,9 @@ export const Aggregate = async ({
     let pathogenDataElement = dataElements.attributeGroups[CONSTANTS.pathogenCode][0] //There is only one dataElements
     let pathogenData_old = event.values[pathogenDataElement];
 
-    console.log( pathogenData_old );
-
-    let organismDataValue = event.values["SaQe2REkGVw"]; // organism tracker-dataelement-value
+    let organismDataValue = event.values["SaQe2REkGVw"] || event.values["u8VDCIwa3w4"]; // organism tracker-dataelement-value
     //let tei = trackedEntityInstance;
-
+//u8VDCIwa3w4
     let sex = teiAttributeValues["VXRRpqAdrdK"];
     let tempSex = '';
     if( sex === 'Male'){
@@ -132,8 +130,6 @@ export const Aggregate = async ({
     }
 
     let age_dob = teiAttributeValues["DfXY7WHFzyc"];
-    console.log(age_dob, sex,  organismDataValue);
-
     //let dateDiff_ms = Date.now() - new Date(age_dob).getTime();
     let dateDiff_ms = new Date(sampleDate).getTime() - new Date(age_dob).getTime();
     let age_diff = new Date(dateDiff_ms);
@@ -169,7 +165,6 @@ export const Aggregate = async ({
     //let tempKey = 'Lc7YC95p0km';
 
     let pathogenData = organismDataValue + tempSex + age_range; // aggregated dataelement code
-    console.log(age_range, tempSex,  organismDataValue, pathogenData );
 
     let sampleTypeDataElement = dataElements.attributeGroups[CONSTANTS.sampleTypeCode][0]
     let sampleTypeData = event.values[sampleTypeDataElement]
