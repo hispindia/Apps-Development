@@ -161,7 +161,7 @@ const Events = ({match, history }) => {
                                 let data = [ {value: ''}]
                                 dataValue['4']=data
                               }
-                           if((dataValue['4'].value !== 'Pathogens')  && (dataValue['4'].value !== 'Suspected colonizer')){
+                           if((dataValue['4'].value !== 'Infected')  && (dataValue['4'].value !== 'Suspected colonizer')){
                                 data = dataValue;
                         }
                     return (

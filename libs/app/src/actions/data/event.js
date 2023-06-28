@@ -52,7 +52,7 @@ export const AddAndSubmit = val => dispatch =>dispatch(createAction(REMOVE_BUTTO
 export const setButtonLoading = payload => dispatch =>dispatch(createAction(SET_BUTTONS, payload))
 export const addExistingEvent = payload => dispatch =>dispatch(createAction(SET_EVENT, payload))
 export const addSelectedProgramOfOrgUnits = payload => dispatch =>dispatch(createAction(SET_INITIAL_PROGRAM, payload))
-export const setDataELments = payload => dispatch=> dispatch(createAction(LOAD_DATAELEMENTS, payload))
+export const setDataELments = payload => dispatch=> dispatch(createAction(LOAD_DpayloadATAELEMENTS, payload))
 
 // export const PreValue = payload => dispatch=> dispatch(createAction(SET_PREVALUE, payload))
 export const initNewEvent = orgUnit => (dispatch, getState) => {
@@ -124,6 +124,7 @@ export const getExistingEvent = (orgUnit, tieId, eventId, editStatus, btnStatus)
             }
             data.programs = state.metadata.programList
             data.organisms = optionSets[ORGANISM_SET]
+            data.typeOfIsolates = optionSets.FKxu75KQozx
             //  data.invalid = false
             dispatch(createAction(EXISTING_TEI_DATA_RECEIVED, data))
         } else{
@@ -152,6 +153,8 @@ export const getExistingEvent = (orgUnit, tieId, eventId, editStatus, btnStatus)
             data.entityAttributes = attributes
             data.eventValues = eventValues
             data.programStage = programStage
+            data.typeOfIsolates = optionSets.FKxu75KQozx
+            data.typeOfIsolate = ""
             data.orgUnit = {
                 id: orgUnit,
                 code: getCode(orgUnit, state.metadata.orgUnits),
@@ -255,7 +258,7 @@ export const createNewEvent = () => async (dispatch, getState) => {
     if (Object.keys(prevStateValues).length != 0) {
         Object.keys(prevStateValues).forEach(function (previouskey) {
             if (prevStateValues[previouskey] != "") {
-                if (prevStateValues[previouskey] != "Pathogens"  || prevStateValues[previouskey] != "Suspected colonizer") {
+                if (prevStateValues[previouskey] != "Infected") {
                     values_to_send.push({
                         dataElement: previouskey,
                         value: prevStateValues[previouskey]
@@ -289,6 +292,7 @@ export const createNewEvent = () => async (dispatch, getState) => {
                 .programStages.find(s => s.id === panel.programStage),
             {
                 orgaCode: panel.organism,
+                isolateValue: panel.typeOfIsolate,
                 ou: orgUnit.id,
                 eId: entity.id,
                 eValues: !entity.id || entity.editing ? entity.values : null,
@@ -346,7 +350,7 @@ export const submitEvent = addMore => async (dispatch, getState) => {
         await setEventStatus(eventId, true)
         if (addMore) dispatch(createAction(RESET_PANEL_EVENT))
         else {
-            if (eventValues[ORGANISM_DETECTED] == "Pathogens" || eventValues[ORGANISM_DETECTED] == "Suspected colonizer") {
+            if (eventValues[ORGANISM_DETECTED] == "Infected") {
                 dispatch(createAction(SET_PREVIOUS_EVENT, { eventValues }))
                 dispatch(AddAndSubmit(false))
                 dispatch(createAction(PANEL_EDITABLE))
@@ -357,7 +361,7 @@ export const submitEvent = addMore => async (dispatch, getState) => {
             }
         }
         dispatch(createAction(SET_COMPLETED))
-        if (eventValues[ORGANISM_DETECTED] != "Pathogens") {
+        if (eventValues[ORGANISM_DETECTED] != "Infected") {
             dispatch(createAction(COMPLETED_CLICKED, true))
         }
         dispatch(createAction(COMPLETED_CLICKED, true))
@@ -518,7 +522,7 @@ export const nextEvent = (next,addMoreSample,addMoreIso) => async (dispatch, get
         if (addMoreSample) { dispatch(createAction(RESET_SAMPLE_PANEL_EVENT)) }
         if (addMoreIso) dispatch(createAction(RESET_PANEL_EVENT))
         else {
-            if (eventValues[ORGANISM_DETECTED] == "Pathogens" || eventValues[ORGANISM_DETECTED] == "Suspected colonizer") {
+            if (eventValues[ORGANISM_DETECTED] == "Infected") {
                 dispatch(createAction(SET_PREVIOUS_EVENT, { eventValues }))
                 dispatch(AddAndSubmit(false))
                 dispatch(createAction(PANEL_EDITABLE))
@@ -566,7 +570,7 @@ export const saveEvent = (submitBtn,saveBtn) => async (dispatch, getState) => {
         }
         if (addMore) dispatch(createAction(RESET_PANEL_EVENT))
         else {
-            if (eventValues[ORGANISM_DETECTED] == "Pathogens" || eventValues[ORGANISM_DETECTED] == "Suspected colonizer" ) {
+            if (eventValues[ORGANISM_DETECTED] == "Infected") {
                 dispatch(createAction(SET_PREVIOUS_EVENT, { eventValues }))
                 dispatch(AddAndSubmit(false))
                 dispatch(createAction(PANEL_EDITABLE))

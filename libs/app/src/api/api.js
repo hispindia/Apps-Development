@@ -3,6 +3,7 @@ import { getRecord } from './getRecord'
 import { getAllEvents, getPersonVal } from './getAllEvents'
 import {
     ORGANISM_ELEMENT,
+    TYPE_OF_ISOLATE,
     SAMPLE_ID_ELEMENT,
     AMR_ELEMENT,
     PERSON_TYPE,
@@ -105,10 +106,11 @@ export const deletePerson = async id =>
 export const newRecord = async (
     pId,
     pStage,
-    { orgaCode, ou, eId, eValues, sampleDate, orgUnitCode },UpdatedEventPayload
+    { orgaCode,isolateValue, ou, eId, eValues, sampleDate, orgUnitCode },UpdatedEventPayload
 ) => {
     const initialValues = {
         [ORGANISM_ELEMENT]: orgaCode,
+        [TYPE_OF_ISOLATE]:isolateValue,
         [AMR_ELEMENT]: await generateAmrId(ou, orgUnitCode),
     }
     const { entityId, eventId } = eId

@@ -1,4 +1,5 @@
 export const ORGANISM_ELEMENT = 'SaQe2REkGVw'
+export const TYPE_OF_ISOLATE = 'MOsgkq0ptBm'
 export const TEST_RESULT_ELEMENT = 'bSgpKbkbVGL'
 export const SAMPLE_ID_ELEMENT = 'GpAu5HjWAEz'
 export const AMR_ELEMENT = 'lIkk661BLpG'
@@ -13,7 +14,7 @@ export const L2_REJECTION_REASON = 'pz8SoHBO6RL'
 export const L2_REVISION_REASON = 'fEnFVvEFKVc'
 export const DEO_GROUP = 'mYdK5QT4ndl'
 export const ORGANISM_SET = 'TUCsBvqwTUV'
-export const ORGANISM_DETECTED = 'MOsgkq0ptBm' // id of organism detected Data element in sample testing 
+export const ORGANISM_DETECTED = 'u8VDCIwa3w4' // id of organism detected Data element in sample testing 
 export const SAMPLE_TESTING_PROGRAM = [{
     value: "L7bu48EI54J", 
     label: "Sample Testing"

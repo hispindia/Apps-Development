@@ -48,6 +48,8 @@ export const setProgram = program => (dispatch, getState) => {
             organism: '',
             sampleDate: valueShow ? sampleDate :"",
             organisms,
+            typeOfIsolate:"",
+            typeOfIsolates:optionSets.FKxu75KQozx,
             valid: false,
         })
     )
@@ -59,9 +61,10 @@ export const setPanelValue = (key, value) => (dispatch, getState) => {
         programStage,
         organism,
         organisms,
+        typeOfIsolate,
         sampleDate,
     } = getState().data.panel
-    const values = program== "L7bu48EI54J" ? { program, programStage, sampleDate } : { program, programStage, sampleDate,organism }
+    const values = program== "L7bu48EI54J" ? { program, programStage, sampleDate } : { program, programStage, typeOfIsolate, sampleDate, organism }
     if (values[key] === value) return
     const valid = !Object.values({ ...values, [key]: value }).includes('')
     dispatch(

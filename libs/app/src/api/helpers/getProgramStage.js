@@ -1,4 +1,4 @@
-import { ORGANISM_ELEMENT, AMR_ELEMENT } from 'constants/dhis2'
+import { ORGANISM_ELEMENT,TYPE_OF_ISOLATE, AMR_ELEMENT } from 'constants/dhis2'
 
 export const getProgramStage = async (
     pStage,
@@ -12,6 +12,10 @@ export const getProgramStage = async (
             case ORGANISM_ELEMENT:
                 return (
                     values[ORGANISM_ELEMENT] && values[ORGANISM_ELEMENT] !== ''
+                )
+            case TYPE_OF_ISOLATE:
+                return (
+                    values[TYPE_OF_ISOLATE] && values[TYPE_OF_ISOLATE] !== ''
                 )
             default:
                 return isIsolate && !programStage.dataElements[id].editable

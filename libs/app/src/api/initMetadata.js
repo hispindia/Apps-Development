@@ -1,5 +1,5 @@
 import { get, request } from '@hisp-amr/api'
-import { ORGANISM_ELEMENT, PERSON_TYPE, DEO_GROUP } from 'constants/dhis2'
+import { ORGANISM_ELEMENT,TYPE_OF_ISOLATE, PERSON_TYPE, DEO_GROUP } from 'constants/dhis2'
 import { HIDE, IGNORE, EDITABLE } from 'constants'
 
 const getUserData = async () =>
@@ -220,7 +220,7 @@ export const initMetadata = async isIsolate => {
     const stageLists = {}
     const programOrganisms = {}
     programs.forEach(p => {
-        if(p.id != "L7bu48EI54J"){
+        if(p.id != "L7bu48EI54J" &&  p.id != "STe7Xraobt2" && p.id != "Bj4ZJzd9Uz9"){
         programList.push({
             value: p.id,
             label: p.name,
@@ -251,6 +251,7 @@ export const initMetadata = async isIsolate => {
                 )
                 if (ps.dataElements[ORGANISM_ELEMENT])
                     ps.dataElements[ORGANISM_ELEMENT].hideWithValues = true
+                    // ps.dataElements[TYPE_OF_ISOLATE].hideWithValues = true
                 ps.programStageSections.forEach(pss => {
                     if (hasHide(pss.name)) {
                         pss.displayName = pss.name = removeOption(

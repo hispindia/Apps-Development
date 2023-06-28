@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import {
@@ -49,8 +49,11 @@ export const EventButtons = ({ history, existingEvent }) => {
     var addSampleValid = (defaultProgram.length && !editable && sampleDate) ? false : true
     var aggregationOnProgress = useSelector(state => state.data.aggregationOnProgress)
     var { program } = useSelector(state => state.data.panel);
+    const eventValue = useSelector(state => state.data.event.values)
+    var subAndAddNewSampleBtn = true
     var programCheck = program == "L7bu48EI54J" ? false : true;
     var userAccess = false;
+     if (eventValue) if(eventValue.B7XuDaXPv10 && eventValue.GpAu5HjWAEz && eventValue.dRKIjwIDab4 && eventValue.mp5MeJ2dFQz) subAndAddNewSampleBtn=false
     programs.forEach(p => {
         p.programStages.forEach(ps => {
             userAccess = ps.access.data.write
@@ -143,7 +146,7 @@ export const EventButtons = ({ history, existingEvent }) => {
     const submitAddButton = {
         label: 'Submit and add new sample',
         onClick: submitAddSample,
-        disabled: addSampleValid,
+        disabled: addSampleValid || subAndAddNewSampleBtn,
         icon: 'add',
         primary: true,
         tooltip:
@@ -173,7 +176,7 @@ export const EventButtons = ({ history, existingEvent }) => {
     const submitButton = {
         label: 'Submit',
         onClick: onSubmitClick,
-        disabled: addSampleValid || aggregationOnProgress,
+        disabled: addSampleValid || aggregationOnProgress || subAndAddNewSampleBtn,
         icon: 'done',
         primary: true,
         tooltip:

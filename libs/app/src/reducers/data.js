@@ -1,6 +1,6 @@
 import { ERROR } from 'constants/statuses'
 import { REQUIRED_EMPTY } from 'constants/invalidReasons'
-import { ORGANISM_ELEMENT, SAMPLE_TESTING_PROGRAM } from 'constants/dhis2'
+import { ORGANISM_ELEMENT, TYPE_OF_ISOLATE, SAMPLE_TESTING_PROGRAM } from 'constants/dhis2'
 import {
     SET_ENTITY,
     SET_ENTITY_VALUE,
@@ -77,6 +77,7 @@ const INITIAL_STATE = {
         programStage: '',
         organism: '',
         sampleDate: '',
+        typeOfIsolate:'',
         defaultProgram: SAMPLE_TESTING_PROGRAM,
         valid: false,
     },
@@ -121,6 +122,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                         programStage: '',
                         organism: '',
                         sampleDate:"",
+                        typeOfIsolate:'',
                         valid: false,
                         completeClicked:false,
                     },
@@ -201,6 +203,8 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                     organism: payload.organism,
                     sampleDate: payload.sampleDate,
                     organisms: payload.organisms,
+                    typeOfIsolate:payload.typeOfIsolate,
+                    typeOfIsolates:payload.typeOfIsolates,
                     valid: payload.valid,
                 },
             }
@@ -223,6 +227,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                     programStage: '',
                     organism: '',
                     sampleDate: state.panel.sampleDate,
+                    typeOfIsolate:'',
                     valid: false,
                     completeClicked:false,
                 },
@@ -236,6 +241,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                     programStage: '',
                     organism: '',
                     sampleDate:state.panel.sampleDate,
+                    typeOfIsolate:'',
                     valid: false,
                 },
                 event: INITIAL_EVENT,
@@ -290,6 +296,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                     program: '',
                     programStage: '',
                     organism: '',
+                    typeOfIsolate:'',
                     sampleDate: state.panel.sampleDate,
                     defaultProgram: state.panel.defaultProgram,
                     valid: false,
@@ -334,13 +341,15 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                 },
                 panel: {
                     ...state.panel,
-                    defaultProgram:[],
+                    defaultProgram:SAMPLE_TESTING_PROGRAM,
                     program: payload.program,
                     programStage: payload.programStage.id,
                     organism: payload.eventValues[ORGANISM_ELEMENT],
                     sampleDate: payload.sampleDate,
                     programs: payload.programs,
                     organisms: payload.organisms,
+                    typeOfIsolate:payload.eventValues[TYPE_OF_ISOLATE],
+                    typeOfIsolates:payload.typeOfIsolates,
                     valid: true,
                 },
                 event: {
@@ -397,6 +406,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                     program: '',
                     programStage: '',
                     organism: '',
+                    typeOfIsolate:'',
                     sampleDate: state.panel.sampleDate,
                     valid: false,
                 },
