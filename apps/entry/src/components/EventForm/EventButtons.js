@@ -53,7 +53,7 @@ export const EventButtons = ({ history, existingEvent }) => {
     var subAndAddNewSampleBtn = true
     var programCheck = program == "L7bu48EI54J" ? false : true;
     var userAccess = false;
-     if (eventValue) if(eventValue.B7XuDaXPv10 && eventValue.GpAu5HjWAEz && eventValue.dRKIjwIDab4 && eventValue.mp5MeJ2dFQz) subAndAddNewSampleBtn=false
+     if (eventValue) if(eventValue.B7XuDaXPv10 && eventValue.GpAu5HjWAEz && eventValue.dRKIjwIDab4 && eventValue.mp5MeJ2dFQz && eventValue.lJm7JZvPQxA) subAndAddNewSampleBtn=false
     programs.forEach(p => {
         p.programStages.forEach(ps => {
             userAccess = ps.access.data.write

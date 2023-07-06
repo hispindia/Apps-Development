@@ -37,9 +37,9 @@ export const EventOverview = ({ match, history }) => {
     const selected = useSelector(state => state.selectedOrgUnit)
     const { rows, loading, addButtonDisabled, error } = useEvents(status)
     useEffect(() => {
-        DataElements.loadDataElements().then(res =>{
-            dispatch(setDataELments(res.dataElements));
-        })
+        // DataElements.loadDataElements().then(res =>{
+        //     dispatch(setDataELments(res.dataElements));
+        // })
         SelectedOrgUnit.programs(selected.id).then(res =>{
           let selectedProgram = res.programs.filter(program => program.name == "Sample Testing_HP")
            if(selectedProgram){
