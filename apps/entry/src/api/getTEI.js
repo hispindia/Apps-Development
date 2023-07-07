@@ -7,11 +7,21 @@ export const getTEI = async orgUnit => {
     var url = ""
     var SampleDict = {};
     var result = []
+    //var todayDate = new Date();
+    //var twoMonthBeforeDate = new Date(new Date().setDate(new Date().getDate() - 60));
     var todayDate = new Date();
+    var tempYear = new Date(new Date().setDate(new Date().getDate() - 60)).getFullYear();
+    var tempMonth = new Date(new Date().setDate(new Date().getDate() - 60)).getMonth();
+    var tempDate = new Date(new Date().setDate(new Date().getDate() - 60)).getDate();
+    var mm = tempMonth + 1;
+    if( mm < 9){
+        mm = "0"+mm;
+    }
+    var isoDateFormat = tempYear + "-" + mm + "-" + tempDate;
     var twoMonthBeforeDate = new Date(new Date().setDate(new Date().getDate() - 60));
-
     //api/trackedEntityInstances.json?ouMode=DESCENDANTS&ou=ANGhR1pa8I5&paging=false&lastUpdatedStartDate=2022-07-13&&lastUpdatedEndDate=2022-09-13
-    let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&lastUpdatedStartDate=2021-01-01&paging=false"
+    //let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&lastUpdatedStartDate=2021-01-01&paging=false"
+    let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&lastUpdatedStartDate=" + isoDateFormat +"&skipPaging=true"
     let api3 = '../../../api/29/sqlViews/gxov92xU7S7/data.json&paging=false' // Local Db
     let api4 = '../../../api/sqlViews/WKhh3qxwcPW/data.json?paging=false' // Baseline DB
     let apiForProgram = '../../../api/organisationUnits/'+orgUnit+'.json?fields=id,name,programs[id,name]&paging=false' // loading program for the ou
@@ -42,7 +52,8 @@ export const getTEI = async orgUnit => {
                 else {
                     tempEventDate = events[5];
                 }
-                var eventDataValuesOutputArray = JSON.parse(events[3].value);
+                //var eventDataValuesOutputArray = JSON.parse(events[3].value);
+                var eventDataValuesOutputArray = JSON.parse(events[3]);
                 for (const [key, value] of Object.entries(eventDataValuesOutputArray)) {
                     if (!dataElement.hasOwnProperty(key)) {
                         dataElement[key] = [value.value,value.created];
