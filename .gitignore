@@ -32,6 +32,14 @@ dist
 node_modules
 **/rebel.xml
 *.zip
+build
+node_modules/
+lib/
+npm-debug.log
+*.gzip
+build/
+target/
+nbproject/*
 *.lock
 package-lock.json
 yarn.lock
