@@ -220,11 +220,13 @@ export const initMetadata = async isIsolate => {
     const stageLists = {}
     const programOrganisms = {}
     programs.forEach(p => {
+        if(p.id != "L7bu48EI54J"){
         programList.push({
             value: p.id,
             label: p.name,
             orgUnits: p.organisationUnits.map(o => o.id),
         })
+       }
         const stages = []
         programOrganisms[p.id] = data.optionGroups.find(
             og => og.name === p.name

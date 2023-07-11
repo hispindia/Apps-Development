@@ -124,18 +124,32 @@ export const Panel = ({ showEdit }) => {
 
     return (
         <CardSection heading="Panel" buttons={showEdit && <PanelButtons />}>
-            <Grid container spacing={0}>
-                <Grid item xs>
-                    {(defaultProgram.length && !editable) ?  getDataElement('defaultProgram'): getDataElement('program')}
-                    {program &&
-                        stageLists[program].length >= 1 &&
-                        getDataElement('programStage')}
-                </Grid>
-                <Grid item xs>
-                    {(program && organisms.length) ? getDataElement('organism') : ""}
-                    {getDataElement('sampleDate')}
-                </Grid>
+        <Grid container spacing={0}>
+            <Grid item xs>
+                { (program=="L7bu48EI54J" || program == "") && !editable ? getDataElement('defaultProgram'): getDataElement('program')}
+                {program &&
+                    stageLists[program].length >= 1 &&
+                    getDataElement('programStage')}
             </Grid>
-        </CardSection>
+            <Grid item xs>
+                {(program && organisms.length) ? program !== "L7bu48EI54J" ? getDataElement('organism') : "" :  ""}
+                {getDataElement('sampleDate')}
+            </Grid>
+        </Grid>
+    </CardSection>
+        // <CardSection heading="Panel" buttons={showEdit && <PanelButtons />}>
+        //     <Grid container spacing={0}>
+        //         <Grid item xs>
+        //             {(defaultProgram.length && !editable) ?  getDataElement('defaultProgram'): getDataElement('program')}
+        //             {program &&
+        //                 stageLists[program].length >= 1 &&
+        //                 getDataElement('programStage')}
+        //         </Grid>
+        //         <Grid item xs>
+        //             {(program && organisms.length) ? getDataElement('organism') : ""}
+        //             {getDataElement('sampleDate')}
+        //         </Grid>
+        //     </Grid>
+        // </CardSection>
     )
 }

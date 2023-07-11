@@ -49,6 +49,7 @@ export const EventButtons = ({ history, existingEvent }) => {
     var addSampleValid = (defaultProgram.length && !editable && sampleDate) ? false : true
     var aggregationOnProgress = useSelector(state => state.data.aggregationOnProgress)
     var { program } = useSelector(state => state.data.panel);
+    const eventValue = useSelector(state => state.data.event.values)
     var programCheck = program == "L7bu48EI54J" ? false : true;
     var userAccess = false;
     programs.forEach(p => {
@@ -56,7 +57,8 @@ export const EventButtons = ({ history, existingEvent }) => {
             userAccess = ps.access.data.write
         })
     })
-
+    var subAndAddNewSampleBtn = true;
+    if (eventValue) if(eventValue.dRKIjwIDab4 && eventValue.GpAu5HjWAEz && eventValue.mp5MeJ2dFQz && eventValue.B7XuDaXPv10) subAndAddNewSampleBtn=false
     const changeAggregationStatus = (status)=>{
 
         dispatch(setAggregationProgress(status))
@@ -143,7 +145,7 @@ export const EventButtons = ({ history, existingEvent }) => {
     const submitAddButton = {
         label: 'Submit and add new sample',
         onClick: submitAddSample,
-        disabled: addSampleValid,
+        disabled: addSampleValid || subAndAddNewSampleBtn,
         icon: 'add',
         primary: true,
         tooltip:
@@ -173,7 +175,7 @@ export const EventButtons = ({ history, existingEvent }) => {
     const submitButton = {
         label: 'Submit',
         onClick: onSubmitClick,
-        disabled: addSampleValid || aggregationOnProgress,
+        disabled: addSampleValid || aggregationOnProgress || subAndAddNewSampleBtn,
         icon: 'done',
         primary: true,
         tooltip:
