@@ -42,7 +42,8 @@ import {
     COMPLETED_CLICKED,
     RESET_SAMPLE_PANEL_EVENT,
     SET_INITIAL_PROGRAM,
-    LOAD_DATAELEMENTS
+    LOAD_DATAELEMENTS,
+    CALCULATE_DAY
 } from '../actions/types'
 
 const INITIAL_EVENT = {
@@ -58,6 +59,7 @@ const INITIAL_EVENT = {
 
 const INITIAL_STATE = {
     previousValues: {},
+    calculateDay:null,
     btnStatus:false,
     editable: false,
     pageFirst:false,
@@ -101,11 +103,11 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                     defaultProgram:payload
                 },
             }
-        // case SET_PREVALUE:
-        //     return {
-        //         ...state,
-        //         preValues: payload
-        //     }
+        case CALCULATE_DAY:
+            return {
+                ...state,
+                calculateDay: payload
+            }
         case LOAD_DATAELEMENTS:
             return {
                 ...state,

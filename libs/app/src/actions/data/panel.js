@@ -49,7 +49,7 @@ export const setProgram = program => (dispatch, getState) => {
             sampleDate: valueShow ? sampleDate :"",
             organisms,
             typeOfIsolate:"",
-            typeOfIsolates:optionSets.FKxu75KQozx,
+            typeOfIsolates:optionSets.DFSF3emBC2G,
             valid: false,
         })
     )

@@ -28,7 +28,8 @@ import {
     INCOMPLETED_CLICKED,
     RESET_SAMPLE_PANEL_EVENT,
     SET_INITIAL_PROGRAM,
-    LOAD_DATAELEMENTS
+    LOAD_DATAELEMENTS,
+    CALCULATE_DAY
 } from '../types'
 import { deleteEvent } from '@hisp-amr/api'
 
@@ -46,6 +47,7 @@ import { LOADING, SUCCESS } from 'constants/statuses'
 import { SAMPLE_ID_ELEMENT, ORGANISM_SET , ORGANISM_DETECTED, SAMPLE_TESTING_PROGRAM} from 'constants/dhis2'
 import { showAlert } from '../alert'
 export const resetData = () => dispatch => dispatch(createAction(RESET_DATA))
+export const getAdmissionDate = (payload) => dispatch => dispatch(createAction(CALCULATE_DAY, payload))
 export const disableButtons = () => dispatch =>dispatch(createAction(DISABLE_BUTTONS))
 export const enableButtons = () => dispatch =>dispatch(createAction(ENABLE_BUTTONS))
 export const AddAndSubmit = val => dispatch =>dispatch(createAction(REMOVE_BUTTONS, val))
@@ -123,7 +125,7 @@ export const getExistingEvent = (orgUnit, tieId, eventId, editStatus, btnStatus)
             }
             data.programs = state.metadata.programList
             data.organisms = optionSets[ORGANISM_SET]
-            data.typeOfIsolates = optionSets.FKxu75KQozx
+            data.typeOfIsolates = optionSets.DFSF3emBC2G
             //  data.invalid = false
             dispatch(createAction(EXISTING_TEI_DATA_RECEIVED, data))
         } else{
@@ -158,7 +160,7 @@ export const getExistingEvent = (orgUnit, tieId, eventId, editStatus, btnStatus)
                }
             })
             data.programStage = programStage
-            data.typeOfIsolates = optionSets.FKxu75KQozx
+            data.typeOfIsolates = optionSets.DFSF3emBC2G
             data.typeOfIsolate = ""
             data.orgUnit = {
                 id: orgUnit,
@@ -444,7 +446,7 @@ export const setEventValue = (key, value,isPrev) => (dispatch, getState) => {
     const trackerID = getState().data.entity;
     const tempProgramStage = getState().data.panel.programStage;
     const tempStatus = "ACTIVE";
-    var dID = ["mp5MeJ2dFQz", "dRKIjwIDab4", "GpAu5HjWAEz", "B7XuDaXPv10"];
+    var dID = ["mp5MeJ2dFQz", "dRKIjwIDab4", "GpAu5HjWAEz", "B7XuDaXPv10", "CVMlkTUGzeA"];
     if (isPrev != true) {
         updateEventValue(event.id, key, value, programId,orgUnit,trackerID,tempStatus,tempProgramStage)
     }

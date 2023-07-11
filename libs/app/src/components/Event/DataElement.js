@@ -10,14 +10,18 @@ import {
     SwitchInput,
     DateInput,
 } from '@hisp-amr/inputs'
+// import {getAdmissionDate} from 'api'
 import { setEventValue,AddAndSubmit } from 'actions'
 import * as DUPLICACY from 'constants/duplicacy'
+import { SdCard } from '@material-ui/icons'
 export const DataElement = ({ id }) => {
     const dispatch = useDispatch()
     const optionSets = useSelector(state => state.metadata.optionSets)
     const completed = useSelector(state => state.data.event.status.completed)
     var value = useSelector(state => state.data.event.values[id])    
     const programId = useSelector(state => state.data.panel.program)
+    const sampleDate = useSelector(state => state.data.panel.sampleDate)
+    const calculateDay = useSelector(state => state.data.calculateDay)
     // const preValues = useSelector(state => state.data.preValues)
     // const objLength = Object.keys(preValues).length
     // if((id === 'GpAu5HjWAEz') && (objLength >0))
@@ -52,12 +56,26 @@ export const DataElement = ({ id }) => {
     const warning = useSelector(
         state => state.data.event.programStage.dataElements[id].warning
     )
-
+    var isCalculatedDays = false;
+    if(displayFormName == "Duration of hospitalization till sample receiving"){
+        isCalculatedDays= true
+    }
     const duplicate =
         id === SAMPLE_ID_ELEMENT && SAMPLE_TESTING_PROGRAM["0"].value == programId &&
         useSelector(state => state.data.event.duplicate)
 
     const onChange = (key, value) => {
+        if(key == "fihlyDLDikz"){
+            let sampleDates = new Date(sampleDate);
+            let values = new Date(value);
+            const calculateDay = (val,sd) =>{
+                let difference = sd.getTime() - val.getTime();
+                return (Math.ceil(difference / (1000 * 3600 * 24)));
+            }
+        //  dispatch(getAdmissionDate(calculateDay(values, sampleDates)))
+         dispatch(setEventValue(key, value,false))
+         dispatch(setEventValue('CVMlkTUGzeA', calculateDay(values, sampleDates),false))
+       }
         if((key == ORGANISM_DETECTED) && (value == 'Organism growth detected'))
         {
          dispatch(AddAndSubmit(true))
@@ -120,7 +138,7 @@ export const DataElement = ({ id }) => {
                     value={value}
                     required={required}
                     onChange={onChange}
-                    disabled={disabled || completed}
+                    disabled={disabled || completed || isCalculatedDays}
                     type={valueType === 'NUMBER' ? 'number' : 'text'}
                     color={color}
                     unique={id === SAMPLE_ID_ELEMENT}

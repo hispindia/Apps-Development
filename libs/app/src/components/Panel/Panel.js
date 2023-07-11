@@ -105,7 +105,7 @@ export const Panel = ({ showEdit }) => {
                     ...common,
                     id: 'typeOfIsolate',
                     name: 'typeOfIsolate',
-                    label: 'Type Of Isolate',
+                    label: 'Isolate / coloniser',
                     objects: typeOfIsolates,
                     onChange: onChange,
                     value: typeOfIsolate,
