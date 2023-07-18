@@ -104,7 +104,7 @@ export const getTEI = async orgUnit => {
             })
         })
         }
-        return teiRows
+        return teiRows.reverse();
     })
     ).then((teiRows) => { return teiRows })
   .catch(errors => {

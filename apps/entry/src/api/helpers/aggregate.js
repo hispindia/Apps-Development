@@ -114,7 +114,7 @@ export const Aggregate = async ({
     let pathogenDataElement = dataElements.attributeGroups[CONSTANTS.pathogenCode][0] //There is only one dataElements
     let pathogenData_old = event.values[pathogenDataElement];
 
-    let organismDataValue = event.values["SaQe2REkGVw"] || event.values["u8VDCIwa3w4"]; // organism tracker-dataelement-value
+    let organismDataValue = event.values["SaQe2REkGVw"]; // organism tracker-dataelement-value
     //let tei = trackedEntityInstance;
 //u8VDCIwa3w4
     let sex = teiAttributeValues["VXRRpqAdrdK"];
