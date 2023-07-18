@@ -53,6 +53,7 @@ export const EventForm = ({ history, match }) => {
     var { sampleDate } = useSelector(state => state.data.panel)
     var orgUnit = match.params.orgUnit
     const teiId = match.params.teiId;
+    var teiAttributeValues = useSelector(state => state.data.entity.values);
     var [dialogNote, setDialogNote] = useState(false);
     useEffect(() => {
         if( (eventValue?.u8VDCIwa3w4  == "Sterile") || (eventValue?.u8VDCIwa3w4 == "Insignificant Growth")  ||  (eventValue?.u8VDCIwa3w4 == "Commensals") || (eventValue?.u8VDCIwa3w4  == "Growth of contaminants")){
@@ -152,6 +153,7 @@ export const EventForm = ({ history, match }) => {
         let res = await Aggregate(
             {
                 event: event,
+                teiAttributeValues : teiAttributeValues,
                 operation: "INCOMPLETE",
                 dataElements: dataElementObjects,
                 categoryCombos: categoryCombos,

@@ -52,6 +52,7 @@ export const EventButtons = ({ history, existingEvent }) => {
     const eventValue = useSelector(state => state.data.event.values)
     var subAndAddNewSampleBtn = true
     var programCheck = program == "L7bu48EI54J" ? false : true;
+    var teiAttributeValues = useSelector(state=>state.data.entity.values);
     var userAccess = false;
      if (eventValue) if(eventValue.B7XuDaXPv10 && eventValue.GpAu5HjWAEz && eventValue.dRKIjwIDab4 && eventValue.mp5MeJ2dFQz && eventValue.lJm7JZvPQxA) subAndAddNewSampleBtn=false
     programs.forEach(p => {
@@ -79,6 +80,7 @@ export const EventButtons = ({ history, existingEvent }) => {
     const onSubmit = async addMore => {
         let res = await Aggregate({
             event:event,
+            teiAttributeValues : teiAttributeValues,
             operation:"COMPLETE",
             dataElements:dataElementObjects,
             categoryCombos: categoryCombos,
@@ -97,6 +99,7 @@ export const EventButtons = ({ history, existingEvent }) => {
     const onEdit = async () => {
         let res = await Aggregate({
             event:event,
+            teiAttributeValues : teiAttributeValues,
             operation:"INCOMPLETE",
             dataElements:dataElementObjects,
             categoryCombos: categoryCombos,
@@ -127,6 +130,7 @@ export const EventButtons = ({ history, existingEvent }) => {
         let res = await Aggregate(
             {
                 event: event,
+                teiAttributeValues : teiAttributeValues,
                 operation: "INCOMPLETE",
                 dataElements: dataElementObjects,
                 categoryCombos: categoryCombos,

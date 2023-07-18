@@ -41,7 +41,7 @@ export const EventOverview = ({ match, history }) => {
         //     dispatch(setDataELments(res.dataElements));
         // })
         SelectedOrgUnit.programs(selected.id).then(res =>{
-          let selectedProgram = res.programs.filter(program => program.name == "Sample Testing_HP")
+          let selectedProgram = res.programs.filter(program => program.name === "Sample Testing_HP")
            if(selectedProgram){
             let sampleProgram = [{
                 value: "L7bu48EI54J", 

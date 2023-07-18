@@ -57,15 +57,15 @@ export const DataElement = ({ id }) => {
         state => state.data.event.programStage.dataElements[id].warning
     )
     var isCalculatedDays = false;
-    if(displayFormName == "Duration of hospitalization till sample receiving"){
+    if(displayFormName === "Duration of hospitalization till sample receiving"){
         isCalculatedDays= true
     }
     const duplicate =
-        id === SAMPLE_ID_ELEMENT && SAMPLE_TESTING_PROGRAM["0"].value == programId &&
+        id === SAMPLE_ID_ELEMENT && SAMPLE_TESTING_PROGRAM["0"].value === programId &&
         useSelector(state => state.data.event.duplicate)
 
     const onChange = (key, value) => {
-        if(key == "fihlyDLDikz"){
+        if(key === "fihlyDLDikz"){
             let sampleDates = new Date(sampleDate);
             let values = new Date(value);
             const calculateDay = (val,sd) =>{
@@ -76,7 +76,7 @@ export const DataElement = ({ id }) => {
          dispatch(setEventValue(key, value,false))
          dispatch(setEventValue('CVMlkTUGzeA', calculateDay(values, sampleDates),false))
        }
-        if((key == ORGANISM_DETECTED) && (value == 'Organism growth detected'))
+        if((key === ORGANISM_DETECTED) && (value === 'Organism growth detected'))
         {
          dispatch(AddAndSubmit(true))
          dispatch(setEventValue(key, value,false))
