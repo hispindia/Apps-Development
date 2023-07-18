@@ -25,6 +25,7 @@ const Events = ({match, history }) => {
     const dataElementObjects = useSelector(state=> state.metadata.dataElementObjects)
     const dataSets = useSelector(state=>state.metadata.dataSets)
     var aggregationOnProgress = useSelector(state => state.data.aggregationOnProgress)
+    const teiAttributeValues = useSelector(state=>state.data.entity.values);
 
     useEffect(() => {
         $("#msg1").hide();
@@ -49,6 +50,7 @@ const Events = ({match, history }) => {
             let res = await Aggregate(
                 {
                     event: eventObject,
+                    teiAttributeValues : teiAttributeValues,
                     operation: "INCOMPLETE",
                     dataElements: dataElementObjects,
                     categoryCombos: categoryCombos,
@@ -73,7 +75,7 @@ const Events = ({match, history }) => {
         changeAggregationStatus(false);
         if(allStatus ){
             deleteTEI(teiId).then(res => {
-                if(res.httpStatus == 'OK'){
+                if(res.httpStatus === 'OK'){
                     $('#succes1').show();
                 }
            })
