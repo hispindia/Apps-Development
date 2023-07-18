@@ -167,7 +167,7 @@ export const EventForm = ({ history, match }) => {
         changeAggregationStatus(false);
         if(res.response){
             await deleteEvent(eventID).then(res => {
-                if(res.httpStatus == 'OK')
+                if(res.httpStatus === 'OK')
                 {
                     $('#success').show();
                 }

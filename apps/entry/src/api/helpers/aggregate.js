@@ -106,6 +106,13 @@ export const Aggregate = async ({
             message: "Ignored program"
         }
     }
+    if( programCode === 'Sample Testing' || programCode === 'Sample Testing_HP' ){
+        //Then this program is not part of the programs which are aggregated
+        return {
+            response: true,
+            message: "Ignored program"
+        }
+    }
     changeStatus(true);
     //first get the metadata from the evens
     let locationDataElement = dataElements.attributeGroups[CONSTANTS.locationCode][0] //There is only one DataElement
