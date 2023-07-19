@@ -72,9 +72,8 @@ export const DataElement = ({ id }) => {
                 let difference = sd.getTime() - val.getTime();
                 return (Math.ceil(difference / (1000 * 3600 * 24)));
             }
-        //  dispatch(getAdmissionDate(calculateDay(values, sampleDates)))
          dispatch(setEventValue(key, value,false))
-         dispatch(setEventValue('CVMlkTUGzeA', calculateDay(values, sampleDates),false))
+         dispatch(setEventValue('CVMlkTUGzeA', calculateDay(values, sampleDates).toString(),false))
        }
         if((key === ORGANISM_DETECTED) && (value === 'Organism growth detected'))
         {

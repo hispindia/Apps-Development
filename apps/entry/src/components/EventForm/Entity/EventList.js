@@ -121,7 +121,7 @@ const Events = ({match, history }) => {
     var val = () => {
         if (events != undefined) {
             const v = events.map((ele, index) => {
-                if (ele.program != "L7bu48EI54J") {
+                if (ele.program) {
                     var proId = ele.program;
                     var name=[], dataValue= [], data= [], date =[];
                      //date['value'] =  JSON.stringify(new Date(ele.eventDate)).slice(1,11);
@@ -142,7 +142,7 @@ const Events = ({match, history }) => {
                         if(value.dataElement == 'mp5MeJ2dFQz'){
                             dataValue['3'] =value;
                         }
-                        if((value.dataElement == 'SaQe2REkGVw')){  // id of organism detected data element in sample testing
+                        if((value.dataElement == 'SaQe2REkGVw') || (value.dataElement =='u8VDCIwa3w4')){  // id of organism detected data element in sample testing
                             dataValue['4'] =value;
                         }
                         dataValue['5']=date
