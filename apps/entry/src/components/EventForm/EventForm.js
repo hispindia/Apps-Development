@@ -40,6 +40,7 @@ export const EventForm = ({ history, match }) => {
     const panelValid = useSelector(state => state.data.panel.valid)
     const pageFirst = useSelector(state => state.data.pageFirst)
     var eventEditable = useSelector(state => state.data.eventEditable)
+    const isAddIsolate = useSelector(state => state.data.isAddIsolate)
     var editable = useSelector(state => state.data.editable)
     const event = useSelector(state => state.data.event)
     const eventValue = useSelector(state => state.data.event.values)
@@ -119,6 +120,10 @@ export const EventForm = ({ history, match }) => {
     useEffect(() => {
         if (!isFirstRender && panelValid && pageFirst) dispatch(createNewEvent())
     }, [panelValid, pageFirst])
+    
+    useEffect(() => {
+        if (!isFirstRender && panelValid && eventEditable && isAddIsolate) dispatch(createNewEvent())
+    }, [panelValid, eventEditable,isAddIsolate])
     const onClickNote = (e) => {
           e.preventDefault();
           setDialogNote(true);

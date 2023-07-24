@@ -67,6 +67,7 @@ const INITIAL_STATE = {
     eventEditable: false,
     eventList:[],
     exit: false,
+    isAddIsolate:false,
     entity: {
         values: null,
         id: null,
@@ -333,6 +334,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                 btnStatus: payload.btnStatus,
                 eventEditable: payload.editable,
                 eventList: payload.eventList,
+                editable:true,
                 entity: {
                     values: payload.entityValues,
                     id: payload.entityId,
@@ -364,7 +366,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                     invalid: payload.invalid,
                 },
                 orgUnit: payload.orgUnit,
-                previousValues: {},
+                previousValues: payload.eventValues,
                 pageFirst:false
             }
         case EXISTING_DATA_ERRORED:
@@ -414,7 +416,8 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                 },
                 event: INITIAL_EVENT,
                 buttonsDisabled: false,
-                completeClicked:false
+                completeClicked:false,
+                isAddIsolate:true
             }
         case SET_INCOMPLETED:
             return {

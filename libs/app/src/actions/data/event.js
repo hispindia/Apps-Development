@@ -525,7 +525,8 @@ export const inCompleteEvent = () => async (dispatch, getState) => {
 export const nextEvent = (next,addMoreSample,addMoreIso) => async (dispatch, getState) => {
 
     const eventId = getState().data.event.id;
-    const eventValues = getState().data.event.values;
+    const eventValues = getState().data.event.values
+    const isEventEditable = getState().data.eventEditable;
     var eveStatus = getState().data.event.invalid == false ? true:false;
     // var eveStatus = next;
 
@@ -534,7 +535,7 @@ export const nextEvent = (next,addMoreSample,addMoreIso) => async (dispatch, get
         if (addMoreSample) { dispatch(createAction(RESET_SAMPLE_PANEL_EVENT)) }
         if (addMoreIso) dispatch(createAction(RESET_PANEL_EVENT))
         else {
-            if (eventValues[ORGANISM_DETECTED] == "Organism growth detected") {
+            if (eventValues[ORGANISM_DETECTED] == "Organism growth detected" ||  isEventEditable) {
                 dispatch(createAction(SET_PREVIOUS_EVENT, { eventValues }))
                 dispatch(AddAndSubmit(false))
                 dispatch(createAction(PANEL_EDITABLE))

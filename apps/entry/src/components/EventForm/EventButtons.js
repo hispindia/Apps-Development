@@ -278,7 +278,7 @@ export const EventButtons = ({ history, existingEvent }) => {
         disabled: !valid || buttonsDisabled,
     }
     const buttons = () =>
-        existingEvent && !pageFirst ? !eventId ? [] : status.completed ? [incompleteButton, editButton,Go_Back] : programCheck ? [completeButton, Save, Go_Back] : [Save, Go_Back]
+        existingEvent && !pageFirst ? !eventId ? [] : status.completed ? [incompleteButton, editButton, submitAddButtonIso, Go_Back] : programCheck ? [completeButton, Save, submitAddButtonIso, Go_Back] : [Save, Go_Back]
             : removeButtton ? [nextButton,Go_Back] : prevValues ? isCompleteClicked ? [incompleteButton, submitAddButtonIso, Go_BackIso] : [completeButton, submitAddButtonIso, Go_BackIso]:[submitButton,submitAddButton,Go_Back]
 
     const buttonsReadUsers = () =>

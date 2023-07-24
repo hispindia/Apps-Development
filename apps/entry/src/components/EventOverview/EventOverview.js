@@ -64,6 +64,7 @@ export const EventOverview = ({ match, history }) => {
      */
     const onEventClick = row => {
         history.push(`/orgUnit/${row[6]}/trackedEntityInstances/${row[7]}`)
+        location.reload();
     }
 
     /**
