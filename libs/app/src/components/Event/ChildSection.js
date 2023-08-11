@@ -31,6 +31,9 @@ export const ChildSection = ({ childSection }) => {
     const dataElements = useSelector(
         state => state.data.event.programStage.dataElements
     )
+    const orgUnit = useSelector(
+        state => state.data.orgUnit
+    )
     const completed = useSelector(state => state.data.event.status.completed)
 
     const onChange = (key, value) => {
@@ -80,7 +83,7 @@ export const ChildSection = ({ childSection }) => {
 
     return (
         <>
-            <Label>{childSection.name}</Label>
+            <Label>{(childSection.name==='MIC' && orgUnit.id==="Yh0e2tskPwE") ? '': childSection.name}</Label>
             {childSection.dataElements.map(id => (
                 <DataElement key={id} id={id} />
             ))}
