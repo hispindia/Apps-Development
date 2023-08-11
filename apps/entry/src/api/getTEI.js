@@ -21,7 +21,8 @@ export const getTEI = async orgUnit => {
     var twoMonthBeforeDate = new Date(new Date().setDate(new Date().getDate() - 60));
     //api/trackedEntityInstances.json?ouMode=DESCENDANTS&ou=ANGhR1pa8I5&paging=false&lastUpdatedStartDate=2022-07-13&&lastUpdatedEndDate=2022-09-13
     //let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&lastUpdatedStartDate=2021-01-01&paging=false"
-    let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&lastUpdatedStartDate=" + isoDateFormat +"&skipPaging=true"
+    //let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&lastUpdatedStartDate=" + isoDateFormat +"&skipPaging=true"
+    let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&lastUpdatedStartDate=" + isoDateFormat +"&order=lastUpdated:desc&skipPaging=true"
     let api3 = '../../../api/29/sqlViews/gxov92xU7S7/data.json&paging=false' // Local Db
     let api4 = '../../../api/sqlViews/WKhh3qxwcPW/data.json?paging=false' // Baseline DB
     let apiForProgram = '../../../api/organisationUnits/'+orgUnit+'.json?fields=id,name,programs[id,name]&paging=false' // loading program for the ou
@@ -77,36 +78,47 @@ export const getTEI = async orgUnit => {
                 }
             });
         }
-            responseOne.data.trackedEntityInstances.forEach((teis, index) => {
+            responseOne.data.trackedEntityInstances.forEach((teis ) => {
             const trackedEntityInstance = teis.trackedEntityInstance;
             const orgUnit = teis.orgUnit;
-            teiRows[index] = ['', '', '', '', '', '','','','','','']
-            teis.attributes.forEach(tei => {
-                if (tei.attribute === 'nFrlz82c6jS')
-                    teiRows[index]['0'] = tei.value; //CR Number
-                if (tei.attribute === 'D6QGzhnkKOW')
-                    teiRows[index]['1'] = tei.value; //Name
-                if (tei.attribute === 'DfXY7WHFzyc')
-                    teiRows[index]['3'] = tei.value; //Age
-                if (tei.attribute === 'VXRRpqAdrdK')
-                    teiRows[index]['4'] = tei.value; //Sex
-                if (tei.attribute === 'ZgUp0jFVxdY')
-                    teiRows[index]['5'] = tei.value; //Address
 
-                teiRows[index]['6'] = orgUnit;
-                teiRows[index]['7'] = trackedEntityInstance;
+            if( SampleDict[ trackedEntityInstance ] && SampleDict[ trackedEntityInstance ].length ){
+                let index = teiRows.length
+                teiRows[index] = ['', '', '', '', '', '','','','','','']
 
-                if ((trackedEntityInstance in SampleDict)) {
-                    //teiRows[index]['8'] = SampleDict[trackedEntityInstance][1].split("T")[0]
-                    teiRows[index]['8'] = SampleDict[trackedEntityInstance][1];
-                    teiRows[index]['9'] = SampleDict[trackedEntityInstance][2];
-                    teiRows[index]['10'] = SampleDict[trackedEntityInstance][3];
-                    teiRows[index]['2'] = SampleDict[trackedEntityInstance][4]; // for location/Ward
-                }
-            })
+                teis.attributes.forEach(tei => {
+                    if (tei.attribute === 'nFrlz82c6jS')
+                        teiRows[index]['0'] = tei.value; //CR Number
+                    if (tei.attribute === 'D6QGzhnkKOW')
+                        teiRows[index]['1'] = tei.value; //Name
+                    if (tei.attribute === 'DfXY7WHFzyc')
+                        teiRows[index]['3'] = tei.value; //Age
+                    if (tei.attribute === 'VXRRpqAdrdK')
+                        teiRows[index]['4'] = tei.value; //Sex
+                    if (tei.attribute === 'ZgUp0jFVxdY')
+                        teiRows[index]['5'] = tei.value; //Address
+
+                    teiRows[index]['6'] = orgUnit;
+                    teiRows[index]['7'] = trackedEntityInstance;
+
+                    if ((trackedEntityInstance in SampleDict)) {
+                        //teiRows[index]['8'] = SampleDict[trackedEntityInstance][1].split("T")[0]
+                        teiRows[index]['8'] = SampleDict[trackedEntityInstance][1];
+                        teiRows[index]['9'] = SampleDict[trackedEntityInstance][2];
+                        teiRows[index]['10'] = SampleDict[trackedEntityInstance][3];
+                        teiRows[index]['2'] = SampleDict[trackedEntityInstance][4]; // for location/Ward
+                    }
+                })
+            }
+
         })
-        }
-        return teiRows.reverse();
+      }
+        //return teiRows.reverse();
+        return teiRows.sort(function(a,b){
+            // Turn your strings into dates, and then subtract them
+            // to get a value that is either negative, positive, or zero.
+            return new Date(b[8]) - new Date(a[8]);
+        });
     })
     ).then((teiRows) => { return teiRows })
   .catch(errors => {
