@@ -13,8 +13,12 @@ var CONSTANTS = {
     departmentCode: "Department",
     pathogenCode: "Organism",
     sampleTypeCode: "SampleType",
-    isolationStatusCode: "IsolationStatus",
-    sampleLocationDepartmentIsolateCC_Code: "sampleLocationDepartmentIsolate",
+
+    typeOFIsolate: "IsolationStatus",
+    syndrome: "Syndrome",
+    purposeOfSample: "PurposeOfSample",
+
+    sampleLocationDepartment_Code: "sampleLocationDepartment",
     antibioticCC_Code: "antibiotic",
     defaultCC_code: "default",
     antibioticAttributeCode: 'Antibiotic',
@@ -113,14 +117,37 @@ export const Aggregate = async ({
             message: "Ignored program"
         }
     }
+
+    let purposeOfSampleDataElement = dataElements.attributeGroups[CONSTANTS.purposeOfSample][0] //There is only one dataElements
+    let purposeOfSampleData = event.values[purposeOfSampleDataElement];
+
+    if (purposeOfSampleData !== "Diagnostic"){
+        //if there is a missing data and incomplete is called, then don't
+        //enforce aggregation because the operation might be delete.
+
+        return {
+            response: false,
+            message: "Mandatory fields missing"
+        };
+    }
+
     changeStatus(true);
-    //first get the metadata from the evens
+
+    //first get the metadata from the events
     let locationDataElement = dataElements.attributeGroups[CONSTANTS.locationCode][0] //There is only one DataElement
-    let locationData = event.values[locationDataElement]
+    let locationData = event.values[locationDataElement];
 
     let pathogenDataElement = dataElements.attributeGroups[CONSTANTS.pathogenCode][0] //There is only one dataElements
-    let pathogenData_old = event.values[pathogenDataElement]
+    let organismData = event.values[pathogenDataElement];
 
+    let typeOFIsolateDataElement = dataElements.attributeGroups[CONSTANTS.typeOFIsolate][0] //There is only one dataElements
+    let typeOFIsolateData = event.values[typeOFIsolateDataElement];
+
+    let syndromeDataElement = dataElements.attributeGroups[CONSTANTS.syndrome][0] //There is only one dataElements
+    let syndromeData = event.values[syndromeDataElement];
+
+
+    /*
     // new aggregation logic add based on Gander and age-range
     let organismDataValue = event.values["SaQe2REkGVw"]; // organism tracker-dataelement-value
     //let tei = trackedEntityInstance;
@@ -159,6 +186,16 @@ export const Aggregate = async ({
     else if( calculatedAge > 75 ){
         age_range = ">75";
     }
+
+
+    //alert ( age_dob + " -- " + sex + " -- " + organismDataValue + " -- " + key);
+    //let tempValue = 'ARIF18-45';
+    //let tempKey = 'Lc7YC95p0km';
+
+    let pathogenData = organismDataValue + tempSex + age_range; // aggregated dataelement code
+    //console.log(age_range, tempSex,  organismDataValue, pathogenData );
+    */
+
     /*
     function calculate_age(dob) {
         var diff_ms = Date.now() - dob.getTime();
@@ -168,13 +205,6 @@ export const Aggregate = async ({
     }
     */
 
-    //alert ( age_dob + " -- " + sex + " -- " + organismDataValue + " -- " + key);
-    //let tempValue = 'ARIF18-45';
-    //let tempKey = 'Lc7YC95p0km';
-
-    let pathogenData = organismDataValue + tempSex + age_range; // aggregated dataelement code
-    //console.log(age_range, tempSex,  organismDataValue, pathogenData );
-
     let sampleTypeDataElement = dataElements.attributeGroups[CONSTANTS.sampleTypeCode][0]
     let sampleTypeData = event.values[sampleTypeDataElement]
 
@@ -182,10 +212,13 @@ export const Aggregate = async ({
     let departmentData = event.values[departmentDataElement]
 
     // one layer in aggregation with isolation Status
+    /*
     let isolationStatusDataElement = dataElements.attributeGroups[CONSTANTS.isolationStatusCode][0]
     let isolationStatusData = event.values[isolationStatusDataElement]
+    */
+    let aggregatedDataElementCode = organismData + typeOFIsolateData + syndromeData; // aggregated dataelement code
 
-    if(!(locationData && pathogenData && sampleTypeData && departmentData && isolationStatusData)){
+    if(!(locationData && organismData && sampleTypeData && departmentData && typeOFIsolateData && syndromeData && purposeOfSampleData ) ){
         //if there is any missing data don't process the aggregation
         if(operation === "COMPLETE"){
             return {
@@ -220,11 +253,12 @@ export const Aggregate = async ({
         };
     }
 
-    let cc = categoryCombos[CONSTANTS.sampleLocationDepartmentIsolateCC_Code].id;
-    let cp = categoryCombos[CONSTANTS.sampleLocationDepartmentIsolateCC_Code].categoryOptions[locationData];
-    cp = cp + ";" + categoryCombos[CONSTANTS.sampleLocationDepartmentIsolateCC_Code].categoryOptions[sampleTypeData];
-    cp = cp + ";" + categoryCombos[CONSTANTS.sampleLocationDepartmentIsolateCC_Code].categoryOptions[departmentData];
-    cp = cp + ";" + categoryCombos[CONSTANTS.sampleLocationDepartmentIsolateCC_Code].categoryOptions[isolationStatusData];
+
+    let cc = categoryCombos[CONSTANTS.sampleLocationDepartment_Code].id;
+    let cp = categoryCombos[CONSTANTS.sampleLocationDepartment_Code].categoryOptions[locationData];
+    cp = cp + ";" + categoryCombos[CONSTANTS.sampleLocationDepartment_Code].categoryOptions[sampleTypeData];
+    cp = cp + ";" + categoryCombos[CONSTANTS.sampleLocationDepartment_Code].categoryOptions[departmentData];
+    //cp = cp + ";" + categoryCombos[CONSTANTS.sampleLocationDepartment_Code].categoryOptions[isolationStatusData];
 
 
     let importantValues = []
@@ -243,8 +277,8 @@ export const Aggregate = async ({
             }
         }
     })
-    let de = dataElements[pathogenData].id
-    let deAntibioticWise = dataElements[pathogenData + '_AW'].id
+    let de = dataElements[aggregatedDataElementCode].id
+    let deAntibioticWise = dataElements[aggregatedDataElementCode + '_AW'].id
 
     let coDefault = categoryCombos[CONSTANTS.defaultCC_code].categoryOptionCombos[CONSTANTS.defaultCC_code]
     let defaultDataSet = dataSets[CONSTANTS.defaultDataSetCode]
