@@ -22,8 +22,12 @@ var CONSTANTS = {
     antibioticCC_Code: "antibiotic",
     defaultCC_code: "default",
     antibioticAttributeCode: 'Antibiotic',
-    defaultDataSetCode: 'organismsIsolated',
+    organismsIsolatedDataSetCode: 'organismsIsolated',
     antibioticWiseDataSetCode: 'organismsIsolatedAntibioticWise',
+
+    surveillanceOrganismWiseDataSetCode: "surveillanceOrganismWise",
+    surveillanceAntibioticWiseDataSetCode: "surveillanceAntibioticWise",
+
     codesOfProgramsToAggregate: [] //TODO change this to a code
 
 }
@@ -121,6 +125,7 @@ export const Aggregate = async ({
     let purposeOfSampleDataElement = dataElements.attributeGroups[CONSTANTS.purposeOfSample][0] //There is only one dataElements
     let purposeOfSampleData = event.values[purposeOfSampleDataElement];
 
+    /*
     if (purposeOfSampleData !== "Diagnostic"){
         //if there is a missing data and incomplete is called, then don't
         //enforce aggregation because the operation might be delete.
@@ -130,7 +135,7 @@ export const Aggregate = async ({
             message: "Mandatory fields missing"
         };
     }
-
+    */
     changeStatus(true);
 
     //first get the metadata from the events
@@ -216,9 +221,23 @@ export const Aggregate = async ({
     let isolationStatusDataElement = dataElements.attributeGroups[CONSTANTS.isolationStatusCode][0]
     let isolationStatusData = event.values[isolationStatusDataElement]
     */
-    let aggregatedDataElementCode = organismData + typeOFIsolateData + syndromeData; // aggregated dataelement code
 
-    if(!(locationData && organismData && sampleTypeData && departmentData && typeOFIsolateData && syndromeData && purposeOfSampleData ) ){
+    let aggregatedDataElementCode = "";
+    let defaultDataSet = "";
+    let antibioticWiseDataSet =  "";
+
+    if (purposeOfSampleData !== "Diagnostic"){
+        aggregatedDataElementCode = organismData + '_S'; // aggregated dataelement code
+        defaultDataSet = dataSets[CONSTANTS.surveillanceOrganismWiseDataSetCode];
+        antibioticWiseDataSet = dataSets[CONSTANTS.surveillanceAntibioticWiseDataSetCode];
+    }
+    else{
+        aggregatedDataElementCode = organismData + typeOFIsolateData + syndromeData; // aggregated dataelement code
+        defaultDataSet = dataSets[CONSTANTS.organismsIsolatedDataSetCode];
+        antibioticWiseDataSet = dataSets[CONSTANTS.antibioticWiseDataSetCode];
+    }
+
+    if(!(locationData && organismData && sampleTypeData && departmentData && purposeOfSampleData ) ){
         //if there is any missing data don't process the aggregation
         if(operation === "COMPLETE"){
             return {
@@ -280,9 +299,10 @@ export const Aggregate = async ({
     let de = dataElements[aggregatedDataElementCode].id
     let deAntibioticWise = dataElements[aggregatedDataElementCode + '_AW'].id
 
-    let coDefault = categoryCombos[CONSTANTS.defaultCC_code].categoryOptionCombos[CONSTANTS.defaultCC_code]
-    let defaultDataSet = dataSets[CONSTANTS.defaultDataSetCode]
-    let antibioticWiseDataSet = dataSets[CONSTANTS.antibioticWiseDataSetCode]
+    let coDefault = categoryCombos[CONSTANTS.defaultCC_code].categoryOptionCombos[CONSTANTS.defaultCC_code];
+
+    //let defaultDataSet = dataSets[CONSTANTS.defaultDataSetCode]
+    //let antibioticWiseDataSet = dataSets[CONSTANTS.antibioticWiseDataSetCode]
 
     let period = sampleDate.substring(0, 7).replace('-', "");
 
