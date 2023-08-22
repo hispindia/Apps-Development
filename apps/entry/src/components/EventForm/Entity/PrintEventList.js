@@ -110,8 +110,16 @@ export default function EventListPrint(props) {
           obj["Hospital department"] = dv.value;
         }
         if (dv.dataElement === "SaQe2REkGVw") {
-            let tempDeName= tempDataElements.filter(de=> de.code === dv.value)
-              obj["Organism"] = tempDeName[0].name;
+            // let tempDeName= tempDataElements.filter(de=> de.code === dv.value)
+            //   obj["Organism"] = tempDeName[0].name;
+            let tempDeName = tempDataElements.filter(
+            (de) => de.program !== "SaQe2REkGVw"
+          );
+          // console.log("shashiaknt==========",tempDeName[0])
+          // console.log("testing ",tempDeName);
+          // alert("THISIIIIIIIII",tempDeName[0])
+          obj["Organism"] = tempDeName[0].name;
+          // obj["Organism"] = dv.value;
         }
         if (dv.dataElement === "lIkk661BLpG") {
           obj["AMR ID"] = dv.value;
@@ -340,9 +348,14 @@ export default function EventListPrint(props) {
                     <Typography>
                       <Box className="boxClass" sx={{ fontSize: 12, m: 1 }}>
                         {REGISTRATION_DATE} :&nbsp;&nbsp;&nbsp;&nbsp;
-                        {moment(registrationDate["Reg Date"]).format(
+                        {/* {moment(registrationDate["Reg Date"]).format(
                           "DD/MM/yyyy"
-                        )}
+                        )} */}
+                        {registrationDate["Reg Date"]
+                          ? moment(registrationDate["Reg Date"]).format(
+                              "DD/MM/yyyy"
+                            )
+                          : moment(eventsList[0].created).format("DD/MM/yyyy")}
                       </Box>
                     </Typography>
                   </TableCell>
