@@ -1,0 +1,19 @@
+.data-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom:5vh;
+}
+
+.scroll {
+    margin-top:2vh;
+    height: 77vh;
+    overflow-y: scroll;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    background-color: #00796b !important;
+    color:white !important;
+}
