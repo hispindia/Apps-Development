@@ -39,7 +39,7 @@ const SideBar = ({ data }) => {
   return (
     selectedOU && (
       <div className="side-bar">
-        <div className="input-group">
+        <div className="input-group py-1">
           <input
             className="form-control"
             id="organisation-unit"
@@ -53,7 +53,7 @@ const SideBar = ({ data }) => {
             Submit
           </button>
         </div>
-        <div className="ou-tree">
+        <div>
           <OrganisationUnitTree />
         </div>
       </div>

@@ -1,15 +1,36 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setClickedOU } from "../../store/outree/outree.action";
+import { setClickedOU, setFilteredOU } from "../../store/outree/outree.action";
 
-const OrgUnitChildren = ({ orgUnit, display }) => {
+const OrgUnitChildren = ({ orgUnit, display, path }) => {
   const dispatch = useDispatch();
 
   const ouList = useSelector((state) => state.outree.ouList);
   const clickedOU = useSelector((state) => state.outree.clickedOU);
 
+  const [pathId, setPathId] = useState(path);
   const [currentOU, setCurrentOU] = useState(orgUnit);
   const [displayChildren, setDisplayChildren] = useState(display);
+
+  useEffect(() => { setPathId(path)}, [path] )
+  useEffect(() => {
+    if (pathId) {
+      var path = pathId.split("/");
+      if (!path[0]) {
+        path.shift();
+        if (currentOU.id != path[0]) path.shift();
+      }
+      if (currentOU.id == path[0]) {
+        if (path.length == 1) dispatch(setClickedOU(currentOU));
+        else {
+          path.shift();
+          path = path.join("/");
+          setPathId(path);
+          setDisplayChildren(true);
+        }
+      }
+    }
+  }, [pathId]);
 
   useEffect(() => {
     if (orgUnit && ouList.length) {
@@ -19,6 +40,7 @@ const OrgUnitChildren = ({ orgUnit, display }) => {
   }, [orgUnit, ouList]);
 
   const handleOUClick = () => {
+    dispatch(setFilteredOU(""));
     setDisplayChildren(!displayChildren);
     dispatch(setClickedOU(currentOU));
   };
@@ -29,7 +51,7 @@ const OrgUnitChildren = ({ orgUnit, display }) => {
     <div>
       <>
         <h6
-          className={isClicked ? "ou clicked" : "ou fw-normal"}
+          className={isClicked ? "ou ou-clicked" : "ou fw-normal"}
           onClick={handleOUClick}
         >
           {currentOU.name}
@@ -40,12 +62,12 @@ const OrgUnitChildren = ({ orgUnit, display }) => {
             ? currentOU.children
                 .sort((a, b) => a.name.localeCompare(b.name))
                 .map((orgUnit) => (
-                  <li>
+                  <li key={orgUnit.id}>
                     {
                       <OrgUnitChildren
-                        key={orgUnit}
                         orgUnit={orgUnit}
                         display={false}
+                        path={pathId}
                       />
                     }
                   </li>
