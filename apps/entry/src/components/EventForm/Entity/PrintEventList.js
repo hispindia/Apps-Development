@@ -341,9 +341,14 @@ export default function EventListPrint(props) {
                     <Typography>
                       <Box className="boxClass" sx={{ fontSize: 12, m: 1 }}>
                         {REGISTRATION_DATE} :&nbsp;&nbsp;&nbsp;&nbsp;
-                        {moment(registrationDate["Reg Date"]).format(
+                        {/* {moment(registrationDate["Reg Date"]).format(
                           "DD/MM/yyyy"
-                        )}
+                        )} */}
+                         {registrationDate["Reg Date"]
+                          ? moment(registrationDate["Reg Date"]).format(
+                              "DD/MM/yyyy"
+                            )
+                          : moment(eventsList[0].created).format("DD/MM/yyyy")}
                       </Box>
                     </Typography>
                   </TableCell>
