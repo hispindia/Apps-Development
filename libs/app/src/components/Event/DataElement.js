@@ -74,6 +74,7 @@ export const DataElement = ({ id }) => {
             }
          dispatch(setEventValue(key, value,false))
          dispatch(setEventValue('CVMlkTUGzeA', calculateDay(values, sampleDates).toString(),false))
+         dispatch(setEventValue('kjzSq1IVpyy', calculateDay(values, sampleDates).toString(),false))
        }
         if((key === ORGANISM_DETECTED) && (value === 'Organism growth detected'))
         {

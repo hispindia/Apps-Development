@@ -14,6 +14,7 @@ import { useEvents } from './useEvents'
 import { icmr, tanda } from 'config'
 import {SelectedOrgUnit} from '../../api/programs'
 import {DataElements} from '../../api/dataElements'
+import { useLocation } from 'react-router-dom/cjs/react-router-dom.min'
 if (!process.env.REACT_APP_DHIS2_TABLE_CONFIG)
     throw new Error(
         'The environment variable REACT_APP_DHIS2_TABLE_CONFIG must be set'
@@ -34,6 +35,7 @@ const title = {
 export const EventOverview = ({ match, history }) => {
     const status = match.params.status
     const dispatch = useDispatch()
+    const location = useLocation();
     const selected = useSelector(state => state.selectedOrgUnit)
     const { rows, loading, addButtonDisabled, error } = useEvents(status)
     useEffect(() => {
@@ -64,7 +66,8 @@ export const EventOverview = ({ match, history }) => {
      */
     const onEventClick = row => {
         history.push(`/orgUnit/${row[6]}/trackedEntityInstances/${row[7]}`)
-        location.reload();
+        // location.reload();
+        window.location.reload();
     }
 
     /**

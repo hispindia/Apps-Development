@@ -36,6 +36,8 @@
     },
     "dependencies": {
         "@dhis2/ui-core": "^3.12.0",
+        "@emotion/react": "^11.7.1",
+        "@emotion/styled": "^11.6.0",
         "@hisp-amr/api": "*",
         "@hisp-amr/app": "*",
         "@hisp-amr/icons": "*",
@@ -43,16 +45,15 @@
         "@hisp-amr/org-unit-tree": "*",
         "@mui/material": "^5.2.7",
         "@mui/styles": "^5.2.3",
+        "@mui/x-date-pickers": "latest",
         "antd": "^4.21.5",
+        "date-fns": "latest",
+        "dayjs": "latest",
         "jquery": "^3.4.1",
         "react": "^16.9.0",
         "react-bootstrap-sweetalert": "^5.1.9",
         "react-dom": "^16.9.0",
-        "react-to-print": "^2.14.3",
-        "@emotion/react": "^11.7.1",
-        "@emotion/styled": "^11.6.0",
-        "@mui/x-date-pickers": "latest",
-        "date-fns": "latest",
-        "dayjs": "latest"
+        "react-router-dom": "^6.15.0",
+        "react-to-print": "^2.14.3"
     }
 }

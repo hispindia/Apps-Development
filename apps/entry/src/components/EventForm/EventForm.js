@@ -143,6 +143,7 @@ export const EventForm = ({ history, match }) => {
         e.preventDefault();
         if(pageFirst){
             history.goBack()
+            // setTimeout(function(){window.location.reload();}, 100);
         }
            $("#panel").hide();
            $("#popup").hide();
