@@ -116,7 +116,8 @@ export default function EventListPrint(props) {
             (de) => de.program !== "SaQe2REkGVw"
           );
           
-          obj["Organism"] = tempDeName[0].name;
+          // obj["Organism"] = tempDeName[0].name;
+          obj["Organism"] = dv.value;
          
         }
         if (dv.dataElement === "lIkk661BLpG") {
