@@ -118,8 +118,8 @@ export default function EventListPrint(props) {
           // console.log("shashiaknt==========",tempDeName[0])
           // console.log("testing ",tempDeName);
           // alert("THISIIIIIIIII",tempDeName[0])
-          obj["Organism"] = tempDeName[0].name;
-          // obj["Organism"] = dv.value;
+          // obj["Organism"] = tempDeName[0].name;
+          obj["Organism"] = dv.value;
         }
         if (dv.dataElement === "lIkk661BLpG") {
           obj["AMR ID"] = dv.value;
@@ -294,7 +294,7 @@ export default function EventListPrint(props) {
       </Table>
     </Box>
   ));
-
+// console.log("Testing element ",tempDataElements,dataElements);
   return (
     <Dialog
       fullWidth
