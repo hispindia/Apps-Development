@@ -110,8 +110,9 @@ export default function EventListPrint(props) {
           obj["Hospital department"] = dv.value;
         }
         if (dv.dataElement === "SaQe2REkGVw") {
-            let tempDeName= tempDataElements.filter(de=> de.code === dv.value)
-              obj["Organism"] = tempDeName[0].name;
+            // let tempDeName= tempDataElements.filter(de=> de.code === dv.value)
+            //   obj["Organism"] = tempDeName[0].name;
+            obj["Organism"] = dv.value;
         }
         if (dv.dataElement === "lIkk661BLpG") {
           obj["AMR ID"] = dv.value;
