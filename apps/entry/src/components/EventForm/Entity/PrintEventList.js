@@ -31,6 +31,10 @@ import {
   AGE,
   PATHOGEN_G,
   PATHOGEN,
+  REASON_FOR_TESTING,
+  PURPOSE_OF_SAMPLE,
+  SYNDROME,
+  ISOLATE,
 } from "./constants";
 import "./print.css";
 
@@ -57,7 +61,7 @@ export default function EventListPrint(props) {
   let eventL = [];
   let metaDataDataElement = Object.values(dataElementObjects);
   let completeEvent = eventsList.filter((ev) => ev.program !== "L7bu48EI54J");
-  let registrationDate={"Reg Date":""}
+  let registrationDate = { "Reg Date": "" };
   completeEvent.forEach((event) => {
     if (event.status === "COMPLETED") {
       let obj = {
@@ -69,18 +73,22 @@ export default function EventListPrint(props) {
         EventDate: "",
         "AMR ID": "",
         Organism: "",
+        "Reason for Testing": "",
+        "Purpose of sample": "",
+        Syndrome: "",
+        "Isolate / coloniser": "",
         dataValue: [],
       };
       let arr = [];
       // let program = programs.filter((p) => p.id == event.program);
       obj["EventDate"] = event.eventDate.split("T")[0];
-      registrationDate["Reg Date"]= event.created.split("T")[0]
+      registrationDate["Reg Date"] = event.created.split("T")[0];
       // obj["program"] = program[0].name;
       event.dataValues.forEach((dv) => {
         let deObj = metaDataDataElement.filter((de) => {
           if (de.id === dv.dataElement) {
-              de["value"] = dv.value;
-              return de;
+            de["value"] = dv.value;
+            return de;
           }
         });
         if (
@@ -90,7 +98,11 @@ export default function EventListPrint(props) {
           deObj[0].id !== "dRKIjwIDab4" &&
           deObj[0].id !== "SaQe2REkGVw" &&
           deObj[0].id !== "dRKIjwIDab4" &&
-          deObj[0].id !== "lIkk661BLpG"
+          deObj[0].id !== "lIkk661BLpG" &&
+          deObj[0].id !== "WxuMCW0sdbT" &&
+          deObj[0].id !== "lJm7JZvPQxA" &&
+          deObj[0].id !== "mOMWw59PvKU" &&
+          deObj[0].id !== "MOsgkq0ptBm"
         ) {
           arr.push(deObj[0]);
         }
@@ -110,24 +122,40 @@ export default function EventListPrint(props) {
           obj["Hospital department"] = dv.value;
         }
         if (dv.dataElement === "SaQe2REkGVw") {
-            // let tempDeName= tempDataElements.filter(de=> de.code === dv.value)
-            //   obj["Organism"] = tempDeName[0].name;
-            obj["Organism"] = dv.value;
+          // let tempDeName= tempDataElements.filter(de=> de.code === dv.value)
+          //   obj["Organism"] = tempDeName[0].name;
+          obj["Organism"] = dv.value;
         }
         if (dv.dataElement === "lIkk661BLpG") {
           obj["AMR ID"] = dv.value;
         }
+        if (dv.dataElement === "WxuMCW0sdbT") {
+          obj["Reason for Testing"] = dv.value;
+        }
+        if (dv.dataElement === "lJm7JZvPQxA") {
+          obj["Purpose of sample"] = dv.value;
+        }
+        if (dv.dataElement === "mOMWw59PvKU") {
+          obj["Syndrome"] = dv.value;
+        }
+        if (dv.dataElement === "MOsgkq0ptBm") {
+          obj["Isolate / coloniser"] = dv.value;
+        }
       });
-      let oarr=[]
-       for(let ele of arr){
-        let val = parseInt(ele.value)
-        let isNumber = Number.isInteger(val)
-         if(!isNumber){
-          if(ele.id !== "DeFdBFxsFcj" && ele.id !== "tQa6uU1t6s3" && ele.id !== "YoCmEMUlZxb"){
-            oarr.push(ele)
+      let oarr = [];
+      for (let ele of arr) {
+        let val = parseInt(ele.value);
+        let isNumber = Number.isInteger(val);
+        if (!isNumber) {
+          if (
+            ele.id !== "DeFdBFxsFcj" &&
+            ele.id !== "tQa6uU1t6s3" &&
+            ele.id !== "YoCmEMUlZxb"
+          ) {
+            oarr.push(ele);
           }
-         }
-       }
+        }
+      }
       obj["dataValue"] = oarr;
       eventL.push(obj);
     }
@@ -138,7 +166,7 @@ export default function EventListPrint(props) {
   });
   const handleClose = () => {
     setOpen(false);
-    props.onPrint(false)
+    props.onPrint(false);
   };
   const listItems = eventL.map((link) => (
     <Box sx={{ border: 1, fontSize: 10, ml: 6, mr: 6, mt: 1, mb: 1 }}>
@@ -151,6 +179,13 @@ export default function EventListPrint(props) {
       >
         <TableBody>
           <TableRow>
+            <TableCell style={{ width: "30%" }}>
+              <Typography>
+                <Box className="boxClass" sx={{ fontSize: 12, m: 1 }}>
+                  {LOCATION} :&nbsp;&nbsp;{link["Patient Location"]}
+                </Box>
+              </Typography>
+            </TableCell>
             <TableCell style={{ width: "40%" }}>
               <Typography>
                 <Box className="boxClass" sx={{ fontSize: 12, m: 1 }}>
@@ -159,60 +194,87 @@ export default function EventListPrint(props) {
                 </Box>
               </Typography>
             </TableCell>
-            <TableCell style={{ width: "30%" }}>
+            <TableCell style={{ width: "30%", textAlign: "right" }}>
               <Typography>
-                <Box className="boxClass" sx={{ fontSize: 12, m: 1 }}>
-                  {SAMPLE_TYPE} :&nbsp;&nbsp;{link["Sample type"]}
+                <Box className="boxClass" sx={{ fontSize: 12, m: 1  }} >
+                  {SAMPLE_DATE} :&nbsp;&nbsp;
+                  {moment(link["EventDate"]).format("DD/MM/yyyy")}
                 </Box>
               </Typography>
             </TableCell>
-            <TableCell style={{ width: "30%", textAlign: "right" }}>
+
+            {/* <TableCell style={{ width: "30%", textAlign: "right" }}>
               <Typography>
                 <Box className="boxClass" sx={{ fontSize: 12, m: 1 }}>
                   AMR ID :&nbsp;&nbsp;
                   {link["AMR ID"]}
                 </Box>
               </Typography>
+            </TableCell> */}
+          </TableRow>
+          <TableRow>
+          <TableCell style={{ width: "30%" }}>
+              <Typography>
+                <Box className="boxClass" sx={{ fontSize: 12, m: 1 }}>
+                  {ISOLATE} :&nbsp;&nbsp;&nbsp;&nbsp;
+                  {link["Isolate / coloniser"]}
+                </Box>
+              </Typography>
+            </TableCell>
+            <TableCell style={{ width: "40%" }}>
+              <Typography>
+                <Box className="boxClass" sx={{ fontSize: 12, m: 1  }}>
+                  {PATHOGEN} :&nbsp;&nbsp;&nbsp;&nbsp;
+                  {link["Organism"]}
+                </Box>
+              </Typography>
+            </TableCell>
+            
+            <TableCell style={{ width: "30%" ,textAlign: "right" }}>
+              <Typography>
+                <Box className="boxClass" sx={{ fontSize: 12, m: 1 }}>
+                  {SYNDROME} :&nbsp;&nbsp;&nbsp;&nbsp;
+                  {link["Syndrome"]}
+                </Box>
+              </Typography>
             </TableCell>
           </TableRow>
-
           <TableRow>
-            <TableCell style={{ width: "40%" }}>
+            <TableCell style={{ width: "30%" }}>
               <Typography>
                 <Box className="boxClass" sx={{ fontSize: 12, m: 1 }}>
                   {LAB_ID} :&nbsp;&nbsp;{link["Lab ID"]}
                 </Box>
               </Typography>
             </TableCell>
-            <TableCell style={{ width: "30%" }}>
+            <TableCell style={{ width: "40%" }}>
               <Typography>
                 <Box className="boxClass" sx={{ fontSize: 12, m: 1 }}>
-                  {LOCATION} :&nbsp;&nbsp;{link["Patient Location"]}
-                </Box>
-              </Typography>
-            </TableCell>
-            <TableCell style={{ width: "30%", textAlign: "right" }}>
-              <Typography>
-                <Box className="boxClass" sx={{ fontSize: 12, m: 1 }}>
-                  {SAMPLE_DATE}: :&nbsp;&nbsp;
-                  {moment(link["EventDate"]).format("DD/MM/yyyy")}
+                  {SAMPLE_TYPE} :&nbsp;&nbsp;{link["Sample type"]}
                 </Box>
               </Typography>
             </TableCell>
           </TableRow>
 
           <TableRow>
-            <TableCell style={{ width: "40%" }}>
+            <TableCell style={{ width: "50%" }}>
               <Typography>
                 <Box className="boxClass" sx={{ fontSize: 12, m: 1 }}>
-                  {PATHOGEN} :&nbsp;&nbsp;&nbsp;&nbsp;
-                  {link["Organism"]}
+                  {PURPOSE_OF_SAMPLE} :&nbsp;&nbsp;&nbsp;&nbsp;
+                  {link["Purpose of sample"]}
                 </Box>
               </Typography>
             </TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
+            <TableCell style={{ width: "50%" }}>
+              <Typography>
+                <Box className="boxClass" sx={{ fontSize: 12, m: 1 }}>
+                  {REASON_FOR_TESTING} :&nbsp;&nbsp;
+                  {link["Reason for Testing"]}
+                </Box>
+              </Typography>
+            </TableCell>
           </TableRow>
+       
         </TableBody>
       </Table>
 
@@ -287,7 +349,7 @@ export default function EventListPrint(props) {
       </Table>
     </Box>
   ));
-
+  console.log("LIST IIIIIII", eventL);
   return (
     <Dialog
       fullWidth
@@ -344,7 +406,7 @@ export default function EventListPrint(props) {
                         {/* {moment(registrationDate["Reg Date"]).format(
                           "DD/MM/yyyy"
                         )} */}
-                         {registrationDate["Reg Date"]
+                        {registrationDate["Reg Date"]
                           ? moment(registrationDate["Reg Date"]).format(
                               "DD/MM/yyyy"
                             )

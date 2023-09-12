@@ -28,6 +28,10 @@ export const COMPLETED = "COMPLETED"
 export const LOCATION_ID = "q7U3sRRnFg5"
 export const LAB = "si9RY754UNU"
 export const SAMPLE = "GqP6sLQ1Wt3"
+export const REASON_FOR_TESTING='Reason for Testing'
+export const PURPOSE_OF_SAMPLE='Purpose of sample'
+export const ISOLATE="Isolate / coloniser"
+export const SYNDROME ="Syndrome"
 // export const mappedProgramAndProgramStage = [
 // {proggram:"dzizG8i1cmP",stage:imi75Ndzv45},
 // {proggram:"rMiBliR4FGr",stage:imi75Ndzv45},
