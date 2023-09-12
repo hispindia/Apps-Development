@@ -196,7 +196,7 @@ export default function EventListPrint(props) {
             </TableCell>
             <TableCell style={{ width: "30%", textAlign: "right" }}>
               <Typography>
-                <Box className="boxClass" sx={{ fontSize: 12, m: 1  }} >
+                <Box className="boxClass" sx={{ fontSize: 12, m: 1,whiteSpace:'nowrap'  }} >
                   {SAMPLE_DATE} :&nbsp;&nbsp;
                   {moment(link["EventDate"]).format("DD/MM/yyyy")}
                 </Box>
@@ -232,7 +232,7 @@ export default function EventListPrint(props) {
             
             <TableCell style={{ width: "30%" ,textAlign: "right" }}>
               <Typography>
-                <Box className="boxClass" sx={{ fontSize: 12, m: 1 }}>
+                <Box className="boxClass" sx={{ fontSize: 12, m: 1,whiteSpace:'nowrap' }}>
                   {SYNDROME} :&nbsp;&nbsp;&nbsp;&nbsp;
                   {link["Syndrome"]}
                 </Box>
