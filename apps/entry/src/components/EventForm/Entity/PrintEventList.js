@@ -235,7 +235,8 @@ export default function EventListPrint(props) {
               <Typography>
                 <Box className="boxClass" sx={{ fontSize: 12, m: 1,whiteSpace:'nowrap' }}>
                   {SYNDROME} :&nbsp;&nbsp;&nbsp;&nbsp;
-                  {link["Syndrome"]}
+                  {/* {link["Syndrome"]} */}
+                  {link["Syndrome"] === "MEN" ? "Meningitis" : link["Syndrome"] === "GI" ? "GI infection" : link["Syndrome"]==" BSI"? "BSI" : link["Syndrome"]=="CLABSI" ? "CLABSI" :  link["Syndrome"]=="UTI" ? "UTI/SSI" : link["Syndrome"]=="VAP" ? "VAP" : "NA"}
                 </Box>
               </Typography>
             </TableCell>
