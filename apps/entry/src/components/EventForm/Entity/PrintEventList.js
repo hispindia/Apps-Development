@@ -217,7 +217,8 @@ export default function EventListPrint(props) {
               <Typography>
                 <Box className="boxClass" sx={{ fontSize: 12, m: 1 }}>
                   {ISOLATE} :&nbsp;&nbsp;&nbsp;&nbsp;
-                  {link["Isolate / coloniser"]}
+                  {/* {link["Isolate / coloniser"]} */}
+                  {link["Isolate / coloniser"] === "P" ? "Pathogen" : "Coloniser"}
                 </Box>
               </Typography>
             </TableCell>
@@ -293,6 +294,7 @@ export default function EventListPrint(props) {
             }}
           >
             {link.dataValue.map((de, index) => (
+              
               <TableRow>
                 <TableCell
                   className={classes.tableRightBorder + " " + "antibio"}
@@ -315,7 +317,10 @@ export default function EventListPrint(props) {
                 >
                   <Typography>
                     <Box className="boxClass" sx={{ fontSize: 12, m: 1 }}>
-                      {de.formName}
+                      
+                      {de.formName.replace("_Result","")}
+                      {/* {de.code} */}
+                      {/* {de.code? de.code : de.formName} */}
                     </Box>
                   </Typography>
                 </TableCell>

@@ -64,8 +64,8 @@ export const DataElement = ({ id }) => {
   // if(displayFormName === "Duration of hospitalization till sample receiving"){
   //     isCalculatedDays= true
   // }
-  const [isTrue, setIsTrue]=useState(false)
-  const [selectedDate,setSelectedDate]= useState(value)
+
+  // const [calculateDayValue, setCalculateDayValue] = useState()
   const duplicate =
     id === SAMPLE_ID_ELEMENT &&
     SAMPLE_TESTING_PROGRAM["0"].value === programId &&
@@ -74,7 +74,7 @@ export const DataElement = ({ id }) => {
     //  useEffect(()=>{
     //     onChange();
     //  },[])
-    console.log("HHHHHHHH",selectedDate);
+   
     // useEffect(()=>{
     //     isTrue:true;
     // },[])
@@ -91,9 +91,9 @@ export const DataElement = ({ id }) => {
         return Math.ceil(difference / (1000 * 3600 * 24));
       };
      
-    //   dispatch(setEventValue(key, value, false));
+      dispatch(setEventValue(key, value, false));
       //  dispatch(setEventValue('CVMlkTUGzeA', calculateDay(values, sampleDates).toString(),false))
-      setSelectedDate(values);
+      // setSelectedDate(values);
       dispatch(
         setEventValue(
           "kjzSq1IVpyy",
@@ -149,6 +149,36 @@ export const DataElement = ({ id }) => {
       dispatch(setEventValue(key, value, false));
     }
   };
+  // const onChange = (key, value) => {
+  //   if (key === "fihlyDLDikz") {
+  //     if (!calculateDayValue) {
+  //       // Calculate and store the value if it doesn't exist
+  //       let sampleDates = new Date(sampleDate);
+  //       let values = new Date(value);
+  //       const calculateDay1 = (val, sd) => {
+  //             let difference = sd.getTime() - val.getTime();
+  //             return Math.ceil(difference / (1000 * 3600 * 24));
+  //           };
+  //       const calculatedValue1 = calculateDay1(values, sampleDates).toString();
+  //       setCalculateDayValue(calculatedValue1); // Use state to store the value
+  //       dispatch(setEventValue("kjzSq1IVpyy", calculatedValue1, false));
+  //     }
+  //      else {
+  //       // If the value already exists, use it without recalculation
+  //       dispatch(setEventValue("kjzSq1IVpyy", calculateDayValue, false));
+  //     }
+  //   }
+  //   if (key === ORGANISM_DETECTED && value === "Organism growth detected") {
+  //         dispatch(AddAndSubmit(true));
+  //         dispatch(setEventValue(key, value, false));
+  //       }
+  //       else {
+  //             dispatch(AddAndSubmit(false));
+  //             dispatch(setEventValue(key, value, false));
+  //           }
+   
+  // };
+  
 
   if (hide) return null;
 
@@ -190,7 +220,7 @@ export const DataElement = ({ id }) => {
         <DateInput
           name={id}
           label={displayFormName}
-          value={selectedDate || value}
+          value={value}
           required={required}
           onChange={onChange}
           disabled={disabled || completed}
