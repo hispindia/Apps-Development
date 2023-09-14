@@ -174,7 +174,7 @@ const Events = ({match, history }) => {
             return v
         }
     }
-
+console.log("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD",data);
     return (
             <CardSection heading="Event List">
                 <div  className="btn">

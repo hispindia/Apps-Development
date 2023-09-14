@@ -80,7 +80,7 @@ export const ChildSection = ({ childSection }) => {
             </>
         )
     }
-
+console.log("child ",childSection);
     return (
         <>
             <Label>{(childSection.name==='MIC' && orgUnit.id==="Yh0e2tskPwE") ? '': childSection.name}</Label>

@@ -57,6 +57,12 @@ export const SectionContent = ({
             <Grid item xs>
                 {childSections &&
                     childSections
+                        .slice(0, childHalf)
+                        .map(childSection => getChildSection(childSection))}
+            </Grid>
+            <Grid item xs>
+                {childSections &&
+                    childSections
                         .slice(childHalf)
                         .map(childSection => getChildSection(childSection))}
             </Grid>
