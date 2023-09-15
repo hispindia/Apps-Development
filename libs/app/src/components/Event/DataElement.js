@@ -20,16 +20,18 @@ import * as DUPLICACY from "constants/duplicacy";
 import { SdCard } from "@material-ui/icons";
 export const DataElement = ({ id }) => {
   const dispatch = useDispatch();
+
+  
   const optionSets = useSelector((state) => state.metadata.optionSets);
   const completed = useSelector((state) => state.data.event.status.completed);
   var value = useSelector((state) => state.data.event.values[id]);
   const programId = useSelector((state) => state.data.panel.program);
   const sampleDate = useSelector((state) => state.data.panel.sampleDate);
-  const calculateDay = useSelector((state) => state.data.calculateDay);
-  // const preValues = useSelector(state => state.data.preValues)
-  // const objLength = Object.keys(preValues).length
-  // if((id === 'GpAu5HjWAEz') && (objLength >0))
-  //   {value =preValues.GpAu5HjWAEz}
+  const eventValPassed = useSelector(
+    (state) => state.data.event.values
+  );
+
+  
   const color = useSelector(
     (state) => state.data.event.programStage.dataElements[id].color
   );
@@ -61,123 +63,70 @@ export const DataElement = ({ id }) => {
     (state) => state.data.event.programStage.dataElements[id].warning
   );
   var isCalculatedDays = false;
-  // if(displayFormName === "Duration of hospitalization till sample receiving"){
-  //     isCalculatedDays= true
-  // }
+  if(displayFormName === "Duration of hospitalization till sample receiving"){
+      isCalculatedDays= true
+  }
 
-  // const [calculateDayValue, setCalculateDayValue] = useState()
+ 
+  
+
+  useEffect(() => {
+    if (eventValPassed && eventValPassed["fihlyDLDikz"] && !eventValPassed['ziOMarQiX1S']) {
+      
+      let sampleDates = new Date(sampleDate);
+      let values = new Date(eventValPassed["fihlyDLDikz"]);
+      const calculateDay = (val, sd) => {
+        let difference = sd.getTime() - val.getTime();
+        return Math.ceil(difference / (1000 * 3600 * 24));
+      };
+
+      dispatch(
+        setEventValue(
+          "ziOMarQiX1S",
+          calculateDay(values, sampleDates).toString(),
+          false
+        )
+      );
+     
+    }
+  }, [eventValPassed]);
+
   const duplicate =
     id === SAMPLE_ID_ELEMENT &&
     SAMPLE_TESTING_PROGRAM["0"].value === programId &&
     useSelector((state) => state.data.event.duplicate);
 
-    //  useEffect(()=>{
-    //     onChange();
-    //  },[])
-   
-    // useEffect(()=>{
-    //     isTrue:true;
-    // },[])
-    
-    
+
   const onChange = (key, value) => {
-    
     if (key === "fihlyDLDikz") {
-        // setIsTrue(true);
+      
       let sampleDates = new Date(sampleDate);
       let values = new Date(value);
       const calculateDay = (val, sd) => {
         let difference = sd.getTime() - val.getTime();
         return Math.ceil(difference / (1000 * 3600 * 24));
       };
-     
-      dispatch(setEventValue(key, value, false));
-      //  dispatch(setEventValue('CVMlkTUGzeA', calculateDay(values, sampleDates).toString(),false))
-      // setSelectedDate(values);
+
+      
       dispatch(
         setEventValue(
-          "kjzSq1IVpyy",
+          "ziOMarQiX1S",
           calculateDay(values, sampleDates).toString(),
           false
         )
       );
-      
     }
     if (key === ORGANISM_DETECTED && value === "Organism growth detected") {
       dispatch(AddAndSubmit(true));
       dispatch(setEventValue(key, value, false));
     }
 
-    // if (
-    //   key === "kjzSq1IVpyy" ||
-    //   key === "fihlyDLDikz" ||
-    //   value === sampleDates
-    // ) {
-    //   let sampleDates = new Date(sampleDate);
-    //   let values = new Date(value);
-    //   const calculateDay = (val, sd) => {
-    //     let difference = sd.getTime() - val.getTime();
-    //     return Math.ceil(difference / (1000 * 3600 * 24));
-    //   };
-    //   dispatch(setEventValue(key, value, false));
-      
-    //   dispatch(
-    //     setEventValue(
-    //       "kjzSq1IVpyy",
-    //       calculateDay(values, sampleDates).toString(),
-    //       false
-    //     )
-    //   );
-    // }
-    // if(key="kjzSq1IVpyy" ){
-    //   let sampleDates= selectedDate;
-    // let values= new Date(value);
-    // const calculateDay1 = (val, sd) => {
-    //   let difference = sd.getTime() - val.getTime();
-    //   return Math.ceil(difference / (1000 * 3600 * 24));
-    // };
-    // dispatch(
-    //   setEventValue(
-    //     "kjzSq1IVpyy",
-    //     calculateDay1(values, sampleDates).toString(),
-    //     false
-    //   )
-    // );
-    // }
-     else {
+  
+    else {
       dispatch(AddAndSubmit(false));
       dispatch(setEventValue(key, value, false));
     }
   };
-  // const onChange = (key, value) => {
-  //   if (key === "fihlyDLDikz") {
-  //     if (!calculateDayValue) {
-  //       // Calculate and store the value if it doesn't exist
-  //       let sampleDates = new Date(sampleDate);
-  //       let values = new Date(value);
-  //       const calculateDay1 = (val, sd) => {
-  //             let difference = sd.getTime() - val.getTime();
-  //             return Math.ceil(difference / (1000 * 3600 * 24));
-  //           };
-  //       const calculatedValue1 = calculateDay1(values, sampleDates).toString();
-  //       setCalculateDayValue(calculatedValue1); // Use state to store the value
-  //       dispatch(setEventValue("kjzSq1IVpyy", calculatedValue1, false));
-  //     }
-  //      else {
-  //       // If the value already exists, use it without recalculation
-  //       dispatch(setEventValue("kjzSq1IVpyy", calculateDayValue, false));
-  //     }
-  //   }
-  //   if (key === ORGANISM_DETECTED && value === "Organism growth detected") {
-  //         dispatch(AddAndSubmit(true));
-  //         dispatch(setEventValue(key, value, false));
-  //       }
-  //       else {
-  //             dispatch(AddAndSubmit(false));
-  //             dispatch(setEventValue(key, value, false));
-  //           }
-   
-  // };
   
 
   if (hide) return null;
