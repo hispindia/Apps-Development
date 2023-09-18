@@ -329,6 +329,9 @@
                 <div id="highCharts_sixth" style="height: 600px"></div>
                 <div id="highCharts_seventh" style="height: 600px"></div>
                 <div id="highCharts_Eighth" style="height: 600px"></div>
+                <div id="highCharts_EighthClone" style="height: 600px"></div>
+                <div id="highCharts_TotalCasesPie" style="height: 600px"></div>
+                <div id="highCharts_TotalCasesPieClone" style="height: 600px"></div>
                 <div id="highCharts_Twelfth" style="height: 600px"></div>
                 <div id="highCharts_thirteenth" style="height: 600px"></div>
                 <div id="highCharts_fourteenth" style="height: 600px"></div>
@@ -375,8 +378,29 @@
                 "QvCHetFovQg": "WPR",
                 "x3i5oi4axNu": "World"
             }
+            var colorCodesGrey = {
+                "L9CbxlithLc": "#5F5F5A",
+                "uWVIlmAl1r5": "#C0C0BB",
+                "XHT7CFb5mEe": "#6C6C67",
+                "UzbbopOhq1L": "#222221",
+                "vY40CQrh4Kk": "#EAEAE6",
+                "QvCHetFovQg": "#B8B8B3",
+                "x3i5oi4axNu": "#2D2D32",
+                'ElAjdwOrjMq': '#78786E'
+            }
+            var colorCodesOther = {
+                "L9CbxlithLc": "#1B78D3",
+                "uWVIlmAl1r5": "#498BDD",
+                "XHT7CFb5mEe": "#3882BE",
+                "UzbbopOhq1L": "#2F72B6",
+                "vY40CQrh4Kk": "#70B0E5 ",
+                "QvCHetFovQg": "#72A0D1",
+                "x3i5oi4axNu": "#10156E",
+                'ElAjdwOrjMq': '#373DB4'
+            }
             var printTotalThird = [], printTotalFifth = [], printTotalSixth = [];
-            var trendG2CasesChild, trendG2Cases = [], leprorsyThreeCases = [], LeprosyFourCases = [], LeprosyTotalCases = [];
+            var trendG2CasesChild, trendG2Cases = [], leprorsyThreeCases = [], LeprosyFourCases = [], LeprosyTotalCases = [], LeprosyTotalCasesColor = [], trendTotalCasesPieColor = [];
+            var trendTotalCasesPie = []
             var trendG2CasesChildPie = [{
                 name: 'Number of countries reporting 0 child grade 2 disability cases',
                 value: "0",
@@ -483,20 +507,20 @@
             var dataElementIdNinth = ["gY7b9azcUQG", "PS9m9ERoPaj", "cyg9FDI48hW"]
             var idNinth = `../../analytics.json?dimension=dx:gY7b9azcUQG;PS9m9ERoPaj;cyg9FDI48hW&dimension=pe:${selectedPeriodNinth.join(";")}&filter=ou:USER_ORGUNIT&displayProperty=NAME&user=z7Gac7vahQL&paging=false`;
 
-            var dataElementIdTenth = ["gY7b9azcUQG", "PS9m9ERoPaj", "ElAjdwOrjMq", "SsZP6Izyhay"]
+            var dataElementIdTenth = ["e2POrysBCyy", "PS9m9ERoPaj", "ElAjdwOrjMq", "SsZP6Izyhay"]
             var idTenth = `../../analytics.json?dimension=dx:${dataElementIdTenth.join(";")}&dimension=pe:${selectedPeriodNinth.join(";")}&filter=ou:USER_ORGUNIT&displayProperty=NAME&user=z7Gac7vahQL&paging=false`;
 
-            var orgUnitIdEleventh = ["L9CbxlithLc", "uWVIlmAl1r5", "XHT7CFb5mEe", "UzbbopOhq1L", "vY40CQrh4Kk", "QvCHetFovQg", "x3i5oi4axNu"]
+            var orgUnitIdEleventh = ["x3i5oi4axNu", "QvCHetFovQg", "vY40CQrh4Kk", "UzbbopOhq1L", "XHT7CFb5mEe", "uWVIlmAl1r5", "L9CbxlithLc"];
             var idEleventh = `../../analytics.json?dimension=ou:${orgUnitIdEleventh.join(";")}&dimension=pe:${selectedPeriodNinth.join(";")}&filter=dx:gY7b9azcUQG&displayProperty=NAME&user=z7Gac7vahQL&paging=false`;
 
             var idTwelfth = `../../analytics.json?dimension=pe:${selectedPeriod}&dimension=dx:gY7b9azcUQG&dimension=ou:USER_ORGUNIT_GRANDCHILDREN&displayProperty=NAME&paging=false`;
 
             var idthirteenth = `../../analytics.json?dimension=dx:PS9m9ERoPaj&dimension=pe:${selectedPeriod}&dimension=ou:USER_ORGUNIT_GRANDCHILDREN&displayProperty=NAME&paging=false`;
-          
+
             var idfourteenth = `../../analytics.json?dimension=dx:vDXU1FdXPHz&dimension=pe:${selectedPeriod}&dimension=ou:USER_ORGUNIT_GRANDCHILDREN&displayProperty=NAME&paging=false`;
 
             var idFifteenth = `../../analytics.json?dimension=dx:YgvbZE63e8T&dimension=pe:${selectedPeriod}&dimension=ou:USER_ORGUNIT_GRANDCHILDREN&displayProperty=NAME&paging=false`;
-            
+
             var idSixteenth = `../../analytics.json?dimension=dx:cyg9FDI48hW&dimension=pe:${selectedPeriod}&dimension=ou:USER_ORGUNIT_GRANDCHILDREN&displayProperty=NAME&paging=false`;
 
             var organisationUnitName = [];
@@ -535,7 +559,7 @@
                 $.get(idfourteenth),
                 $.get(idFifteenth),
                 $.get(idSixteenth),
-            ).done(function (rowFirst, rowSecond, rowThird, rowFourth, rowFifth, rowSixth, GlobalPriorityCountries, globalTotalVlaues, rowSeventh, rowEighth, rowNinth, rowTenth, rowEleventh, rowTwelfth,rowthirteenth, rowfourteenth,rowFifteenth, rowSixteenth) {
+            ).done(function (rowFirst, rowSecond, rowThird, rowFourth, rowFifth, rowSixth, GlobalPriorityCountries, globalTotalVlaues, rowSeventh, rowEighth, rowNinth, rowTenth, rowEleventh, rowTwelfth, rowthirteenth, rowfourteenth, rowFifteenth, rowSixteenth) {
 
                 rowFirst = rowFirst["0"];
                 rowSecond = rowSecond["0"];
@@ -556,7 +580,7 @@
                 rowFifteenth = rowFifteenth["0"];
                 rowSixteenth = rowSixteenth["0"];
 
-                let dataFirst = [], dataSecond = [], dataThird = []; dataFourth = [], dataFifth = [], dataSixth = [], globalTotal = [], dataSeventh = [], dataEighth = [], dataNinth = [], dataTenth = [], dataEleventh = [], dataTwelfth = [], datathirteenth = [], datafourteenth =[], dataFifteenth = [], dataSixteenth = [];
+                let dataFirst = [], dataSecond = [], dataThird = []; dataFourth = [], dataFifth = [], dataSixth = [], globalTotal = [], dataSeventh = [], dataEighth = [], dataNinth = [], dataTenth = [], dataEleventh = [], dataTwelfth = [], datathirteenth = [], datafourteenth = [], dataFifteenth = [], dataSixteenth = [];
                 let metadataValues = [];
 
                 for (let id in rowFirst.metaData.items) {
@@ -712,7 +736,17 @@
 
                 dataElementIdTenth.forEach((key, indexFirst) => {
                     LeprosyFourCases[indexFirst] = [];
+
+                    LeprosyTotalCases[0] = {
+                        id: 'ElAjdwOrjMq',
+                        type: 'line',
+                        name: 'Global New case detection rate/million',
+                        data: [],
+                        color: colorCodesGrey['ElAjdwOrjMq'] ? colorCodesGrey['ElAjdwOrjMq'] : '',
+                        yAxis: 1
+                    }
                     selectedPeriodNinth.forEach((period, indexSecond) => {
+                        LeprosyTotalCases[0]['data'].push(dataTenth['ElAjdwOrjMq'] && dataTenth['ElAjdwOrjMq'][period] ? dataTenth['ElAjdwOrjMq'][period] : 0)
                         LeprosyFourCases[indexFirst][indexSecond] = dataTenth[key][period] ? dataTenth[key][period] : 0;
                     })
                 })
@@ -728,15 +762,26 @@
                 })
 
                 orgUnitIdEleventh.forEach((key, indexFirst) => {
-                    LeprosyTotalCases[indexFirst] = {
+                    LeprosyTotalCases[(indexFirst + 1)] = {
+                        id: key,
                         type: key == "x3i5oi4axNu" ? 'line' : 'column',
                         name: (abbreviatedNames[key] ? abbreviatedNames[key] : metadataValues[key]),
+                        color: colorCodesGrey[key] ? colorCodesGrey[key] : '',
                         data: []
                     }
 
                     selectedPeriodNinth.forEach((period, indexSecond) => {
-                        LeprosyTotalCases[indexFirst]["data"][indexSecond] = dataEleventh[key][period] ? dataEleventh[key][period] : 0;
+                        LeprosyTotalCases[(indexFirst + 1)]["data"][indexSecond] = dataEleventh[key][period] ? dataEleventh[key][period] : 0;
                     })
+                })
+                LeprosyTotalCasesColor = LeprosyTotalCases.map(data => {
+                    let obj = Object.assign(data);
+
+                    return {
+                        ...obj,
+                        color: colorCodesOther[obj.id] ? colorCodesOther[obj.id] : ''
+                    }
+
                 })
 
                 globalTotalVlaues.rows.forEach(row => {
@@ -770,7 +815,7 @@
                         })
                     }
                 })
-                
+
                 rowCheck = []
                 rowfourteenth.rows.forEach(row => {
                     if (!rowCheck[row["2"]]) {
@@ -794,8 +839,8 @@
                         })
                     }
                 })
-                
-                 rowCheck = [];
+
+                rowCheck = [];
                 rowSixteenth.rows.forEach(row => {
                     if (!rowCheck[row["2"]]) {
                         rowCheck[row["2"]] = true;
@@ -811,11 +856,32 @@
                 for (let orgUnitId of orgUnitIdFirst) {
                     tableRow += "<tr><td style='text-align:left;font-weight:400;'>" + metadataValues[orgUnitId] + "</td>"
                     dataElementIdFirst.forEach((element, index) => {
-                        tableRow += "<td style='font-weight:400'>" + (dataFirst[orgUnitId] ? (dataFirst[orgUnitId][element] ? dataFirst[orgUnitId][element] : (dataFirst[orgUnitId][element] == 0 ? 0 : "")) : "") + "</td>"
-                    });
+                        let value = (dataFirst[orgUnitId] ? (dataFirst[orgUnitId][element] ? dataFirst[orgUnitId][element] : (dataFirst[orgUnitId][element] == 0 ? 0 : "")) : "");
+                        tableRow += "<td style='font-weight:400'>" + value + "</td>"
+                        if (element == "gY7b9azcUQG" && orgUnitId !== 'x3i5oi4axNu') {
+                            trendTotalCasesPie.push({
+                                name: metadataValues[orgUnitId],
+                                id: orgUnitId,
+                                y: value,
+                                color: colorCodesGrey[orgUnitId],
+                                sliced: true,
+                                selected: true
+                            })
+                        }
+                    })
                     tableRow += "<tr>";
                 }
                 document.getElementById("tableBodyFirst").innerHTML = tableRow;
+
+                trendTotalCasesPieColor = trendTotalCasesPie.map(data => {
+                    let obj = Object.assign(data);
+
+                    return {
+                        ...obj,
+                        color: colorCodesOther[obj.id] ? colorCodesOther[obj.id] : ''
+                    }
+
+                })
 
                 tableRow = ""
                 for (let orgUnitId of orgUnitIdSecond) {
@@ -870,7 +936,7 @@
                     });
                     tableRow += "<tr>";
                 }
-                
+
                 tableRow += "<tr><td style='text-align:left;font-weight:600;'>Number of new cases with G2D in global priority countries</td>"
                 for (let i = 0; i < 5; i++)  tableRow += "<td style='font-weight:600'>" + printTotalFifth[i] + "</td>";
                 tableRow += "<tr>";
@@ -967,7 +1033,7 @@
                         text: `Graph 2 : Countries reporting child grade 2 disability cases - ${selectedPeriod}`
                     },
                     tooltip: {
-                        pointFormat: '{series.value}: <b>{point.y} ({point.percentage:.2f} %)</b>'
+                        pointFormat: '{series.value}: <b>{point.y} ({point.percentage:.1f} %)</b>'
                     },
                     plotOptions: {
                         pie: {
@@ -976,7 +1042,7 @@
                             cursor: 'pointer',
                             dataLabels: {
                                 enabled: true,
-                                format: '<b>{point.value}</b>: {point.y} ({point.percentage:.2f} %)'
+                                format: '<b>{point.value}</b>: {point.y} ({point.percentage:.1f} %)'
                             }
                         }
                     },
@@ -1175,7 +1241,7 @@
                 Highcharts.chart('highCharts_seventh', {
 
                     title: {
-                        text: ''
+                        text: `Figure 2 Trends in number and rate of new leprosy cases detected globally (adult cases and children), ${selectedPeriod - 9} – ${selectedPeriod} <br/> Figure 2 Tendance du nombre et du taux de nouveaux cas de lèpre détectés dans le monde (cas adultes et tous les enfants), ${selectedPeriod - 9} – ${selectedPeriod}`
                     },
                     xAxis: {
                         categories: selectedPeriodNinth,
@@ -1185,7 +1251,7 @@
                     },
                     yAxis: [{
                         title: {
-                            text: 'New leprosy cases',
+                            text: 'Thousands – Milliers',
                             style: {
                                 color: Highcharts.getOptions().colors[0]
                             }
@@ -1200,6 +1266,84 @@
                             text: 'Detection rate',
                             style: {
                                 color: Highcharts.getOptions().colors[1]
+                            }
+                        },
+                        opposite: true
+                    }],
+                    legend: {
+                        layout: 'vertical'
+                    },
+
+                    plotOptions: {
+                        column: {
+                            stacking: 'normal',
+                            dataLabels: {
+                                enabled: true,
+                                color: 'white'
+                            }
+                        },
+                        line: {
+                            dataLabels: {
+                                enabled: true
+                            },
+                        }
+                    },
+                    series: [{
+                        color: '#8A867E',
+                        type: 'column',
+                        name: 'New cases (aged >15 years) – Nouveaux cas (âgés de >15 ans)',
+                        data: LeprosyFourCases["0"],
+                    },
+                    {
+                        color: '#3195F1',
+                        type: 'column',
+                        name: 'New child cases (aged <15 years) – Nouveaux cas pédiatriques (âgés de <15 ans)',
+                        data: LeprosyFourCases["1"]
+                    },
+                    {
+                        color: '#144780',
+                        type: 'line',
+                        name: 'New case detection rate (per million population) – Taux de dépistage de nouveaux cas (par million d’habitants)',
+                        yAxis: 1,
+                        data: LeprosyFourCases["2"]
+                    }, {
+                        color: '#145DAD',
+                        type: 'line',
+                        name: 'New child case detection rate (per million child population) – Taux de dépistage de nouveaux cas pédiatriques (par million d’habitants au seinde la population enfantine)',
+                        yAxis: 1,
+                        data: LeprosyFourCases["3"]
+
+                    }]
+
+                });
+                Highcharts.chart('highCharts_Eighth', {
+
+                    title: {
+                        text: `Trend in new case detection by WHO Region, Global New case detection rate ${selectedPeriod - 9} – ${selectedPeriod}`
+                    },
+                    xAxis: {
+                        categories: selectedPeriodNinth,
+                        accessibility: {
+                            rangeDescription: `Range from  ${selectedPeriod - 10} - ${selectedPeriod}`
+                        }
+                    },
+                    yAxis: [{
+                        title: {
+                            text: 'Thousands – Milliers',
+                            style: {
+                                color: 'black'
+                            }
+                        },
+                        labels: {
+                            style: {
+                                color: 'black'
+                            }
+                        },
+                    }, { // Secondary yAxis
+                        title: {
+                            text: 'Detection rate',
+                            style: {
+                                color: 'black'
                             }
                         },
                         opposite: true
@@ -1219,34 +1363,14 @@
                             },
                         }
                     },
-                    series: [{
-                        type: 'column',
-                        name: 'Total cases',
-                        data: LeprosyFourCases["0"]
-                    },
-                    {
-                        type: 'column',
-                        name: 'New cases: Children',
-                        data: LeprosyFourCases["1"]
-                    },
-                    {
-                        type: 'line',
-                        name: 'Case detection Rate (Per million population)',
-                        yAxis: 1,
-                        data: LeprosyFourCases["2"]
-                    }, {
-                        type: 'line',
-                        name: 'Child case detection rate (Per million child population)',
-                        yAxis: 1,
-                        data: LeprosyFourCases["3"]
-
-                    }]
+                    series: LeprosyTotalCases
 
                 });
-                Highcharts.chart('highCharts_Eighth', {
+
+                Highcharts.chart('highCharts_EighthClone', {
 
                     title: {
-                        text: ''
+                        text: `Trend in new case detection by WHO Region, Global New case detection rate ${selectedPeriod - 9} – ${selectedPeriod}`
                     },
                     xAxis: {
                         categories: selectedPeriodNinth,
@@ -1266,6 +1390,8 @@
                                 color: Highcharts.getOptions().colors[0]
                             }
                         },
+                    }, {
+                        opposite: true
                     }],
 
                     plotOptions: {
@@ -1282,8 +1408,70 @@
                             },
                         }
                     },
-                    series: LeprosyTotalCases
+                    series: LeprosyTotalCasesColor
 
+                });
+                Highcharts.chart('highCharts_TotalCasesPie', {
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: `Dsitribution of New cases - ${selectedPeriod} by WHO Region`
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.y} ({point.percentage:.1f} %)</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            showInLegend: true,
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.y} ({point.percentage:.1f} %)'
+                            }
+                        }
+                    },
+                    series: [{
+                        name: ' Disitribution of New cases - by WHO Region',
+                        colorByPoint: true,
+                        data: trendTotalCasesPie
+                    }]
+                });
+
+
+                Highcharts.chart('highCharts_TotalCasesPieClone', {
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: `Dsitribution of New cases - ${selectedPeriod} by WHO Region`
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.y} ({point.percentage:.1f} %)</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            showInLegend: true,
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.y} ({point.percentage:.1f} %)'
+                            }
+                        }
+                    },
+                    series: [{
+                        name: ' Disitribution of New cases - by WHO Region',
+                        colorByPoint: true,
+                        data: trendTotalCasesPieColor
+                    }]
                 });
 
                 Highcharts.mapChart('highCharts_Twelfth', {
@@ -1616,7 +1804,7 @@
                         shadow: false
                     }]
                 });
-                
+
                 Highcharts.mapChart('highCharts_Sixteenth', {
                     chart: {
                         map: 'custom/world',
