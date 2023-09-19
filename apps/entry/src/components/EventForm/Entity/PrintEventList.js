@@ -294,9 +294,9 @@ export default function EventListPrint(props) {
               borderRight: 0,
             }}
           >
-            {link.dataValue.map((de, index) => (
-              
-              <TableRow>
+            {link.dataValue.filter((de) => de.value !== "Positive" && de.value !=="Negative").map((de, index) => (
+            
+                <TableRow>
                 <TableCell
                   className={classes.tableRightBorder + " " + "antibio"}
                   style={{ width: "10%", borderBottom: "1px solid black" }}
@@ -349,6 +349,85 @@ export default function EventListPrint(props) {
                   </Typography>
                 </TableCell>
               </TableRow>
+              
+             
+              
+            ))}
+          </Box>
+        </TableBody>
+      </Table>
+      <Table>
+        <TableBody>
+          <Box
+            sx={{
+              border: 1,
+              fontSize: 10,
+              ml: 20,
+              mr: 20,
+              mt: 1,
+              mb: 1,
+              borderBottom: 0,
+              borderRight: 0,
+            }}
+          >
+            {link.dataValue.filter((de) => de.value == "Positive" || de.value =="Negative").map((de, index) => (
+            
+                <TableRow>
+                <TableCell
+                  className={classes.tableRightBorder + " " + "antibio"}
+                  style={{ width: "10%", borderBottom: "1px solid black" }}
+                >
+                  <Typography>
+                    <Box className="boxClass" sx={{ fontSize: 12, m: 1 }}>
+                      {index + 1}
+                    </Box>
+                  </Typography>
+                </TableCell>
+
+                <TableCell
+                  className={classes.tableRightBorder + " " + "antibio"}
+                  style={{
+                    width: "60%",
+                    textAlign: "center",
+                    borderBottom: "1px solid black",
+                  }}
+                >
+                  <Typography>
+                    <Box className="boxClass" sx={{ fontSize: 12, m: 1 }}>
+                      
+                      {de.formName.replace("_Result","")}
+                      {/* {de.code} */}
+                      {/* {de.code? de.code : de.formName} */}
+                    </Box>
+                  </Typography>
+                </TableCell>
+                <TableCell
+                  className="antibio"
+                  style={{ borderBottom: "1px solid black" }}
+                >
+                  <Typography>
+                    <Box className="boxClass" sx={{ fontSize: 12, m: 1 }}></Box>
+                  </Typography>
+                </TableCell>
+
+                <TableCell
+                  className={classes.tableRightBorder + " " + "antibio"}
+                  style={{
+                    width: "60%",
+                    textAlign: "left",
+                    borderBottom: "1px solid black",
+                  }}
+                >
+                  <Typography>
+                    <Box className="boxClass" sx={{ fontSize: 12, m: 1 }}>
+                      {de.value}
+                    </Box>
+                  </Typography>
+                </TableCell>
+              </TableRow>
+              
+             
+              
             ))}
           </Box>
         </TableBody>
