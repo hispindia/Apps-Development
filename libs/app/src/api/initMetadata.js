@@ -287,8 +287,10 @@ export const initMetadata = async isIsolate => {
                             )
                             cs.editable = !!pss.editable
                             childSections.push(cs)
+                        
                         })
                     pss.childSections = childSections
+        
                 })
                 ps.programStageSections = ps.programStageSections.filter(
                     s => !remove.includes(s.id)

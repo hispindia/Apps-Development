@@ -61,6 +61,9 @@ export const ChildSection = ({ childSection }) => {
                     state => state.data.event.values[id]
                 )
             })
+
+
+            
         return (
             <>
                 <Padding>
@@ -80,7 +83,7 @@ export const ChildSection = ({ childSection }) => {
             </>
         )
     }
-console.log("child ",childSection);
+
     return (
         <>
             <Label>{(childSection.name==='MIC' && orgUnit.id==="Yh0e2tskPwE") ? '': childSection.name}</Label>
@@ -92,3 +95,4 @@ console.log("child ",childSection);
 }
 
 ChildSection.propTypes = { childSection: object.isRequired }
+

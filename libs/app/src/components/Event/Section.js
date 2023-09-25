@@ -22,9 +22,17 @@ export const Section = ({
         childSections = childSections.filter(
             cs => !cs.hide && !cs.hideWithValues
         )
-        const childHalf = Math.ceil(childSections.length / 2)
-        const half = Math.ceil(dataElements.length / 2 + childHalf)
-        return { dataElements, childSections, half, childHalf }
+        // const childHalf = Math.ceil(childSections.length / 2)
+        // const half = Math.ceil(dataElements.length / 2 + childHalf)
+        const childHalf = Math.ceil(childSections.length / 2);
+const dataHalf = Math.ceil(dataElements.length / 2);
+const firstHalf = childSections.slice(0, childHalf);
+const secondHalf = childSections.slice(childHalf, childSections.length);
+const combinedSections = firstHalf.concat(secondHalf);
+
+const half = Math.ceil(combinedSections.length / 2 + dataHalf);
+
+        return { dataElements, childSections, half,dataHalf ,firstHalf ,secondHalf ,combinedSections}
     }
 
     return (

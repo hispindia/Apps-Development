@@ -20,6 +20,7 @@ export const eventRules = (
                 )
                 if (affectedSection) return affectedSection
             }
+            
         }
         return null
     }
@@ -169,6 +170,7 @@ const validateValues = (elements, values, sections) => {
             const invalid = validateValues(elements, values, s.childSections)
             if (invalid) return invalid
         }
+       
         if (hasRequiredEmpty(s.dataElements))
             return INVALID_REASONS.REQUIRED_EMPTY
         if (hasError(s.dataElements)) return INVALID_REASONS.INVALID_FIELD

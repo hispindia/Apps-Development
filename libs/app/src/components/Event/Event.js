@@ -10,8 +10,7 @@ export const Event = () => {
     const state = useSelector(state => state)
     if (!panelValid) return null
     if (!eventId) return <LoadingSection />
-    console.log("00000000000",programStage);
-    // console.log("111111111",childSections);
+ 
     return (
         <>
             {programStage.programStageSections
@@ -22,6 +21,7 @@ export const Event = () => {
                         heading={s.displayName}
                         dataElements={s.dataElements}
                         childSections={s.childSections}
+                    
                         renderType={s.renderType.DESKTOP.type}
                     />
                 ))}
