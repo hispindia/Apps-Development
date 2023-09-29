@@ -169,6 +169,7 @@ export default function EventListPrint(props) {
     props.onPrint(false);
   };
   const listItems = eventL.map((link) => (
+    
     <Box sx={{ border: 1, fontSize: 10, ml: 6, mr: 6, mt: 1, mb: 1 }}>
       <Table
         sx={{
@@ -294,7 +295,8 @@ export default function EventListPrint(props) {
               borderRight: 0,
             }}
           >
-            {link.dataValue.filter((de) => de.value !== "Positive" && de.value !=="Negative").map((de, index) => (
+            {console.log(link)}
+            {link.dataValue.filter((de) => de.value !== "Positive" && de.value !=="Negative" && de.Metadata_type=="Antibiotic").map((de, index) => (
             
                 <TableRow>
                 <TableCell
@@ -319,7 +321,7 @@ export default function EventListPrint(props) {
                   <Typography>
                     <Box className="boxClass" sx={{ fontSize: 12, m: 1 }}>
                       
-                      {de.formName.replace("_Result","")}
+                      {de?.formName?.replace("_Result","")}
                       {/* {de.code} */}
                       {/* {de.code? de.code : de.formName} */}
                     </Box>
@@ -395,7 +397,7 @@ export default function EventListPrint(props) {
                   <Typography>
                     <Box className="boxClass" sx={{ fontSize: 12, m: 1 }}>
                       
-                      {de.formName.replace("_Result","")}
+                      {de?.formName?.replace("_Result","")}
                       {/* {de.code} */}
                       {/* {de.code? de.code : de.formName} */}
                     </Box>
