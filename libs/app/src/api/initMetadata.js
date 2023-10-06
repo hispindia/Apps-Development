@@ -230,7 +230,7 @@ export const initMetadata = async isIsolate => {
         const stages = []
         programOrganisms[p.id] = data.optionGroups.find(
             og => og.name === p.name
-        ).id
+        )?.id
         const remove = []
         p.programStages
             .filter(ps => ps.access.data.write)
