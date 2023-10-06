@@ -15,7 +15,7 @@ const TeiList = () => {
     );
   if (teiPresent && !teiList.length) return <h4 className="text-center">No Record Exist!</h4>;
   return (
-    <div>
+    <div id='download'>
       <div className="scroll">
         <table className="table table-bordered">
           <thead>
