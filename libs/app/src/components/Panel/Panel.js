@@ -6,6 +6,7 @@ import { CardSection } from "components";
 import { SelectInput, RadioInputs, DateInput } from "@hisp-amr/inputs";
 import { setProgram, setPanelValue } from "actions";
 import { PanelButtons } from "./PanelButtons";
+import { FirstPage } from "@material-ui/icons";
 
 /**
  * Contains event panel.
@@ -160,9 +161,10 @@ export const Panel = ({ showEdit }) => {
     <CardSection heading="Panel" buttons={showEdit && <PanelButtons />}>
       <Grid container spacing={0}>
         <Grid item xs>
-          {(program == "L7bu48EI54J" || program == "") && !editable
+        {(program == "L7bu48EI54J" || program == "") && !editable
             ? getDataElement("defaultProgram")
             : getDataElement("program")}
+          
           {program &&
             stageLists[program].length >= 1 &&
             getDataElement("programStage")}

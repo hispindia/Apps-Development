@@ -197,6 +197,7 @@ export const EventForm = ({ history, match }) => {
         $("#cnote").hide();     
   }
     if (isFirstRender) return <TitleRow title="Record" history={history} />
+    
     return (
         <MainSection padded>
             <TitleRow title="Record" history={history} />
@@ -228,7 +229,7 @@ export const EventForm = ({ history, match }) => {
                </SweetAlert>
                 </div> :
                 <div id="panel">
-                <Panel showEdit={panelValid} />
+                <Panel showEdit={panelValid}   />
                 <Event />
                 <EventButtons history={history} existingEvent={teiId} />
                 </div>}

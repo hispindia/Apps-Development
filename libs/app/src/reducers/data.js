@@ -68,6 +68,7 @@ const INITIAL_STATE = {
     eventList:[],
     exit: false,
     isAddIsolate:false,
+    // followup:false,
     entity: {
         values: null,
         id: null,
@@ -334,7 +335,7 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                 btnStatus: payload.btnStatus,
                 eventEditable: payload.editable,
                 eventList: payload.eventList,
-                editable:true,
+              
                 entity: {
                     values: payload.entityValues,
                     id: payload.entityId,
@@ -417,7 +418,8 @@ export const data = (state = INITIAL_STATE, { type, payload }) => {
                 event: INITIAL_EVENT,
                 buttonsDisabled: false,
                 completeClicked:false,
-                isAddIsolate:true
+                isAddIsolate:true,
+                // followup:true
             }
         case SET_INCOMPLETED:
             return {

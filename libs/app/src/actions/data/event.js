@@ -56,6 +56,7 @@ export const addExistingEvent = payload => dispatch =>dispatch(createAction(SET_
 export const addSelectedProgramOfOrgUnits = payload => dispatch =>dispatch(createAction(SET_INITIAL_PROGRAM, payload))
 // export const setDataELments = payload => dispatch=> dispatch(createAction(LOAD_DpayloadATAELEMENTS, payload))
 // export const PreValue = payload => dispatch=> dispatch(createAction(SET_PREVALUE, payload))
+const followup = true
 export const initNewEvent = orgUnit => (dispatch, getState) => {
     const entityMetadata = getState().metadata.person
     const optionSets = getState().metadata.optionSets
@@ -94,7 +95,7 @@ const getCode = (orgUnit, orgUnits) => {
         }
     }
 }
-export const getExistingEvent = (orgUnit, tieId, eventId, editStatus, btnStatus) => async (
+export const getExistingEvent = (orgUnit, tieId, eventId, editStatus, btnStatus,followup) => async (
     dispatch,
     getState
 ) => {
@@ -116,6 +117,7 @@ export const getExistingEvent = (orgUnit, tieId, eventId, editStatus, btnStatus)
         data.TeiID = tieId;
         data.btnStatus=btnStatus;
         data.editable = editStatus;
+        data.followup=followup;
         if(data.eventList.length==0){
             data.entityValues = entityValues
             data.entityAttributes = attributes
@@ -189,7 +191,7 @@ export const getExistingEvent = (orgUnit, tieId, eventId, editStatus, btnStatus)
     }
 }
 
-export const getEventObject = async (metadata, orgUnit, tieId, eventId, editStatus, btnStatus) => {
+export const getEventObject = async (metadata, orgUnit, tieId, eventId, editStatus, btnStatus,followup) => {
     const programs = metadata.programs
     const optionSets = metadata.optionSets
     const { trackedEntityTypeAttributes, rules } = metadata.person
@@ -252,7 +254,7 @@ export const getEventObject = async (metadata, orgUnit, tieId, eventId, editStat
     }
 }
 
-export const createNewEvent = () => async (dispatch, getState) => {
+export const createNewEvent = () => async (dispatch, getState,followup) => {
     dispatch(disableButtons)
     const orgUnit = getState().data.orgUnit
     const entity = getState().data.entity

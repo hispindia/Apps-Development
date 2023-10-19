@@ -126,7 +126,10 @@ const Events = ({match, history }) => {
                     var name=[], dataValue= [], data= [], date =[];
                      //date['value'] =  JSON.stringify(new Date(ele.eventDate)).slice(1,11);
                      date['value'] =  ele.eventDate.substring(0, 10);
+                    
+                     
                      for (let program of programs) {
+                        
                         if (program.id == proId) {
                              name['value'] = program.name;
                         }
