@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import {
@@ -6,6 +6,7 @@ import {
     LoadingSection,
     TitleRow,
     RichButton,
+    CardSection,
     addSelectedProgramOfOrgUnits,
     setDataELments
 } from '@hisp-amr/app'
@@ -14,6 +15,11 @@ import { useEvents } from './useEvents'
 import { icmr, tanda } from 'config'
 import {SelectedOrgUnit} from '../../api/programs'
 import {DataElements} from '../../api/dataElements'
+import Tabs from "./Tabs";
+import "./styles.css";
+import TabPane from "./Tab-Pane";
+
+import { TABVALUES,SAMPLE_PROGRAM_CODE,PROGRAM_CODE } from './constants'
 if (!process.env.REACT_APP_DHIS2_TABLE_CONFIG)
     throw new Error(
         'The environment variable REACT_APP_DHIS2_TABLE_CONFIG must be set'
@@ -35,7 +41,13 @@ export const EventOverview = ({ match, history }) => {
     const status = match.params.status
     const dispatch = useDispatch()
     const selected = useSelector(state => state.selectedOrgUnit)
-    const { rows, loading, addButtonDisabled, error } = useEvents(status)
+    const tabValue = TABVALUES;
+    let SAMPLEPROGRAMCODE = SAMPLE_PROGRAM_CODE;
+    let PROGRAMCODE = PROGRAM_CODE;
+    var [eventstatus, setEventstatus] = useState('ALL')
+    var [code, setCode] = useState("ALL")
+    const { rows, loading, addButtonDisabled, error } = useEvents(status,eventstatus,code)
+    
     useEffect(() => {
         DataElements.loadDataElements().then(res =>{
             dispatch(setDataELments(res.dataElements));
@@ -58,7 +70,31 @@ export const EventOverview = ({ match, history }) => {
            }
         }) 
     })
-  
+    console.log("getting event staus in the event list",eventstatus)
+    const handleChange = (returnValue) => {
+        var programCode = returnValue[2];
+        var programStatus = returnValue[1]
+        if (programCode == SAMPLEPROGRAMCODE && programStatus == "pending") {
+            setEventstatus('ACTIVE');
+            setCode(SAMPLEPROGRAMCODE);
+        }
+        else if (programCode == SAMPLEPROGRAMCODE && programStatus == "complete") {
+            setEventstatus('COMPLETED');
+            setCode(SAMPLEPROGRAMCODE);
+        }
+        else if (programCode == PROGRAMCODE && programStatus == "pending") {
+            setEventstatus('ACTIVE');
+            setCode(PROGRAMCODE);
+        }
+        else if (programCode == PROGRAMCODE && programStatus == "complete") {
+            setEventstatus('NotCOMPLETED');
+            setCode(PROGRAMCODE);
+        }
+        else {
+            setEventstatus('ALL');
+            setCode('ALL');
+        }
+    };
     /**
      * Called when table row is clicked.
      */
@@ -87,7 +123,7 @@ export const EventOverview = ({ match, history }) => {
                     </div>
                 }
             />
-            {!error &&
+            {/* {!error &&
                 (loading ? (
                     <LoadingSection />
                 ) : (
@@ -97,7 +133,34 @@ export const EventOverview = ({ match, history }) => {
                         onEventClick={onEventClick}
                         title={selected.displayName}
                     />
+                ))} */}
+
+<CardSection>
+                <Tabs>
+                    {tabValue.map((tabValues) => (
+                        <TabPane
+                            name={tabValues.name}
+                            tabvalue={tabValues.key}
+                            onClick={handleChange}
+                            code={tabValues.code}
+                        >
+                        </TabPane>
+                    ))}
+                </Tabs>
+                {!error &&
+                (loading ? (
+                    <LoadingSection />
+                ) : (
+                    <Table
+                        rows={rows}
+                        headers={headers}
+                        onEventClick={onEventClick}
+                        title={selected.displayName}
+                        eventStatus={eventstatus}
+                            code={code}
+                    />
                 ))}
+            </CardSection>
         </MainSection>
     )
 }
