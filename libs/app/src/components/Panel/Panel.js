@@ -121,7 +121,9 @@ export const Panel = ({ showEdit }) => {
     )
 
     if (!entityValid) return null
-
+console.log("getting the value of editable",editable)
+console.log("getting the value of program",program)
+console.log("condition",(program=="L7bu48EI54J" || program == "") )
     return (
         <CardSection heading="Panel" buttons={showEdit && <PanelButtons />}>
             <Grid container spacing={0}>
