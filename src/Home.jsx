@@ -21,7 +21,7 @@ const Home = () => {
   const antibioticCategoryComboCode = "antibiotic";
 
   const [isLoading, setIsLoading] = useState(false);
-  const [program, setProgram] = useState([]);
+  const [status, setStatus] = useState(false);
   const [dataElementObjects, setDataElementObjects] = useState(null);
   const [categoryCombos, setCategoryCombos] = useState(null);
   const [aggregatedDataValue, setAggregatedDataValue] = useState(null);
@@ -50,7 +50,6 @@ const Home = () => {
 
       responseData.categoryCombos.forEach((categoryCombo) => {
         categoryCombo.categoryOptions = {};
-        console.log("categoryCombo.categoryOptions======");
 
         categoryCombo.categoryOptionCombos.forEach((categoryOptionCombo) => {
           let categoryOptionCodes = [];
@@ -87,7 +86,7 @@ const Home = () => {
 
     fetchData();
   }, []);
-  console.log("setCategoryCombos==========", categoryCombos);
+
   const getRootOrgUnit = async () => {
     try {
       const response = await fetch(
@@ -121,7 +120,6 @@ const Home = () => {
     fetchData();
   }, []);
 
-
   const getActiveEventList = async (rootOrgUnit) => {
     try {
       const response = await fetch(
@@ -149,14 +147,13 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       const result = await getActiveEventList(rootOrgUnit);
-      console.log("result=====", result);
+
       setActiveEventList(result);
+      setData(result);
     };
 
     fetchData();
   }, []);
-
-  console.log("activeEventList=======", activeEventList);
 
   const fetchDataElementsDetails = async () => {
     try {
@@ -210,7 +207,7 @@ const Home = () => {
 
     fetchData();
   }, []);
- 
+
   const postAggregatedDataValue = async (
     period,
     dataSet,
@@ -237,7 +234,7 @@ const Home = () => {
         console.error("Error:", response);
         return null; // or throw an error
       }
-      console.log("post===========", response.status);
+
       const aggregatedDataValuePostResponse = response;
       return aggregatedDataValuePostResponse;
     } catch (error) {
@@ -268,19 +265,28 @@ const Home = () => {
   //   }
   // };
 
-
-  const getAggregatedDataValue = async (period, dataSet, de, orgUnit, cc, cp, co) => {
+  const getAggregatedDataValue = async (
+    period,
+    dataSet,
+    de,
+    orgUnit,
+    cc,
+    cp,
+    co
+  ) => {
     let defaultvalue = 0;
 
     try {
-      const response = await fetch(`../../dataValues.json?paging=false&pe=${period}&ds=${dataSet}&de=${de}&ou=${orgUnit}&cc=${cc}&cp=${cp}&co=${co}`);
+      const response = await fetch(
+        `../../dataValues.json?paging=false&pe=${period}&ds=${dataSet}&de=${de}&ou=${orgUnit}&cc=${cc}&cp=${cp}&co=${co}`
+      );
       const data = await response.json();
-console.log("DAAAAAAAAAAAAAAAAAAAAAA",data)
+
       if (data.httpStatus === "Conflict") {
         // this means that the value does not exist so return 0
         return {
           response: true,
-          value: 1
+          value: 1,
         };
       } else {
         // this means that the value exists and is returned so return that.
@@ -289,32 +295,31 @@ console.log("DAAAAAAAAAAAAAAAAAAAAAA",data)
 
       return {
         response: true,
-        value: defaultvalue
+        value: defaultvalue,
       };
     } catch (error) {
       // handle error
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
 
       return {
         response: true,
-        value: defaultvalue
+        value: defaultvalue,
       };
     }
   };
 
-  
-  console.log("aggregatedDataValue===========", aggregatedDataValue);
-
   const tempCategoryCombos = categoryCombos;
 
   const getEventList = async () => {
+    alert("Aggeration is Started Click on Ok!");
+
+    setStatus(true);
+
     try {
       const headersMapGrpByDomain = {}; // Replace with actual data
       // const initialSummary = prepareListFromMap(headersMapGrpByDomain); // Uncomment if needed
       const importSummary = {};
       const importSummaryMap = [];
-
-      console.log("tempCategoryCombos -- ", categoryCombos); // Assuming tempCategoryCombos is defined
 
       const defaultDataSet = "oG3BlD3M9IE";
       const antibioticWiseDataSet = "CBsMJKLKkUQ";
@@ -323,13 +328,10 @@ console.log("DAAAAAAAAAAAAAAAAAAAAAA",data)
           DEFAULT_CC_CODE
         ];
       const cCombo = categoryCombos.sampleLocationDepartment.id;
-      console.log("cCombo==========", cCombo);
-      // const activeEvenList = await MetadataService.getActiveEvenList(
-      //   ROOT_OU_UID
-      // );
+
       const eventList = activeEventList;
       console.log("EVentlisttttttttttttttttttt", eventList);
-      setData(eventList);
+
       for (let i = 0; i < eventList.length; i++) {
         let organismDataTEI = "";
         let departmentDataTEI = "";
@@ -341,7 +343,7 @@ console.log("DAAAAAAAAAAAAAAAAAAAAAA",data)
         let tempCategoryOptions = "";
 
         const tempEventForUpdate = eventList[i];
-        console.log("tempEventForUpdate===", tempEventForUpdate);
+
         const isoPeriod = eventList[i].eventDate
           .split("T")[0]
           .substring(0, 7)
@@ -357,7 +359,6 @@ console.log("DAAAAAAAAAAAAAAAAAAAAAA",data)
         for (let j = 0; j < eventList[i].dataValues.length; j++) {
           const dataElement = eventList[i].dataValues[j].dataElement;
           const isoPeriod = eventList[i].dataValues[j].value;
-          console.log("organismDataTEI============", aggregateorgUnit);
 
           if (eventList[i].dataValues[j].dataElement === "KVYg3tnmNMU") {
             departmentDataTEI = eventList[i].dataValues[j].value;
@@ -383,20 +384,23 @@ console.log("DAAAAAAAAAAAAAAAAAAAAAA",data)
             eventList[i].dataValues[j].value === "I" ||
             eventList[i].dataValues[j].value === "S"
           ) {
-            console.log("dataElementObjects=============", dataElementObjects);
-            console.log(
-              "dataElementObjects[eventList[i].dataValues[j].dataElement].code",
-              dataElementObjects[eventList[i].dataValues[j].dataElement].code
-            );
+            let tempEventvalue = "";
+            if (eventList[i].dataValues[j].value === "R") {
+              tempEventvalue = "Resistant";
+            } else if (eventList[i].dataValues[j].value === "I") {
+              tempEventvalue = "Intermediate";
+            } else {
+              tempEventvalue = "Susceptible";
+            }
             let tempArray = [
               dataElementObjects[eventList[i].dataValues[j].dataElement].code,
-              eventList[i].dataValues[j].value,
+              tempEventvalue,
             ];
-            console.log("tempArray====", tempArray);
+
             tempArray = tempArray.sort();
 
             let categoryOptionCombo = tempArray.join("");
-            console.log("categoryOptionCombo====", categoryOptionCombo);
+
             categoryOptionCombo =
               tempCategoryCombos[ANTIBIOTIC_CATEGORY_COMBO_CODE]
                 .categoryOptionCombos[categoryOptionCombo];
@@ -434,92 +438,7 @@ console.log("DAAAAAAAAAAAAAAAAAAAAAA",data)
               purposeOfSampleDataTEI
             ];
           tempAggregateDE = dataElementObjects[organismDataTEI].id;
-          console.log("whyyyyyyyyyyy", tempAggregateDE);
-          console.log("tempCategoryOptions====", tempCategoryOptions);
-          // let defaultValue = 0;
 
-          //           const aggregatedDataValueGetResponse = getAggregatedDataValue(
-          //             isoPeriod,
-          //             defaultDataSet,
-          //             tempAggregateDE,
-          //             aggregateorgUnit,
-          //             cCombo,
-          //             tempCategoryOptions,
-          //             coDefault,
-          //             'COMPLETE'
-          //           );
-          // console.log("aggregatedDataValueGetResponse========",aggregatedDataValueGetResponse)
-          //           if (aggregatedDataValueGetResponse.response) {
-          //             defaultValue = aggregatedDataValueGetResponse.value;
-
-          //             // const aggregatedDataValuePostResponse =
-          //             //   await fetch.postAggregatedDataValue(
-          //             //     isoPeriod,
-          //             //     defaultDataSet,
-          //             //     tempAggregateDE,
-          //             //     aggregateorgUnit,
-          //             //     cCombo,
-          //             //     tempCategoryOptions,
-          //             //     coDefault,
-          //             //     defaultValue
-          //             //   );
-          //             const aggregatedDataValuePostResponse =
-          //             postAggregatedDataValue(
-          //               isoPeriod,
-          //               defaultDataSet,
-          //               tempAggregateDE,
-          //               aggregateorgUnit,
-          //               cCombo,
-          //               tempCategoryOptions,
-          //               coDefault,
-          //               defaultValue
-          //             );
-
-          //             console.log("aggregatedDataValuePostResponse===",aggregatedDataValuePostResponse);
-
-          //             if (aggregatedDataValuePostResponse.data.status === "OK") {
-          //               const eventUpdateResponse = await fetch.updateEventStatus(
-          //                 tempEventForUpdate
-          //               );
-          //               console.log(eventUpdateResponse);
-          //             }
-          //           }
-          //           else{
-
-          //             defaultValue = 0;
-
-          //             // const aggregatedDataValuePostResponse =
-          //             //   await fetch.postAggregatedDataValue(
-          //             //     isoPeriod,
-          //             //     defaultDataSet,
-          //             //     tempAggregateDE,
-          //             //     aggregateorgUnit,
-          //             //     cCombo,
-          //             //     tempCategoryOptions,
-          //             //     coDefault,
-          //             //     defaultValue
-          //             //   );
-          //             const aggregatedDataValuePostResponse =
-          //             postAggregatedDataValue(
-          //               isoPeriod,
-          //               defaultDataSet,
-          //               tempAggregateDE,
-          //               aggregateorgUnit,
-          //               cCombo,
-          //               tempCategoryOptions,
-          //               coDefault,
-          //               defaultValue
-          //             );
-
-          //             console.log("aggregatedDataValuePostResponse===",aggregatedDataValuePostResponse);
-
-          //             if (aggregatedDataValuePostResponse.data.status === "OK") {
-          //               const eventUpdateResponse = updateEventStatus(
-          //                 tempEventForUpdate
-          //               );
-          //               console.log(eventUpdateResponse);
-          //             }
-          //           }
           let aggregatedDataValueGetResponse;
           let defaultValue;
           aggregatedDataValueGetResponse = await getAggregatedDataValue(
@@ -537,129 +456,115 @@ console.log("DAAAAAAAAAAAAAAAAAAAAAA",data)
             defaultValue = aggregatedDataValueGetResponse.value;
           }
 
-          // const aggregatedDataValuePostResponse = await postAggregatedDataValue(
-          //   isoPeriod,
-          //   defaultDataSet,
-          //   tempAggregateDE,
-          //   aggregateorgUnit,
-          //   cCombo,
-          //   tempCategoryOptions,
-          //   coDefault,
-          //   defaultValue
-          // ).then((aggregatedDataValuePostResponse) => {
-          //   console.log(
-          //     "aggregatedDataValuePostResponse.data.message",
-          //     aggregatedDataValuePostResponse
-          //   );
-          // });
+          const aggregatedDataValuePostResponse = await postAggregatedDataValue(
+            isoPeriod,
+            defaultDataSet,
+            tempAggregateDE,
+            aggregateorgUnit,
+            cCombo,
+            tempCategoryOptions,
+            coDefault,
+            defaultValue
+          ).then((aggregatedDataValuePostResponse) => {
+            console.log(
+              "aggregatedDataValuePostResponse.data.message",
+              aggregatedDataValuePostResponse
+            );
+          });
 
           // if (aggregatedDataValuePostResponse.status === "201") {
-          // const eventUpdateResponse = updateEventStatus(tempEventForUpdate);
-          // console.log("eventUpdateResponse", eventUpdateResponse);
+          //   const eventUpdateResponse = updateEventStatus(tempEventForUpdate);
+          //   console.log("eventUpdateResponse", eventUpdateResponse);
+
           // }
 
           // push antibiotic test result value to aggregated DataValue
-          // if (organismDataTEI !== "STERILE") {
-          //   const deAntibioticWise =
-          //     dataElementObjects[`${organismDataTEI}_AW`].id;
 
-          //   for (let index in antibioticCategoryOptionComboUIDsTEI) {
-          //     const antiCategoryOptionCombo =
-          //       antibioticCategoryOptionComboUIDsTEI[index];
+          if (antibioticCategoryOptionComboUIDsTEI.length > 0) {
+            const deAntibioticWise =
+              dataElementObjects[`${organismDataTEI}_AW`].id;
 
-          //     const aggregatedDataValueGetResponse =
-          //     await getAggregatedDataValue(
-          //         isoPeriod,
-          //         antibioticWiseDataSet,
-          //         deAntibioticWise,
-          //         aggregateorgUnit,
-          //         cCombo,
-          //         tempCategoryOptions,
-          //         antiCategoryOptionCombo
-          //       );
+            for (let index in antibioticCategoryOptionComboUIDsTEI) {
+              const antiCategoryOptionCombo =
+                antibioticCategoryOptionComboUIDsTEI[index];
+              console.log(
+                "antiCategoryOptionCombo======",
+                antiCategoryOptionCombo
+              );
+              const aggregatedDataValueGetResponse =
+                await getAggregatedDataValue(
+                  isoPeriod,
+                  antibioticWiseDataSet,
+                  deAntibioticWise,
+                  aggregateorgUnit,
+                  cCombo,
+                  tempCategoryOptions,
+                  antiCategoryOptionCombo
+                );
 
-          //     if (aggregatedDataValueGetResponse.response) {
-          //       defaultValue = aggregatedDataValueGetResponse.value;
+              if (aggregatedDataValueGetResponse.response) {
+                defaultValue = aggregatedDataValueGetResponse.value;
 
-          //       const aggregatedDataValuePostResponse =
-          //       await  postAggregatedDataValue(
-          //           isoPeriod,
-          //           antibioticWiseDataSet,
-          //           deAntibioticWise,
-          //           aggregateorgUnit,
-          //           cCombo,
-          //           tempCategoryOptions,
-          //           antiCategoryOptionCombo,
-          //           defaultValue
-          //         );
+                const aggregatedDataValuePostResponse =
+                  await postAggregatedDataValue(
+                    isoPeriod,
+                    antibioticWiseDataSet,
+                    deAntibioticWise,
+                    aggregateorgUnit,
+                    cCombo,
+                    tempCategoryOptions,
+                    antiCategoryOptionCombo,
+                    defaultValue
+                  );
 
-          //       console.log(aggregatedDataValuePostResponse);
+                console.log(aggregatedDataValuePostResponse);
 
-          //       if (aggregatedDataValuePostResponse.data.status === "OK") {
-          //         const eventUpdateResponse =
-          //           updateEventStatus(tempEventForUpdate);
-          //         console.log(eventUpdateResponse);
-          //       }
-          //     }
-          //   }
-          // }
+                if (aggregatedDataValuePostResponse.status === "OK") {
+                }
+              }
+            }
+          }
         }
+        const eventUpdateResponse = updateEventStatus(tempEventForUpdate);
+        console.log(eventUpdateResponse);
       }
+      setStatus(false);
+
+      getActiveEventList();
+      setData([]);
+      setTimeout(function () {
+        alert("Aggregation is done successfully");
+      }, 2000);
     } catch (error) {
       console.error(error);
     }
   };
 
-  // const updateEventStatus = async (tempEvent) => {
-  //   try {
-  //     const updatedEvent = { ...tempEvent, status: "COMPLETED" };
+  const updateEventStatus = async (tempEvent) => {
+    try {
+      const updatedEvent = { ...tempEvent, status: "COMPLETED" };
 
-  //     const response = await fetch(`../../events/${tempEvent.event}`, {
-  //       method: "PUT",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(updatedEvent),
-  //     });
+      const response = await fetch(`../../events/${tempEvent.event}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedEvent),
+      });
 
-  //     if (!response.ok) {
-  //       // Handle error
-  //       console.error("Error:", response);
-  //       return null; // or throw an error
-  //     }
+      if (!response.ok) {
+        // Handle error
+        console.error("Error:", response);
+        return null; // or throw an error
+      }
 
-  //     const updateEventStatusResponse = await response.json();
-  //     return updateEventStatusResponse;
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     return null; // or throw an error
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       // const tempEventForUpdate;
-
-  //       // Call your updateEventStatus function here
-  //       const updateEventStatusResponse = await updateEventStatus(
-  //         tempEventForUpdate
-  //       );
-
-  //       console.log("updateEventStatusResponse==", updateEventStatusResponse);
-
-  //       // Rest of your logic here
-  //     } catch (error) {
-  //       console.error("Error:", error);
-  //     }
-  //   };
-
-  //   fetchData(); // Invoke the fetchData function when the component mounts
-  // }, []);
-
-  // useEffect(() => {
-  //   getEventList();
-  // }, []);
+      const updateEventStatusResponse = await response.json();
+      return updateEventStatusResponse;
+    } catch (error) {
+      console.error("Error:", error);
+      return null; // or throw an error
+    }
+  };
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // Adjust this value to set the number of items per page
@@ -677,8 +582,9 @@ console.log("DAAAAAAAAAAAAAAAAAAAAAA",data)
       return currentData.map((ele, index) => {
         if (ele.program) {
           var dataValue = {};
-          // date = [];
-          // date["value"] = ele.eventDate.substring(0, 10);
+
+          let date = [];
+          date["value"] = ele.eventDate.substring(0, 10);
           for (let value of ele.dataValues) {
             if (value.dataElement === "l9NuW9KD5mU") {
               dataValue["1"] = value;
@@ -695,11 +601,9 @@ console.log("DAAAAAAAAAAAAAAAAAAAAAA",data)
 
             if (value.dataElement === "l4kqMRq38bm") {
               dataValue["10"] = value;
-              console.log("dataValue333333333333", dataValue["10"]);
             }
-            // dataValue["6"] = date;
+            dataValue["6"] = date;
           }
-          
 
           // Conditionally initialize missing values
           if (!dataValue["1"]) {
@@ -732,22 +636,16 @@ console.log("DAAAAAAAAAAAAAAAAAAAAAA",data)
     }
   };
 
-  const handleSelectChange = (e) => {
-    setSelectedProgramValue(e.target.value);
-  };
-  // useEffect(() => {
-  //   val();
-  // }, []);
   return (
     <>
       <div style={{ padding: "10px" }}>
-        <div style={{ display: "flex" }}>
-          <div style={{ marginTop: "42px", marginLeft: "5px" }}>
-            <Button primary={true} onClick={getEventList}>
-              Aggregate
-            </Button>
-          </div>
+       
+        <div style={{ marginLeft: "5px" }}>
+          <Button primary={true} onClick={getEventList}>
+            Aggregate
+          </Button>
         </div>
+
         <div>
           <Table>
             <TableRow>
@@ -761,16 +659,16 @@ console.log("DAAAAAAAAAAAAAAAAAAAAAA",data)
                 <b>Location</b>
               </TableCell>
               <TableCell>
+                <b>Event Date</b>
+              </TableCell>
+              <TableCell>
                 <b>Department</b>
               </TableCell>
               <TableCell>
                 <b>Purpose of sample</b>
               </TableCell>
-              <TableCell>
-                <b>Event Date</b>
-              </TableCell>
             </TableRow>
-            {isLoading ? (
+            {isLoading || status ? (
               <div
                 style={{
                   position: "absolute",
