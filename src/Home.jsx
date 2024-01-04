@@ -280,7 +280,7 @@ console.log("DAAAAAAAAAAAAAAAAAAAAAA",data)
         // this means that the value does not exist so return 0
         return {
           response: true,
-          value: defaultvalue
+          value: 1
         };
       } else {
         // this means that the value exists and is returned so return that.
