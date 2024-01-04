@@ -1,0 +1,28 @@
+{
+  "name": "ipa-public-dashboard",
+  "version": "1.0.0",
+  "description": "",
+  "license": "BSD-3-Clause",
+  "private": true,
+  "scripts": {
+    "build": "d2-app-scripts build",
+    "start": "d2-app-scripts start",
+    "test": "d2-app-scripts test",
+    "deploy": "d2-app-scripts deploy"
+  },
+  "devDependencies": {
+    "@dhis2/cli-app-scripts": "^10.3.10"
+  },
+  "dependencies": {
+    "@amcharts/amcharts4": "^4.10.38",
+    "@dhis2/app-runtime": "^3.9.4",
+    "bootstrap": "^5.3.2",
+    "d3": "^7.8.5",
+    "highcharts": "^11.2.0",
+    "highcharts-react-official": "^3.2.1",
+    "react-redux": "^8.1.2",
+    "redux": "^4.2.1",
+    "redux-logger": "^3.0.6",
+    "sass": "^1.69.5"
+  }
+}

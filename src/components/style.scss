@@ -1,0 +1,13 @@
+
+.scroll {
+    margin-top:2vh;
+    max-height: 65vh;
+    overflow: auto;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    text-align: center;
+    z-index: 5;
+}

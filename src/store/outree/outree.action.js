@@ -1,0 +1,18 @@
+import { OUTREE_ACTION_TYPES } from "./outree.reducer";
+
+export const setUserOU = (ou) => ({
+  type: OUTREE_ACTION_TYPES.SET_USER_OU,
+  payload: ou,
+});
+export const setOUList = (ouList) => ({
+  type: OUTREE_ACTION_TYPES.SET_OU_LIST,
+  payload: ouList,
+});
+export const setOUChildren = (ouList) => ({
+  type: OUTREE_ACTION_TYPES.SET_OU_CHILDREN,
+  payload: ouList,
+});
+export const setClickedOU = (ou) => ({
+  type: OUTREE_ACTION_TYPES.SET_CLICKED_OU,
+  payload: ou,
+});
