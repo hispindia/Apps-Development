@@ -437,96 +437,95 @@ const Home = () => {
             tempCategoryCombos[SAMPLE_LOCATION_DEPT_CODE].categoryOptions[
               purposeOfSampleDataTEI
             ];
-          tempAggregateDE = dataElementObjects[organismDataTEI].id;
 
-          let aggregatedDataValueGetResponse;
-          let defaultValue;
-          aggregatedDataValueGetResponse = await getAggregatedDataValue(
-            isoPeriod,
-            defaultDataSet,
-            tempAggregateDE,
-            aggregateorgUnit,
-            cCombo,
-            tempCategoryOptions,
-            coDefault
-          );
+          console.log(" dataElementObjects[organismDataTEI] " + dataElementObjects[organismDataTEI]);
+          if( typeof dataElementObjects[organismDataTEI] !== "undefined"){
+            tempAggregateDE = dataElementObjects[organismDataTEI].id;
 
-          if (aggregatedDataValueGetResponse.response) {
-            // Successful fetching of data
-            defaultValue = aggregatedDataValueGetResponse.value;
-          }
-
-          const aggregatedDataValuePostResponse = await postAggregatedDataValue(
-            isoPeriod,
-            defaultDataSet,
-            tempAggregateDE,
-            aggregateorgUnit,
-            cCombo,
-            tempCategoryOptions,
-            coDefault,
-            defaultValue
-          ).then((aggregatedDataValuePostResponse) => {
-            console.log(
-              "aggregatedDataValuePostResponse.data.message",
-              aggregatedDataValuePostResponse
+            let aggregatedDataValueGetResponse;
+            let defaultValue;
+            aggregatedDataValueGetResponse = await getAggregatedDataValue(
+                isoPeriod,
+                defaultDataSet,
+                tempAggregateDE,
+                aggregateorgUnit,
+                cCombo,
+                tempCategoryOptions,
+                coDefault
             );
-          });
 
-          // if (aggregatedDataValuePostResponse.status === "201") {
-          //   const eventUpdateResponse = updateEventStatus(tempEventForUpdate);
-          //   console.log("eventUpdateResponse", eventUpdateResponse);
+            if (aggregatedDataValueGetResponse.response) {
+              // Successful fetching of data
+              defaultValue = aggregatedDataValueGetResponse.value;
+            }
 
-          // }
-
-          // push antibiotic test result value to aggregated DataValue
-
-          if (antibioticCategoryOptionComboUIDsTEI.length > 0) {
-            const deAntibioticWise =
-              dataElementObjects[`${organismDataTEI}_AW`].id;
-
-            for (let index in antibioticCategoryOptionComboUIDsTEI) {
-              const antiCategoryOptionCombo =
-                antibioticCategoryOptionComboUIDsTEI[index];
+            const aggregatedDataValuePostResponse = await postAggregatedDataValue(
+                isoPeriod,
+                defaultDataSet,
+                tempAggregateDE,
+                aggregateorgUnit,
+                cCombo,
+                tempCategoryOptions,
+                coDefault,
+                defaultValue
+            ).then((aggregatedDataValuePostResponse) => {
               console.log(
-                "antiCategoryOptionCombo======",
-                antiCategoryOptionCombo
+                  "aggregatedDataValuePostResponse.data.message",
+                  aggregatedDataValuePostResponse
               );
-              const aggregatedDataValueGetResponse =
-                await getAggregatedDataValue(
-                  isoPeriod,
-                  antibioticWiseDataSet,
-                  deAntibioticWise,
-                  aggregateorgUnit,
-                  cCombo,
-                  tempCategoryOptions,
-                  antiCategoryOptionCombo
+            });
+
+            if (antibioticCategoryOptionComboUIDsTEI.length > 0) {
+              const deAntibioticWise =
+                  dataElementObjects[`${organismDataTEI}_AW`].id;
+
+              for (let index in antibioticCategoryOptionComboUIDsTEI) {
+                const antiCategoryOptionCombo =
+                    antibioticCategoryOptionComboUIDsTEI[index];
+                console.log(
+                    "antiCategoryOptionCombo======",
+                    antiCategoryOptionCombo
                 );
+                const aggregatedDataValueGetResponse =
+                    await getAggregatedDataValue(
+                        isoPeriod,
+                        antibioticWiseDataSet,
+                        deAntibioticWise,
+                        aggregateorgUnit,
+                        cCombo,
+                        tempCategoryOptions,
+                        antiCategoryOptionCombo
+                    );
 
-              if (aggregatedDataValueGetResponse.response) {
-                defaultValue = aggregatedDataValueGetResponse.value;
+                if (aggregatedDataValueGetResponse.response) {
+                  defaultValue = aggregatedDataValueGetResponse.value;
 
-                const aggregatedDataValuePostResponse =
-                  await postAggregatedDataValue(
-                    isoPeriod,
-                    antibioticWiseDataSet,
-                    deAntibioticWise,
-                    aggregateorgUnit,
-                    cCombo,
-                    tempCategoryOptions,
-                    antiCategoryOptionCombo,
-                    defaultValue
-                  );
+                  const aggregatedDataValuePostResponse =
+                      await postAggregatedDataValue(
+                          isoPeriod,
+                          antibioticWiseDataSet,
+                          deAntibioticWise,
+                          aggregateorgUnit,
+                          cCombo,
+                          tempCategoryOptions,
+                          antiCategoryOptionCombo,
+                          defaultValue
+                      );
 
-                console.log(aggregatedDataValuePostResponse);
+                  console.log(aggregatedDataValuePostResponse);
 
-                if (aggregatedDataValuePostResponse.status === "OK") {
+                  if (aggregatedDataValuePostResponse.status === "OK") {
+
+                  }
                 }
               }
             }
+            const eventUpdateResponse = updateEventStatus(tempEventForUpdate);
+            console.log(eventUpdateResponse);
           }
+
         }
-        const eventUpdateResponse = updateEventStatus(tempEventForUpdate);
-        console.log(eventUpdateResponse);
+
       }
       setStatus(false);
 
@@ -534,6 +533,7 @@ const Home = () => {
       setData([]);
       setTimeout(function () {
         alert("Aggregation is done successfully");
+        
       }, 2000);
     } catch (error) {
       console.error(error);
@@ -584,6 +584,8 @@ const Home = () => {
           var dataValue = {};
 
           let date = [];
+          let eventStatus = [];
+          eventStatus["value"] = ele.status;
           date["value"] = ele.eventDate.substring(0, 10);
           for (let value of ele.dataValues) {
             if (value.dataElement === "l9NuW9KD5mU") {
@@ -603,6 +605,8 @@ const Home = () => {
               dataValue["10"] = value;
             }
             dataValue["6"] = date;
+
+            dataValue["11"] = eventStatus;
           }
 
           // Conditionally initialize missing values
@@ -666,6 +670,9 @@ const Home = () => {
               </TableCell>
               <TableCell>
                 <b>Purpose of sample</b>
+              </TableCell>
+              <TableCell>
+                <b>Status</b>
               </TableCell>
             </TableRow>
             {isLoading || status ? (
