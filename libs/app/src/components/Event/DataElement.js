@@ -67,8 +67,27 @@ export const DataElement = ({ id }) => {
       isCalculatedDays= true
   }
 
- 
-  
+//  console.log("Event valu passedddd=====",eventValPassed)
+ const eventValPassed1 = useSelector(
+  (state) => state.data.event.values
+);
+
+
+//  useEffect(() => {
+//   if (eventValPassed && eventValPassed["u8VDCIwa3w4"] ) {
+    
+    
+// console.log("TESTING THE VASLUEE",DATAEVALUE["u8VDCIwa3w4"])
+//     dispatch(
+//       setEventValue(
+//         "u8VDCIwa3w4",
+//         eventValPassed["u8VDCIwa3w4"],false
+//       )
+//     );
+   
+//   }
+// }, []);
+
 
   useEffect(() => {
     if (eventValPassed && eventValPassed["fihlyDLDikz"] && !eventValPassed['ziOMarQiX1S']) {
@@ -89,6 +108,20 @@ export const DataElement = ({ id }) => {
       );
      
     }
+    // if (eventValPassed  ) {
+    
+    
+    //   // console.log("TESTING THE VASLUEE",DATAEVALUE["u8VDCIwa3w4"])
+    //   console.log("howwwwwwwwwwwwwwwww",eventValPassed["u8VDCIwa3w4"])
+    //       dispatch(
+    //         setEventValue(
+    //           "u8VDCIwa3w4",
+    //           eventValPassed["u8VDCIwa3w4"],false
+    //         )
+    //       );
+         
+    //     }
+   
   }, [eventValPassed]);
 
   const duplicate =

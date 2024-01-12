@@ -19,7 +19,7 @@ import Tabs from "./Tabs";
 import "./styles.css";
 import TabPane from "./Tab-Pane";
 
-import { TABVALUES, SAMPLE_PROGRAM_CODE, PROGRAM_CODE } from "./constants";
+import { TABVALUES, SAMPLE_PROGRAM_CODE, PROGRAM_CODE ,PROGRAMS_CODE,PROGRASS_CODE} from "./constants";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 if (!process.env.REACT_APP_DHIS2_TABLE_CONFIG)
   throw new Error(
@@ -44,6 +44,9 @@ export const EventOverview = ({ match, history }) => {
   const location = useLocation();
   let SAMPLEPROGRAMCODE = SAMPLE_PROGRAM_CODE;
   let PROGRAMCODE = PROGRAM_CODE;
+
+  let PROGRAMSCODE = PROGRAMS_CODE;
+  let PROGRAMSSCODE = PROGRASS_CODE;
   const tabValue = TABVALUES;
   var [eventstatus, setEventstatus] = useState("ALL");
   var [code, setCode] = useState("ALL");
@@ -54,53 +57,58 @@ export const EventOverview = ({ match, history }) => {
     eventstatus,
     code
   );
-  useEffect(() => {
-    // DataElements.loadDataElements().then(res =>{
-    //     dispatch(setDataELments(res.dataElements));
-    // })
-    SelectedOrgUnit.programs(selected.id).then((res) => {
-      let selectedProgram = res.programs.filter(
-        (program) => program.name === "Sample Testing_HP"
-      );
-      if (selectedProgram) {
-        let sampleProgram = [
-          {
-            value: "L7bu48EI54J",
-            label: "Sample Testing",
-          },
-        ];
-        dispatch(addSelectedProgramOfOrgUnits(sampleProgram));
-      } else {
-        let sampleProgram = [
-          {
-            value: "L7bu48EI54J",
-            label: "Sample Testing",
-          },
-        ];
-        dispatch(addSelectedProgramOfOrgUnits(sampleProgram));
-      }
-    });
-  });
+  // useEffect(() => {
+  //   // DataElements.loadDataElements().then(res =>{
+  //   //     dispatch(setDataELments(res.dataElements));
+  //   // })
+  //   SelectedOrgUnit.programs(selected.id).then((res) => {
+  //     let selectedProgram = res.programs.filter(
+  //       (program) => program.name === "Sample Testing_HP"
+  //     );
+  //     if (selectedProgram) {
+  //       let sampleProgram = [
+  //         {
+  //           value: "L7bu48EI54J",
+  //           label: "Sample Testing",
+  //         },
+  //       ];
+  //       dispatch(addSelectedProgramOfOrgUnits(sampleProgram));
+  //     } else {
+  //       let sampleProgram = [
+  //         {
+  //           value: "L7bu48EI54J",
+  //           label: "Sample Testing",
+  //         },
+  //       ];
+  //       dispatch(addSelectedProgramOfOrgUnits(sampleProgram));
+  //     }
+  //   });
+  // });
 
   const handleChange = (returnValue) => {
     var programCode = returnValue[2];
     var programStatus = returnValue[1];
-    if (programCode == SAMPLEPROGRAMCODE && programStatus == "pending") {
-      setEventstatus("ACTIVE");
+    
+    if (programCode == SAMPLEPROGRAMCODE && programStatus == "Spending") {
+      setEventstatus("SACTIVE");
       setCode(SAMPLEPROGRAMCODE);
-    } else if (
-      programCode == SAMPLEPROGRAMCODE &&
-      programStatus == "complete"
-    ) {
-      setEventstatus("COMPLETED");
-      setCode(SAMPLEPROGRAMCODE);
-    } else if (programCode == PROGRAMCODE && programStatus == "pending") {
+    }
+    else if (programCode == PROGRAMSCODE && programStatus == "pending") {
       setEventstatus("ACTIVE");
-      setCode(PROGRAMCODE);
-    } else if (programCode == PROGRAMCODE && programStatus == "complete") {
+      setCode(PROGRAMSCODE);
+    }
+      else if (programCode == PROGRAMCODE && programStatus == "complete") {
       setEventstatus("NotCOMPLETED");
       setCode(PROGRAMCODE);
-    } else {
+    } 
+    else if (
+      programCode == PROGRAMSSCODE &&
+      programStatus == "Scomplete"
+    ) {
+      setEventstatus("COMPLETED");
+      setCode(PROGRAMSSCODE);
+    }
+    else {
       setEventstatus("ALL");
       setCode("ALL");
     }
@@ -108,7 +116,9 @@ export const EventOverview = ({ match, history }) => {
   /**
    * Called when table row is clicked.
    */
+  
   const onEventClick = (row) => {
+    
     history.push(`/orgUnit/${row[6]}/trackedEntityInstances/${row[7]}`);
     // location.reload();
     window.location.reload();
@@ -118,6 +128,7 @@ export const EventOverview = ({ match, history }) => {
    * On table add click.
    */
   const onAddClick = () => history.push(`/orgUnit/${selected.id}/event/`);
+ 
   return (
     <MainSection>
       <TitleRow

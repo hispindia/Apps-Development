@@ -51,9 +51,7 @@ export const getTEIAll = async (orgUnit) => {
       axios.spread((...responses) => {
         const responseOne = responses[0];
         const responseThree = responses[1];
-        console.log("responseThreeeee", responseThree);
-        console.log("responseONe", responseOne);
-        if (responseOne.data.trackedEntityInstances) {
+         if (responseOne.data.trackedEntityInstances) {
           if (responseThree.data.listGrid.rows) {
             responseThree.data.listGrid.rows.forEach((events) => {
               var dataElement = {};
@@ -492,15 +490,13 @@ export const getPendingAntiResult = async (orgUnit) => {
     ".json?fields=id,name,programs[id,name]&paging=false"; // loading program for the ou
   const requestOne = axios.get(api1);
   const requestThree = axios.get(api4);
-
   return axios
     .all([requestOne, requestThree])
     .then(
       axios.spread((...responses) => {
         const responseOne = responses[0];
         const responseThree = responses[1];
-        console.log("responseThreeeee", responseThree);
-        console.log("responseONe", responseOne);
+       
         if (responseOne.data.trackedEntityInstances) {
           if (responseThree.data.listGrid.rows) {
             responseThree.data.listGrid.rows.forEach((events) => {
@@ -573,8 +569,8 @@ export const getPendingAntiResult = async (orgUnit) => {
                 if (tei.attribute === "ZgUp0jFVxdY")
                   teiRows[index]["5"] = tei.value; //Address
 
-                teiRows[index]["6"] = orgUnit;
-                teiRows[index]["7"] = trackedEntityInstance;
+                  teiRows[index]["6"] = orgUnit;
+                  teiRows[index]["7"] = trackedEntityInstance;
 
                 if (trackedEntityInstance in SampleDict) {
                   //teiRows[index]['8'] = SampleDict[trackedEntityInstance][1].split("T")[0]
@@ -637,7 +633,7 @@ export const getAntibioticFollowTEI = async (orgUnit) => {
     isoDateFormat +
     "&order=lastUpdated:desc&skipPaging=true";
 
-  let api4 = "../../../api/sqlViews/kTBQ3hlAV57/data.json?paging=false"; // Baseline DB
+  let api4 = "../../../api/sqlViews/Sth0MdRyPKd/data.json?paging=false"; // Baseline DB  OPlLmU9hMHV(Testing Uid)
 
   const requestOne = axios.get(api1);
   const requestThree = axios.get(api4);
@@ -724,7 +720,7 @@ export const getAntibioticFollowTEI = async (orgUnit) => {
 
                 teiRows[index]["6"] = orgUnit;
                 teiRows[index]["7"] = trackedEntityInstance;
-
+         
                 if (trackedEntityInstance in SampleDict) {
                   //teiRows[index]['8'] = SampleDict[trackedEntityInstance][1].split("T")[0]
                   teiRows[index]["8"] = SampleDict[trackedEntityInstance][1];
