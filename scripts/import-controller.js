@@ -137,6 +137,102 @@ excelImport
 
                     }
 
+                    // orgUnit geometry update from one instance to another instance
+                    else if( sheetName === 'orgUnitGeometryUpdate' ){
+
+                        let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        let json_object = JSON.stringify(XL_row_object);
+                        let objectKeys = Object.keys(XL_row_object["0"]);
+                        let importCount = 1;
+
+                        XL_row_object.forEach(row => {
+
+                            $.ajax({
+                                type: "GET",
+                                async: false,
+                                crossDomain: true,
+                                dataType: "json",
+                                contentType: "application/json",
+                                headers: {
+                                    //'Authorization': 'aGlzcGRldjpEZXZoaXNwQDE=',
+                                    'Authorization': 'Basic ' + btoa('hispdev' + ":" + 'Devhisp@1'),
+                                },
+                                url: 'https://links.hispindia.org/myanmarhmis/api/organisationUnits/' + row.uid + ".json?paging=false",
+                                success: function (orgUnitResponse) {
+                                    let updateOrgUnitGeometry = {};
+                                    updateOrgUnitGeometry = orgUnitResponse.geometry;
+
+                                    $.ajax({
+                                        type: "GET",
+                                        async: false,
+                                        json: true,
+                                        contentType: "application/json",
+                                        crossDomain: true,
+
+                                        url: '../../organisationUnits/' + row.uid + ".json?paging=false",
+                                        success: function (orgUnit2Response) {
+
+                                            let tempOrgUnitResponse = {};
+                                            tempOrgUnitResponse = orgUnit2Response;
+                                            tempOrgUnitResponse.geometry = updateOrgUnitGeometry
+
+                                            $.ajax({
+                                                type: "PUT",
+                                                async: false,
+                                                dataType: "json",
+                                                contentType: "application/json",
+                                                data: JSON.stringify(tempOrgUnitResponse),
+                                                url: '../../organisationUnits/' + row.uid,
+                                                json: true,
+                                                crossDomain: true,
+                                                success: function (orgUnitUpdateResponse) {
+                                                    console.log(  JSON.stringify(row) +  "success orgUnit Update for " + row.uid + " response: " + JSON.stringify(orgUnitUpdateResponse ));
+                                                },
+                                                error: function (orgUnitUpdateResponse) {
+                                                    console.log(  JSON.stringify(row) +  " error -- not updated value " + row.uid + " response: " + JSON.stringify(orgUnitUpdateResponse ));
+                                                },
+                                                warning: function (orgUnitUpdateResponse) {
+                                                    console.log( JSON.stringify(row) +  " -- "+ "Warning!: " +  JSON.stringify(orgUnitUpdateResponse ) );
+                                                }
+
+                                            });
+                                        },
+                                        error: function (orgUnit2Response) {
+                                            console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( orgUnit2Response ) );
+                                        },
+                                        warning: function (orgUnit2Response) {
+                                            console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( orgUnit2Response ) );
+                                        }
+                                    });
+
+                                },
+                                error: function (orgUnitResponse) {
+                                    console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( orgUnitResponse ) );
+                                },
+                                warning: function (orgUnitResponse) {
+                                    console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( orgUnitResponse ) );
+                                }
+
+                            });
+                            importCount++;
+                            console.log( "Row - " + importCount + " update done for orgUnit " + row.uid );
+                            if( importCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " update done ");
+
+                            }
+                        });
+
+                    }
+
+
+
+
+
+
+
+
+
+
                     // event update from one instance to another instance
                     else if( sheetName === 'eventDataValuesUpdate' ){
                         let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
@@ -521,6 +617,70 @@ excelImport
 
                     }
 
+
+                    // for TEI Coordinate and featureType update
+                    else if( sheetName === 'teiCoordinateUpdate' ){
+                        let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        let json_object = JSON.stringify(XL_row_object);
+                        let objectKeys = Object.keys(XL_row_object["0"]);
+                        let importCount = 1;
+                        XL_row_object.forEach(row => {
+                            //console.log( row );
+                            importCount++;
+                            $.ajax({
+                                type: "GET",
+                                async: false,
+                                url: '../../trackedEntityInstances/' + row.tei + ".json?paging=false",
+                                success: function (trackedEntityInstancesResponse) {
+
+                                    var updateTEIGeometry = trackedEntityInstancesResponse;
+                                    updateTEIGeometry.featureType = 'POINT';
+                                    updateTEIGeometry.geometry = {
+                                        type: row.featureType,
+                                        coordinates: [row.longitude, row.latitude]
+                                    }
+
+                                    $.ajax({
+                                        type: "PUT",
+                                        dataType: "json",
+                                        async: false,
+                                        contentType: "application/json",
+                                        data: JSON.stringify(updateTEIGeometry),
+                                        url: '../../trackedEntityInstances/' + row.tei,
+
+                                        success: function (response) {
+                                            //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                            //console.log( JSON.stringify(row) + " updated value " + row.value + " response: " + JSON.stringify(response) );
+                                            console.log(  "Row - " + importCount + " update done response: " + JSON.stringify(response) );
+                                        },
+                                        error: function (response) {
+                                            //console.log(  JSON.stringify(row) +  " not updated value " + row.uid + " response: " + JSON.stringify(response ));
+                                            console.log(  "Row - " + importCount + " error response: " + JSON.stringify(response ));
+                                        },
+                                        warning: function (response) {
+                                            //console.log( JSON.stringify(row ) +  " -- "+ "Warning!: " +  JSON.stringify(response ) );
+                                            console.log( "Row - " + importCount + "Warning response : " +  JSON.stringify(response ) );
+                                        }
+
+                                    });
+                                },
+                                error: function (eventResponse) {
+                                    console.log( JSON.stringify( row.tei ) +  " -- "+ "Error!: " +  JSON.stringify( eventResponse ) );
+                                },
+                                warning: function (eventResponse) {
+                                    console.log( JSON.stringify( row.tei ) +  " -- "+ "Error!: " +  JSON.stringify( eventResponse ) );
+                                }
+                            });
+
+                            console.log( "Row - " + importCount + " update done for TEI Coordinate " + row.tei );
+                            if( importCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " update done ");
+
+                            }
+                        });
+
+                    }
+
                     // for enrollment Coordinate update
                     else if( sheetName === 'enrollmentCoordinateUpdate' ){
                         let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
@@ -668,6 +828,90 @@ excelImport
                         });
 
                     }
+
+                    // for update TEI attribute value
+                    else if( sheetName === 'teiAttributeValueUpdate' ){
+                        let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        let json_object = JSON.stringify(XL_row_object);
+                        let objectKeys = Object.keys(XL_row_object["0"]);
+                        let importCount = 1;
+                        for(let row = 0; row < XL_row_object.length; row++) {
+                            //XL_row_object.forEach(row => {
+                            //console.log( row );
+                            //latitude: row.coordinates.split(",")[1], small
+                            //longitude: row.coordinates.split(",")[0] big
+
+                            $.ajax({
+                                type: "GET",
+                                async: false,
+                                url: '../../trackedEntityInstances/' + XL_row_object[row][objectKeys[1]] + ".json?program=" + XL_row_object[row][objectKeys[0]],
+                                success: function (teiResponse) {
+
+                                    //let teiAttributeValue = [];
+                                    let teiAttributeValues = [...teiResponse.attributes];
+                                    /*
+                                    teiAttributeValues.push({
+                                        "attribute": row.attribute,
+                                        "value": row.value
+                                    });
+                                     */
+                                    for (let i = 2; i < objectKeys.length; i++) {
+                                        let teiAttributeValue = {};
+                                        if (XL_row_object[row][objectKeys[i]] !== undefined && XL_row_object[row][objectKeys[i]] !== "") {
+                                            teiAttributeValue.attribute = objectKeys[i].split("-")[1];
+                                            teiAttributeValue.value = XL_row_object[row][objectKeys[i]];
+                                            teiAttributeValues.push(teiAttributeValue);
+                                        }
+                                    }
+
+                                    let updateTEIAttributeValue = {
+                                        attributes: teiAttributeValues,
+                                        orgUnit: teiResponse.orgUnit
+                                    };
+
+                                    $.ajax({
+                                        type: "PUT",
+                                        dataType: "json",
+                                        contentType: "application/json",
+                                        data: JSON.stringify(updateTEIAttributeValue),
+                                        url: '../../trackedEntityInstances/' + XL_row_object[row][objectKeys[1]] + ".json?program=" + XL_row_object[row][objectKeys[0]],
+                                        success: function (response) {
+                                            //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                            //console.log( JSON.stringify(row) + " updated value " + row.value + " response: " + JSON.stringify(response) );
+                                        },
+                                        error: function (response) {
+                                            console.log(JSON.stringify(row) + " not updated value " +  XL_row_object[row][objectKeys[1]] + " response: " + JSON.stringify(response));
+                                        },
+                                        warning: function (response) {
+                                            console.log(JSON.stringify(row) + " -- " + "Warning!: " + JSON.stringify(response));
+                                        }
+
+                                    });
+                                },
+                                error: function (teiResponse) {
+                                    console.log(JSON.stringify(XL_row_object[row][objectKeys[1]]) + " -- " + "Error!: " + JSON.stringify(teiResponse));
+                                },
+                                warning: function (teiResponse) {
+                                    console.log(JSON.stringify(XL_row_object[row][objectKeys[1]]) + " -- " + "Error!: " + JSON.stringify(teiResponse));
+                                }
+                            });
+                            importCount++;
+                            console.log("Row - " + importCount + " update done for tei " + XL_row_object[row][objectKeys[1]]);
+                            if (importCount === parseInt(XL_row_object.length) + 1) {
+                                console.log(" update done ");
+
+                            }
+                        }
+                        //});
+                    }
+
+
+
+
+
+
+
+
                     // for update TEI attribute value
                     else if( sheetName === 'teiAttributeValueUpdate' ){
                         let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
@@ -2361,6 +2605,55 @@ excelImport
                                 optionSet: { id:  row.optionSet },
                                 sortOrder: row.sortOrder
                             };
+                            $.ajax({
+                                type: "POST",
+                                async: false,
+                                dataType: "json",
+                                contentType: "application/json",
+                                data: JSON.stringify(optionPostRequest),
+                                url: '../../options',
+                                success: function (response) {
+                                    //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                    console.log( "Row - " + importCount  + " response: " + JSON.stringify(response) );
+                                },
+                                error: function (response) {
+                                    console.log(  "Row - " + importCount  + " response: " + JSON.stringify(response ));
+                                },
+                                warning: function (response) {
+                                    console.log(  "Row - " + importCount  + " response: " + JSON.stringify(response ));
+                                }
+                            });
+
+                            //importCount++;
+                            //console.log( "Row - " + importCount + " update done for event " + row.event );
+                            if( importCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " import done ");
+                            }
+                        });
+                    }
+                    // optionSetsPost post with optionsPostWithAttributeValue
+                    else if( sheetName === 'optionsPostWithAttributeValue' ){
+                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        //var json_object = JSON.stringify(XL_row_object);
+                        //var objectKeys = Object.keys(XL_row_object["0"]);
+                        let importCount = 1;
+                        XL_row_object.forEach(row => {
+                            importCount++;
+
+                            let optionPostRequest = {
+                                id : row.uid,
+                                name: row.name,
+                                code: row.code,
+                                optionSet: { id:  row.optionSet },
+                                sortOrder: row.sortOrder,
+                                attributeValues:[
+                                    {   value:row.attributeValue,
+                                        attribute:{
+                                            id:row.attribute,
+                                        }
+                                    }
+                                ],
+                            };
 
                             $.ajax({
                                 type: "POST",
@@ -2387,7 +2680,6 @@ excelImport
                                 console.log( " import done ");
                             }
                         });
-
                     }
 
                     // optionGroupPost
