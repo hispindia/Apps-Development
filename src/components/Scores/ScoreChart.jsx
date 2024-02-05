@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";  
 import { useSelector } from "react-redux";
+import { Loader } from "../Loader";
 
 export const ScoreChart = () => {
   const [xAxis, setXAxis] = useState([]);
@@ -34,6 +35,7 @@ export const ScoreChart = () => {
   };
 
   useEffect(() => {
+    setSeries([]);
     if (period && groupName && ouGroup) {
       var group,
         ouList = [],
@@ -60,6 +62,7 @@ export const ScoreChart = () => {
             "INS IPA Ex-Ante Assessments Score",
           ],
           series: [],
+          credits: false,
         };
         //get the data from the api
 
@@ -111,19 +114,9 @@ export const ScoreChart = () => {
     }
   }, [period, groupName, ouGroup]);
 
+  if(!series.length) return <Loader />
   return (
     <div>
-      {/* <div className="d-flex justify-content-end">
-        <button
-          className="btn btn-light"
-          onClick={() => setChartType("column")}
-        >
-          Bar
-        </button>
-        <button className="btn btn-light" onClick={() => setChartType("line")}>
-          Line
-        </button>
-      </div> */}
       <HighchartsReact highcharts={Highcharts} options={options} />
     </div>
   );

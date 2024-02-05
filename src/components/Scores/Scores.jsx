@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { scoresId } from "../../constants/Ids";
 import { useSelector } from "react-redux";
 import { DownArrow, UpArrow } from "../../constants/SVG";
+import { Loader } from "../Loader";
 
 export const Scores = () => {
   const [scores, setScores] = useState([]);
@@ -15,6 +16,7 @@ export const Scores = () => {
   const quaters = period && period.split(";");
 
   useEffect(() => {
+    setScores([]);
     if (period && groupName && ouGroup) {
       const colors = {
         safe: "#81c981",
@@ -115,6 +117,7 @@ export const Scores = () => {
     }
   }, [period, groupName, ouGroup]);
 
+  if(!scores.length) return <Loader />
   return hasValue && scoresId[groupName] ? (
     <div>
       <h5 className="py-3 mb-3 bg-light">2. {groupName} Scorecard</h5>

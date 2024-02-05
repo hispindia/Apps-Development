@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { fundsId } from "../../constants/Ids";
 import { useSelector } from "react-redux";
 import { FundsYear } from "./FundsYear";
+import { Loader } from "../Loader";
 
 export const Funds = () => {
   const [funds, setFunds] = useState([]);
@@ -12,6 +13,7 @@ export const Funds = () => {
   const quaters = period && period.split(";");
 
   useEffect(() => {
+    setFunds([])
     if (period && groupName && ouGroup) {
       var group,
         ouList = [],
@@ -156,7 +158,7 @@ export const Funds = () => {
         1. {groupName} IPA Overall Funds and Disbursement Status
       </h5>
       <div className="scroll">
-        {new Boolean(funds.length) && (
+        {!funds.length  ? <Loader /> : (
           <table className="table table-bordered">
             <thead>
               <tr>

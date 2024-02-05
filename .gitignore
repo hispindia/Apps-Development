@@ -1,4 +1,6 @@
 target
+.d2
+build
 *.log
 *.log.*
 ./taret

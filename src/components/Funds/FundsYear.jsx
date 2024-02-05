@@ -2,14 +2,17 @@ import React, { useState, useEffect } from "react";
 
 import { fundsIdYear } from "../../constants/Ids";
 import { useSelector } from "react-redux";
+import { getYears } from "../../functions/period";
+import { Loader } from "../Loader";
 
 export const FundsYear = () => {
   const [funds, setFunds] = useState([]);
   const groupName = useSelector((state) => state.navbar.selectedGroup);
   const ouGroup = useSelector((state) => state.navbar.ouGroup);
-  const periods = [2022, 2023];
+  const periods = getYears(new Date().getFullYear())
 
   useEffect(() => {
+    setFunds([]);
     if (groupName && ouGroup) {
       var group,
         ouList = [],
@@ -25,6 +28,7 @@ export const FundsYear = () => {
         });
 
       const fetchData = async () => {
+        var color = '';
         const items = {};
         const values = [];
         const plotFields = {
@@ -120,6 +124,8 @@ export const FundsYear = () => {
       fetchData();
     }
   }, [groupName, ouGroup]);
+
+  if(!funds.length) return <Loader />
   return (
     <div className="my-4">
       <h5 className="py-2 mb-3 bg-light">

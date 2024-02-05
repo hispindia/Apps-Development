@@ -12,8 +12,8 @@ const Main = () => {
     <div id='downloads'>
     <a id="dlink" style={{display:"none"}}></a>
       <Funds />
-      { (selectedGroup && selectedGroup == "ALL IPA Units") ? <ScoreChart />: <Scores />}
-      <IndicatorScore />
+      { (selectedGroup && selectedGroup == "ALL IPA Units") ? <ScoreChart /> : <Scores />}
+      { selectedGroup != "ALL IPA Units" && <IndicatorScore />}
     </div>
   );
 };
