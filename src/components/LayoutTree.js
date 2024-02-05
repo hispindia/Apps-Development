@@ -1,9 +1,10 @@
-import React, { useState, useLayoutEffect } from "react";
+import React from "react";
 
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import addTreemapModule from "highcharts/modules/treemap";
 import addHeatmapModule from "highcharts/modules/heatmap";
+import { qMonths } from "../constants/Ids";
 
 addTreemapModule(Highcharts);
 addHeatmapModule(Highcharts);
@@ -58,9 +59,10 @@ const LayoutTree = ({ chartId, data, period}) => {
       maxColor: "#7cb5ec",
     }
   }
+
   return (
     <>
-      <h6 className="fw-semibold">{chartId} Last Quarter Scores - {period}</h6>
+      <h6 className="fw-semibold">{chartId} Last Quarter Scores ( {period ? qMonths[(period.split('Q')[1])] + ', ' + period.split('Q')[0]: ''} )</h6>
       <HighchartsReact highcharts={Highcharts} options={options} />
     </>
   );

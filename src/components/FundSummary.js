@@ -4,15 +4,19 @@ import { fundsSummaryIds } from "../constants/Ids";
 import { useSelector } from "react-redux";
 
 import './style.scss'
+import { getYears } from "./utils";
+import { Loader } from "./Loader";
 
 const FundSummary = () => {
   const period = useSelector((state) => state.navbar.period);
   const ouList = useSelector((state) => state.outree.ouChildren);
-  const [FSList, setFSList] = useState([]);
+  const [fsList, setFSList] = useState([]);
 
   useEffect(() => {
+    setFSList([])
     if (ouList.length) {
-      ApiService.getFundStatus(fundsSummaryIds, ouList, period).then((res) => {
+      const periods = getYears(period);
+      ApiService.getFundStatus(fundsSummaryIds, ouList, periods.join(';')).then((res) => {
         var values = [];
         const data = {};
         var metaData = {};
@@ -50,6 +54,7 @@ const FundSummary = () => {
     }
   }, [ouList, period]);
 
+  if(!fsList.length) return <Loader />;
   return (
     <div className="fund-container scroll mt-2">
       <table className="table table-bordered">
@@ -61,11 +66,11 @@ const FundSummary = () => {
           </tr>
         </thead>
         <tbody>
-          {FSList.map((entity) => (
+          {fsList.map((entity) => (
             <tr>
               <td>{entity.name}</td>
-              <td>{entity.earned}</td>
-              <td>{entity.expenditure}</td>
+              <td>{new Intl.NumberFormat("en-IN").format(entity.earned)}</td>
+              <td>{new Intl.NumberFormat("en-IN").format(entity.expenditure)}</td>
             </tr>
           ))}
         </tbody>

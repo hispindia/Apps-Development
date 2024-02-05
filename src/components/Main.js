@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-
-import { mizoramGeo } from "../constants/mizoram.js";
 import IPAUnits from "./IPAUnits";
 import FundSummary from "./FundSummary";
 import FundDisbursed from "./FundDisbursed.js";
@@ -10,12 +8,13 @@ import { useSelector } from "react-redux";
 import LayoutTree from "./LayoutTree.js";
 import LeagueTable from "./LeagueTable.js";
 
-import { First, Second, Third } from "./SVG.js";
+import NQAS from "./NQAS";
 
 const Main = () => {
   const period = useSelector((state) => state.navbar.period);
+
   const [scoreData, setScoreData] = useState({});
-  const [scorePercentData, setScorePercentData] = useState({});
+  const [scoreDataPeriod, setScoreDataPeriod] = useState({});
 
   const orgUnit = useSelector((state) => state.outree.clickedOU);
 
@@ -26,8 +25,9 @@ const Main = () => {
         var scoreIds = [];
         var groupName = {};
         var valuesGroup = {};
-        var pe =
-          period == new Date().getFullYear() ? "LAST_QUARTER" : `${period}Q4`;
+        var periodGroup = {};
+        var last4Quarter = [];
+        var pe = "LAST_4_QUARTERS";
 
         for (let group in scoresId) {
           groupName[scoresId[group]["group"]] = group;
@@ -37,6 +37,7 @@ const Main = () => {
 
         for (let group of scoreOUGroup) {
           let metaData = {};
+          let dataRes = {};
           let res = await ApiService.getAssesmentScore(
             scoreIds[group],
             orgUnit.id,
@@ -48,16 +49,29 @@ const Main = () => {
           }
 
           valuesGroup[groupName[group]] = [];
+          periodGroup[groupName[group]] = "";
 
           for (let item in res.metaData.items)
             metaData[item] = res.metaData.items[item].name;
-          res.rows.forEach((row) =>
-            valuesGroup[groupName[group]].push({
-              name: metaData[row[1]],
-              value: Number(row[3]),
-            })
-          );
 
+          last4Quarter = res.metaData.dimensions.pe.reverse();
+
+          res.rows.forEach((row) => {
+            if (!dataRes[row[2]]) dataRes[row[2]] = {};
+            dataRes[row[2]][row[1]] = row[3];
+          });
+          for (let pe of last4Quarter) {
+            if (dataRes[pe]) {
+              periodGroup[groupName[group]] = pe;
+              for (let id in dataRes[pe]) {
+                valuesGroup[groupName[group]].push({
+                  name: metaData[id],
+                  value: Number(dataRes[pe][id]),
+                });
+              }
+              break;
+            }
+          }
           valuesGroup[groupName[group]].sort((a, b) => a.value - b.value);
           let prevValue = 0;
           let prevIndex = 0;
@@ -69,113 +83,10 @@ const Main = () => {
             }
           );
         }
+        setScoreDataPeriod(periodGroup);
         setScoreData(valuesGroup);
       };
-
-      const getScorePercent = async () => {
-        var scoreOUGroup = [];
-        var scoreIds = [];
-        var groupName = {};
-        var valuesGroup = {};
-
-        for (let group in scoresId) {
-          groupName[scoresId[group]["group"]] = group;
-          scoreOUGroup.push(scoresId[group]["group"]);
-          scoreIds[scoresId[group]["group"]] = scoresId[group]["scorePercent"];
-        }
-
-        for (let group of scoreOUGroup) {
-          let prevValue = "";
-          let metaData = {};
-          let res = await ApiService.getAssesmentScore(
-            scoreIds[group],
-            orgUnit.id,
-            group,
-            `${period - 1}Q4;${period}Q1;${period}Q2;${period}Q3;${period}Q4`
-          );
-          let data = {};
-          if (res.status == "ERROR") {
-            continue;
-          }
-          valuesGroup[groupName[group]] = [];
-
-          for (let item in res.metaData.items)
-            metaData[item] = res.metaData.items[item].name;
-          res.rows.forEach((row) => {
-            if (!data[row[1]]) data[row[1]] = {};
-            data[row[1]][row[2]] = row[3];
-          });
-
-          for (let ou in data) {
-            let arr = [];
-            prevValue = data[ou][`${period - 1}Q4`]
-              ? data[ou][`${period - 1}Q4`]
-              : "";
-            [
-              `${period}Q1`,
-              `${period}Q2`,
-              `${period}Q3`,
-              `${period}Q4`,
-            ].forEach((quarter) => {
-              let val = data[ou][quarter] ? data[ou][quarter] : "";
-              let status = "";
-
-              if (val) {
-                let calVal = "";
-                if (!prevValue) calVal = prevValue;
-                else calVal = val - prevValue;
-
-                if (calVal >= 5) status = "high";
-                if (calVal <= -5) status = "low";
-              }
-              prevValue = val;
-
-              arr.push({
-                period: quarter,
-                value: val,
-                status: status,
-                position: "",
-              });
-            });
-            valuesGroup[groupName[group]].push({
-              name: metaData[ou],
-              values: arr,
-            });
-          }
-
-          if (valuesGroup[groupName[group]].length > 3) {
-            let groupVal = groupName[group];
-            [
-              `${period}Q1`,
-              `${period}Q2`,
-              `${period}Q3`,
-              `${period}Q4`,
-            ].forEach((pe, index) => {
-              if (valuesGroup[groupVal].length > 3) {
-                valuesGroup[groupVal].sort((a, b) =>
-                  b.values[index].value.localeCompare(a.values[index].value)
-                );
-                if (valuesGroup[groupVal][0]["values"][index]["value"])
-                  valuesGroup[groupVal][0]["values"][index]["position"] = (
-                    <First />
-                  );
-                if (valuesGroup[groupVal][1]["values"][index]["value"])
-                  valuesGroup[groupVal][1]["values"][index]["position"] = (
-                    <Second />
-                  );
-                if (valuesGroup[groupVal][2]["values"][index]["value"])
-                  valuesGroup[groupVal][2]["values"][index]["position"] = (
-                    <Third />
-                  );
-              }
-            });
-          }
-        }
-        setScorePercentData(valuesGroup);
-      };
-
       getScores();
-      getScorePercent();
     }
   }, [orgUnit, period]);
 
@@ -186,164 +97,152 @@ const Main = () => {
       </div>
       <div className="row">
         <div className="col border m-2 p-3">
-          <h5 className="fw-semibold"> IPA Funds Summary - {period}</h5>
+          <h5 className="fw-semibold"> IPA Funds Summary till {period}</h5>
           <FundSummary />
         </div>
         <div className="col border m-2 p-3">
-          <h5 className="fw-semibold pb-5">RBF Disbursed Year - {period}</h5>
+          <h5 className="fw-semibold pb-5">RBF Disbursed till {period}</h5>
           <FundDisbursed />
         </div>
       </div>
       <div className="row">
         <div className="col border m-2 p-3">
-          <h5 className="fw-bold text-center">
-            IPA Units Ex-Ante Assessment Scores & Scores (%){" "}
+          <NQAS chartId="PHC/UPHC" scoreId={scoresId["PHC/UPHC"]} />
+
+          <h5 className="fw-bold text-center my-3">
+            PHC/UPHC IPA Ex-Ante Assessment Scores (%){" "}
           </h5>
           <hr class="hr" />
-          {scoreData["PHC/UPHC"] || scorePercentData["PHC/UPHC"] ? (
+          <div className="row">
+            <div className="col border m-2 p-3">
+              {scoreData["PHC/UPHC"] ? (
+                <LayoutTree
+                  chartId={"PHC/UPHC"}
+                  data={scoreData["PHC/UPHC"]}
+                  period={scoreDataPeriod["PHC/UPHC"]}
+                />
+              ) : (
+                ""
+              )}
+            </div>
+          </div>
+          <div className="row">
+            <div className="col border m-2 p-3">
+              <LeagueTable
+                name="PHC/UPHC Scores (%)"
+                groupId={scoresId["PHC/UPHC"]["group"]}
+                scoreId={scoresId["PHC/UPHC"]["scorePercent"]}
+              />
+            </div>
+          </div>
+          <NQAS chartId="CHC/SDH" scoreId={scoresId["CHC/SDH"]} />
+          {scoreData["CHC/SDH"] ? (
             <>
-              <div className="row">
-                <div className="col border m-2 p-3">
-                  {scoreData["PHC/UPHC"] ? (
-                    <LayoutTree
-                      chartId={"PHC/UPHC"}
-                      data={scoreData["PHC/UPHC"]}
-                      period={period}
-                    />
-                  ) : (
-                    ""
-                  )}
-                </div>
-              </div>
+              <h5 className="fw-bold text-center my-3">
+                CHC/SDH IPA Ex-Ante Assessment Scores (%){" "}
+              </h5>
+              <hr class="hr" />
 
               <div className="row">
                 <div className="col border m-2 p-3">
-                  {scorePercentData["PHC/UPHC"] ? (
-                    <LeagueTable
-                      scoreId={"PHC/UPHC"}
-                      data={scorePercentData["PHC/UPHC"]}
-                      period={period}
-                    />
-                  ) : (
-                    ""
-                  )}
+                  <LayoutTree
+                    chartId={"CHC/SDH"}
+                    data={scoreData["CHC/SDH"]}
+                    period={scoreDataPeriod["CHC/SDH"]}
+                  />
+                </div>
+                <div className="col border m-2 p-3">
+                  <LeagueTable
+                    name="CHC/SDH Scores (%)"
+                    groupId={scoresId["CHC/SDH"]["group"]}
+                    scoreId={scoresId["CHC/SDH"]["scorePercent"]}
+                  />
                 </div>
               </div>
             </>
           ) : (
             ""
           )}
-          {scoreData["CHC/SDH"] || scorePercentData[["CHC/SDH"]] ? (
+          <NQAS chartId="DH" scoreId={scoresId["DH"]} />
+
+          {scoreData["DH"] ? (
             <>
+              <h5 className="fw-bold text-center my-3">
+                DH IPA Ex-Ante Assessment Scores (%){" "}
+              </h5>
+              <hr class="hr" />
+
               <div className="row">
                 <div className="col border m-2 p-3">
-                  {scoreData["CHC/SDH"] ? (
-                    <LayoutTree
-                      chartId={"CHC/SDH"}
-                      data={scoreData["CHC/SDH"]}
-                      period={period}
-                    />
-                  ) : (
-                    ""
-                  )}
-                </div>
-                <div className="col border m-2 p-3">
-                  {scorePercentData[["CHC/SDH"]] ? (
-                    <LeagueTable
-                      scoreId={"CHC/SDH"}
-                      data={scorePercentData["CHC/SDH"]}
-                      period={period}
-                    />
-                  ) : (
-                    ""
-                  )}
-                </div>
-              </div>
-            </>
-          ) : (
-            ""
-          )}
-          {scoreData["DH"] || scorePercentData["DH"] ? (
-            <div className="row">
-              <div className="col border m-2 p-3">
-                {scoreData["DH"] ? (
                   <LayoutTree
                     chartId={"DH"}
                     data={scoreData["DH"]}
-                    period={period}
+                    period={scoreDataPeriod["DH"]}
                   />
-                ) : (
-                  ""
-                )}
-              </div>
-              <div className="col border m-2 p-3">
-                {scorePercentData[["DH"]] ? (
+                </div>
+                <div className="col border m-2 p-3">
                   <LeagueTable
-                    scoreId={"DH"}
-                    data={scorePercentData["DH"]}
-                    period={period}
+                    name="DH Scores (%)"
+                    groupId={scoresId["DH"]["group"]}
+                    scoreId={scoresId["DH"]["scorePercent"]}
                   />
-                ) : (
-                  ""
-                )}
+                </div>
               </div>
-            </div>
+            </>
           ) : (
             ""
           )}
-          {scoreData["DHT"] || scorePercentData["DHT"] ? (
-            <div className="row">
-              <div className="col border m-2 p-3">
-                {scoreData["DHT"] ? (
+          {scoreData["DHT"] ? (
+            <>
+              <h5 className="fw-bold text-center my-3">
+                DHT IPA Ex-Ante Assessment Scores (%){" "}
+              </h5>
+              <hr class="hr" />
+
+              <div className="row">
+                <div className="col border m-2 p-3">
                   <LayoutTree
                     chartId={"DHT"}
                     data={scoreData["DHT"]}
-                    period={period}
+                    period={scoreDataPeriod["DHT"]}
                   />
-                ) : (
-                  ""
-                )}
-              </div>
-              <div className="col border m-2 p-3">
-                {scorePercentData[["DHT"]] ? (
+                </div>
+                <div className="col border m-2 p-3">
                   <LeagueTable
-                    scoreId={"DHT"}
-                    data={scorePercentData["DHT"]}
-                    period={period}
+                    name="DHT Scores (%)"
+                    groupId={scoresId["DHT"]["group"]}
+                    scoreId={scoresId["DHT"]["scorePercent"]}
                   />
-                ) : (
-                  ""
-                )}
+                </div>
               </div>
-            </div>
+            </>
           ) : (
             ""
           )}
-          {scoreData["SHT/INS"] || scorePercentData["SHT/INS"] ? (
-            <div className="row">
-              <div className="col border m-2 p-3">
-                {scoreData["SHT/INS"] ? (
+          {scoreData["SHT/INS"] ? (
+            <>
+              <h5 className="fw-bold text-center my-3">
+                SHT/INS IPA Ex-Ante Assessment Scores (%){" "}
+              </h5>
+              <hr class="hr" />
+
+              <div className="row">
+                <div className="col border m-2 p-3">
                   <LayoutTree
                     chartId={"SHT/INS"}
                     data={scoreData["SHT/INS"]}
-                    period={period}
+                    period={scoreDataPeriod["SHT/INS"]}
                   />
-                ) : (
-                  ""
-                )}
-              </div>
-              <div className="col border m-2 p-3">
-                {scorePercentData[["SHT/INS"]] ? (
+                </div>
+                <div className="col border m-2 p-3">
                   <LeagueTable
-                    scoreId={"SHT/INS"}
-                    data={scorePercentData["SHT/INS"]}
-                    period={period}
+                    name="SHT/INS Scores (%)"
+                    groupId={scoresId["SHT/INS"]["group"]}
+                    scoreId={scoresId["SHT/INS"]["scorePercent"]}
                   />
-                ) : (
-                  ""
-                )}
+                </div>
               </div>
-            </div>
+            </>
           ) : (
             ""
           )}
