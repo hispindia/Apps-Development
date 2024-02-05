@@ -1,0 +1,21 @@
+.data-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom:5vh;
+}
+
+.scroll {
+    margin-top:2vh;
+    max-height: 65vh;
+    overflow: auto;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    background-color: #00796b !important;
+    color:white !important;
+    text-align: center;
+}
+

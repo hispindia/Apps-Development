@@ -1,0 +1,47 @@
+.nav-container {
+    display: flex;
+    flex-direction:row;
+    gap:10px;
+    padding: 0;
+    margin:5vh 0px;
+}
+
+.period-select {
+  width: 100%;
+  min-width: 15ch;
+  max-width: 30ch;
+  border: 1px solid #777;
+  border-radius: 0.25em;
+  padding: 0.25em 0.5em;
+  cursor: pointer;
+  line-height: 1.1;
+  background-color: #fff;
+  background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
+}
+
+.button-primary {
+  border-color: rgb(13, 71, 161);
+  background: linear-gradient(rgb(21, 101, 192) 0%, rgb(6, 80, 163) 100%) rgb(43, 97, 179);
+  color: rgb(255, 255, 255);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.group {
+  background-color: whitesmoke;
+  cursor:pointer;
+  padding: 3px 15px;
+  margin:0 2px;
+  border-radius: 50px;
+  border: none;
+  &:hover {
+    color: rgb(255, 255, 255);
+    background-color: rgb(0, 121, 107);
+    cursor: pointer;
+  }
+}
+
+.active {
+  color: rgb(255, 255, 255);
+  background-color: rgb(0, 121, 107);
+}
