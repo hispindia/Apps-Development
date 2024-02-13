@@ -1,0 +1,10 @@
+{
+  "type": "app",
+  "name": "Timor-Line-List",
+  "version": "1.0.0",
+  "description": "",
+  "title": "Timor-Line-List",
+  "entryPoints": {
+    "app": "index.html"
+  }
+}
