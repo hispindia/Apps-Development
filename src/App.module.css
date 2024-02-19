@@ -7,3 +7,7 @@
     justify-content: center;
     font-size: 1rem;
 }
+.header{
+    background: #2C6693 !important;
+    color: white !important;
+}

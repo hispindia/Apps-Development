@@ -4,7 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Table, TableBody, TableRow, TableCell, Button } from "@dhis2/ui-core";
 import ReactPaginate from "react-js-pagination";
 import { CircularProgress } from "@material-ui/core";
-
+import classes from "./App.module.css";
 import "./Pagination.css"; // Custom CSS file for pagination
 
 const Home = () => {
@@ -24,11 +24,16 @@ const Home = () => {
   const [status, setStatus] = useState(false);
   const [dataElementObjects, setDataElementObjects] = useState(null);
   const [categoryCombos, setCategoryCombos] = useState(null);
-  const [aggregatedDataValue, setAggregatedDataValue] = useState(null);
+
   const [rootOrgUnit, setRootOrgUnit] = useState(null);
   const [activeEventList, setActiveEventList] = useState(null);
   const [Data, setData] = useState([]);
-
+  // const [pending, setPending] = useState(0);
+  const [pendingstatus, setPendingStatus] = useState(false);
+  const TotalEvent = activeEventList?.length;
+  const pending = Data?.length;
+  console.log("Total events", TotalEvent);
+  console.log("Data>>>", pending);
   const fetchCategoryCombosOptionsDetails = async () => {
     try {
       const response = await fetch(
@@ -119,9 +124,10 @@ const Home = () => {
 
     fetchData();
   }, []);
-//https://ln2.hispindia.org/amr_vnimport/api/events.json?skipPaging=true&program=Uj0u5eXg0RK&orgUnit=YdrvIdocEMn&ouMode=DESCENDANTS&status=ACTIVE&filter=l9NuW9KD5mU:neq:NO GROWTH&filter=l9NuW9KD5mU:neq:No pathogen grown&filter=l9NuW9KD5mU:neq:CONTAMINANTS
-//../../events.json?skipPaging=true&program=Uj0u5eXg0RK&orgUnit=YdrvIdocEMn&ouMode=DESCENDANTS&status=ACTIVE&filter=l9NuW9KD5mU:neq:NO GROWTH
+  //https://ln2.hispindia.org/amr_vnimport/api/events.json?skipPaging=true&program=Uj0u5eXg0RK&orgUnit=YdrvIdocEMn&ouMode=DESCENDANTS&status=ACTIVE&filter=l9NuW9KD5mU:neq:NO GROWTH&filter=l9NuW9KD5mU:neq:No pathogen grown&filter=l9NuW9KD5mU:neq:CONTAMINANTS
+  //../../events.json?skipPaging=true&program=Uj0u5eXg0RK&orgUnit=YdrvIdocEMn&ouMode=DESCENDANTS&status=ACTIVE&filter=l9NuW9KD5mU:neq:NO GROWTH
   const getActiveEventList = async (rootOrgUnit) => {
+    setIsLoading(true);
     try {
       const response = await fetch(
         `../../events.json?skipPaging=true&program=Uj0u5eXg0RK&orgUnit=YdrvIdocEMn&ouMode=DESCENDANTS&status=ACTIVE&filter=l9NuW9KD5mU:neq:NO GROWTH&filter=l9NuW9KD5mU:neq:No pathogen grown&filter=l9NuW9KD5mU:neq:CONTAMINANTS`,
@@ -138,6 +144,7 @@ const Home = () => {
       }
 
       const data = await response.json();
+      setIsLoading(false);
       return data.events;
     } catch (error) {
       console.error("Error fetching active event list", error);
@@ -439,20 +446,23 @@ const Home = () => {
               purposeOfSampleDataTEI
             ];
 
-          console.log(" dataElementObjects[organismDataTEI] " + dataElementObjects[organismDataTEI]);
-          if( typeof dataElementObjects[organismDataTEI] !== "undefined"){
+          console.log(
+            " dataElementObjects[organismDataTEI] " +
+              dataElementObjects[organismDataTEI]
+          );
+          if (typeof dataElementObjects[organismDataTEI] !== "undefined") {
             tempAggregateDE = dataElementObjects[organismDataTEI].id;
 
             let aggregatedDataValueGetResponse;
             let defaultValue;
             aggregatedDataValueGetResponse = await getAggregatedDataValue(
-                isoPeriod,
-                defaultDataSet,
-                tempAggregateDE,
-                aggregateorgUnit,
-                cCombo,
-                tempCategoryOptions,
-                coDefault
+              isoPeriod,
+              defaultDataSet,
+              tempAggregateDE,
+              aggregateorgUnit,
+              cCombo,
+              tempCategoryOptions,
+              coDefault
             );
 
             if (aggregatedDataValueGetResponse.response) {
@@ -460,7 +470,8 @@ const Home = () => {
               defaultValue = aggregatedDataValueGetResponse.value;
             }
 
-            const aggregatedDataValuePostResponse = await postAggregatedDataValue(
+            const aggregatedDataValuePostResponse =
+              await postAggregatedDataValue(
                 isoPeriod,
                 defaultDataSet,
                 tempAggregateDE,
@@ -469,53 +480,54 @@ const Home = () => {
                 tempCategoryOptions,
                 coDefault,
                 defaultValue
-            ).then((aggregatedDataValuePostResponse) => {
-              console.log(
+              ).then((aggregatedDataValuePostResponse) => {
+                console.log(
                   "aggregatedDataValuePostResponse.data.message",
                   aggregatedDataValuePostResponse
-              );
-            });
+                );
+              });
 
             if (antibioticCategoryOptionComboUIDsTEI.length > 0) {
+              const deAntibioticWise =
+                  dataElementObjects[`${organismDataTEI}_AW`].id;
 
-              console.log(" dataElementObjects[organismDataTEI] deAntibioticWise " + dataElementObjects[`${organismDataTEI}_AW`].id);
-              if( typeof dataElementObjects[`${organismDataTEI}_AW`].id !== "undefined"){
-                const deAntibioticWise = dataElementObjects[`${organismDataTEI}_AW`].id;
+              for (let index in antibioticCategoryOptionComboUIDsTEI) {
+                const antiCategoryOptionCombo =
+                    antibioticCategoryOptionComboUIDsTEI[index];
+                console.log(
+                    "antiCategoryOptionCombo======",
+                    antiCategoryOptionCombo
+                );
+                const aggregatedDataValueGetResponse =
+                    await getAggregatedDataValue(
+                        isoPeriod,
+                        antibioticWiseDataSet,
+                        deAntibioticWise,
+                        aggregateorgUnit,
+                        cCombo,
+                        tempCategoryOptions,
+                        antiCategoryOptionCombo
+                    );
 
-                for (let index in antibioticCategoryOptionComboUIDsTEI) {
-                  const antiCategoryOptionCombo =  antibioticCategoryOptionComboUIDsTEI[index];
-                  console.log( "antiCategoryOptionCombo======", antiCategoryOptionCombo);
-                  const aggregatedDataValueGetResponse =
-                      await getAggregatedDataValue(
+                  if (aggregatedDataValueGetResponse.response) {
+                    defaultValue = aggregatedDataValueGetResponse.value;
+
+                  const aggregatedDataValuePostResponse =
+                      await postAggregatedDataValue(
                           isoPeriod,
                           antibioticWiseDataSet,
                           deAntibioticWise,
                           aggregateorgUnit,
                           cCombo,
                           tempCategoryOptions,
-                          antiCategoryOptionCombo
+                          antiCategoryOptionCombo,
+                          defaultValue
                       );
-
-                  if (aggregatedDataValueGetResponse.response) {
-                    defaultValue = aggregatedDataValueGetResponse.value;
-
-                    const aggregatedDataValuePostResponse =
-                        await postAggregatedDataValue(
-                            isoPeriod,
-                            antibioticWiseDataSet,
-                            deAntibioticWise,
-                            aggregateorgUnit,
-                            cCombo,
-                            tempCategoryOptions,
-                            antiCategoryOptionCombo,
-                            defaultValue
-                        );
 
                     console.log(aggregatedDataValuePostResponse);
 
-                    if (aggregatedDataValuePostResponse.status === "OK") {
+                  if (aggregatedDataValuePostResponse.status === "OK") {
 
-                    }
                   }
                 }
               }
@@ -523,18 +535,18 @@ const Home = () => {
             const eventUpdateResponse = updateEventStatus(tempEventForUpdate);
             console.log(eventUpdateResponse);
           }
-
         }
-
       }
       setStatus(false);
 
       getActiveEventList();
       setData([]);
+
       setTimeout(function () {
         alert("Aggregation is done successfully");
-        
       }, 2000);
+      // setPending(eventList?.length);
+      setPendingStatus(true);
     } catch (error) {
       console.error(error);
     }
@@ -643,16 +655,24 @@ const Home = () => {
   return (
     <>
       <div style={{ padding: "10px" }}>
-       
         <div style={{ marginLeft: "5px" }}>
           <Button primary={true} onClick={getEventList}>
             Aggregate
           </Button>
+          {pendingstatus ? (
+            <span style={{ paddingLeft: "10px" }}>
+              Pending Events: {pending}
+            </span>
+          ) : (
+            <span style={{ paddingLeft: "10px" }}>
+              Total Events: {TotalEvent}
+            </span>
+          )}
         </div>
 
         <div>
           <Table>
-            <TableRow>
+            <TableRow className={classes.header}>
               <TableCell>
                 <b>Organism</b>
               </TableCell>
