@@ -477,46 +477,45 @@ const Home = () => {
             });
 
             if (antibioticCategoryOptionComboUIDsTEI.length > 0) {
-              const deAntibioticWise =
-                  dataElementObjects[`${organismDataTEI}_AW`].id;
 
-              for (let index in antibioticCategoryOptionComboUIDsTEI) {
-                const antiCategoryOptionCombo =
-                    antibioticCategoryOptionComboUIDsTEI[index];
-                console.log(
-                    "antiCategoryOptionCombo======",
-                    antiCategoryOptionCombo
-                );
-                const aggregatedDataValueGetResponse =
-                    await getAggregatedDataValue(
-                        isoPeriod,
-                        antibioticWiseDataSet,
-                        deAntibioticWise,
-                        aggregateorgUnit,
-                        cCombo,
-                        tempCategoryOptions,
-                        antiCategoryOptionCombo
-                    );
+              console.log(" dataElementObjects[organismDataTEI] deAntibioticWise " + dataElementObjects[`${organismDataTEI}_AW`].id);
+              if( typeof dataElementObjects[`${organismDataTEI}_AW`].id !== "undefined"){
+                const deAntibioticWise = dataElementObjects[`${organismDataTEI}_AW`].id;
 
-                if (aggregatedDataValueGetResponse.response) {
-                  defaultValue = aggregatedDataValueGetResponse.value;
-
-                  const aggregatedDataValuePostResponse =
-                      await postAggregatedDataValue(
+                for (let index in antibioticCategoryOptionComboUIDsTEI) {
+                  const antiCategoryOptionCombo =  antibioticCategoryOptionComboUIDsTEI[index];
+                  console.log( "antiCategoryOptionCombo======", antiCategoryOptionCombo);
+                  const aggregatedDataValueGetResponse =
+                      await getAggregatedDataValue(
                           isoPeriod,
                           antibioticWiseDataSet,
                           deAntibioticWise,
                           aggregateorgUnit,
                           cCombo,
                           tempCategoryOptions,
-                          antiCategoryOptionCombo,
-                          defaultValue
+                          antiCategoryOptionCombo
                       );
 
-                  console.log(aggregatedDataValuePostResponse);
+                  if (aggregatedDataValueGetResponse.response) {
+                    defaultValue = aggregatedDataValueGetResponse.value;
 
-                  if (aggregatedDataValuePostResponse.status === "OK") {
+                    const aggregatedDataValuePostResponse =
+                        await postAggregatedDataValue(
+                            isoPeriod,
+                            antibioticWiseDataSet,
+                            deAntibioticWise,
+                            aggregateorgUnit,
+                            cCombo,
+                            tempCategoryOptions,
+                            antiCategoryOptionCombo,
+                            defaultValue
+                        );
 
+                    console.log(aggregatedDataValuePostResponse);
+
+                    if (aggregatedDataValuePostResponse.status === "OK") {
+
+                    }
                   }
                 }
               }
