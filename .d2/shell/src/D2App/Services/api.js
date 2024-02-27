@@ -6,7 +6,7 @@ _defineProperty(OPDService, "EventAPi", async (selectedProgramValue, show) => {
   const requestOptions = {
     method: 'GET'
   };
-  let response = await fetch(`https://links.hispindia.org/timor/api/events.json?skipPaging=true&program=${selectedProgramValue}&trackedEntityInstance=${show.id}&fields=dataValues[dataElement,value],eventDate,programStage,status`, requestOptions);
+  let response = await fetch(`../../events.json?skipPaging=true&program=${selectedProgramValue}&trackedEntityInstance=${show.id}&fields=dataValues[dataElement,value],eventDate,programStage,status`, requestOptions);
   return response.json();
 });
 // static patientSMSnotify = async (body) => {
@@ -27,34 +27,34 @@ _defineProperty(OPDService, "ProgramStages", async () => {
   const requestOptions = {
     method: 'GET'
   };
-  let response = await fetch(`https://links.hispindia.org/timor/api/programStages.json?paging=false&fields=id,name`, requestOptions);
+  let response = await fetch(`../../programStages.json?paging=false&fields=id,name`, requestOptions);
   return response.json();
 });
 _defineProperty(OPDService, "AllDataelement", async () => {
   const requestOptions = {
     method: 'GET'
   };
-  let response = await fetch(`https://links.hispindia.org/timor/api/dataElements.json?paging=false&domainType=TRACKER&fields=id,name`, requestOptions);
+  let response = await fetch(`../../dataElements.json?paging=false&domainType=TRACKER&fields=id,name`, requestOptions);
   return response.json();
 });
 _defineProperty(OPDService, "Programoptions", async () => {
   const requestOptions = {
     method: 'GET'
   };
-  let response = await fetch(`https://links.hispindia.org/timor/api/29/sqlViews/oZAXWFlZgI7/data?paging=false`, requestOptions);
+  let response = await fetch(`../../29/sqlViews/oZAXWFlZgI7/data?paging=false`, requestOptions);
   return response.json();
 });
 _defineProperty(OPDService, "tableDataplot", async selectedProgramValue => {
   const requestOptions = {
     method: 'GET'
   };
-  let response = await fetch(`https://links.hispindia.org/timor/api/trackedEntityInstances.json?ou=Fn51zf6ifbm&program=${encodeURIComponent(selectedProgramValue)}&ouMode=DESCENDANTS`, requestOptions);
+  let response = await fetch(`../../trackedEntityInstances.json?ou=Fn51zf6ifbm&program=${encodeURIComponent(selectedProgramValue)}&ouMode=DESCENDANTS`, requestOptions);
   return response.json();
 });
 _defineProperty(OPDService, "tableHeaderData", async selectedProgramValue => {
   const requestOptions = {
     method: 'GET'
   };
-  let response = await fetch(`https://links.hispindia.org/timor/api/programs/${selectedProgramValue}.json?fields=programTrackedEntityAttributes%5BtrackedEntityAttribute%5Bid,name,formName,attributeValues%5Battribute%5Bid,name,code%5D,value%5D%5D%5D`, requestOptions);
+  let response = await fetch(`../../programs/${selectedProgramValue}.json?fields=programTrackedEntityAttributes%5BtrackedEntityAttribute%5Bid,name,formName,attributeValues%5Battribute%5Bid,name,code%5D,value%5D%5D%5D`, requestOptions);
   return response.json();
 });
