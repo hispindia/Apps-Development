@@ -250,7 +250,8 @@ const Home = () => {
           });
           const TrackID = ele.trackedEntityInstance;
           return /*#__PURE__*/React.createElement(TableCell, {
-            key: attribute === null || attribute === void 0 ? void 0 : (_attribute$trackedEnt2 = attribute.trackedEntityAttribute) === null || _attribute$trackedEnt2 === void 0 ? void 0 : _attribute$trackedEnt2.id
+            key: attribute === null || attribute === void 0 ? void 0 : (_attribute$trackedEnt2 = attribute.trackedEntityAttribute) === null || _attribute$trackedEnt2 === void 0 ? void 0 : _attribute$trackedEnt2.id,
+            className: classes.itemAlign
           }, /*#__PURE__*/React.createElement("div", {
             onClick: () => setShow({
               value: true,
@@ -313,7 +314,7 @@ const Home = () => {
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: darkMode ? classes["dark-mode"] : classes["light-mode"],
     style: {
-      overflow: 'auto'
+      overflow: "auto"
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -333,7 +334,7 @@ const Home = () => {
     onClick: toggleMode
   }, darkMode ? "Light Mode" : "Dark Mode"), /*#__PURE__*/React.createElement("button", {
     onClick: () => tableToExcel("report-table", "Timor Event List")
-  }, "Data Export")), /*#__PURE__*/React.createElement(Modal, {
+  }, "Export Data")), /*#__PURE__*/React.createElement(Modal, {
     show: show.value,
     onClose: () => setShow({
       value: false
@@ -364,7 +365,8 @@ const Home = () => {
       key: ele === null || ele === void 0 ? void 0 : (_ele$trackedEntityAtt = ele.trackedEntityAttribute) === null || _ele$trackedEntityAtt === void 0 ? void 0 : _ele$trackedEntityAtt.id,
       style: {
         whiteSpace: "nowrap"
-      }
+      },
+      className: classes.itemAlign
     }, /*#__PURE__*/React.createElement("b", null, ele === null || ele === void 0 ? void 0 : (_ele$trackedEntityAtt2 = ele.trackedEntityAttribute) === null || _ele$trackedEntityAtt2 === void 0 ? void 0 : _ele$trackedEntityAtt2.name));
   })), /*#__PURE__*/React.createElement(TableRow, null, header1 === null || header1 === void 0 ? void 0 : (_header1$programTrack8 = header1.programTrackedEntityAttributes) === null || _header1$programTrack8 === void 0 ? void 0 : _header1$programTrack8.map(ele => {
     var _ele$trackedEntityAtt3, _ele$trackedEntityAtt4, _ele$trackedEntityAtt5;
@@ -374,7 +376,9 @@ const Home = () => {
       key: ele === null || ele === void 0 ? void 0 : (_ele$trackedEntityAtt4 = ele.trackedEntityAttribute) === null || _ele$trackedEntityAtt4 === void 0 ? void 0 : _ele$trackedEntityAtt4.id,
       style: {
         whiteSpace: "nowrap"
-      }
+      },
+      className: darkMode ? `${classes.searchBackground} ${classes.itemAlign}` : ` ${classes.itemAlign}`
+      // className={darkMode ? classes.darkTable : classes.lightTable}
     }, /*#__PURE__*/React.createElement("input", {
       type: "text",
       placeholder: `Search ${ele === null || ele === void 0 ? void 0 : (_ele$trackedEntityAtt5 = ele.trackedEntityAttribute) === null || _ele$trackedEntityAtt5 === void 0 ? void 0 : _ele$trackedEntityAtt5.name}`,

@@ -49,7 +49,6 @@ const Home = () => {
         });
       };
     return function (table, name, filename) {
-
       if (!table.nodeType) table = document.getElementById(table);
 
       var ctx = { worksheet: name || "Worksheet", table: table.innerHTML };
@@ -265,7 +264,10 @@ const Home = () => {
               const TrackID = ele.trackedEntityInstance;
 
               return (
-                <TableCell key={attribute?.trackedEntityAttribute?.id}>
+                <TableCell
+                  key={attribute?.trackedEntityAttribute?.id}
+                  className={classes.itemAlign}
+                >
                   <div onClick={() => setShow({ value: true, id: TrackID })}>
                     {foundAttribute ? foundAttribute.value : ""}
                   </div>
@@ -351,8 +353,11 @@ const Home = () => {
   };
   return (
     <>
-      <div className={darkMode ? classes["dark-mode"] : classes["light-mode"]} style={{overflow:'auto'}}>
-        <div style={{ padding: "5px" }} >
+      <div
+        className={darkMode ? classes["dark-mode"] : classes["light-mode"]}
+        style={{ overflow: "auto" }}
+      >
+        <div style={{ padding: "5px" }}>
           <div>
             {options.length > 0 && (
               <select onChange={handleSelectChange}>
@@ -370,11 +375,11 @@ const Home = () => {
             <button onClick={toggleMode}>
               {darkMode ? "Light Mode" : "Dark Mode"}
             </button>
-             <button
+            <button
               onClick={() => tableToExcel("report-table", "Timor Event List")}
             >
-              Data Export
-            </button> 
+              Export Data
+            </button>
           </div>
 
           <Modal show={show.value} onClose={() => setShow({ value: false })}>
@@ -434,6 +439,7 @@ const Home = () => {
                     <TableCell
                       key={ele?.trackedEntityAttribute?.id}
                       style={{ whiteSpace: "nowrap" }}
+                      className={classes.itemAlign}
                     >
                       <b>{ele?.trackedEntityAttribute?.name}</b>
                     </TableCell>
@@ -445,6 +451,8 @@ const Home = () => {
                       <TableCell
                         key={ele?.trackedEntityAttribute?.id}
                         style={{ whiteSpace: "nowrap" }}
+                        className={darkMode? `${classes.searchBackground} ${classes.itemAlign}`: ` ${classes.itemAlign}`}
+                        // className={darkMode ? classes.darkTable : classes.lightTable}
                       >
                         <input
                           type="text"
