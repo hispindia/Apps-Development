@@ -13,6 +13,26 @@
   "devDependencies": {
     "@dhis2/cli-app-scripts": "^10.3.10"
   },
+
+  "manifest.webapp": {
+    "appType": "APP",
+    "short_name": "Tracker_Aggeration",
+    "name": "Tracker_Aggeration",
+    "description": "",
+    "version": "1.0.0",
+    "launch_path": "index.html",
+    "default_locale": "en",
+    "activities": {
+      "dhis": {
+        "href": "*"
+      }
+    }
+  },
+  "icons": {
+    "16":"/img/aggregation.png",
+    "48":"/img/aggregation.png",
+    "128":"/img/aggregation.png"
+  },
   "dependencies": {
     "@dhis2/app-runtime": "^3.9.4",
     "@dhis2/ui-core": "^6.24.0",
