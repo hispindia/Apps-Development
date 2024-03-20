@@ -526,7 +526,7 @@ const Home = () => {
 
                     console.log(aggregatedDataValuePostResponse);
 
-                    if (aggregatedDataValuePostResponse.status === "OK") {
+                    if (aggregatedDataValuePostResponse && aggregatedDataValuePostResponse?.status === "OK") {
 
                     }
                   }
