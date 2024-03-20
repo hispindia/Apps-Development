@@ -130,7 +130,7 @@ const Home = () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `../../events.json?skipPaging=true&program=Uj0u5eXg0RK&orgUnit=YdrvIdocEMn&ouMode=DESCENDANTS&status=ACTIVE&filter=l9NuW9KD5mU:neq:NO GROWTH&filter=l9NuW9KD5mU:neq:No pathogen grown&filter=l9NuW9KD5mU:neq:CONTAMINANTS`,
+        `../../events.json?skipPaging=true&program=Uj0u5eXg0RK&orgUnit=YdrvIdocEMn&ouMode=DESCENDANTS&status=ACTIVE&filter=l9NuW9KD5mU:neq:NO GROWTH&filter=l9NuW9KD5mU:neq:No pathogen grown&filter=l9NuW9KD5mU:neq:CONTAMINANTS&filter=l9NuW9KD5mU:neq:NTP&filter=l9NuW9KD5mU:neq:Multiple organisms grown`,
         {
           method: "GET",
           headers: {
