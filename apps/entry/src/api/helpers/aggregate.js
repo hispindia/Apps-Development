@@ -284,7 +284,7 @@ export const Aggregate = async ({
     Object.keys(event.values).forEach(value => {
         //loop through the values and look for result data elements if found one save that.
         if (event.values[value] !== "") {
-
+            if (dataElements[value]) {
             if (dataElements[value][CONSTANTS.customAttributeMetadataTypeIdentifier] === CONSTANTS.antibioticAttributeCode) {
                 //This means that this data elemnt is an antibiotic result therefore add it to important values.
 
@@ -293,7 +293,7 @@ export const Aggregate = async ({
                 let categoryOptionCombo = tempArray.join("");
                 categoryOptionCombo = categoryCombos[CONSTANTS.antibioticCC_Code].categoryOptionCombos[categoryOptionCombo]
                 importantValues.push(categoryOptionCombo)
-            }
+            }}
         }
     })
     let de = dataElements[aggregatedDataElementCode].id
