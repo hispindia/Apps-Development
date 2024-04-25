@@ -21,17 +21,30 @@ import { SdCard } from "@material-ui/icons";
 export const DataElement = ({ id }) => {
   const dispatch = useDispatch();
 
-  
   const optionSets = useSelector((state) => state.metadata.optionSets);
   const completed = useSelector((state) => state.data.event.status.completed);
   var value = useSelector((state) => state.data.event.values[id]);
   const programId = useSelector((state) => state.data.panel.program);
   const sampleDate = useSelector((state) => state.data.panel.sampleDate);
-  const eventValPassed = useSelector(
-    (state) => state.data.event.values
+  const eventValPassed = useSelector((state) => state.data.event.values);
+  var valueTest = useSelector(
+    (state) => state.data.event.values["huQARYwLLKW"]
   );
-
-  
+  console.log("valueTest>>>>>>>>>>", valueTest);
+  const conditionalErr = useSelector(
+    (state) =>
+      state.data.event.programStage.dataElements[id].checkRegistantPattern
+  );
+  const checking = useSelector((state) => state.data.event.programStage);
+  const checkRegistantPatternMsg = useSelector(
+    (state) => state.data.event.programStage.dataElements["p4w4PQc42hj"]
+  );
+  console.log("cheeeeeeeeeeee==", checking);
+  console.log("conditionalErr====", conditionalErr);
+  console.log(
+    "checkRegistantPatternMsg=============",
+    checkRegistantPatternMsg
+  );
   const color = useSelector(
     (state) => state.data.event.programStage.dataElements[id].color
   );
@@ -59,39 +72,43 @@ export const DataElement = ({ id }) => {
   const valueType = useSelector(
     (state) => state.data.event.programStage.dataElements[id].valueType
   );
-  const warning = useSelector(
+  var warning = useSelector(
     (state) => state.data.event.programStage.dataElements[id].warning
   );
+  const warning1 = useSelector(
+    (state) => state.data.event.programStage.dataElements[id].warning1
+  );
+  if (displayFormName == "Resistance pattern" && !warning) {
+    var warning = valueTest;
+  }
   var isCalculatedDays = false;
-  if(displayFormName === "Duration of hospitalization till sample receiving"){
-      isCalculatedDays= true
+  if (displayFormName === "Duration of hospitalization till sample receiving") {
+    isCalculatedDays = true;
   }
 
-//  console.log("Event valu passedddd=====",eventValPassed)
- const eventValPassed1 = useSelector(
-  (state) => state.data.event.values
-);
+  //  console.log("Event valu passedddd=====",eventValPassed)
+  const eventValPassed1 = useSelector((state) => state.data.event.values);
 
+  //  useEffect(() => {
+  //   if (eventValPassed && eventValPassed["u8VDCIwa3w4"] ) {
 
-//  useEffect(() => {
-//   if (eventValPassed && eventValPassed["u8VDCIwa3w4"] ) {
-    
-    
-// console.log("TESTING THE VASLUEE",DATAEVALUE["u8VDCIwa3w4"])
-//     dispatch(
-//       setEventValue(
-//         "u8VDCIwa3w4",
-//         eventValPassed["u8VDCIwa3w4"],false
-//       )
-//     );
-   
-//   }
-// }, []);
+  // console.log("TESTING THE VASLUEE",DATAEVALUE["u8VDCIwa3w4"])
+  //     dispatch(
+  //       setEventValue(
+  //         "u8VDCIwa3w4",
+  //         eventValPassed["u8VDCIwa3w4"],false
+  //       )
+  //     );
 
+  //   }
+  // }, []);
 
   useEffect(() => {
-    if (eventValPassed && eventValPassed["fihlyDLDikz"] && !eventValPassed['ziOMarQiX1S']) {
-      
+    if (
+      eventValPassed &&
+      eventValPassed["fihlyDLDikz"] &&
+      !eventValPassed["ziOMarQiX1S"]
+    ) {
       let sampleDates = new Date(sampleDate);
       let values = new Date(eventValPassed["fihlyDLDikz"]);
       const calculateDay = (val, sd) => {
@@ -106,11 +123,9 @@ export const DataElement = ({ id }) => {
           false
         )
       );
-     
     }
     // if (eventValPassed  ) {
-    
-    
+
     //   // console.log("TESTING THE VASLUEE",DATAEVALUE["u8VDCIwa3w4"])
     //   console.log("howwwwwwwwwwwwwwwww",eventValPassed["u8VDCIwa3w4"])
     //       dispatch(
@@ -119,9 +134,8 @@ export const DataElement = ({ id }) => {
     //           eventValPassed["u8VDCIwa3w4"],false
     //         )
     //       );
-         
+
     //     }
-   
   }, [eventValPassed]);
 
   const duplicate =
@@ -129,10 +143,8 @@ export const DataElement = ({ id }) => {
     SAMPLE_TESTING_PROGRAM["0"].value === programId &&
     useSelector((state) => state.data.event.duplicate);
 
-
   const onChange = (key, value) => {
     if (key === "fihlyDLDikz") {
-      
       let sampleDates = new Date(sampleDate);
       let values = new Date(value);
       const calculateDay = (val, sd) => {
@@ -140,7 +152,6 @@ export const DataElement = ({ id }) => {
         return Math.ceil(difference / (1000 * 3600 * 24));
       };
 
-      
       dispatch(
         setEventValue(
           "ziOMarQiX1S",
@@ -152,15 +163,11 @@ export const DataElement = ({ id }) => {
     if (key === ORGANISM_DETECTED && value === "Organism growth detected") {
       dispatch(AddAndSubmit(true));
       dispatch(setEventValue(key, value, false));
-    }
-
-  
-    else {
+    } else {
       dispatch(AddAndSubmit(false));
       dispatch(setEventValue(key, value, false));
     }
   };
-  
 
   if (hide) return null;
 
@@ -176,6 +183,19 @@ export const DataElement = ({ id }) => {
             onChange={onChange}
             required={required}
             disabled={disabled || completed}
+            error={warning ? true : false}
+            message={`Suggested resistance pattern:${warning}`}
+            // error={warning1 ? true : false}
+            // message={warning1}
+            // error={warning ? true : warning ? null : false}
+            // message={
+            //   warning && warning.trim() !== ""
+            //     ? `This is my ${warning}`
+            //     : `This is my ${valueTest}`
+            // }
+            // error={conditionalErr}
+
+            // message={checkRegistantPatternMsg}
           />
         ) : (
           <SelectInput

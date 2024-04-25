@@ -2,6 +2,7 @@ export const ORGANISM_ELEMENT = 'SaQe2REkGVw'
 export const TYPE_OF_ISOLATE = 'MOsgkq0ptBm'
 export const TEST_RESULT_ELEMENT = 'bSgpKbkbVGL'
 export const SAMPLE_ID_ELEMENT = 'GpAu5HjWAEz'
+export const RESISTANCE_PATTERN_ELEMENT='p4w4PQc42hj'
 export const AMR_ELEMENT = 'lIkk661BLpG'
 export const IS_ISOLATE_ELEMENT = 'ugtQC30LNua'
 

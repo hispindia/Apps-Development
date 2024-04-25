@@ -22,6 +22,7 @@ export const Section = ({
         childSections = childSections.filter(
             cs => !cs.hide && !cs.hideWithValues
         )
+        
         const childHalf = Math.ceil(childSections.length / 2)
         const half = Math.ceil(dataElements.length / 2 + childHalf)
         return { dataElements, childSections, half, childHalf }

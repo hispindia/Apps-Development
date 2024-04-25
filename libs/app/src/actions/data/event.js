@@ -49,6 +49,7 @@ import {
   ORGANISM_SET,
   ORGANISM_DETECTED,
   SAMPLE_TESTING_PROGRAM,
+  RESISTANCE_PATTERN_ELEMENT,
 } from "constants/dhis2";
 import { showAlert } from "../alert";
 export const resetData = () => (dispatch) => dispatch(createAction(RESET_DATA));
@@ -181,6 +182,25 @@ export const getExistingEvent = (
       data.entityValues = entityValues;
       data.entityAttributes = attributes;
       data.eventValues = eventValues;
+//       console.log("data:>>>>>>", data);
+//       const event = getState().data.event.values;
+
+     
+// if(event){
+//   console.log("event:>>>>>>", event['huQARYwLLKW']);
+//   programStage.dataElements["p4w4PQc42hj"].warning1 =event["huQARYwLLKW"];
+// }
+//      console.log("programStage>>>>>>>>>>",programStage)
+        // static code pattern registant for id=p4w4PQc42hj
+        // if(event){
+        //   console.log(':>>>>>>>>>>>>>>>>>huQARYwLLKW', event, event['huQARYwLLKW'])
+        //   programStage.dataElements["p4w4PQc42hj"].warning =event["huQARYwLLKW"];
+        // }
+      
+        // programStage.dataElements["p4w4PQc42hj"].checkRegistantPatternMsg =
+        //   "Previous pattern is " + event["p4w4PQc42hj"];
+      
+
       programStage.programStageSections.forEach((pss) => {
         if (pss.name == "Sample details") {
           let de = pss.dataElements.filter((de) => de != "MOsgkq0ptBm");
@@ -535,6 +555,11 @@ export const setEventValue = (key, value, isPrev) => (dispatch, getState) => {
     programId == SAMPLE_TESTING_PROGRAM["0"].value
   )
     dispatch(checkDuplicacy(value));
+  if (
+    key === RESISTANCE_PATTERN_ELEMENT &&
+    programId == SAMPLE_TESTING_PROGRAM["0"].value
+  )
+    dispatch(checkDuplicacy(value));
 
   const [values, programStage, invalid] = eventRules(
     { ...event.values, [key]: value },
@@ -666,6 +691,7 @@ export const saveEvent = (submitBtn, saveBtn) => async (dispatch, getState) => {
   });
   const eventId = getState().data.event.id;
   const eventValues = getState().data.event.values;
+
   var eveStatus = getState().data.event.invalid == false ? true : false;
   try {
     if (saveBtn) {

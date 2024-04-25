@@ -144,6 +144,7 @@ export const Panel = ({ showEdit }) => {
    * @returns {Component} Input component.
    */
   const getInput = (dataElement) => (
+    
     <Padding key={dataElement.id}>
       {!dataElement.objects ? (
         <DateInput {...dataElement} />
@@ -156,7 +157,7 @@ export const Panel = ({ showEdit }) => {
   );
 
   if (!entityValid) return null;
-
+console.log("stageLists=====",stageLists)
   return (
     <CardSection heading="Panel" buttons={showEdit && <PanelButtons />}>
       <Grid container spacing={0}>

@@ -23,7 +23,7 @@ export const eventRules = (
         }
         return null
     }
-
+console.log("conditions=======",condition)
     const getVariables = condition => {
         const variableDuplicated = condition.match(/values\[\'.*?\'\]/g)
         const variables = []
@@ -53,6 +53,7 @@ export const eventRules = (
         if (!affected.optionSetValue) return
         if (affected.optionSet !== TEST_RESULT_ELEMENT) return
         const variables = getVariables(condition)
+        console.log("variables======================",variables)
         variables.forEach(id => {
             const dataElement = stage.dataElements[id]
             if (
@@ -72,7 +73,49 @@ export const eventRules = (
             }
         })
     }
-
+    // const getVariables1 = (condition) => {
+    //     console.log("condition testingmmmmmmmmmmmmmm",condition);
+    //     // const variableDuplicated1 = condition.match(/values\[\'.*?\'\]/g);
+    //     // const match = condition.match(/<= (\d+) &&/);
+    //     const match = condition.match(/<= (\d+)/);
+    //     console.log("mmmmmmmmmmmmmmmmmmm",match);
+    //     const calculatedValue = match ? parseInt(match[1], 10) : null;
+    //  console.log("calculatedValue=========",calculatedValue)
+    //     console.log("variableDuplicated1=======",variableDuplicated1)
+    //     return {
+    //       calculatedValue: calculatedValue
+    //   }
+    //   };
+    //   const setColorsM = (condition, affected, testValue, rules) => {
+    //     if (!affected.optionSetValue) return;
+    //     if (affected.optionSet !== TEST_RESULT_ELEMENT) return;
+    //     const variables1 = getVariables1(condition);
+    //     variables1.forEach((id) => {
+    //       rules.forEach((rule) => {
+    //         rule.programRuleActions.forEach((r) => {
+    //           const cond = eval(rule.condition);
+    //           const de = r.dataElement
+    //             ? stage.dataElements[r.dataElement.id]
+    //             : r.content
+    //             ? { id: r.content.slice(2, -1), hasCalculatedVar: true }
+    //             : null;
+    //         });
+    //       });
+    //       if (de.id == "p4w4PQc42hj") {
+    //         if (
+    //           values[id] &&
+    //           /\d/.test(de.displayFormName) &&
+    //           variables1.find((v) => v !== de.id && values[v] && values[v] !== "")
+    //         ) {
+    //           de.color = "";
+    //           de.warning = "MIC is prioritized over DD";
+    //         } else {
+    //           de.color = values[id] === "" || !testValue ? "" : getColor(testValue);
+    //           if ((de.warning = "MIC is prioritized over DD")) de.warning = "";
+    //         }
+    //       }
+    //     });
+    //   };
     rules.forEach(rule => {
         rule.programRuleActions.forEach(r => {
             try {
@@ -134,7 +177,85 @@ export const eventRules = (
                     default:
                         break
                 }
-            } catch (error) {
+                // if (de.id == "p4w4PQc42hj") {
+                //     const cond = eval(rule.condition);
+                //     console.log("condmmmmmmmmmmmmmm==========", cond);
+                //     const de = r.dataElement
+                //       ? stage.dataElements[r.dataElement.id]
+                //       : r.content
+                //       ? { id: r.content.slice(2, -1), hasCalculatedVar: true }
+                //       : null;
+          
+                //     console.log("demmmmmmmmmmmmmmmmmm", de);
+                //     const s = r.programStageSection
+                //       ? findSection(r.programStageSection.id)
+                //       : null;
+                //     console.log("rrrrrrrrmmmmmmmmmmmmmmm=", r);
+                //     console.log("smmmmmmmmmmm", s);
+                //     console.log("rule conditionmmmmmmmmmmmmmmmmmmmmm", rule.condition);
+                //     switch (r.programRuleActionType) {
+                //       case "SHOWWARNING":
+                //         console.log("optionSetsmmmmmmmmmmmmmmmm============", optionSets);
+                //         // Only reset selected value if the options do not include current value.
+                //         setColorsM(rule.condition, de);
+                //         if (cond && de.warning !== r.content)  de.warning = r.content;
+                        
+                //         else if (!cond && de.warning === r.content) de.warning = null;
+                //         break;
+          
+                //       case "HIDEFIELD":
+                //         if (cond === de.hide) break;
+          
+                //         setColorsM(rule.condition, de);
+                //         de.hide = cond;
+                //         if (values[de.id] !== "") {
+                //           values[de.id] = "";
+                //           if (pushChanges) updateValue(de.id, "");
+                //         }
+                //         break;
+          
+                //       case "ASSIGN":
+                //         const totalId = Object.keys(r).filter(
+                //           (a) => a == "content" || a == "dataElement"
+                //         );
+                //         console.log("totalId========", totalId);
+                //         totalId.forEach((deKey) => {
+                //           let de =
+                //             deKey == "dataElement"
+                //               ? stage.dataElements[r.dataElement.id]
+                //               : r.content
+                //               ? { id: r.content.slice(2, -1), hasCalculatedVar: true }
+                //               : null;
+                //           if (!cond) {
+                //             // if (values[de.id]) {
+                //             //     values[de.id] = ""
+                //             //     // if (!de.hasCalculatedVar) if (pushChanges) updateValue(de.id, r.data)
+                //             // }
+                //           } else {
+                //             setColorsM(rule.condition, de, r.data);
+                //             // Assigning value.
+                //             if (values[de.id] !== r.data) {
+                //               values[de.id] = r.data;
+                //               if (!de.hasCalculatedVar)
+                //                 if (pushChanges) updateValue(de.id, r.data);
+                //             }
+                //             if (!de.hasCalculatedVar) de.disabled = true;
+                //           }
+                //         });
+                //         break;
+          
+                //       case "SHOWERROR":
+                //         if (cond && de.error !== r.content) de.error = r.content;
+                //         else if (!cond && de.error === r.content) de.error = null;
+                //         break;
+                //       default:
+                //         break;
+                //     }
+                //   }
+            }
+            
+            
+            catch (error) {
                 console.warn('Failed to evaluate rule:', rule, error)
             }
         })
