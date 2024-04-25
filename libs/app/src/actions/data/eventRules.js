@@ -23,7 +23,7 @@ export const eventRules = (
         }
         return null
     }
-console.log("conditions=======",condition)
+
     const getVariables = condition => {
         const variableDuplicated = condition.match(/values\[\'.*?\'\]/g)
         const variables = []
@@ -53,7 +53,7 @@ console.log("conditions=======",condition)
         if (!affected.optionSetValue) return
         if (affected.optionSet !== TEST_RESULT_ELEMENT) return
         const variables = getVariables(condition)
-        console.log("variables======================",variables)
+        
         variables.forEach(id => {
             const dataElement = stage.dataElements[id]
             if (

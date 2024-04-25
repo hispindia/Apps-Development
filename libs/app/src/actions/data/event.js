@@ -182,25 +182,6 @@ export const getExistingEvent = (
       data.entityValues = entityValues;
       data.entityAttributes = attributes;
       data.eventValues = eventValues;
-//       console.log("data:>>>>>>", data);
-//       const event = getState().data.event.values;
-
-     
-// if(event){
-//   console.log("event:>>>>>>", event['huQARYwLLKW']);
-//   programStage.dataElements["p4w4PQc42hj"].warning1 =event["huQARYwLLKW"];
-// }
-//      console.log("programStage>>>>>>>>>>",programStage)
-        // static code pattern registant for id=p4w4PQc42hj
-        // if(event){
-        //   console.log(':>>>>>>>>>>>>>>>>>huQARYwLLKW', event, event['huQARYwLLKW'])
-        //   programStage.dataElements["p4w4PQc42hj"].warning =event["huQARYwLLKW"];
-        // }
-      
-        // programStage.dataElements["p4w4PQc42hj"].checkRegistantPatternMsg =
-        //   "Previous pattern is " + event["p4w4PQc42hj"];
-      
-
       programStage.programStageSections.forEach((pss) => {
         if (pss.name == "Sample details") {
           let de = pss.dataElements.filter((de) => de != "MOsgkq0ptBm");

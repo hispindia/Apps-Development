@@ -10,7 +10,7 @@ export const Event = () => {
     const state = useSelector(state => state)
     if (!panelValid) return null
     if (!eventId) return <LoadingSection />
-    // console.log("programStage===========",programStage)
+
     return (
         <>
             {programStage.programStageSections

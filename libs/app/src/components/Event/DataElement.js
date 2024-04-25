@@ -30,7 +30,7 @@ export const DataElement = ({ id }) => {
   var valueTest = useSelector(
     (state) => state.data.event.values["huQARYwLLKW"]
   );
-  console.log("valueTest>>>>>>>>>>", valueTest);
+ 
   const conditionalErr = useSelector(
     (state) =>
       state.data.event.programStage.dataElements[id].checkRegistantPattern
@@ -39,7 +39,7 @@ export const DataElement = ({ id }) => {
   const checkRegistantPatternMsg = useSelector(
     (state) => state.data.event.programStage.dataElements["p4w4PQc42hj"]
   );
-  console.log("cheeeeeeeeeeee==", checking);
+
   console.log("conditionalErr====", conditionalErr);
   console.log(
     "checkRegistantPatternMsg=============",
@@ -86,7 +86,7 @@ export const DataElement = ({ id }) => {
     isCalculatedDays = true;
   }
 
-  //  console.log("Event valu passedddd=====",eventValPassed)
+
   const eventValPassed1 = useSelector((state) => state.data.event.values);
 
   //  useEffect(() => {
@@ -124,18 +124,7 @@ export const DataElement = ({ id }) => {
         )
       );
     }
-    // if (eventValPassed  ) {
-
-    //   // console.log("TESTING THE VASLUEE",DATAEVALUE["u8VDCIwa3w4"])
-    //   console.log("howwwwwwwwwwwwwwwww",eventValPassed["u8VDCIwa3w4"])
-    //       dispatch(
-    //         setEventValue(
-    //           "u8VDCIwa3w4",
-    //           eventValPassed["u8VDCIwa3w4"],false
-    //         )
-    //       );
-
-    //     }
+   
   }, [eventValPassed]);
 
   const duplicate =
@@ -185,17 +174,6 @@ export const DataElement = ({ id }) => {
             disabled={disabled || completed}
             error={warning ? true : false}
             message={`Suggested resistance pattern:${warning}`}
-            // error={warning1 ? true : false}
-            // message={warning1}
-            // error={warning ? true : warning ? null : false}
-            // message={
-            //   warning && warning.trim() !== ""
-            //     ? `This is my ${warning}`
-            //     : `This is my ${valueTest}`
-            // }
-            // error={conditionalErr}
-
-            // message={checkRegistantPatternMsg}
           />
         ) : (
           <SelectInput
