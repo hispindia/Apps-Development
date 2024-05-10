@@ -220,7 +220,7 @@ export const initMetadata = async isIsolate => {
     const stageLists = {}
     const programOrganisms = {}
     programs.forEach(p => {
-        if(p.id != "L7bu48EI54J" &&  p.id != "STe7Xraobt2" && p.id != "Bj4ZJzd9Uz9"){
+        if(p.id !== "L7bu48EI54J" &&  p.id !== "STe7Xraobt2" && p.id !== "Bj4ZJzd9Uz9" && p.id !== "cr03KP3Gh2e" ){
         programList.push({
             value: p.id,
             label: p.name,
