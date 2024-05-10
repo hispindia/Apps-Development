@@ -81,7 +81,7 @@ export const arrangeTeiElements = (res) => {
       const teiValues = ATTR_DE.map((data) => {
         return tei[data.id] ? tei[data.id] : "";
       });
-      teiList.push(teiValues);
+      if (tei['qgHC1K3uNXX']!="true") teiList.push(teiValues);
     }
 
   });
