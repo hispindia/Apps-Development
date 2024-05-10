@@ -111,7 +111,11 @@ export default function Export() {
             class="form-control"
             id="sample-collection"
             value={sample}
-            onChange={(e) => setSample(e.target.value)}
+            onChange={(e) => {
+              setSample(e.target.value);
+              setTEIList([]);
+              setCount(0);
+            }}
           >
             <option value="YRSdePjzzfs-fVVUM6blNja">
               Case assessment-Lab tests
@@ -145,19 +149,36 @@ export default function Export() {
           {count} out of {vlList.length} Clients Loaded
         </p>
       )}
-
       {Boolean(teiList.length) && (
-        <div id="output">
-          <div className="my-4 offset-10">
-            <button
-              className="btn btn-outline-success"
-              onClick={() => downloadCSV("viral-load", sample, teiList)}
-            >
-              <i className="bi bi-filetype-csv"></i> Download
-            </button>
+        <>
+          {sample == "YRSdePjzzfs-fVVUM6blNja" && (
+            <h5 className="text-left text-info">
+              Note: <br/>
+              1) Date Format should be "YYYY-MM-DD"<br/>
+              2) VL Suppression status value should be "UnsuppressedViralLoad" / "SuppressedViralLoad" <br/>
+              3) Suppressed VL result (undetectable vs detectable) value should be "DetectableViralLoadResult" / "UndetectableViralLoadResult"
+            </h5>
+          )}
+          {sample == "YRSdePjzzfs-URSqGzzlYoM" && (
+            <h5 className="text-left text-info">
+              Note:<br/>
+              1) Date Format should be "YYYY-MM-DD"<br/>
+              2) HCV RNA test result Detectable Undetectable value should be "DetectableViralLoadResult" / "UndetectableViralLoadResult" <br/>
+              3) Suppressed VL result (undetectable vs detectable) value should be "DetectableViralLoadResult" / "UndetectableViralLoadResult" 
+            </h5>
+          )}
+          <div id="output">
+            <div className="my-4 offset-10">
+              <button
+                className="btn btn-outline-success"
+                onClick={() => downloadCSV("viral-load", sample, teiList)}
+              >
+                <i className="bi bi-filetype-csv"></i> Download
+              </button>
+            </div>
+            <ExportList teiList={teiList} sample={sample} />
           </div>
-          <ExportList teiList={teiList} sample={sample} />
-        </div>
+        </>
       )}
     </div>
   );
