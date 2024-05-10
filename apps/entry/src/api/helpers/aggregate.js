@@ -17,8 +17,11 @@ var CONSTANTS = {
     typeOFIsolate: "IsolationStatus",
     syndrome: "Syndrome",
     purposeOfSample: "PurposeOfSample",
+    isolateType: "IsolateType",
 
-    sampleLocationDepartment_Code: "sampleLocationDepartment",
+    //sampleLocationDepartment_Code: "sampleLocationDepartment",
+    sampleLocationDepartmentIsolate_Code: "sampleLocationDepartmentIsolate",
+
     antibioticCC_Code: "antibiotic",
     defaultCC_code: "default",
     antibioticAttributeCode: 'Antibiotic',
@@ -216,6 +219,15 @@ export const Aggregate = async ({
     let departmentDataElement = dataElements.attributeGroups[CONSTANTS.departmentCode][0]
     let departmentData = event.values[departmentDataElement]
 
+    let isolateTypeData = "";
+    let isolateTypeDataElement = dataElements.attributeGroups[CONSTANTS.isolateType][0]
+    if( event.values[isolateTypeDataElement] ){
+        isolateTypeData = event.values[isolateTypeDataElement];
+    }
+    else{
+        isolateTypeData = "Other isolate";
+    }
+
     // one layer in aggregation with isolation Status
     /*
     let isolationStatusDataElement = dataElements.attributeGroups[CONSTANTS.isolationStatusCode][0]
@@ -237,7 +249,7 @@ export const Aggregate = async ({
         antibioticWiseDataSet = dataSets[CONSTANTS.antibioticWiseDataSetCode];
     }
 
-    if(!(locationData && organismData && sampleTypeData && departmentData && purposeOfSampleData ) ){
+    if(!(locationData && organismData && sampleTypeData && departmentData && isolateTypeData && purposeOfSampleData ) ){
         //if there is any missing data don't process the aggregation
         if(operation === "COMPLETE"){
             return {
@@ -273,11 +285,12 @@ export const Aggregate = async ({
     }
 
 
-    let cc = categoryCombos[CONSTANTS.sampleLocationDepartment_Code].id;
-    let cp = categoryCombos[CONSTANTS.sampleLocationDepartment_Code].categoryOptions[locationData];
-    cp = cp + ";" + categoryCombos[CONSTANTS.sampleLocationDepartment_Code].categoryOptions[sampleTypeData];
-    cp = cp + ";" + categoryCombos[CONSTANTS.sampleLocationDepartment_Code].categoryOptions[departmentData];
-    //cp = cp + ";" + categoryCombos[CONSTANTS.sampleLocationDepartment_Code].categoryOptions[isolationStatusData];
+    let cc = categoryCombos[CONSTANTS.sampleLocationDepartmentIsolate_Code].id;
+    let cp = categoryCombos[CONSTANTS.sampleLocationDepartmentIsolate_Code].categoryOptions[locationData];
+    cp = cp + ";" + categoryCombos[CONSTANTS.sampleLocationDepartmentIsolate_Code].categoryOptions[sampleTypeData];
+    cp = cp + ";" + categoryCombos[CONSTANTS.sampleLocationDepartmentIsolate_Code].categoryOptions[departmentData];
+    cp = cp + ";" + categoryCombos[CONSTANTS.sampleLocationDepartmentIsolate_Code].categoryOptions[isolateTypeData];
+    //cp = cp + ";" + categoryCombos[CONSTANTS.sampleLocationDepartmentIsolate_Code].categoryOptions[isolationStatusData];
 
 
     let importantValues = []
