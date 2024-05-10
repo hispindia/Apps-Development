@@ -14,6 +14,7 @@ import { FirstPage } from "@material-ui/icons";
 export const Panel = ({ showEdit }) => {
   const entityValid = useSelector((state) => state.data.entity.valid);
   const editable = useSelector((state) => state.data.editable);
+  const isAddIsolate = useSelector((state) => state.data.isAddIsolate);
   const previousValues = useSelector((state) => state.data.previousValues);
   const dispatch = useDispatch();
   const { stageLists } = useSelector((state) => state.metadata);
@@ -161,7 +162,7 @@ export const Panel = ({ showEdit }) => {
     <CardSection heading="Panel" buttons={showEdit && <PanelButtons />}>
       <Grid container spacing={0}>
         <Grid item xs>
-        {(program == "L7bu48EI54J" || program == "") && !editable
+        {(program == "L7bu48EI54J" || program == "") && !editable && !isAddIsolate
             ? getDataElement("defaultProgram")
             : getDataElement("program")}
           
