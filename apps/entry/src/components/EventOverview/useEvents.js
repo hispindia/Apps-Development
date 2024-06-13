@@ -172,19 +172,19 @@ export const useEvents = (status, eventstatus, code, isFollowUp) => {
 
   var programApi = []; // Initialize the programApi array
 
-  if (code == "ST" && sampleTestingProgram) {
-    programApi = [sampleTestingProgram.value];
-  } else if (code == "GP") {
-    programApi = GP_PROGRAM_ID;
-  } else if (code == "ALL") {
-    programApi = []; // Reset programApi before populating it
-    for (let i = 0; i < programList.length; ++i) {
-      const item = programList[i];
-      if (item && item.value && !programApi.includes(item.value)) {
-        programApi.push(item.value);
-      }
-    }
-  }
+  // if (code == "ST" && sampleTestingProgram) {
+  //   programApi = [sampleTestingProgram.value];
+  // } else if (code == "GP") {
+  //   programApi = GP_PROGRAM_ID;
+  // } else if (code == "ALL") {
+  //   programApi = []; // Reset programApi before populating it
+  //   for (let i = 0; i < programList.length; ++i) {
+  //     const item = programList[i];
+  //     if (item && item.value && !programApi.includes(item.value)) {
+  //       programApi.push(item.value);
+  //     }
+  //   }
+  // }
 
   // Ensure programApi is defined and contains the desired values.
 
@@ -203,7 +203,7 @@ export const useEvents = (status, eventstatus, code, isFollowUp) => {
   useEffect(() => {
     const getData = async () => {
       try {
-        if (eventstatus == "ACTIVE" && programApi.length < 2) {
+        if (eventstatus == "SACTIVE" && programApi.length < 2) {
           const eventsSample = await getPendingSampleResult(
             selected,
             programApi,
@@ -216,7 +216,23 @@ export const useEvents = (status, eventstatus, code, isFollowUp) => {
               });
             }
           });
-        } else if (eventstatus == "NotCOMPLETED" && programApi.length == 2) {
+        }
+        else if (eventstatus == "ACTIVE" ) {
+          const eventsTei = await getPendingAntiResult(
+            selected,
+            programApi,
+            eventstatus
+          ).then((teiRows) => {
+            if (teiRows) {
+              dispatcher({
+                type: NEW_ROWS,
+                rows: teiRows,
+              });
+            }
+          });
+
+        }
+        else if (eventstatus == "NotCOMPLETED" ) {
           const eventsTei = await getAntibioticFollowTEI(
             selected,
             programApi,
@@ -240,20 +256,9 @@ export const useEvents = (status, eventstatus, code, isFollowUp) => {
               rows: eventResult,
             })
           );
-        } else if (eventstatus == "ACTIVE" && programApi.length == 2) {
-          const eventsTei = await getPendingAntiResult(
-            selected,
-            programApi,
-            eventstatus
-          ).then((teiRows) => {
-            if (teiRows) {
-              dispatcher({
-                type: NEW_ROWS,
-                rows: teiRows,
-              });
-            }
-          });
-        } else if (eventstatus == "ALL") {
+        } 
+       
+         else if (eventstatus == "ALL") {
           const eventsTeiall = await getTEIAll(
             selected,
             programApi,

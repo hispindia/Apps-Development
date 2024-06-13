@@ -146,7 +146,7 @@ export const getPendingSampleResult = async orgUnit => {
    let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&lastUpdatedStartDate=" + isoDateFormat +"&order=lastUpdated:desc&skipPaging=true"
    
     let api3 = '../../../api/29/sqlViews/gxov92xU7S7/data.json&paging=false' // Local Db
-    let api4 = '../../../api/sqlViews/tmsk1VhkVEI/data.json?paging=false' // Baseline DB
+    let api4 = '../../../api/sqlViews/KwpYHlKAp5s/data.json?paging=false' // Baseline DB
     let apiForProgram = '../../../api/organisationUnits/'+orgUnit+'.json?fields=id,name,programs[id,name]&paging=false' // loading program for the ou
     const requestOne = axios.get(api1);
     const requestThree = axios.get(api4);
@@ -272,7 +272,7 @@ export const getSterileTEI = async orgUnit => {
     let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&lastUpdatedStartDate=" + isoDateFormat +"&order=lastUpdated:desc&skipPaging=true"
     //let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&lastUpdatedStartDate=" + isoDateFormat +"&skipPaging=true"
     let api3 = '../../../api/29/sqlViews/gxov92xU7S7/data.json&paging=false' // Local Db
-    let api4 = '../../../api/sqlViews/yURdPSBAKpn/data.json?paging=false' // Baseline DB
+    let api4 = '../../../api/sqlViews/xC07P4UyhhM/data.json?paging=false' // Baseline DB
     let apiForProgram = '../../../api/organisationUnits/'+orgUnit+'.json?fields=id,name,programs[id,name]&paging=false' // loading program for the ou
     const requestOne = axios.get(api1);
     const requestThree = axios.get(api4);
@@ -398,7 +398,7 @@ export const getPendingAntiResult = async orgUnit => {
     let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&lastUpdatedStartDate=" + isoDateFormat +"&order=lastUpdated:desc&skipPaging=true"
     //let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&lastUpdatedStartDate=" + isoDateFormat +"&skipPaging=true"
     let api3 = '../../../api/29/sqlViews/gxov92xU7S7/data.json&paging=false' // Local Db
-    let api4 = '../../../api/sqlViews/vhnfcA59Pl4/data.json?paging=false' // Baseline DB
+    let api4 = '../../../api/sqlViews/gTkhUldkVkh/data.json?paging=false' // Baseline DB
     let apiForProgram = '../../../api/organisationUnits/'+orgUnit+'.json?fields=id,name,programs[id,name]&paging=false' // loading program for the ou
     const requestOne = axios.get(api1);
     const requestThree = axios.get(api4);
@@ -524,7 +524,7 @@ export const getAntibioticFollowTEI = async orgUnit => {
     let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&lastUpdatedStartDate=" + isoDateFormat +"&order=lastUpdated:desc&skipPaging=true"
     //let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&lastUpdatedStartDate=" + isoDateFormat +"&skipPaging=true"
     let api3 = '../../../api/29/sqlViews/gxov92xU7S7/data.json&paging=false' // Local Db
-    let api4 = '../../../api/sqlViews/dFkTykXa7Sx/data.json?paging=false' // Baseline DB
+    let api4 = '../../../api/sqlViews/TplgPXZdqWW/data.json?paging=false' // Baseline DB
     let apiForProgram = '../../../api/organisationUnits/'+orgUnit+'.json?fields=id,name,programs[id,name]&paging=false' // loading program for the ou
     const requestOne = axios.get(api1);
     const requestThree = axios.get(api4);
