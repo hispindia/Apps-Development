@@ -4,7 +4,7 @@ export const ApiService = {
 };
 
 async function getReportList() {
-    let response = await fetch(`${process.env.REACT_APP_DHIS2_BASE_URL}/api/reports.json?fields=[id,name,reportParams]&paging=false`, {
+    let response = await fetch(`${process.env.REACT_APP_DHIS2_BASE_URL}/api/reports.json?fields=id,name,reportParams&paging=false`, {
         method: 'GET',
         credentials: 'include',
         headers: {

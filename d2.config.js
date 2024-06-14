@@ -1,6 +1,6 @@
 const config = {
-    name: 'Custom Reports',
-    title: 'Custom Reports',
+    name: 'Custom Reports-FHI',
+    title: 'Custom Reports-FHI',
     type: 'app',
 
     entryPoints: {
