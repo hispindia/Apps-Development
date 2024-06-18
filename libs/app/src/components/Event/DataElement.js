@@ -74,7 +74,25 @@ export const DataElement = ({ id }) => {
     }
 
     if (hide) return null
-
+    // const DATAEVALUE = useSelector(
+    //     (state) => state.data.previousValues );
+    //  console.log("Event valu passedddd=====",DATAEVALUE)
+      
+    
+    //  useEffect(() => {
+    //   if (DATAEVALUE && DATAEVALUE["u8VDCIwa3w4"] ) {
+        
+        
+    
+    //     dispatch(
+    //       setEventValue(
+    //         "u8VDCIwa3w4",
+    //         value,false
+    //       )
+    //     );
+       
+    //   }
+    // }, [DATAEVALUE]);
     return (
         <Padding>
             {optionSetValue ? (

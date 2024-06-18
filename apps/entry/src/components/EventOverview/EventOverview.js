@@ -19,7 +19,7 @@ import Tabs from "./Tabs";
 import "./styles.css";
 import TabPane from "./Tab-Pane";
 
-import { TABVALUES,SAMPLE_PROGRAM_CODE,PROGRAM_CODE } from './constants'
+import { TABVALUES, SAMPLE_PROGRAM_CODE, PROGRAM_CODE ,PROGRAMS_CODE,PROGRASS_CODE } from './constants'
 if (!process.env.REACT_APP_DHIS2_TABLE_CONFIG)
     throw new Error(
         'The environment variable REACT_APP_DHIS2_TABLE_CONFIG must be set'
@@ -44,6 +44,9 @@ export const EventOverview = ({ match, history }) => {
     const tabValue = TABVALUES;
     let SAMPLEPROGRAMCODE = SAMPLE_PROGRAM_CODE;
     let PROGRAMCODE = PROGRAM_CODE;
+  
+    let PROGRAMSCODE = PROGRAMS_CODE;
+    let PROGRAMSSCODE = PROGRASS_CODE;
     var [eventstatus, setEventstatus] = useState('ALL')
     var [code, setCode] = useState("ALL")
     const { rows, loading, addButtonDisabled, error } = useEvents(status,eventstatus,code)
@@ -73,28 +76,33 @@ export const EventOverview = ({ match, history }) => {
     console.log("getting event staus in the event list",eventstatus)
     const handleChange = (returnValue) => {
         var programCode = returnValue[2];
-        var programStatus = returnValue[1]
-        if (programCode == SAMPLEPROGRAMCODE && programStatus == "pending") {
-            setEventstatus('ACTIVE');
-            setCode(SAMPLEPROGRAMCODE);
+        var programStatus = returnValue[1];
+        // console.log("retun =====",returnValue)
+        // console.log("program status===",programStatus)
+        if (programCode == SAMPLEPROGRAMCODE && programStatus == "Spending") {
+          setEventstatus("SACTIVE");
+          setCode(SAMPLEPROGRAMCODE);
         }
-        else if (programCode == SAMPLEPROGRAMCODE && programStatus == "complete") {
-            setEventstatus('COMPLETED');
-            setCode(SAMPLEPROGRAMCODE);
+        else if (programCode == PROGRAMSCODE && programStatus == "pending") {
+          setEventstatus("ACTIVE");
+          setCode(PROGRAMSCODE);
         }
-        else if (programCode == PROGRAMCODE && programStatus == "pending") {
-            setEventstatus('ACTIVE');
-            setCode(PROGRAMCODE);
-        }
-        else if (programCode == PROGRAMCODE && programStatus == "complete") {
-            setEventstatus('NotCOMPLETED');
-            setCode(PROGRAMCODE);
+          else if (programCode == PROGRAMCODE && programStatus == "complete") {
+          setEventstatus("NotCOMPLETED");
+          setCode(PROGRAMCODE);
+        } 
+        else if (
+          programCode == PROGRAMSSCODE &&
+          programStatus == "Scomplete"
+        ) {
+          setEventstatus("COMPLETED");
+          setCode(PROGRAMSSCODE);
         }
         else {
-            setEventstatus('ALL');
-            setCode('ALL');
+          setEventstatus("ALL");
+          setCode("ALL");
         }
-    };
+      };
     /**
      * Called when table row is clicked.
      */

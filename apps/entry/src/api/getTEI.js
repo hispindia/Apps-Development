@@ -192,7 +192,7 @@ export const getPendingSampleResult = async (orgUnit) => {
     "&order=lastUpdated:desc&skipPaging=true";
   //let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&order=lastUpdated:desc&skipPaging=true"
   let api3 = "../../../api/29/sqlViews/gxov92xU7S7/data.json&paging=false"; // Local Db
-  let api4 = "../../../api/sqlViews/W0TR2IZ0bkk/data.json?paging=false"; // Baseline DB
+  let api4 = "../../../api/sqlViews/i580pPKhZYI/data.json?paging=false"; // Baseline DB
   let apiForProgram =
     "../../../api/organisationUnits/" +
     orgUnit +
@@ -343,7 +343,7 @@ export const getSterileTEI = async (orgUnit) => {
     "&order=lastUpdated:desc&skipPaging=true";
   //let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&order=lastUpdated:desc&skipPaging=true"
   let api3 = "../../../api/29/sqlViews/gxov92xU7S7/data.json&paging=false"; // Local Db
-  let api4 = "../../../api/sqlViews/xza0e3uZOwy/data.json?paging=false"; // Baseline DB
+  let api4 = "../../../api/sqlViews/PbBzZ9moGws/data.json?paging=false"; // Baseline DB
   let apiForProgram =
     "../../../api/organisationUnits/" +
     orgUnit +
@@ -494,7 +494,7 @@ export const getPendingAntiResult = async (orgUnit) => {
     "&order=lastUpdated:desc&skipPaging=true";
   //let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&order=lastUpdated:desc&skipPaging=true"
   let api3 = "../../../api/29/sqlViews/gxov92xU7S7/data.json&paging=false"; // Local Db
-  let api4 = "../../../api/sqlViews/ueaVFnLgA9r/data.json?paging=false"; // Baseline DB
+  let api4 = "../../../api/sqlViews/dsusTMovKwB/data.json?paging=false"; // Baseline DB
   let apiForProgram =
     "../../../api/organisationUnits/" +
     orgUnit +
@@ -645,7 +645,7 @@ export const getAntibioticFollowTEI = async (orgUnit) => {
     "&order=lastUpdated:desc&skipPaging=true";
   //let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&order=lastUpdated:desc&skipPaging=true"
   let api3 = "../../../api/29/sqlViews/gxov92xU7S7/data.json&paging=false"; // Local Db
-  let api4 = "../../../api/sqlViews/KK999jPVLkG/data.json?paging=false"; // Baseline DB
+  let api4 = "../../../api/sqlViews/m9eLaBvd90E/data.json?paging=false"; // Baseline DB
   let apiForProgram =
     "../../../api/organisationUnits/" +
     orgUnit +
