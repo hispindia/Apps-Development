@@ -1,47 +1,45 @@
-# Apps-Development
-HISP INDIA External Apps Development
+This project was bootstrapped with [DHIS2 Application Platform](https://github.com/dhis2/app-platform).
 
+## Available Scripts
 
- # Link of other external Apps developed:
+In the project directory, you can run:
 
- 1# Tracker data approval app developed for UPHMIS
-    https://github.com/hispindia/dhis-tracker-data-approval-app
+### `yarn start`
 
- 2# e-Aushadhi Stock Data Import App developed for malaria
-    https://github.com/hispindia/dhis-app-excel-import/tree/Aggrigate-Data-Excel-Import-App-Without-Mapping
-	
- 3# Aggregate data excel import app developed for maharashtra with multiple OU and multiple Data Element
-    https://github.com/hispindia/dhis-app-excel-import/tree/Aggregate-Data-Excel-Import-App-MultipleOU-MultipleDE
- 
- 4# Excel import app for multiple stages version 2.27
-    https://github.com/hispindia/dhis-app-excel-import/tree/2.27-MWMIS-Odisha-Multistage-Excel-Import 
-	
- 5# Excel import app for multiple stages version 2.26
-    https://github.com/hispindia/dhis-app-excel-import/tree/2.26-AES-Multistage-Excel-Import
-	
- 6# Excel import app for aggrigate & tracker data version 2.27
-    https://github.com/hispindia/dhis-app-excel-import/tree/csv-2.27
-    
- 7# Tracker and event data exporter app ( generic, msf, tibet branches )  
-    https://github.com/hispindia/tracker-data-exporter-app/
-	
- 8# Intractive Dashboard app ( For ICMR-GBD )  
-    https://github.com/hispindia/interactive-dashboard-vuejs
-	
- 9# openimis-dhis2integration
-    https://github.com/hispindia/openimis-dhis2integration
-	https://github.com/hispindia/openimis-fhir-definitions
-	https://github.com/hispindia/openimis-be-api_fhir_py
-	https://github.com/openimis/openimis-be_py/tree/develop
+Runs the app in the development mode.<br />
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
- 10# kenya-sms-alert 
-    https://github.com/hispindia/dhis-outlier-analysis/tree/kenya-sms-alert	
+The page will reload if you make edits.<br />
+You will also see any lint errors in the console.
 
- 11# This app build in Angular JS
- 
-	After removing translation and trackedentitydatavalue table from 2.32 ownward
+### `yarn test`
 
-    1) Used for import translation for 2.32
-    2) Event-datavalue update/add for single-dataelement for 2.32
-	
-      https://github.com/hispindia/Apps-Development/tree/excel-to-json-angular
+Launches the test runner and runs all available tests found in `/src`.<br />
+
+See the section about [running tests](https://platform.dhis2.nu/#/scripts/test) for more information.
+
+### `yarn build`
+
+Builds the app for production to the `build` folder.<br />
+It correctly bundles React in production mode and optimizes the build for the best performance.
+
+The build is minified and the filenames include the hashes.<br />
+A deployable `.zip` file can be found in `build/bundle`!
+
+See the section about [building](https://platform.dhis2.nu/#/scripts/build) for more information.
+
+### `yarn deploy`
+
+Deploys the built app in the `build` folder to a running DHIS2 instance.<br />
+This command will prompt you to enter a server URL as well as the username and password of a DHIS2 user with the App Management authority.<br/>
+You must run `yarn build` before running `yarn deploy`.<br />
+
+See the section about [deploying](https://platform.dhis2.nu/#/scripts/deploy) for more information.
+
+## Learn More
+
+You can learn more about the platform in the [DHIS2 Application Platform Documentation](https://platform.dhis2.nu/).
+
+You can learn more about the runtime in the [DHIS2 Application Runtime Documentation](https://runtime.dhis2.nu/).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
