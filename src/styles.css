@@ -1,0 +1,51 @@
+:root {
+  --orientation: portrait;
+}
+
+#root {
+  height:98vh;
+}
+
+#main-container {
+  text-align: right;
+  padding:1rem;
+}
+
+
+table {
+  width: 100%;
+}
+#events table, #events table th, #events table td {
+    border: 1px solid rgb(146, 141, 141);
+    border-collapse: collapse;
+} 
+
+.table-secondary {
+  background: #e2e3e5;
+}
+
+#attributes {
+  width: 50% !important;
+  float: left;
+}
+
+#events {
+  width: 50% !important;
+  float: right;
+}
+
+#logo {
+  background-color: #27377a;
+  color: white;
+}
+
+@media print {
+  body {
+    print-color-adjust: exact;
+    margin: 0;
+  }
+  @page {
+    size: A4 var(--orientation);
+    margin: 1rem 0;
+  }
+}
