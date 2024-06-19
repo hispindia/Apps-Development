@@ -1,8 +1,8 @@
 const config = {
     type: 'app',
-
+    name: 'Custom-Reports-SCI',
     entryPoints: {
-        app: './src/App',
+        app: './src/App.js',
     },
 }
 

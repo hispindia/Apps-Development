@@ -1,38 +1,45 @@
-# Standard Report App
+This project was bootstrapped with [DHIS2 Application Platform](https://github.com/dhis2/app-platform).
 
-Standard Report App is a ReactJs app used for generating custom reports.
+## Available Scripts
 
+In the project directory, you can run:
 
-## Prerequisites
+### `yarn start`
 
-This app is not dependent on the below command still we recommend running this once.
+Runs the app in the development mode.<br />
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-```  
-yarn global add @dhis2/cli
+The page will reload if you make edits.<br />
+You will also see any lint errors in the console.
 
-```
+### `yarn test`
 
-## Installation
+Launches the test runner and runs all available tests found in `/src`.<br />
 
--   Firstly update the base url in `.env.development` if your DHIS2 installation is not available at `http://localhost:8080`. For example, if your DHIS2 installation is available at `http://localhost:8090`:
-    ```
-    REACT_APP_DHIS2_BASE_URL=http://localhost:8090
-    ```
+See the section about [running tests](https://platform.dhis2.nu/#/scripts/test) for more information.
 
--   Change the version in `.env` if the DHIS2 version is 30 then write it as:
-    ```
-    REACT_APP_DHIS2_API_VERSION=30
-    ```
+### `yarn build`
 
--    Execute the commands:
+Builds the app for production to the `build` folder.<br />
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-    ```
-    yarn install
-    yarn start
-    ```
+The build is minified and the filenames include the hashes.<br />
+A deployable `.zip` file can be found in `build/bundle`!
 
-# Building
+See the section about [building](https://platform.dhis2.nu/#/scripts/build) for more information.
 
-```
-    yarn build
-```
+### `yarn deploy`
+
+Deploys the built app in the `build` folder to a running DHIS2 instance.<br />
+This command will prompt you to enter a server URL as well as the username and password of a DHIS2 user with the App Management authority.<br/>
+You must run `yarn build` before running `yarn deploy`.<br />
+
+See the section about [deploying](https://platform.dhis2.nu/#/scripts/deploy) for more information.
+
+## Learn More
+
+You can learn more about the platform in the [DHIS2 Application Platform Documentation](https://platform.dhis2.nu/).
+
+You can learn more about the runtime in the [DHIS2 Application Runtime Documentation](https://runtime.dhis2.nu/).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
