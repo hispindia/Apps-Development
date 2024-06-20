@@ -960,7 +960,7 @@ export const htmlFile = `
 
             if (document.getElementsByClassName('selected')[0]) {
                 oid = document.getElementsByClassName('selected')[0].href;
-                oid = oid.split(' ')[1];
+                oid = oid.split('"')[1];
             }
 
             if (numOfNetReports == 0) {
@@ -1296,7 +1296,7 @@ export const htmlFile = `
 
             if (document.getElementsByClassName('selected')[0]) {
                 oid = document.getElementsByClassName('selected')[0].href;
-                oid = oid.split(' ')[1];
+                oid = oid.split('"')[1];
                 selectedOrgUnitUid = oid;
             }
         }
@@ -1391,7 +1391,7 @@ export const htmlFile = `
 
             if (document.getElementsByClassName('selected')[0]) {
                 oid = document.getElementsByClassName('selected')[0].href;
-                oid = oid.split(' ')[1];
+                oid = oid.split('"')[1];
             }
 
 
