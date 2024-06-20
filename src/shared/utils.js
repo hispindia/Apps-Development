@@ -113,10 +113,17 @@ export const setDataElements = (tei, sample) => {
       if (id) idValues[id] = tei[index + 1];
       if (id == sampleId) deStatus = true;
       if (deStatus && id && tei[index + 1]) {
-        dataElement.push({
-          dataElement: id,
-          value: tei[index + 1],
-        });
+        if(id=="lRf0I6z6ay8") {
+          dataElement.push({
+            dataElement: id,
+            value: tei[index + 1] + ' ',
+          });
+        } else {
+          dataElement.push({
+            dataElement: id,
+            value: tei[index + 1],
+          });
+        }
       }
     });
   }
