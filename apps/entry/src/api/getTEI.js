@@ -30,12 +30,15 @@ export const getTEIAll = async (orgUnit) => {
   //api/trackedEntityInstances.json?ouMode=DESCENDANTS&ou=ANGhR1pa8I5&paging=false&lastUpdatedStartDate=2022-07-13&&lastUpdatedEndDate=2022-09-13
   //let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&lastUpdatedStartDate=2021-01-01&paging=false"
   //let api1 = "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou="+orgUnit+"&lastUpdatedStartDate=" + isoDateFormat +"&skipPaging=true"
+  // let api1 =
+  //   "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou=" +
+  //   orgUnit +
+  //   "&lastUpdatedStartDate=" +
+  //   isoDateFormat +
+  //   "&order=lastUpdated:desc&skipPaging=true";// this api is latest comment api
   let api1 =
-    "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou=" +
-    orgUnit +
-    "&lastUpdatedStartDate=" +
-    isoDateFormat +
-    "&order=lastUpdated:desc&skipPaging=true";
+  "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou=" +
+  orgUnit +"&order=lastUpdated:desc&skipPaging=true";
   let api3 = "../../../api/29/sqlViews/gxov92xU7S7/data.json&paging=false"; // Local Db
   let api4 = "../../../api/sqlViews/WKhh3qxwcPW/data.json?paging=false"; // Baseline DB
   let apiForProgram =
@@ -177,12 +180,15 @@ export const getPendingSampleResult = async (orgUnit) => {
   var twoMonthBeforeDate = new Date(
     new Date().setDate(new Date().getDate() - 60)
   );
+  // let api1 =
+  //   "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou=" +
+  //   orgUnit +
+  //   "&lastUpdatedStartDate=" +
+  //   isoDateFormat +
+  //   "&order=lastUpdated:desc&skipPaging=true";
   let api1 =
-    "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou=" +
-    orgUnit +
-    "&lastUpdatedStartDate=" +
-    isoDateFormat +
-    "&order=lastUpdated:desc&skipPaging=true";
+  "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou=" +
+  orgUnit + "&order=lastUpdated:desc&skipPaging=true";
   let api3 = "../../../api/29/sqlViews/gxov92xU7S7/data.json&paging=false"; // Local Db
   let api4 = "../../../api/sqlViews/lfsarXAW9j6/data.json?paging=false"; // Baseline DB
   let apiForProgram =
@@ -327,12 +333,15 @@ export const getSterileTEI = async (orgUnit) => {
     new Date().setDate(new Date().getDate() - 60)
   );
 
+  // let api1 =
+  //   "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou=" +
+  //   orgUnit +
+  //   "&lastUpdatedStartDate=" +
+  //   isoDateFormat +
+  //   "&order=lastUpdated:desc&skipPaging=true";
   let api1 =
-    "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou=" +
-    orgUnit +
-    "&lastUpdatedStartDate=" +
-    isoDateFormat +
-    "&order=lastUpdated:desc&skipPaging=true";
+  "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou=" +
+  orgUnit + "&order=lastUpdated:desc&skipPaging=true";
 
   let api4 = "../../../api/sqlViews/umLlwbUhDv1/data.json?paging=false"; // Baseline DB
 
@@ -357,12 +366,13 @@ export const getSterileTEI = async (orgUnit) => {
               var sampleValue = "";
               var locationValue = "";
               var sampleProgram = "";
-
+console.log("events=============", events)
               if (!SampleDict.hasOwnProperty(trackerid)) {
                 if (!events[5]) {
                   tempEventDate = "No data to show";
                 } else {
                   tempEventDate = events[5];
+                
                 }
                 //var eventDataValuesOutputArray = JSON.parse(events[3].value);
                 var eventDataValuesOutputArray = JSON.parse(events[3]);
@@ -476,12 +486,15 @@ export const getPendingAntiResult = async (orgUnit) => {
     new Date().setDate(new Date().getDate() - 60)
   );
 
+  // let api1 =
+  //   "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou=" +
+  //   orgUnit +
+  //   "&lastUpdatedStartDate=" +
+  //   isoDateFormat +
+  //   "&order=lastUpdated:desc&skipPaging=true";
   let api1 =
-    "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou=" +
-    orgUnit +
-    "&lastUpdatedStartDate=" +
-    isoDateFormat +
-    "&order=lastUpdated:desc&skipPaging=true";
+  "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou=" +
+  orgUnit +"&order=lastUpdated:desc&skipPaging=true";
 
   let api4 = "../../../api/sqlViews/kTBQ3hlAV57/data.json?paging=false"; // Baseline DB
   let apiForProgram =
@@ -626,12 +639,15 @@ export const getAntibioticFollowTEI = async (orgUnit) => {
     new Date().setDate(new Date().getDate() - 60)
   );
 
+  // let api1 =
+  //   "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou=" +
+  //   orgUnit +
+  //   "&lastUpdatedStartDate=" +
+  //   isoDateFormat +
+  //   "&order=lastUpdated:desc&skipPaging=true";
   let api1 =
-    "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou=" +
-    orgUnit +
-    "&lastUpdatedStartDate=" +
-    isoDateFormat +
-    "&order=lastUpdated:desc&skipPaging=true";
+  "../../../api/trackedEntityInstances.json?ouMode=DESCENDANTS&program=L7bu48EI54J&ou=" +
+  orgUnit +"&order=lastUpdated:desc&skipPaging=true";
 
   let api4 = "../../../api/sqlViews/Sth0MdRyPKd/data.json?paging=false"; // Baseline DB  OPlLmU9hMHV(Testing Uid)
 

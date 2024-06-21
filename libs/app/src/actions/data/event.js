@@ -623,8 +623,10 @@ export const nextEvent = (next, addMoreSample, addMoreIso) => async (
     if (addMoreSample) {
       dispatch(createAction(RESET_SAMPLE_PANEL_EVENT));
     }
-    if (addMoreIso) dispatch(createAction(RESET_PANEL_EVENT));
-    else {
+    if (addMoreIso) {
+      dispatch(createAction(PANEL_EDITABLE));
+      dispatch(createAction(RESET_PANEL_EVENT));
+    } else {
       if (
         eventValues[ORGANISM_DETECTED] == "Organism growth detected" ||
         isEventEditable

@@ -24,7 +24,7 @@ const StyledButtonRow = styled(ButtonRow)`
 
 export const EventButtons = ({ history, existingEvent }) => {
     const dispatch = useDispatch()
-    const buttonsDisabled = useSelector(state => state.data.buttonsDisabled)
+    
     var btnStatus = useSelector(state => state.data.btnStatus)
     const status = useSelector(state => state.data.event.status)
     const event = useSelector(state => state.data.event)
@@ -51,11 +51,14 @@ export const EventButtons = ({ history, existingEvent }) => {
     var { program } = useSelector(state => state.data.panel);
     const eventValue = useSelector(state => state.data.event.values)
     var subAndAddNewSampleBtn = true
+    var subSampleBtn = true;  
     var programCheck = program == "L7bu48EI54J" ? false : true;
     var teiAttributeValues = useSelector(state=>state.data.entity.values);
     var userAccess = false;
-     if (eventValue) if(eventValue.B7XuDaXPv10 && eventValue.GpAu5HjWAEz && eventValue.dRKIjwIDab4 && eventValue.mp5MeJ2dFQz && eventValue.lJm7JZvPQxA) subAndAddNewSampleBtn=false
-    programs.forEach(p => {
+     if (eventValue) if(eventValue.B7XuDaXPv10 && eventValue.GpAu5HjWAEz && eventValue.dRKIjwIDab4 && eventValue.mp5MeJ2dFQz && eventValue.lJm7JZvPQxA && eventValue.u8VDCIwa3w4) subAndAddNewSampleBtn=false
+    //  if (eventValue) if(eventValue.B7XuDaXPv10 && eventValue.GpAu5HjWAEz && eventValue.dRKIjwIDab4 && eventValue.mp5MeJ2dFQz && eventValue.lJm7JZvPQxA ) subAndAddNewSampleBtn=false
+
+     programs.forEach(p => {
         p.programStages.forEach(ps => {
             userAccess = ps.access.data.write
         })
@@ -165,7 +168,7 @@ export const EventButtons = ({ history, existingEvent }) => {
     const submitAddButtonIso = {
         label: 'Submit and add new isolate',
         onClick: submitAddIso,
-        disabled: !valid || buttonsDisabled || aggregationOnProgress,
+        disabled: !valid || aggregationOnProgress,
         icon: 'add',
         primary: true,
         tooltip:
@@ -180,7 +183,7 @@ export const EventButtons = ({ history, existingEvent }) => {
     const submitButton = {
         label: 'Submit',
         onClick: onSubmitClick,
-        disabled: addSampleValid || aggregationOnProgress || subAndAddNewSampleBtn,
+        disabled: addSampleValid || aggregationOnProgress || subAndAddNewSampleBtn ,
         icon: 'done',
         primary: true,
         tooltip:
@@ -210,7 +213,7 @@ export const EventButtons = ({ history, existingEvent }) => {
     const nextButton = {
         label: 'Next',
         onClick: onNext,
-        disabled: buttonsDisabled || !!invalid,
+        disabled:  !!invalid,
         icon: 'arrow_forward',
         primary: true,
         tooltip:
@@ -225,7 +228,7 @@ export const EventButtons = ({ history, existingEvent }) => {
     const completeButton = {
         label: 'Mark Complete',
         onClick: submitExit,
-        disabled: buttonsDisabled || !!invalid || aggregationOnProgress,
+        disabled:  !!invalid || aggregationOnProgress,
         icon: 'done',
         primary: true,
         tooltip:
@@ -240,11 +243,11 @@ export const EventButtons = ({ history, existingEvent }) => {
     const incompleteButton = {
         label: 'Mark Incomplete',
         onClick: onInComplete,
-        disabled: buttonsDisabled || !status.editable || btnStatus || aggregationOnProgress,
+        disabled:  !status.editable || btnStatus || aggregationOnProgress,
         icon: 'edit',
         primary: true,
         tooltip:
-            buttonsDisabled || !status.editable
+             !status.editable
                 ? 'Records with this approval status cannot be edited'
                 : 'Edit record',
         loading: buttonLoading === 'incomplete',
@@ -253,11 +256,11 @@ export const EventButtons = ({ history, existingEvent }) => {
     const editButton = {
         label: 'Edit',
         onClick: onEdit,
-        disabled: buttonsDisabled || !status.editable || btnStatus || aggregationOnProgress,
+        disabled:  !status.editable || btnStatus || aggregationOnProgress,
         icon: 'edit',
         primary: true,
         tooltip:
-            buttonsDisabled || !status.editable
+             !status.editable
                 ? 'Records with this approval status cannot be edited'
                 : 'Edit record',
         loading: buttonLoading === 'edit',
@@ -275,11 +278,12 @@ export const EventButtons = ({ history, existingEvent }) => {
         primary: true,
         tooltip: "Go Back",
         onClick: onBack,
-        disabled: !valid || buttonsDisabled,
+        disabled: !valid ,
     }
+   
     const buttons = () =>
-        existingEvent && !pageFirst ? !eventId ? [] : status.completed ? [incompleteButton, editButton, submitAddButtonIso, Go_Back] : programCheck ? [completeButton, Save, submitAddButtonIso, Go_Back] : [Save, Go_Back]
-            : removeButtton ? [nextButton,Go_Back] : prevValues ? isCompleteClicked ? [incompleteButton, submitAddButtonIso, Go_BackIso] : [completeButton, submitAddButtonIso, Go_BackIso]:[submitButton,submitAddButton,Go_Back]
+        existingEvent && !pageFirst ? !eventId ? [] : (status.completed ? [incompleteButton, editButton, submitAddButtonIso, Go_Back] : (programCheck ? [completeButton, Save, submitAddButtonIso, Go_Back] : [Save, Go_Back]))
+            : (removeButtton ? [nextButton,Go_Back] : (prevValues ?( isCompleteClicked ? [incompleteButton, submitAddButtonIso, Go_BackIso] : [completeButton, submitAddButtonIso, Go_BackIso]):[submitButton,submitAddButton,Go_Back]))
 
     const buttonsReadUsers = () =>
         [Go_Back]

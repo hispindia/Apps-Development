@@ -21,6 +21,8 @@ import TabPane from "./Tab-Pane";
 
 import { TABVALUES, SAMPLE_PROGRAM_CODE, PROGRAM_CODE ,PROGRAMS_CODE,PROGRASS_CODE} from "./constants";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import { setPanelValue } from "@hisp-amr/app/dist/actions/data/panel";
+import { resetPreviousEntity } from "@hisp-amr/app/dist/actions/data/entity";
 if (!process.env.REACT_APP_DHIS2_TABLE_CONFIG)
   throw new Error(
     "The environment variable REACT_APP_DHIS2_TABLE_CONFIG must be set"
@@ -127,7 +129,13 @@ export const EventOverview = ({ match, history }) => {
   /**
    * On table add click.
    */
-  const onAddClick = () => history.push(`/orgUnit/${selected.id}/event/`);
+  const onAddClick = () => {
+    dispatch(resetPreviousEntity());
+    
+    
+    history.push(`/orgUnit/${selected.id}/event/`);
+    
+  }
  
   return (
     <MainSection>

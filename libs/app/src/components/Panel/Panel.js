@@ -14,6 +14,8 @@ import { FirstPage } from "@material-ui/icons";
 export const Panel = ({ showEdit }) => {
   const entityValid = useSelector((state) => state.data.entity.valid);
   const editable = useSelector((state) => state.data.editable);
+  const eventEditable = useSelector((state) => state.data.eventEditable);
+
   const isAddIsolate = useSelector((state) => state.data.isAddIsolate);
   const previousValues = useSelector((state) => state.data.previousValues);
   const dispatch = useDispatch();
@@ -31,7 +33,7 @@ export const Panel = ({ showEdit }) => {
     typeOfIsolates,
   } = useSelector((state) => state.data.panel);
   const PurposeOFSample = useSelector((state) => state.data.previousValues);
-
+ 
   /**
    * Called when a new program is selected.
    */
@@ -158,14 +160,24 @@ export const Panel = ({ showEdit }) => {
 
   if (!entityValid) return null;
 
+//   function handleProgram(pId) {
+// console.log("Pid=======",pId.len)
+//     if ((pId == "L7bu48EI54J" || eventEditable? pId.length >=1 : pId.length==0) ) {
+//       return getDataElement("defaultProgram");
+//     } else return getDataElement("program");
+//   }
+
   return (
     <CardSection heading="Panel" buttons={showEdit && <PanelButtons />}>
       <Grid container spacing={0}>
         <Grid item xs>
-        {(program == "L7bu48EI54J" || program == "") && !editable && !isAddIsolate
+          {/* {(program == "L7bu48EI54J" || program == "") && !editable && !isAddIsolate */}
+
+          {/* {handleProgram(program)} */}
+          {(program == "L7bu48EI54J" || program == "") && !editable 
             ? getDataElement("defaultProgram")
             : getDataElement("program")}
-          
+
           {program &&
             stageLists[program].length >= 1 &&
             getDataElement("programStage")}
