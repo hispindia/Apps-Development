@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+    <title>IPPF</title>
+    <!-- General CSS Files -->
+    <link rel="stylesheet" href="assets/css/app.min.css">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <!-- Custom style CSS -->
+    <link rel="stylesheet" href="assets/css/select2.min.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+    <link rel='shortcut icon' type='image/x-icon' href='assets/images/favicon.ico' />
+</head>
+
+<body>
+
+    <div class="loader"></div>
+    <div id="app">
+        <div class="main-wrapper main-wrapper-1">
+            <div class="navbar-bg"></div>
+            <nav class="navbar navbar-expand-lg main-navbar">
+
+
+                <div class="form-inline">
+                    <ul class="navbar-nav mr-3">
+                        <li>
+                            <a href="#" data-toggle="sidebar" class="nav-link nav-link-lg collapse-btn">
+                                <i class="fas"></i><img src="assets/images/toggle.png">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link nav-link-lg fullscreen-btn">
+                                <i class="fas fa-expand"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <ul class="navbar-nav navbar-right align-items-center ml-auto">
+                    <li>
+                        <div class="languag-wrap btn mr-1">
+                            <span><i class="fa fa-globe" aria-hidden="true"></i></span>
+                            <select>
+                                <option selected>English</option>
+                                <option>Spanish</option>
+                                <option>Arabic</option>
+                                <option>French</option>
+                            </select>
+                        </div>
+                    </li>
+                    <li>
+                        <a class="btn btn-secondary d-flex align-items-center ml-1">
+                            <i class="fa fa-building-o" aria-hidden="true"></i>
+                            <div>FPA INDIA</div>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="main-sidebar sidebar-style-2">
+                <aside id="sidebar-wrapper">
+                    <div class="sidebar-brand">
+                        <a href="#">
+                            <img alt="image" src="assets/images/logo.png" class="header-logo" />
+                        </a>
+                    </div>
+                    <ul class="sidebar-menu">
+
+
+                        <li><a class="nav-link" href="#"><i class="fas fa-qrcode"></i><span>Masters
+                                    Maintenance</span></a></li>
+
+
+                        <li class="dropdown ">
+                            <a href="supplier-audit.html" class="nav-link has-dropdown">
+                                <i class="fas fa-briefcase"></i>
+                                <span>3 Year Business Plan</span>
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li><a class="nav-link" href="#factory_cert_policy"><i
+                                            class="fas fa-industry"></i><span>1.1 Organization Details</span></a></li>
+                                <li><a class="nav-link" href="#emergency_contact"><i class="fas fa-medkit"></i><span>1.2
+                                            Narrative Report </span></a></li>
+                                <li><a class="nav-link" href="#fire_fighting_system"><i
+                                            class="fas fa-fire-extinguisher"></i><span>2.1 Project Description
+                                        </span></a></li>
+                                <li><a class="nav-link" href="#"><i class="fas fa-umbrella"></i><span>2.2 Project Budget
+                                        </span></a></li>
+                                <li><a class="nav-link" href="#"><i class="fas fa-user-shield"></i><span>2.3 Project by
+                                            focus area</span></a></li>
+                                <li><a class="nav-link" href="#"><i class="fas fa-broom"></i><span>2.4 Projects by
+                                            expense category </span></a></li>
+                                <li><a class="nav-link" href="#"><i class="far fa-lightbulb"></i><span>3.1 Total
+                                            Income</span></a></li>
+                                <li><a class="nav-link" href="#"><i class="fas fa-tasks"></i><span>3.2 Income by donor
+                                        </span></a></li>
+                                <li><a class="nav-link" href="#"><i class="fas fa-flask"></i><span>3.3 Value add of core
+                                            funding</span></a></li>
+                                <li><a class="nav-link" href="#"><i class="fas fa-skull-crossbones"></i><span>3.4 Order
+                                            commodities from IPPF</span></a></li>
+                                <li><a class="nav-link" href="#"><i class="fas fa-cogs"></i><span>3.5 Commodities by
+                                            source of funding</span></a></li>
+
+                            </ul>
+                        </li>
+                        <li><a class="nav-link" href="#"><i class="fas fa-qrcode"></i><span>Annual Business Plan Updates
+                                    & Approval </span></a></li>
+                        <li><a class="nav-link" href="#"><i class="fas fa-qrcode"></i><span>Annual / Semi-Annual Report
+                                    Submission & Approval </span></a></li>
+                        <li><a class="nav-link" href="#"><i class="fas fa-qrcode"></i><span>Standard Report Generation
+                                    from the BP Portal </span></a></li>
+                    </ul>
+
+                </aside>
+            </div>
+            <!-- Main Content -->
+            <div class="main-content">
+                <section class="section">
+                    <div class="section-body">
+                        <div class="top-detail-form mt-2">
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label for="">Period</label>
+                                    <select class="form-control" id="periodSelect">
+                                        <option selected>2023 - 2025</option>
+                                        <option>2026-2028</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Error here
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="">Organisation ID</label>
+                                    <input type="text" class="form-control" id="headerOrgId" value="SAR">
+                                    <div class="invalid-feedback">
+                                        Error here
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for=""> </label>
+                                    <input type="text" class="form-control mt-1" disabled id="headerOrgName"
+                                        value="FPA India" id="">
+
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for=""> </label>
+                                    <input type="text" class="form-control mt-1" disabled id="headerOrgCode"
+                                        value="203">
+                                    <div class="invalid-feedback">
+                                        Error here
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="steps mt-3">
+                            <ul>
+                                <li class="active">
+                                    <span>1</span>
+                                </li>
+                                <li class="">
+                                    <span>2</span>
+                                </li>
+
+                                <li class="">
+                                    <span>3</span>
+                                </li>
+
+                                <li class="">
+                                    <span>4</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="form-wizard">
+                            <div class="myContainer">
+                                <div class=" stepperform animated accordion-wrap">
+                                    <form>
+                                        <div id="accordion">
+                                            <div class="accordion">
+                                                <!-- Membership Details Form -->
+                                                <form id="membershipDetailsForm">
+                                                    <div class="accordion-header active" role="button"
+                                                        data-toggle="collapse" data-target="#panel-body-1">
+                                                        <h4> <span class="number">1</span> Membership details</h4>
+                                                    </div>
+                                                    <div class="accordion-body collapse" id="panel-body-1"
+                                                        data-parent="#accordion">
+
+                                                        <!---- quest start here --->
+                                                        <div class="box-from-inner">
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-4 textbox-wrap">
+                                                                    <label for="">Country of Operation</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="countryOfOperation" value="">
+                                                                    <div class="invalid-feedback">
+                                                                        Error here
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group col-md-4 textbox-wrap">
+                                                                    <label for="">Organisation Code</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="organisationCode" value="203" disabled>
+
+                                                                    <div class="invalid-feedback">
+                                                                        Error here
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group col-md-4 textbox-wrap">
+                                                                    <label for="">IPPF Region</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="ippfRegion" value="SAR" disabled>
+
+                                                                    <div class="invalid-feedback">
+                                                                        Error here
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group col-md-6 textbox-wrap">
+                                                                    <label for="">Organisation Name (english)</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="organisationName" value="FPA India (203)"
+                                                                        disabled>
+
+                                                                    <div class="invalid-feedback">
+                                                                        Error here
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group col-md-6 textbox-wrap">
+                                                                    <label for="">Organisation Name (original
+                                                                        lang)</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="organisationNameO" value="">
+
+                                                                    <div class="invalid-feedback">
+                                                                        Error here
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group col-md-4 textbox-wrap">
+                                                                    <label for="">Formula-generated proposed grant
+                                                                        amount
+                                                                        (Year 1) (USD)</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="formulaGeneratedYear1" value="$" disabled>
+
+                                                                    <div class="invalid-feedback">
+                                                                        Error here
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group col-md-4 textbox-wrap">
+                                                                    <label for="">Provisional formula- generated grant
+                                                                        amount (Year 2) (USD)</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="formulaGeneratedYear2" value="$" disabled>
+
+                                                                    <div class="invalid-feedback">
+                                                                        Error here
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group col-md-4 textbox-wrap">
+                                                                    <label for="">Provisional formula- generated grant
+                                                                        amount (Year 3) (USD)</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="formulaGeneratedYear3" value="$" disabled>
+
+                                                                    <div class="invalid-feedback">
+                                                                        Error here
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-4 textbox-wrap">
+                                                                <label for="">Primary contact person</label>
+                                                                <input type="text" class="form-control"
+                                                                    id="primaryContact">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-md-4 textbox-wrap">
+                                                                <label for="">Contact no</label>
+                                                                <input type="text" class="form-control" id="contact1">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="form-group col-md-4 textbox-wrap">
+                                                                <label for="">Contact no</label>
+                                                                <input type="text" class="form-control" id="attremail1">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12 text-right">
+
+
+                                                                <div class="form-group text-end mar-b-0">
+                                                                    <!--    <input type="button" value="CANCEL" class="btn btn-secondary mr-3"> -->
+                                                                    <input type="button" value="SAVE AS DRAFT"
+                                                                        class="btn btn-secondary"
+                                                                        id="saveMembershipDetailsBtn">
+                                                                    <input type="button" value="NEXT" id="nextButton"
+                                                                        class="btn btn-primary">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                            <div class="accordion">
+
+                                                <div class="accordion-header" role="button" data-toggle="collapse"
+                                                    data-target="#panel-body-2">
+                                                    <h4><span class="number">2</span> Institutional Data </h4>
+                                                </div>
+                                                <div class="accordion-body collapse" id="panel-body-2"
+                                                    data-parent="#accordion">
+                                                    <form id="institutionalDataForm">
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-12">
+                                                                <label for="">Address</label>
+                                                                <input type="text" class="form-control" id="address">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12">
+                                                                <h3 class="">Key contacts</h3>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12">
+                                                                <h4>Executive Director / CEO (or equivalent)</h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-4">
+                                                                <label for="">Name</label>
+                                                                <input type="text" class="form-control"
+                                                                    id="executiveDirectorName">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for=""> Contact email</label>
+                                                                <input type="email" class="form-control"
+                                                                    id="executiveDirectorEmail">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for="">Contact phone</label>
+                                                                <input type="mobile" class="form-control"
+                                                                    id="executiveDirectorPhone">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12">
+                                                                <h4>Board chair / President (or equivalent)</h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-4">
+                                                                <label for="">Name</label>
+                                                                <input type="text" class="form-control"
+                                                                    id="boardChairName">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for=""> Contact email</label>
+                                                                <input type="email" class="form-control"
+                                                                    id="boardChairEmail">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for="">Contact phone</label>
+                                                                <input type="mobile" class="form-control"
+                                                                    id="boardChairPhone">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12">
+                                                                <h4>Officer of the board #1 (e.g., vice president,
+                                                                    secretary, treasurer)</h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-4">
+                                                                <label for="">Name</label>
+                                                                <input type="text" class="form-control"
+                                                                    id="officeName1">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for=""> Contact email</label>
+                                                                <input type="email" class="form-control"
+                                                                    id="officeEmail1">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for="">Contact phone</label>
+                                                                <input type="mobile" class="form-control"
+                                                                    id="officePhone1">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12">
+                                                                <h4>Officer of the board #2 (e.g., vice president,
+                                                                    secretary, treasurer)</h4>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-4">
+                                                                <label for="">Name</label>
+                                                                <input type="text" class="form-control"
+                                                                    id="officeName2">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for=""> Contact email</label>
+                                                                <input type="email" class="form-control"
+                                                                    id="officeEmail2">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for="">Contact phone</label>
+                                                                <input type="mobile" class="form-control"
+                                                                    id="officePhone2">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12">
+                                                                <h4>Officer of the board #3 (e.g., vice president,
+                                                                    secretary, treasurer)</h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-4">
+                                                                <label for="">Name</label>
+                                                                <input type="text" class="form-control"
+                                                                    id="officeName3">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for=""> Contact email</label>
+                                                                <input type="email" class="form-control"
+                                                                    id="officeEmail3">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for="">Contact phone</label>
+                                                                <input type="mobile" class="form-control"
+                                                                    id="officePhone3">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12">
+                                                                <h4>Youth board member</h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-4">
+                                                                <label for="">Name</label>
+                                                                <input type="text" class="form-control" id="boardName">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for=""> Contact email</label>
+                                                                <input type="email" class="form-control"
+                                                                    id="boardEmail">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for="">Contact phone</label>
+                                                                <input type="mobile" class="form-control"
+                                                                    id="boardContact">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12">
+                                                                <h4>Programmatic lead(s)</h4>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-4">
+                                                                <label for="">Name</label>
+                                                                <input type="text" class="form-control"
+                                                                    id="programLead1Name">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for=""> Contact email</label>
+                                                                <input type="email" class="form-control"
+                                                                    id="programLead1Email">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for="">Contact phone</label>
+                                                                <input type="mobile" class="form-control"
+                                                                    id="programLead1Phone">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12">
+                                                                <h4>Programmatic lead(s)</h4>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-4">
+                                                                <label for="">Name</label>
+                                                                <input type="text" class="form-control"
+                                                                    id="programLead2Name">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for=""> Contact email</label>
+                                                                <input type="email" class="form-control"
+                                                                    id="programLead2Email">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for="">Contact phone</label>
+                                                                <input type="mobile" class="form-control"
+                                                                    id="programLead2Phone">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="btn-wrap">
+                                                                    <div class="btn-wrap-inner">
+                                                                        <a href="#">-</a>
+                                                                        <a href="#">+</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div> -->
+                                                        <hr>
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12">
+                                                                <h4>Finance lead</h4>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-4">
+                                                                <label for="">Name</label>
+                                                                <input type="text" class="form-control"
+                                                                    id="financeLeadName">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for=""> Contact email</label>
+                                                                <input type="email" class="form-control"
+                                                                    id="financeLeadEmail">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for="">Contact phone</label>
+                                                                <input type="mobile" class="form-control"
+                                                                    id="financeLeadPhone">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12">
+                                                                <h4>Current board term</h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-4">
+                                                                <label for="">
+                                                                    Start year</label>
+                                                                <input type="text" class="form-control"
+                                                                    id="programLeadSDate">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for="">End year</label>
+                                                                <input type="text" class="form-control"
+                                                                    id="programLeadEDate">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12 text-right">
+                                                                <div class="form-group text-end mar-b-0">
+                                                                    <input type="button" value="SAVE AS DRAFT"
+                                                                        class="btn btn-secondary"
+                                                                        id="saveInstitutionalDataBtn">
+                                                                    <input type="button" value="NEXT" id="nextButton2"
+                                                                        class="btn btn-primary">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <div class="accordion">
+                                                <div class="accordion-header" role="button" data-toggle="collapse"
+                                                    data-target="#panel-body-3">
+
+                                                    <h4><span class="number">3</span> Organisation Data</h4>
+                                                </div>
+                                                <div class="accordion-body collapse" id="panel-body-3"
+                                                    data-parent="#accordion">
+                                                    <form id="organisationalDataForm">
+
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12">
+                                                                <h4 class="mt-2">Stragegic period:</h4>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-4">
+                                                                <label for="">
+                                                                    Start year</label>
+                                                                <input type="text" class="form-control"
+                                                                    id="periodStart">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for="">End year</label>
+                                                                <input type="text" class="form-control" id="periodEnd">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12">
+                                                                <h4>Total Number of Fixed Staff (paid staff on a
+                                                                    contract)</h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <!--#kovn3d3f6S3-->
+                                                            <div class="selectgroup selectgroup-pills mb-3 col-md-12"
+                                                                id="fixedStaffGroup">
+                                                                <label class="selectgroup-item">
+                                                                    <input type="radio" name="fixedStaff" value="0-10"
+                                                                        class="selectgroup-input" checked="">
+                                                                    <span
+                                                                        class="selectgroup-button selectgroup-button-icon px-4">0-10</span>
+                                                                </label>
+                                                                <label class="selectgroup-item">
+                                                                    <input type="radio" name="fixedStaff" value="11-25"
+                                                                        class="selectgroup-input">
+                                                                    <span
+                                                                        class="selectgroup-button selectgroup-button-icon px-4">11-25</span>
+                                                                </label>
+                                                                <label class="selectgroup-item">
+                                                                    <input type="radio" name="fixedStaff" value="26-50"
+                                                                        class="selectgroup-input">
+                                                                    <span
+                                                                        class="selectgroup-button selectgroup-button-icon px-4">26-50</span>
+                                                                </label>
+                                                                <label class="selectgroup-item">
+                                                                    <input type="radio" name="fixedStaff" value="51-100"
+                                                                        class="selectgroup-input">
+                                                                    <span
+                                                                        class="selectgroup-button selectgroup-button-icon px-4">51-100</span>
+                                                                </label>
+
+                                                                <label class="selectgroup-item">
+                                                                    <input type="radio" name="fixedStaff"
+                                                                        value="101-250" class="selectgroup-input">
+                                                                    <span
+                                                                        class="selectgroup-button selectgroup-button-icon px-4">101-250</span>
+                                                                </label>
+
+                                                                <label class="selectgroup-item">
+                                                                    <input type="radio" name="fixedStaff"
+                                                                        value="251 or above" class="selectgroup-input">
+                                                                    <span
+                                                                        class="selectgroup-button selectgroup-button-icon px-4">251
+                                                                        or above</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+
+                                                        <hr>
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12">
+                                                                <h4>Total Number of volunteers (excluding governance)
+                                                                </h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <!--#CblclJFFlfV-->
+                                                            <div class="selectgroup selectgroup-pills mb-3 col-md-12"
+                                                                id="fixedVolunteerGroup">
+                                                                <label class="selectgroup-item">
+                                                                    <input type="radio" name="fixedVolunteer"
+                                                                        value="0-10" class="selectgroup-input"
+                                                                        checked="">
+                                                                    <span
+                                                                        class="selectgroup-button selectgroup-button-icon px-4">0-10</span>
+                                                                </label>
+                                                                <label class="selectgroup-item">
+                                                                    <input type="radio" name="fixedVolunteer"
+                                                                        value="11-25" class="selectgroup-input">
+                                                                    <span
+                                                                        class="selectgroup-button selectgroup-button-icon px-4">11-25</span>
+                                                                </label>
+                                                                <label class="selectgroup-item">
+                                                                    <input type="radio" name="fixedVolunteer"
+                                                                        value="26-50" class="selectgroup-input">
+                                                                    <span
+                                                                        class="selectgroup-button selectgroup-button-icon px-4">26-50</span>
+                                                                </label>
+                                                                <label class="selectgroup-item">
+                                                                    <input type="radio" name="fixedVolunteer"
+                                                                        value="51-100" class="selectgroup-input">
+                                                                    <span
+                                                                        class="selectgroup-button selectgroup-button-icon px-4">51-100</span>
+                                                                </label>
+
+                                                                <label class="selectgroup-item">
+                                                                    <input type="radio" name="fixedVolunteer"
+                                                                        value="101-250" class="selectgroup-input">
+                                                                    <span
+                                                                        class="selectgroup-button selectgroup-button-icon px-4">101-250</span>
+                                                                </label>
+
+                                                                <label class="selectgroup-item">
+                                                                    <input type="radio" name="fixedVolunteer"
+                                                                        value="251 or above" class="selectgroup-input">
+                                                                    <span
+                                                                        class="selectgroup-button selectgroup-button-icon px-4">251
+                                                                        or above</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12">
+                                                                <h4>Type of organisation</h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <!--#KfenFbGtZsj-->
+                                                            <div class="selectgroup selectgroup-pills mb-3 col-md-12"
+                                                                id="typeOfOrg">
+                                                                <label class="selectgroup-item">
+                                                                    <input type="radio" name="organisation-input"
+                                                                        value="Not-for-Profit NGO or Chairity"
+                                                                        class="selectgroup-input" checked="">
+                                                                    <span
+                                                                        class="selectgroup-button selectgroup-button-icon px-4">
+                                                                        Not-for-Profit NGO or Chairity</span>
+                                                                </label>
+                                                                <label class="selectgroup-item">
+                                                                    <input type="radio" name="organisation-input"
+                                                                        value="Not-for-profit Membership organisation or Network"
+                                                                        class="selectgroup-input">
+                                                                    <span
+                                                                        class="selectgroup-button selectgroup-button-icon px-4">
+                                                                        Not-for-profit Membership organisation or
+                                                                        Network
+                                                                    </span>
+                                                                </label>
+                                                                <label class="selectgroup-item">
+                                                                    <input type="radio" name="organisation-input"
+                                                                        value="Parastatal (state joint venture)"
+                                                                        class="selectgroup-input">
+                                                                    <span
+                                                                        class="selectgroup-button selectgroup-button-icon px-4">
+                                                                        Parastatal ( state joint venture)
+                                                                    </span>
+                                                                </label>
+                                                                <label class="selectgroup-item">
+                                                                    <input type="radio" name="organisation-input"
+                                                                        value="For-profit organisation"
+                                                                        class="selectgroup-input">
+                                                                    <span
+                                                                        class="selectgroup-button selectgroup-button-icon px-4">
+                                                                        For-profit organisation
+                                                                    </span>
+                                                                </label>
+
+                                                                <label class="selectgroup-item">
+                                                                    <input type="radio" name="organisation-input"
+                                                                        value="Community-based organisation"
+                                                                        class="selectgroup-input">
+                                                                    <span
+                                                                        class="selectgroup-button selectgroup-button-icon px-4">
+                                                                        Community Based Organisation
+                                                                    </span>
+                                                                </label>
+
+                                                                <label class="selectgroup-item">
+                                                                    <input type="radio" name="organisation-input"
+                                                                        value="Other" class="selectgroup-input">
+                                                                    <span
+                                                                        class="selectgroup-button selectgroup-button-icon px-4">
+                                                                        Other
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12">
+                                                                <h4>What is your primary focus area (chose most
+                                                                    relevant)</h4>
+                                                            </div>
+                                                        </div>
+                                                        <!--#zdWqftJFqGA-->
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-12" id="primary-focus-group">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio"
+                                                                        name="primaryfocous" value="Abortion Care">
+                                                                    <label class="form-check-label"
+                                                                        for="primaryfocous1">Abortion Care </label>
+                                                                </div>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio"
+                                                                        name="primaryfocous" value="General SRHR or FP">
+                                                                    <label class="form-check-label"
+                                                                        for="primaryfocous2"> General SRHR or FP
+                                                                    </label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio"
+                                                                        name="primaryfocous"
+                                                                        value="Advocacy & Norms shifting">
+                                                                    <label class="form-check-label"
+                                                                        for="primaryfocous3">Advocacy & Norms shifting
+                                                                    </label>
+                                                                </div>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio"
+                                                                        name="primaryfocous" value="Humanitarian SRHR">
+                                                                    <label class="form-check-label"
+                                                                        for="primaryfocous4">Humanitarian SRHR </label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio"
+                                                                        name="primaryfocous" value="Youth Care or CSE">
+                                                                    <label class="form-check-label"
+                                                                        for="primaryfocous5">Youth Care or CSE </label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio"
+                                                                        name="primaryfocous"
+                                                                        value="HIV Prevention or Care">
+                                                                    <label class="form-check-label"
+                                                                        for="primaryfocous6">HIV Prevention or Care
+                                                                    </label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio"
+                                                                        name="primaryfocous" value="LGBTQ+ Care">
+                                                                    <label class="form-check-label"
+                                                                        for="primaryfocous7">LGBTQ+ Care </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+
+                                                        <hr>
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12">
+                                                                <h4>What is your secondary focus area (chose most
+                                                                    relevant)</h4>
+                                                            </div>
+                                                        </div>
+                                                        <!--#TKYN8eltlPO-->
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-12"
+                                                                id="secondary-focus-group">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio"
+                                                                        name="secondaryfocus" value="Abortion Care">
+                                                                    <label class="form-check-label"
+                                                                        for="primaryfocous1">Abortion Care </label>
+                                                                </div>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio"
+                                                                        name="secondaryfocus"
+                                                                        value="General SRHR or FP">
+                                                                    <label class="form-check-label"
+                                                                        for="primaryfocous2"> General SRHR or FP
+                                                                    </label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio"
+                                                                        name="secondaryfocus"
+                                                                        value="Advocacy & Norms shifting">
+                                                                    <label class="form-check-label"
+                                                                        for="primaryfocous3">Advocacy & Norms shifting
+                                                                    </label>
+                                                                </div>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio"
+                                                                        name="secondaryfocus" value="Humanitarian SRHR">
+                                                                    <label class="form-check-label"
+                                                                        for="primaryfocous4">Humanitarian SRHR </label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio"
+                                                                        name="secondaryfocus" value="Youth Care or CSE">
+                                                                    <label class="form-check-label"
+                                                                        for="primaryfocous5">Youth Care or CSE </label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio"
+                                                                        name="secondaryfocus"
+                                                                        value="HIV Prevention or Care">
+                                                                    <label class="form-check-label"
+                                                                        for="primaryfocous6">HIV Prevention or Care
+                                                                    </label>
+                                                                </div>
+
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio"
+                                                                        name="secondaryfocus" value="LGBTQ+ Care">
+                                                                    <label class="form-check-label"
+                                                                        for="primaryfocous7">LGBTQ+ Care </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12">
+                                                                <h4>Does your organisation have a youth group or network?</h4>
+                                                            </div>
+                                                    
+                                                            <div class="form-group col-sm-12 mb-0">
+                                                                <label class="custom-switch mt-2 ml-0 switch-wrap">
+                                                                    <input type="checkbox" name="custom-switch-checkbox-1" class="custom-switch-input" id="youthGroupOrNetwork" checked>
+                                                                    <span class="custom-switch-indicator"></span>
+                                                                    <span class="custom-switch-description">Yes</span>
+                                                                </label>
+                                                                <div class="invalid-feedback">Error here</div>
+                                                            </div>
+                                                        </div>
+                                                        <!--- row will be hidden when radio is uncheck --->
+                                                        <div class="form-row">
+                                                            <!--#dQgZIHO74q5  youthVolNum-->
+                                                            <div class="form-group col-md-6">
+                                                                <label for="">If yes, how many youth volunteers do you
+                                                                    have?</label>
+                                                                <input type="text" class="form-control"
+                                                                    id="youthVolNum">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <hr>
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12">
+                                                                <h4>Does the MA have branches?</h4>
+                                                            </div>
+                                                    
+                                                            <div class="form-group col-sm-12 mb-0">
+                                                                <label class="custom-switch mt-2 ml-0 switch-wrap">
+                                                                    <input type="checkbox" name="custom-switch-checkbox-2" class="custom-switch-input" id="maBranches" checked>
+                                                                    <span class="custom-switch-indicator"></span>
+                                                                    <span class="custom-switch-description">Yes</span>
+                                                                </label>
+                                                                <div class="invalid-feedback">Error here</div>
+                                                            </div>
+                                                        </div>
+                                                        <!--- row will be hidden when radio is uncheck --->
+                                                        <div class="form-row">
+
+                                                            <div class="form-group col-md-6">
+                                                                <label for="">If yes, number of branches</label>
+                                                                <!--#OvbPe9nCJOd numOfBranches-->
+                                                                <input type="text" class="form-control"
+                                                                    id="numOfBranches">
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12">
+                                                                <h4>Advocacy priority 1 (chose most relevant)</h4>
+                                                            </div>
+                                                            <!--#ruUgWVq48ke id=-->
+                                                            <div class="form-group col-md-12">
+                                                                <label>Select Any One</label>
+                                                                <select class="form-control select2"
+                                                                    id="advocacyPriority1">
+                                                                    <option>Access to contraception</option>
+                                                                    <option>Access to safe and legal abortion</option>
+                                                                    <option>Access to SRH services</option>
+                                                                    <option>Budget allocations for SRH, including
+                                                                        contraception</option>
+                                                                    <option>Sexuality Education for young people
+                                                                    </option>
+                                                                    <option>Access to services for young people</option>
+                                                                    <option>Preventing sexual and gender-based violence
+                                                                    </option>
+                                                                    <option>Prioritizing SRH in crisis settings</option>
+                                                                    <option>Promoting gender equality</option>
+                                                                    <option>Promoting sexual and gender diversity
+                                                                    </option>
+                                                                    <option>Promoting sexual and reproductive rights
+                                                                    </option>
+                                                                    <option>Support for people living with HIV</option>
+                                                                    <option>Diversifying SRH service delivery models
+                                                                        (self care/ telehealth, other person centred
+                                                                        model) </option>
+                                                                    <option>SRH Interventions included in Essential
+                                                                        Health Care Package</option>
+                                                                    <option>Universal Health Care Coverage</option>
+                                                                </select>
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <hr>
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12">
+                                                                <h4>Advocacy priority 2 (chose most relevant)</h4>
+                                                            </div>
+                                                            <!--#ruUgWVq48ke id=-->
+                                                            <div class="form-group col-md-12">
+                                                                <label>Select Any One</label>
+                                                                <select class="form-control select2"
+                                                                    id="advocacyPriority2">
+                                                                    <option>Access to contraception</option>
+                                                                    <option>Access to safe and legal abortion</option>
+                                                                    <option>Access to SRH services</option>
+                                                                    <option>Budget allocations for SRH, including
+                                                                        contraception</option>
+                                                                    <option>Sexuality Education for young people
+                                                                    </option>
+                                                                    <option>Access to services for young people</option>
+                                                                    <option>Preventing sexual and gender-based violence
+                                                                    </option>
+                                                                    <option>Prioritizing SRH in crisis settings</option>
+                                                                    <option>Promoting gender equality</option>
+                                                                    <option>Promoting sexual and gender diversity
+                                                                    </option>
+                                                                    <option>Promoting sexual and reproductive rights
+                                                                    </option>
+                                                                    <option>Support for people living with HIV</option>
+                                                                    <option>Diversifying SRH service delivery models
+                                                                        (self care/ telehealth, other person centred
+                                                                        model) </option>
+                                                                    <option>SRH Interventions included in Essential
+                                                                        Health Care Package</option>
+                                                                    <option>Universal Health Care Coverage</option>
+                                                                </select>
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12 text-right">
+
+
+                                                                <div class="form-group text-end mar-b-0">
+                                                                    <input type="button" value="SAVE AS DRAFT"
+                                                                        class="btn btn-secondary"
+                                                                        id="saveOrganisationalDataBtn">
+                                                                    <input type="button" value="NEXT" id="nextButton3"
+                                                                        class="btn btn-primary">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+
+                                            <div class="accordion">
+                                                <div class="accordion-header" role="button" data-toggle="collapse"
+                                                    data-target="#panel-body-4">
+                                                    <h4><span class="number">4</span> Key Document </h4>
+                                                </div>
+                                                <div class="accordion-body collapse" id="panel-body-4"
+                                                    data-parent="#accordion">
+                                                    <form id="keyDocumentsForm">
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-12">
+                                                                <label id="uploadlogo1-label" for="">Please upload key documents: strategy,
+                                                                    annual report, audits reports, where
+                                                                    applicable.(choose multiple files) </label>
+                                                                <input class="form-control show-for-sr" type="file"
+                                                                    id="upload_imgs" name="upload_imgs[]" multiple />
+
+                                                                <div class="quote-imgs-thumbs quote-imgs-thumbs--hidden"
+                                                                    id="img_preview" aria-live="polite"></div>
+
+                                                                <div class="invalid-feedback">
+                                                                    Error here
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="col-sm-12 text-right">
+                                                                <div class="form-group text-end mar-b-0">
+                                                                    <input type="button" value="SAVE AS DRAFT"
+                                                                        class="btn btn-secondary" id="keyDocumentsBtn">
+                                                                    <input type="button" value="SUBMIT"
+                                                                        class="btn btn-primary">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </section>
+
+            </div>
+
+        </div>
+    </div>
+    <!-- General JS Scripts -->
+
+    <script src="assets/js/app.min.js"></script>
+    <script src="assets/js/fetch-metadata.js"></script>
+    <script src="assets/js/saveDraft.js"></script>
+    <!-- JS Libraies -->
+    <!-- Page Specific JS File -->
+    <!-- Template JS File -->
+    <script src="assets/js/scripts.js"></script>
+    <!-- Custom JS File -->
+    <script src="assets/js/select2.full.min.js"></script>
+    <script src="assets/js/forms-advanced-forms.js"></script>
+    <script src="assets/js/custom.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            document.getElementById('primary-focus-group').addEventListener('change', function (event) {
+                if (event.target.name === 'primary-focus') {
+                    console.log('Selected value:', event.target.value);
+                    // Additional actions based on the selected value can be added here
+                }
+            });
+            // Add minus icon for collapse element which is open by default
+            $(".collapse.show").each(function () {
+                $(this)
+                    .prev(".accordion-header")
+                    .find(".fa")
+                    .addClass("fa-minus")
+                    .removeClass("fa-plus");
+            });
+
+            // Toggle plus minus icon on show hide of collapse element
+            $(".collapse")
+                .on("show.bs.collapse", function () {
+                    $(this)
+                        .prev(".accordion-header")
+                        .find(".fa")
+                        .removeClass("fa-plus")
+                        .addClass("fa-minus");
+                })
+                .on("hide.bs.collapse", function () {
+                    $(this)
+                        .prev(".accordion-header")
+                        .find(".fa")
+                        .removeClass("fa-minus")
+                        .addClass("fa-plus");
+                });
+        });
+    </script>
+
+
+    <script type="text/javascript">
+        const sliderEl4 = document.querySelector("#range4")
+        const sliderValue4 = document.querySelector(".value4")
+
+        sliderEl4.addEventListener("input", (event) => {
+            const tempSliderValue = event.target.value;
+            sliderValue4.textContent = tempSliderValue;
+
+            const progress = (tempSliderValue / sliderEl4.max) * 100;
+
+            sliderEl4.style.background = `linear-gradient(to right, #3abaf4 ${progress}%, #ccc ${progress}%)`;
+        })
+
+    </script>
+
+    <script type="text/javascript">
+        const sliderEl5 = document.querySelector("#range5")
+        const sliderValue5 = document.querySelector(".value5")
+
+        sliderEl5.addEventListener("input", (event) => {
+            const tempSliderValue = event.target.value;
+            sliderValue5.textContent = tempSliderValue;
+
+            const progress = (tempSliderValue / sliderEl5.max) * 100;
+
+            sliderEl5.style.background = `linear-gradient(to right, #3abaf4 ${progress}%, #ccc ${progress}%)`;
+        })
+
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('input.custom-switch-input[type="checkbox"]').click(function () {
+                $('input.custom-switch-input[type="checkbox"]').not(this).prop("checked", false);
+                var inputValue = $(this).attr("value");
+                $("." + inputValue).toggle().siblings(".box").hide()
+            });
+        });
+    </script>
+
+    <script>
+        var imgUpload = document.getElementById('upload_imgs')
+            , imgPreview = document.getElementById('img_preview')
+            , imgUploadForm = document.getElementById('img-upload-form')
+            , totalFiles
+            , previewTitle
+            , previewTitleText
+            , img;
+
+        imgUpload.addEventListener('change', previewImgs, false);
+        imgUploadForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('Images Uploaded! (not really, but it would if this was on your website)');
+        }, false);
+
+        function previewImgs(event) {
+            totalFiles = imgUpload.files.length;
+
+            if (!!totalFiles) {
+                imgPreview.classList.remove('quote-imgs-thumbs--hidden');
+                previewTitle = document.createElement('p');
+                previewTitle.style.fontWeight = 'bold';
+                previewTitleText = document.createTextNode(totalFiles + ' Total Images Selected');
+                previewTitle.appendChild(previewTitleText);
+                imgPreview.appendChild(previewTitle);
+            }
+
+            for (var i = 0; i < totalFiles; i++) {
+                img = document.createElement('img');
+                img.src = URL.createObjectURL(event.target.files[i]);
+                img.classList.add('img-preview-thumb');
+                imgPreview.appendChild(img);
+            }
+        }
+    </script>
+</body>
+
+</html>
