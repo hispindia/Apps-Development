@@ -86,7 +86,8 @@ export const ChildSection = ({ childSection }) => {
 
     return (
         <>
-            <Label>{(childSection.name==='MIC' && orgUnit.id==="Yh0e2tskPwE") ? '': childSection.name}</Label>
+            {/* <Label>{(childSection.name==='MIC' && orgUnit.id==="Yh0e2tskPwE") ? '': childSection.name}</Label> */}
+            <Label>{childSection.name}</Label>
             {childSection.dataElements.map(id => (
                 <DataElement key={id} id={id} />
             ))}
