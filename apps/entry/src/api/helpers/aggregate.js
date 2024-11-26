@@ -269,34 +269,89 @@ export const Aggregate = async ({
         }
     }
 
+    // try {
+    //     let b = await post(
+    //         request(`dataValues.json`, {
+    //             options: [
+    //                 `pe=${period}&ds=${defaultDataSet}&de=${de}&ou=${orgUnit}&cc=${cc}&cp=${cp}&value=${defaultValue}&co=${coDefault}`,
+    //             ],
+    //             data: {}
+    //         })
+    //     )
+    //     console.error("Post request not working. Response received:", b)
+    //     changeStatus(false)
+    //     return {
+    //         response: false,
+    //         message: "Unable to send data to data set"
+    //     }
+    // } catch (error) {
+    //     if (error.toString().startsWith("SyntaxError: Unexpected end of JSON")) {
+    //         //this is because post request doesn't send back a response and it is a successful request.
+
+    //     } else {
+    //         console.error("Error in posting default value", error);
+    //         changeStatus(false)
+    //         return {
+    //             response: false,
+    //             message: "Unable to send data to data set"
+    //         }
+    //     }
+    // }// original code when getting error in Markcomplete button 
     try {
-        let b = await post(
+        let response = await post(
             request(`dataValues.json`, {
                 options: [
                     `pe=${period}&ds=${defaultDataSet}&de=${de}&ou=${orgUnit}&cc=${cc}&cp=${cp}&value=${defaultValue}&co=${coDefault}`,
                 ],
                 data: {}
             })
-        )
-        console.error("Post request not working. Response received:", b)
-        changeStatus(false)
-        return {
-            response: false,
-            message: "Unable to send data to data set"
+        );
+    
+        // Check if the response is empty
+        if (!response || response.status === 204) { // 204 indicates no content
+            console.warn("Post request successful but no content returned.");
+            changeStatus(true);
+            return {
+                response: true,
+                message: "Request successful, but no data returned."
+            };
         }
+    
+        // Attempt to parse the response as JSON
+        let responseData;
+        try {
+            responseData = await response.json();
+        } catch (jsonError) {
+            console.warn("Response not in JSON format or empty.");
+            responseData = null; // Handle as appropriate
+        }
+    
+        console.error("Post request response received:", responseData);
+        changeStatus(true);
+        return {
+            response: true,
+            message: "Data sent successfully.",
+            data: responseData,
+        };
     } catch (error) {
-        if (error.toString().startsWith("SyntaxError: Unexpected end of JSON")) {
-            //this is because post request doesn't send back a response and it is a successful request.
-
+        if (error.toString().includes("Unexpected end of JSON")) {
+            // Handle known empty response scenarios
+            console.warn("Known issue: empty JSON response.");
+            changeStatus(true);
+            return {
+                response: true,
+                message: "Request successful, but no JSON returned.",
+            };
         } else {
             console.error("Error in posting default value", error);
-            changeStatus(false)
+            changeStatus(false);
             return {
                 response: false,
-                message: "Unable to send data to data set"
-            }
+                message: "Unable to send data to data set",
+            };
         }
     }
+    
 
     for (let index in importantValues) {
         let co = importantValues[index]
