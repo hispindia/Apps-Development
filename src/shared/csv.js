@@ -8,9 +8,8 @@ export function downloadCSV(reportName, sample,  CSVFile) {
 
   let arr = head.join(",");
   CSVFile.forEach((row, index) => {
-    row.unshift((index+1));
     arr += "\n";
-    arr += row.join(",");
+    arr += [(index+1), ...row].join(",");
   });
   
   hiddenElement.href += arr;
