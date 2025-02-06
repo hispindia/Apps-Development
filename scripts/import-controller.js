@@ -515,6 +515,86 @@ excelImport
                     }
 
 
+                    // copy (post) TEI and its enrollments from one event to other event
+                    // add CORS list on https://bpr.ippf.org/api/events is https://links.hispindia.org
+                    else if( sheetName === 'teiToTeiPost' ){
+                        let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        let json_object = JSON.stringify(XL_row_object);
+                        let objectKeys = Object.keys(XL_row_object["0"]);
+                        let importCount = 1;
+
+                        XL_row_object.forEach(row => {
+                            //console.log( row );
+                            //latitude: row.coordinates.split(",")[1],
+                            //longitude: row.coordinates.split(",")[0]
+                            importCount++;
+                            $.ajax({
+                                type: "GET",
+                                async: false,
+                                url: '../../trackedEntityInstances/' + row.tei + ".json?fields=*&paging=false",
+                                success: function (teiResponse) {
+                                    let updateEventDataValue = {};
+                                    updateEventDataValue = teiResponse;
+
+                                    let postTeiEnrollmentEventDataValues = {};
+
+                                    postTeiEnrollmentEventDataValues.trackedEntityType = teiResponse.trackedEntityType;
+                                    postTeiEnrollmentEventDataValues.trackedEntityInstance = teiResponse.trackedEntityInstance;
+                                    postTeiEnrollmentEventDataValues.orgUnit = teiResponse.orgUnit;
+                                    postTeiEnrollmentEventDataValues.attributes = [...teiResponse.attributes];
+                                    postTeiEnrollmentEventDataValues.enrollments = [...teiResponse.enrollments];
+
+                                    $.ajax({
+                                        type: "POST",
+                                        dataType: "json",
+                                        contentType: "application/json",
+                                        data: JSON.stringify(postTeiEnrollmentEventDataValues),
+                                        url: 'https://bpr.ippf.org/api/trackedEntityInstances/',
+                                        headers: {
+                                            //'Authorization': 'aGlzcGRldjpEZXZoaXNwQDE=',
+                                            'Authorization': 'Basic ' + btoa('admin' + ":" + 'district'),
+                                        },
+                                        json: true,
+                                        crossDomain: true,
+                                        success: function (response) {
+                                            //console.log( "Row - " + importCount +  " new event created with id" + JSON.stringify(response.response.importSummaries[0].reference) );
+                                        },
+                                        error: function (response) {
+                                            console.log("Row - " + importCount + " not created event " + "response: " + JSON.stringify(response.response));
+                                        },
+                                        warning: function (response) {
+                                            console.log("Row - " + importCount + " -- " + "Warning!: " + JSON.stringify(response.response));
+                                        }
+                                    });
+                                },
+                                error: function (eventResponse) {
+                                    console.log( JSON.stringify( row.tei ) +  " -- "+ "Error!: " +  JSON.stringify( eventResponse ) );
+                                },
+                                warning: function (eventResponse) {
+                                    console.log( JSON.stringify( row.tei ) +  " -- "+ "Error!: " +  JSON.stringify( eventResponse ) );
+                                }
+                            });
+                            //importCount++;
+                            console.log( "Row - " + importCount + " post done for TEI " + row.tei );
+                            if( importCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " post event done ");
+
+                            }
+                        });
+
+                    }
+
+
+
+
+
+
+
+
+
+
+
+
 
                     // copy (post) event and dataValue from one event to other event
                     else if( sheetName === 'eventToEventPush' ){
@@ -872,6 +952,42 @@ excelImport
 
                             }
                         });
+                    }
+                    // enrollmentsDelete Delete delete
+                    else if( sheetName === 'enrollmentsDelete' ){
+                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        //var json_object = JSON.stringify(XL_row_object);
+                        //var objectKeys = Object.keys(XL_row_object["0"]);
+                        let deleteCount = 1;
+                        XL_row_object.forEach(row => {
+                            deleteCount++;
+
+                            $.ajax({
+                                type: "DELETE",
+                                async: false,
+                                dataType: "json",
+                                contentType: "application/json",
+                                url: '../../enrollments/' + row.enrollment,
+
+                                success: function (response) {
+                                    //console.log( __rowNum__ + " -- "+ row.enrollment + "enrollment updated with " + row.value + "response: " + response );
+                                    console.log( "Row - " + deleteCount  + " response: " + JSON.stringify(response) );
+                                },
+                                error: function (response) {
+                                    console.log(  "Row - " + deleteCount  + " response: " + JSON.stringify(response ));
+                                },
+                                warning: function (response) {
+                                    console.log(  "Row - " + deleteCount  + " response: " + JSON.stringify(response ));
+                                }
+                            });
+
+                            //deleteCount++;
+                            //console.log( "Row - " + importCount + " update done for event " + row.event );
+                            if( deleteCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " enrollments delete done ");
+                            }
+                        });
+
                     }
 
                     // events Delete delete
@@ -1441,8 +1557,8 @@ excelImport
                     }
 
 
-                    // for DELETE trackedEntityInstances  trackedEntityInstancesDELETE
-                    else if( sheetName === 'trackedEntityInstancesDELETE' ){
+                    // for DELETE trackedEntityInstances  trackedEntityInstancesDelete
+                    else if( sheetName === 'trackedEntityInstancesDelete' ){
                         var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
                         //var json_object = JSON.stringify(XL_row_object);
                         //var objectKeys = Object.keys(XL_row_object["0"]);
@@ -1749,7 +1865,7 @@ excelImport
                                     //'Authorization': 'aGlzcGRldjpEZXZoaXNwQDE=',
                                     'Authorization': 'Basic ' + btoa('hispdev' + ":" + 'Devhisp@1'),
                                 },
-                                url: 'https://links.hispindia.org/lemt_leprosy/api/organisationUnits/' + row.sourceuid + ".json?paging=false",
+                                url: 'https://ln2.hispindia.org/manipur_covid/api/organisationUnits/' + row.sourceuid + ".json?paging=false",
                                 success: function (orgUnitResponse) {
                                     let updateOrgUnitGeometry = {};
                                     updateOrgUnitGeometry = orgUnitResponse.geometry;
