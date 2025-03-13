@@ -3903,13 +3903,18 @@ excelImport
                         XL_row_object.forEach(row => {
                             importCount++;
 
+                            var dataElementGrpMem = [];
+                            dataElementGrpMem.push({
+                                'id': row.dataElementuid
+                            });
+
                             let dataElementGroupPostRequest = {
                                 id : row.uid,
                                 name: row.name,
                                 shortName: row.shortName,
                                 code: row.code,
                                 description:row.description,
-                                dataElements: []
+                                dataElements: dataElementGrpMem
                             };
 
                             $.ajax({
