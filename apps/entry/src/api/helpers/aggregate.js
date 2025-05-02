@@ -25,15 +25,15 @@ var CONSTANTS = {
 }
 
 let getValue = async ({
-    period,
-    dataSet,
-    de,
-    orgUnit,
-    cc,
-    cp,
-    co,
-    operation
-}) => {
+                          period,
+                          dataSet,
+                          de,
+                          orgUnit,
+                          cc,
+                          cp,
+                          co,
+                          operation
+                      }) => {
     let a = await get(
         request(`dataValues.json`, {
             options: [`pe=${period}&ds=${dataSet}&de=${de}&ou=${orgUnit}&cc=${cc}&cp=${cp}&co=${co}`],
@@ -75,17 +75,17 @@ let getValue = async ({
  * @param {{event,operation}} operation event and operation operation is either "COMPLETE" or "INCOMPLETE"
  */
 export const Aggregate = async ({
-    event,
-    teiAttributeValues,
-    operation,
-    dataElements,
-    categoryCombos,
-    dataSets,
-    orgUnit,
-    programs,
-    changeStatus,
-    sampleDate
-}) => {
+                                    event,
+                                    teiAttributeValues,
+                                    operation,
+                                    dataElements,
+                                    categoryCombos,
+                                    dataSets,
+                                    orgUnit,
+                                    programs,
+                                    changeStatus,
+                                    sampleDate
+                                }) => {
 
     //get the programCode of the event
     let programCode = ""
@@ -219,7 +219,6 @@ export const Aggregate = async ({
     cp = cp + ";" + categoryCombos[CONSTANTS.sampleAndLocationCC_Code].categoryOptions[sampleTypeData]
     cp = cp + ";" + categoryCombos[CONSTANTS.sampleAndLocationCC_Code].categoryOptions[departmentData]
 
-
     let importantValues = []
     Object.keys(event.values).forEach(value => {
         //loop through the values and look for result data elements if found one save that.
@@ -269,36 +268,8 @@ export const Aggregate = async ({
         }
     }
 
-    // try {
-    //     let b = await post(
-    //         request(`dataValues.json`, {
-    //             options: [
-    //                 `pe=${period}&ds=${defaultDataSet}&de=${de}&ou=${orgUnit}&cc=${cc}&cp=${cp}&value=${defaultValue}&co=${coDefault}`,
-    //             ],
-    //             data: {}
-    //         })
-    //     )
-    //     console.error("Post request not working. Response received:", b)
-    //     changeStatus(false)
-    //     return {
-    //         response: false,
-    //         message: "Unable to send data to data set"
-    //     }
-    // } catch (error) {
-    //     if (error.toString().startsWith("SyntaxError: Unexpected end of JSON")) {
-    //         //this is because post request doesn't send back a response and it is a successful request.
-
-    //     } else {
-    //         console.error("Error in posting default value", error);
-    //         changeStatus(false)
-    //         return {
-    //             response: false,
-    //             message: "Unable to send data to data set"
-    //         }
-    //     }
-    // }// original code when getting error in Markcomplete button 
     try {
-        let response = await post(
+        let b = await post(
             request(`dataValues.json`, {
                 options: [
                     `pe=${period}&ds=${defaultDataSet}&de=${de}&ou=${orgUnit}&cc=${cc}&cp=${cp}&value=${defaultValue}&co=${coDefault}`,
@@ -306,52 +277,28 @@ export const Aggregate = async ({
                 data: {}
             })
         );
-    
-        // Check if the response is empty
-        if (!response || response.status === 204) { // 204 indicates no content
+
+        if (!b || b.status === 204) { // Handle empty or 204 responses
             console.warn("Post request successful but no content returned.");
-            changeStatus(true);
-            return {
-                response: true,
-                message: "Request successful, but no data returned."
-            };
+        } else {
+            try {
+                console.log("Post request response received:", await b.json());
+            } catch (jsonError) {
+                console.warn("Response not in JSON format or empty.");
+            }
         }
-    
-        // Attempt to parse the response as JSON
-        let responseData;
-        try {
-            responseData = await response.json();
-        } catch (jsonError) {
-            console.warn("Response not in JSON format or empty.");
-            responseData = null; // Handle as appropriate
-        }
-    
-        console.error("Post request response received:", responseData);
-        changeStatus(true);
-        return {
-            response: true,
-            message: "Data sent successfully.",
-            data: responseData,
-        };
     } catch (error) {
         if (error.toString().includes("Unexpected end of JSON")) {
-            // Handle known empty response scenarios
-            console.warn("Known issue: empty JSON response.");
-            changeStatus(true);
-            return {
-                response: true,
-                message: "Request successful, but no JSON returned.",
-            };
+            console.warn("Known issue: empty JSON response, assuming success.");
         } else {
             console.error("Error in posting default value", error);
             changeStatus(false);
             return {
                 response: false,
-                message: "Unable to send data to data set",
+                message: "Unable to send data to data set"
             };
         }
     }
-    
 
     for (let index in importantValues) {
         let co = importantValues[index]
@@ -387,29 +334,30 @@ export const Aggregate = async ({
                     ],
                     data: {}
                 })
-            )
-            //if code reaches here then it means that there is an error in the post request.
-            console.error("Post request not working. Response received:", b)
-            changeStatus(false)
-            return {
-                response: false,
-                message: "Unable to aggregate data"
+            );
+
+            if (!b || b.status === 204) { // Handle empty or 204 responses
+                console.warn(`Post request successful for co=${co} but no content returned.`);
+            } else {
+                try {
+                    console.log(`Post request response received for co=${co}:`, await b.json());
+                } catch (jsonError) {
+                    console.warn(`Response not in JSON format or empty for co=${co}.`);
+                }
             }
         } catch (error) {
-            if (error.toString().startsWith("SyntaxError: Unexpected end of JSON")) {
-                //this is because post request doesn't send back a response and
-                //The syntax error is because of a successfull post request.
+            if (error.toString().includes("Unexpected end of JSON")) {
+                console.warn(`Known issue: empty JSON response for co=${co}, assuming success.`);
             } else {
-                //This means that the post is working properly
-                console.error("Unable to post data", error)
-                changeStatus(false)
+                console.error("Unable to post data for co:", co, error);
+                changeStatus(false);
                 return {
                     response: false,
                     message: "Unable to aggregate data"
-                }
+                };
             }
         }
-    };
+    }
 
     changeStatus(false)
     return {
