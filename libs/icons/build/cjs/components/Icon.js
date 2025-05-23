@@ -9,21 +9,18 @@ var _react = _interopRequireDefault(require("react"));
 var _propTypes = require("prop-types");
 var _StyledSvg = require("./StyledSvg");
 var _propTypes2 = require("../propTypes");
-const Icon = _ref => {
-  let {
-    icon,
-    color,
-    size
-  } = _ref;
-  return /*#__PURE__*/_react.default.createElement(_StyledSvg.StyledSvg, {
-    xmlns: "http://www.w3.org/2000/svg",
-    viewBox: "0 0 24 24",
-    color: color,
-    size: size
-  }, /*#__PURE__*/_react.default.createElement("path", {
-    d: icon
-  }));
-};
+const Icon = ({
+  icon,
+  color,
+  size
+}) => /*#__PURE__*/_react.default.createElement(_StyledSvg.StyledSvg, {
+  xmlns: "http://www.w3.org/2000/svg",
+  viewBox: "0 0 24 24",
+  color: color,
+  size: size
+}, /*#__PURE__*/_react.default.createElement("path", {
+  d: icon
+}));
 exports.Icon = Icon;
 Icon.propTypes = {
   icon: _propTypes2.iconsPropType.isRequired,

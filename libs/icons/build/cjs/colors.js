@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.colors = void 0;
-const colors = {
+const colors = exports.colors = {
   primary: '#147cd7',
   secondary: '#00796b',
   blue: '#147cd7',
@@ -15,4 +15,3 @@ const colors = {
   white: '#ffffff',
   black: '#212934'
 };
-exports.colors = colors;
