@@ -1556,7 +1556,6 @@ excelImport
                         //});
                     }
 
-
                     // for DELETE trackedEntityInstances  trackedEntityInstancesDelete
                     else if( sheetName === 'trackedEntityInstancesDelete' ){
                         var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
@@ -1846,6 +1845,7 @@ excelImport
                     // end programIndicators filter update
 
                     // orgUnit geometry update from one instance to another instance
+                    // add cors white list like -- https://ln3.hispindia.org/
                     else if( sheetName === 'orgUnitGeometryUpdate' ){
 
                         let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
@@ -1863,9 +1863,9 @@ excelImport
                                 contentType: "application/json",
                                 headers: {
                                     //'Authorization': 'aGlzcGRldjpEZXZoaXNwQDE=',
-                                    'Authorization': 'Basic ' + btoa('hispdev' + ":" + 'Devhisp@1'),
+                                    'Authorization': 'Basic ' + btoa('admin' + ":" + 'district'),
                                 },
-                                url: 'https://ln2.hispindia.org/manipur_covid/api/organisationUnits/' + row.sourceuid + ".json?paging=false",
+                                url: 'https://samiksha.piramalswasthya.org/amrit/api/organisationUnits/' + row.sourceuid + ".json?paging=false",
                                 success: function (orgUnitResponse) {
                                     let updateOrgUnitGeometry = {};
                                     updateOrgUnitGeometry = orgUnitResponse.geometry;
@@ -4550,6 +4550,85 @@ excelImport
                         });
                     }
 
+                    // users  OrganisationUnits,dataViewOrganisationUnits,teiSearchOrganisationUnits  Update
+                    else if( sheetName === 'userOrganisationUnitsUpdate' ){
+                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        var json_object = JSON.stringify(XL_row_object);
+                        var objectKeys = Object.keys(XL_row_object["0"]);
+                        var importCount = 1;
+                        XL_row_object.forEach(row => {
+                            importCount++;
+                            //console.log( row );
+                            // for point coordinates: [row.coordinates.split(",")[0], row.coordinates.split(",")[1]]
+                            // for polygon coordinates: row.coordinates
+                            $.ajax({
+                                type: "GET",
+                                async: false,
+                                url: '../../users/' + row.uid + ".json?paging=false",
+                                success: function (userResponse) {
+                                    var updateUser = userResponse;
+
+                                    let userOrganisationUnits = [...userResponse.organisationUnits];
+                                    var dataViewOrganisationUnits = [...userResponse.dataViewOrganisationUnits];
+                                    var teiSearchOrganisationUnits = [...userResponse.teiSearchOrganisationUnits];
+
+                                    if( row.organisationUnits !== undefined  && row.organisationUnits !== "" ){
+                                        userOrganisationUnits.push({
+                                            'id': row.organisationUnits
+                                        });
+                                        updateUser.organisationUnits = userOrganisationUnits;
+
+                                        dataViewOrganisationUnits.push({
+                                            'id': row.organisationUnits
+                                        });
+                                        updateUser.dataViewOrganisationUnits = dataViewOrganisationUnits;
+
+                                        teiSearchOrganisationUnits.push({
+                                            'id': row.organisationUnits
+                                        });
+                                        updateUser.teiSearchOrganisationUnits = teiSearchOrganisationUnits;
+                                    }
+
+                                    $.ajax({
+                                        type: "PUT",
+                                        async: false,
+                                        dataType: "json",
+                                        contentType: "application/json",
+                                        data: JSON.stringify(updateUser),
+                                        url: '../../users/' + row.uid,
+
+                                        success: function (response) {
+                                            //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                            console.log(  "Row - " + importCount + " update done response: " + JSON.stringify(response) );
+                                        },
+                                        error: function (response) {
+                                            console.log(  "Row - " + importCount + " error response: " + JSON.stringify(response ));
+                                        },
+                                        warning: function (response) {
+                                            console.log( "Row - " + importCount + "Warning response : " +  JSON.stringify(response ) );
+                                        }
+
+                                    });
+                                },
+                                error: function (userResponse) {
+                                    console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( userResponse ) );
+                                },
+                                warning: function (userResponse) {
+                                    console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( userResponse ) );
+                                }
+                            });
+
+                            //console.log( "Row - " + importCount + " update done for organisationUnit " + row.uid );
+                            if( importCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " update complete ");
+
+                            }
+                        });
+
+                    }
+
+                    // end
+
                     // users  dataViewOrganisationUnits  Update
                     else if( sheetName === 'userDataViewOrganisationUnits' ){
                         var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
@@ -4859,7 +4938,7 @@ excelImport
                                 type: "GET",
                                 async: false,
                                 //api/users.json?filter=userCredentials.username:eq:norbur_LT&fields=id,name&paging=false
-                                url: '../../users.json?filter=userCredentials.username:eq:' + row.username + "&fields=id,name&paging=false",
+                                url: '../../users.json?filter=userCredentials.username:eq:' + row.username + "&fields=id,name,username&paging=false",
                                 success: function (userResponse) {
 
                                     //console.log( userResponse.users.length);
@@ -4942,7 +5021,7 @@ excelImport
                                     }
                                     else{
                                         //console.log( userResponse.users[0].id);
-                                        console.log( " Username already taken with user id " + userResponse.users[0].id + " and name " + userResponse.users[0].name);
+                                        console.log( " Username already taken with user id " + userResponse.users[0].id + " and name " + userResponse.users[0].name + " and username " + userResponse.users[0].username );
                                     }
                                 },
                                 error: function (userResponse) {
