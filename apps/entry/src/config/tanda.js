@@ -20,9 +20,9 @@ export const tanda = {
         {
             name: 'Sex',
         },
-        {
-            name: 'Address',
-        },
+        // {
+        //     name: 'Address',
+        // },
         {
             name: 'Organisation unit ID',
             options: { display: false },
