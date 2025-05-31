@@ -1,5 +1,5 @@
 
-export const reportFilter = 'SCNP';
+export const reportFilter = '';
 export const InitialQuery = {
   me: {
     resource: "me.json",
