@@ -351,24 +351,27 @@ export const Aggregate = async ({
                 ],
                 data: {}
             })
-        )
-        console.error("Post request not working. Response received:", b)
-        changeStatus(false)
-        return {
-            response: false,
-            message: "Unable to send data to data set"
+        );
+
+        if (!b || b.status === 204) { // Handle empty or 204 responses
+            console.warn("Post request successful but no content returned.");
+        } else {
+            try {
+                console.log("Post request response received:", await b.json());
+            } catch (jsonError) {
+                console.warn("Response not in JSON format or empty.");
+            }
         }
     } catch (error) {
-        if (error.toString().startsWith("SyntaxError: Unexpected end of JSON")) {
-            //this is because post request doesn't send back a response and it is a successful request.
-
+        if (error.toString().includes("Unexpected end of JSON")) {
+            console.warn("Known issue: empty JSON response, assuming success.");
         } else {
             console.error("Error in posting default value", error);
-            changeStatus(false)
+            changeStatus(false);
             return {
                 response: false,
                 message: "Unable to send data to data set"
-            }
+            };
         }
     }
 
@@ -406,29 +409,30 @@ export const Aggregate = async ({
                     ],
                     data: {}
                 })
-            )
-            //if code reaches here then it means that there is an error in the post request.
-            console.error("Post request not working. Response received:", b)
-            changeStatus(false)
-            return {
-                response: false,
-                message: "Unable to aggregate data"
+            );
+
+            if (!b || b.status === 204) { // Handle empty or 204 responses
+                console.warn(`Post request successful for co=${co} but no content returned.`);
+            } else {
+                try {
+                    console.log(`Post request response received for co=${co}:`, await b.json());
+                } catch (jsonError) {
+                    console.warn(`Response not in JSON format or empty for co=${co}.`);
+                }
             }
         } catch (error) {
-            if (error.toString().startsWith("SyntaxError: Unexpected end of JSON")) {
-                //this is because post request doesn't send back a response and
-                //The syntax error is because of a successfull post request.
+            if (error.toString().includes("Unexpected end of JSON")) {
+                console.warn(`Known issue: empty JSON response for co=${co}, assuming success.`);
             } else {
-                //This means that the post is working properly
-                console.error("Unable to post data", error)
-                changeStatus(false)
+                console.error("Unable to post data for co:", co, error);
+                changeStatus(false);
                 return {
                     response: false,
                     message: "Unable to aggregate data"
-                }
+                };
             }
         }
-    };
+    }
 
     changeStatus(false)
     return {
