@@ -3945,6 +3945,62 @@ excelImport
 
                     }
 
+                    // trackedEntityAttributes  post
+                    else if( sheetName === 'trackedEntityAttributesPost' ){
+                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        //var json_object = JSON.stringify(XL_row_object);
+                        //var objectKeys = Object.keys(XL_row_object["0"]);
+                        let importCount = 1;
+                        XL_row_object.forEach(row => {
+                            importCount++;
+
+                            let dataElementPostRequest = {
+                                id : row.uid,
+                                name: row.name,
+                                shortName: row.shortName,
+                                code: row.code,
+                                formName: row.formName,
+                                //optionSet: { id:  row.optionSet },
+                                aggregationType: row.aggregationType,
+                                valueType: row.valueType,
+                                unique: row.unique,
+                                inherit: row.inherit,
+                                publicAccess: row.publicAccess,
+                                legendSets: []
+                            };
+
+                            $.ajax({
+                                type: "POST",
+                                async: false,
+                                dataType: "json",
+                                contentType: "application/json",
+                                data: JSON.stringify(dataElementPostRequest),
+                                url: '../../trackedEntityAttributes',
+                                success: function (response) {
+                                    //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                    console.log( "Row - " + importCount  + " response: " + JSON.stringify(response) );
+                                },
+                                error: function (response) {
+                                    console.log(  "Row - " + importCount  + " response: " + JSON.stringify(response ));
+                                },
+                                warning: function (response) {
+                                    console.log(  "Row - " + importCount  + " response: " + JSON.stringify(response ));
+                                }
+                            });
+
+                            //importCount++;
+                            //console.log( "Row - " + importCount + " update done for event " + row.event );
+                            if( importCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " import done ");
+                            }
+                        });
+
+                    }
+
+
+
+
+
 
 
 
