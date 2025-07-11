@@ -5,10 +5,107 @@
 </div>
 <div id="mainPage">
     <h2></h2>
+    <div class="row">
+        <div class="col-md-10">
+            <div>
+                <table class="table table-borderless table-striped">
+                    <tr>
+                        <td>Period</td>
+                        <td>
+                            <select class="form-control" style='width:150px;font-size:12px' id="importPeriod" >
+                                <option value="-1">Please Select</option>
+                                <option value="2030">2030</option>
+                                <option value="2029">2029</option>
+                                <option value="2028">2028</option>
+                                <option value="2027">2027</option>
+                                <option value="2026">2026</option>
+                                <option value="2025">2025</option>
+                                <option value="2024">2024</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
+                                <option value="2021">2021</option>
+                                <option value="2020">2020</option>
+                            </select>
+                        </td>
+
+                        <td>
+                            <div enctype="multipart/form-data">
+                                <input id="upload" type=file  name="files[]">
+                            </div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <div>
+                                <button ng-click="getSet()" style="margin-top:5px;background-color: #008CBA;color:white;border:none;">Submit</button><br>
+
+                                <div ng-repeat="log in logs track by $index">
+                                    <h3 > {{$index}} : {{log.head}} </h3>
+                                    <p style="color:gray" ng-repeat="logbody in log.body track by $index"> {{logbody}}</p>
+                                    <h4 style="color:green"> {{log.tail}} </h4></div>
+                            </div>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="loader" style="display: none" class="lds-facebook">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div id="dataValueSetOutPut" style="display: none" class="selcsection">
+        <div class="row">
+            <div class="col-md-10">
+                <div>
+                    <table class="table table-borderless table-striped">
+                        <tr>
+                            <td>{{dataValueSetStart}}</td>
+                            <!--<input type="text" class="form-control" value="{{dataValueSetStart}}" ng-disabled="true">-->
+                        </tr>
+                        <tr>
+                            <td>{{dataValueSetComplete}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{dataValueSetConflicts}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!--
+    <div style="margin-top: 55px;">
+        Period<select class="form-control" style='width:90px;font-size:12px' id="importPeriod" >
+            <option value="-1">{{'Please Select'| translate}}</option>
+            <option value="2025">2025</option>
+            <option value="2024">2024</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            <option value="2020">2020</option>
+        </select>
+        <div enctype="multipart/form-data">
+            <input id="upload" type=file  name="files[]">
+        </div>
+    </div>
+    -->
+    <!--
     <div style="margin-top: 55px;" enctype="multipart/form-data">
         <input id="upload" type=file  name="files[]">
-
     </div>
+    -->
+
+
+
+    <!--
     <div>
         <button ng-click="getSet()" style="margin-top:5px;background-color: #008CBA;color:white;border:none;">Submit</button><br>
 
@@ -17,5 +114,6 @@
                <p style="color:gray" ng-repeat="logbody in log.body track by $index"> {{logbody}}</p>
                <h4 style="color:green"> {{log.tail}} </h4></div>
     </div>
+    -->
 </div>
  

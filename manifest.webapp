@@ -16,14 +16,14 @@
     },
     "folderName": null,
     "icons": {
-        "128": "/img/excel-icon.png",
-        "16": "/img/excel-icon.png",
-        "48": "/img/excel-icon.png"
+        "128": "img/excel-icon.png",
+        "16": "img/excel-icon.png",
+        "48": "img/excel-icon.png"
     },
     "installs_allowed_from": null,
     "key": null,
     "launchUrl": null,
     "launch_path": "index.html",
-    "name": "#Event-Data-Value-Import",
-    "version": "240.1"
+    "name": "Aggregate-Data-Value-Import",
+    "version": "2.40.1"
 }
