@@ -1,8 +1,9 @@
 const config = {
     type: 'app',
-    name: 'Custom-Reports-SCI',
+    name: 'Custom Reports',
+    short_name: 'custom-reports',
     entryPoints: {
-        app: './src/App.js',
+        app: './src/App.jsx',
     },
 }
 

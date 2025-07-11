@@ -1,4 +1,4 @@
 {
-    "Hello {{name}}": "Hello {{name}}",
-    "Welcome to DHIS2!": "Welcome to DHIS2!"
+    "__MANIFEST_APP_TITLE_Application title": "Custom-Reports-SCI",
+    "__MANIFEST_APP_DESCRIPTION_Application description": ""
 }
