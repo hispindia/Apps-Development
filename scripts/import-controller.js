@@ -1403,6 +1403,66 @@ excelImport
                         //});
                     }
 
+                    // for add TEI with enrollment TEI attribute value
+                    else if( sheetName === 'teiAttributesEnrollmentPost' ){
+                        let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        let json_object = JSON.stringify(XL_row_object);
+                        let objectKeys = Object.keys(XL_row_object["0"]);
+                        let importCount = 1;
+                        for(let row = 0; row < XL_row_object.length; row++) {
+
+                            let postTEIsEnrollEvent = [];
+                            let teiAndEnrollEvent = {};
+                            teiAndEnrollEvent.trackedEntityInstance = XL_row_object[row][objectKeys[0]];
+                            teiAndEnrollEvent.trackedEntityType = XL_row_object[row][objectKeys[1]];
+                            teiAndEnrollEvent.orgUnit = XL_row_object[row][objectKeys[2]];
+
+                            teiAndEnrollEvent.enrollments = [{
+                                "orgUnit": XL_row_object[row][objectKeys[2]],
+                                "program": XL_row_object[row][objectKeys[3]],
+                                "status": "ACTIVE",
+                                "enrollmentDate": XL_row_object[row][objectKeys[4]],
+                                "incidentDate": XL_row_object[row][objectKeys[4]],
+                            }];
+
+                            let teiAttributeDataValues = [];
+                            for (let i = 5; i < objectKeys.length; i++) {
+                                let teiAttributeValue = {};
+                                if (XL_row_object[row][objectKeys[i]] !== undefined && XL_row_object[row][objectKeys[i]] !== "") {
+                                    teiAttributeValue.attribute = objectKeys[i];
+                                    teiAttributeValue.value = XL_row_object[row][objectKeys[i]];
+                                    teiAttributeDataValues.push(teiAttributeValue);
+                                }
+                            }
+                            teiAndEnrollEvent.attributes = teiAttributeDataValues;
+                            //postTEIsEnrollEvent.push( teiAndEnrollEvent );
+                            //let postBulkTEIEnrollEvent = {};
+                            //postBulkTEIEnrollEvent.trackedEntityInstances = postTEIsEnrollEvent;
+                            $.ajax({
+                                type: "POST",
+                                dataType: "json",
+                                contentType: "application/json",
+                                async: false,
+                                data: JSON.stringify(teiAndEnrollEvent),
+                                url: '../../trackedEntityInstances/',
+                                success: function (response) {
+                                    console.log( "row -- " + JSON.stringify(row + 1 ) + " create new TEI -- " +  XL_row_object[row][objectKeys[0]] );
+                                },
+                                error: function (response) {
+                                    console.log("row -- " + JSON.stringify(row + 1 ) + " not create TEI --  " +  XL_row_object[row][objectKeys[0]] + " response: " + JSON.stringify(response));
+                                },
+                                warning: function (response) {
+                                    console.log("row -- " + JSON.stringify(row + 1 ) + "Warning!: " + JSON.stringify(response));
+                                }
+                            });
+                            importCount++;
+                        }
+                        //});
+                    }
+
+
+
+
                     // for update TEI attribute value
                     else if( sheetName === 'teiAttributeValueUpdate' ){
                         let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
@@ -5094,6 +5154,98 @@ excelImport
                             }
                         });
                     }
+
+                    // users post check if user already taken from API
+                    else if( sheetName === 'usersPostFromAPI' ){
+                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        var json_object = JSON.stringify(XL_row_object);
+                        var objectKeys = Object.keys(XL_row_object["0"]);
+                        var importCount = 1;
+                        XL_row_object.forEach(row => {
+
+                            $.ajax({
+                                type: "GET",
+                                async: false,
+                                //api/users.json?filter=userCredentials.username:eq:norbur_LT&fields=id,name&paging=false
+                                url: '../../users.json?filter=userCredentials.username:eq:' + row.cloneusername + "&fields=id,name,username&paging=false",
+                                success: function (userResponse) {
+
+                                    //console.log( userResponse.users.length);
+                                    if( userResponse.users.length === 0 && userResponse.users[0] === undefined ){
+                                        importCount++;
+
+                                        $.ajax({
+                                            type: "GET",
+                                            async: false,
+                                            //api/users.json?filter=userCredentials.username:eq:norbur_LT&fields=id,name&paging=false
+                                            url: '../../users.json?filter=userCredentials.username:eq:' + row.username + "&fields=*&paging=false",
+                                            success: function (userGetResponse) {
+                                                let usersPost = {};
+                                                let organisationUnits = [];
+                                                let dataViewOrganisationUnits = [];
+                                                let teiSearchOrganisationUnits = [];
+                                                let userGroups = [];
+                                                let userRoles = [];
+
+                                                usersPost.id = row.userInfoUid;
+                                                usersPost.firstName = userGetResponse.users[0].firstName;
+                                                usersPost.surname = userGetResponse.users[0].surname;
+                                                usersPost.email = userGetResponse.users[0].email;
+                                                usersPost.phoneNumber = userGetResponse.users[0].phoneNumber;
+                                                usersPost.userCredentials = {};
+                                                usersPost.userCredentials.username = row.cloneusername;
+                                                usersPost.userCredentials.password = row.password;
+
+                                                usersPost.organisationUnits = userGetResponse.users[0].organisationUnits;
+                                                usersPost.dataViewOrganisationUnits = userGetResponse.users[0].dataViewOrganisationUnits;
+                                                usersPost.teiSearchOrganisationUnits = userGetResponse.users[0].teiSearchOrganisationUnits;
+
+                                                usersPost.userGroups = userGetResponse.users[0].userGroups;
+                                                usersPost.userCredentials.userRoles = userGetResponse.users[0].userCredentials.userRoles;
+
+                                                $.ajax({
+                                                    type: "POST",
+                                                    async: false,
+                                                    dataType: "json",
+                                                    contentType: "application/json",
+                                                    data: JSON.stringify(usersPost),
+                                                    url: '../../users',
+                                                    success: function (response) {
+                                                        //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                                        console.log( "Row - " + importCount  + " response: " + JSON.stringify(response) );
+                                                    },
+                                                    error: function (response) {
+                                                        console.log(  "Row - " + importCount  + " response: " + JSON.stringify(response ));
+                                                    },
+                                                    warning: function (response) {
+                                                        console.log(  "Row - " + importCount  + " response: " + JSON.stringify(response ));
+                                                    }
+                                                });
+
+                                            }
+
+                                        });
+                                    }
+                                    else{
+                                        //console.log( userResponse.users[0].id);
+                                        console.log( " Username already taken with user id " + userResponse.users[0].id + " and name " + userResponse.users[0].name + " and username " + userResponse.users[0].username );
+                                    }
+                                },
+                                error: function (userResponse) {
+                                    console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( userResponse ) );
+                                },
+                                warning: function (userResponse) {
+                                    console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( userResponse ) );
+                                }
+                            });
+                            //console.log( "Row - " + importCount + " update done for organisationUnit " + row.uid );
+                            if( importCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " import done ");
+
+                            }
+                        });
+                    }
+
 
                         /*
                         else if( sheetName === 'usersPost' ){
