@@ -1,47 +1,18 @@
-# Apps-Development
-HISP INDIA External Apps Development
+# React + Vite
 
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
- # Link of other external Apps developed:
+Currently, two official plugins are available:
 
- 1# Tracker data approval app developed for UPHMIS
-    https://github.com/hispindia/dhis-tracker-data-approval-app
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
- 2# e-Aushadhi Stock Data Import App developed for malaria
-    https://github.com/hispindia/dhis-app-excel-import/tree/Aggrigate-Data-Excel-Import-App-Without-Mapping
-	
- 3# Aggregate data excel import app developed for maharashtra with multiple OU and multiple Data Element
-    https://github.com/hispindia/dhis-app-excel-import/tree/Aggregate-Data-Excel-Import-App-MultipleOU-MultipleDE
- 
- 4# Excel import app for multiple stages version 2.27
-    https://github.com/hispindia/dhis-app-excel-import/tree/2.27-MWMIS-Odisha-Multistage-Excel-Import 
-	
- 5# Excel import app for multiple stages version 2.26
-    https://github.com/hispindia/dhis-app-excel-import/tree/2.26-AES-Multistage-Excel-Import
-	
- 6# Excel import app for aggrigate & tracker data version 2.27
-    https://github.com/hispindia/dhis-app-excel-import/tree/csv-2.27
-    
- 7# Tracker and event data exporter app ( generic, msf, tibet branches )  
-    https://github.com/hispindia/tracker-data-exporter-app/
-	
- 8# Intractive Dashboard app ( For ICMR-GBD )  
-    https://github.com/hispindia/interactive-dashboard-vuejs
-	
- 9# openimis-dhis2integration
-    https://github.com/hispindia/openimis-dhis2integration
-	https://github.com/hispindia/openimis-fhir-definitions
-	https://github.com/hispindia/openimis-be-api_fhir_py
-	https://github.com/openimis/openimis-be_py/tree/develop
+## React Compiler
 
- 10# kenya-sms-alert 
-    https://github.com/hispindia/dhis-outlier-analysis/tree/kenya-sms-alert	
+The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
 
- 11# This app build in Angular JS
- 
-	After removing translation and trackedentitydatavalue table from 2.32 ownward
+Note: This will impact Vite dev & build performances.
 
-    1) Used for import translation for 2.32
-    2) Event-datavalue update/add for single-dataelement for 2.32
-	
-      https://github.com/hispindia/Apps-Development/tree/excel-to-json-angular
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
