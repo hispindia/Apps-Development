@@ -1,0 +1,17 @@
+{
+  "appType": "APP",
+  "short_name": "Client Search",
+  "name": "Client Search",
+  "description": "Search migrant client",
+  "version": "1.0.0",
+  "launch_path": "index.html",
+  "default_locale": "en",
+  "activities": {
+    "dhis": {
+      "href": "*"
+    }
+  },
+  "display": "standalone",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff"
+}
