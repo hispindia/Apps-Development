@@ -1,0 +1,10 @@
+{
+  "type": "app",
+  "name": "Tracker-Aggregation",
+  "version": "1.0.0",
+  "description": "",
+  "title": "Tracker-Aggregation",
+  "entryPoints": {
+    "app": "index.html"
+  }
+}
