@@ -1,0 +1,124 @@
+
+<div id="leftBar">
+    <d2-left-bar></d2-left-bar>
+
+</div>
+<div id="mainPage">
+    <h2></h2>
+    <div class="row">
+        <div class="col-md-10">
+            <div>
+                <table class="table table-borderless table-striped">
+                    <tr>
+                        <td>Period</td>
+                        <td>
+                            <select class="form-control" style='width:150px;font-size:12px' id="importPeriod" >
+                                <option value="-1">Please Select</option>
+                                <option value="208212">208212</option>
+                                <option value="208211">208211</option>
+                                <option value="208210">208210</option>
+                                <option value="208209">208209</option>
+                                <option value="208208">208208</option>
+                                <option value="208207">208207</option>
+                                <option value="208206">208206</option>
+                                <option value="208205">208205</option>
+                                <option value="208204">208204</option>
+                                <option value="208203">208203</option>
+                                <option value="208202">208202</option>
+                                <option value="208201">208201</option>
+                            </select>
+                        </td>
+                        <td>
+                            <td>ART CENTERS</td>
+                        </td>
+                        <td>
+                            <select ng-model="selectedOrgUnit"
+                                    class="form-control"
+                                    ng-options="ou as ou.name for ou in orgUnits track by ou.id"
+                                    ng-disabled="loading">
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div>
+                                <button ng-click="getSet()" style="margin-top:5px;background-color: #008CBA;color:white;border:none;">Submit</button><br>
+
+                                <div ng-repeat="log in logs track by $index">
+                                    <h3 > {{$index}} : {{log.head}} </h3>
+                                    <p style="color:gray" ng-repeat="logbody in log.body track by $index"> {{logbody}}</p>
+                                    <h4 style="color:green"> {{log.tail}} </h4></div>
+                            </div>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="loader" class="lds-facebook" ng-show="loading">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
+    <div id="dataValueSetOutPut" style="display: none" class="selcsection">
+        <div class="row">
+            <div class="col-md-10">
+                <div>
+                    <table class="table table-borderless table-striped">
+                        <tr>
+                            <td>{{dataValueSetStart}}</td>
+                            <!--<input type="text" class="form-control" value="{{dataValueSetStart}}" ng-disabled="true">-->
+                        </tr>
+                        <tr>
+                            <td>{{dataValueSetComplete}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{dataValueSetConflicts}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!--
+    <div style="margin-top: 55px;">
+        Period<select class="form-control" style='width:90px;font-size:12px' id="importPeriod" >
+            <option value="-1">{{'Please Select'| translate}}</option>
+            <option value="2025">2025</option>
+            <option value="2024">2024</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            <option value="2020">2020</option>
+        </select>
+        <div enctype="multipart/form-data">
+            <input id="upload" type=file  name="files[]">
+        </div>
+    </div>
+    -->
+    <!--
+    <div style="margin-top: 55px;" enctype="multipart/form-data">
+        <input id="upload" type=file  name="files[]">
+    </div>
+    -->
+
+
+
+    <!--
+    <div>
+        <button ng-click="getSet()" style="margin-top:5px;background-color: #008CBA;color:white;border:none;">Submit</button><br>
+
+            <div ng-repeat="log in logs track by $index">
+               <h3 > {{$index}} : {{log.head}} </h3>
+               <p style="color:gray" ng-repeat="logbody in log.body track by $index"> {{logbody}}</p>
+               <h4 style="color:green"> {{log.tail}} </h4></div>
+    </div>
+    -->
+</div>
+ 
