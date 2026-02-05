@@ -13,7 +13,6 @@
   "devDependencies": {
     "@dhis2/cli-app-scripts": "^10.3.10"
   },
-
   "manifest.webapp": {
     "appType": "APP",
     "short_name": "Tracker_Aggeration",
@@ -29,9 +28,9 @@
     }
   },
   "icons": {
-    "16":"/img/aggregation.png",
-    "48":"/img/aggregation.png",
-    "128":"/img/aggregation.png"
+    "16": "/img/aggregation.png",
+    "48": "/img/aggregation.png",
+    "128": "/img/aggregation.png"
   },
   "dependencies": {
     "@dhis2/app-runtime": "^3.9.4",
