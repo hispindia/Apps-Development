@@ -1,5 +1,5 @@
 {
-  "name": "Tracker-Aggregation",
+  "name": "Aggregation-Antibiotic-prescription",
   "version": "1.0.0",
   "description": "",
   "license": "BSD-3-Clause",
@@ -15,8 +15,8 @@
   },
   "manifest.webapp": {
     "appType": "APP",
-    "short_name": "Tracker_Aggeration",
-    "name": "Tracker_Aggeration",
+    "short_name": "Aggregation_Antibiotic_prescription",
+    "name": "Aggregation_Antibiotic_prescription",
     "description": "",
     "version": "1.0.0",
     "launch_path": "index.html",

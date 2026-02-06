@@ -1,9 +1,9 @@
 {
   "type": "app",
-  "name": "Tracker-Aggregation",
+  "name": "Aggregation-Antibiotic-prescription",
   "version": "1.0.0",
   "description": "",
-  "title": "Tracker-Aggregation",
+  "title": "Aggregation-Antibiotic-prescription",
   "entryPoints": {
     "app": "index.html"
   }

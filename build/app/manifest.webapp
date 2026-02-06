@@ -1,7 +1,7 @@
 {
   "appType": "APP",
-  "short_name": "Tracker-Aggregation",
-  "name": "Tracker-Aggregation",
+  "short_name": "Aggregation-Antibiotic-prescription",
+  "name": "Aggregation-Antibiotic-prescription",
   "description": "",
   "version": "1.0.0",
   "launch_path": "index.html",
@@ -14,7 +14,7 @@
   "icons": {
     "48": "dhis2-app-icon.png"
   },
-  "manifest_generated_at": "Wed Feb 04 2026 14:01:23 GMT+0530 (India Standard Time)",
+  "manifest_generated_at": "Fri Feb 06 2026 11:30:50 GMT+0530 (India Standard Time)",
   "display": "standalone",
   "theme_color": "#ffffff",
   "background_color": "#ffffff",

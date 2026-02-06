@@ -1,3 +1,4 @@
+// updating code for the same 
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -30,8 +31,6 @@ const Home = () => {
   const [pendingstatus, setPendingStatus] = useState(false);
   const TotalEvent = activeEventList === null || activeEventList === void 0 ? void 0 : activeEventList.length;
   const pending = Data === null || Data === void 0 ? void 0 : Data.length;
-  // console.log("Total events", TotalEvent);
-  // console.log("Data>>>", pending);
   const fetchCategoryCombosOptionsDetails = async () => {
     try {
       const response = await fetch("../../categoryCombos.json?paging=false&fields=id,displayName,code,categoryOptionCombos[id,displayName,code,categoryOptions[id,code,displayName]]", {
@@ -189,25 +188,6 @@ const Home = () => {
         throw new Error(`Error: ${response.status}`);
       }
       const responseData = await response.json();
-
-      // responseData.dataElements.forEach((de) => {
-      //   dataElements[de.id] = de.formName ? de.formName : de.displayName;
-      //   console.log("de===========", de);
-      //   de.attributeValues.forEach((attributeValue) => {
-      //     de[attributeValue.attribute.id] = attributeValue.value;
-
-      //     if (!dataElementObjects.attributeGroups[attributeValue.value]) {
-      //       dataElementObjects.attributeGroups[attributeValue.value] = [];
-      //     }
-
-      //     dataElementObjects.attributeGroups[attributeValue.value].push(de.id);
-      //   });
-
-      //   dataElementObjects[de.id] = de;
-      //   dataElementObjects[de.code] = de;
-      //   console.log("dataElementObjects========", dataElementObjects);
-      // });
-
       return responseData;
     } catch (error) {
       console.error(error.message);
@@ -236,28 +216,6 @@ const Home = () => {
       return null; // or throw an error
     }
   };
-
-  // const getAggregatedDataValue = async (
-  //   period,
-  //   dataSet,
-  //   de,
-  //   orgUnit,
-  //   cc,
-  //   cp,
-  //   co
-  // ) => {
-  //   try {
-  //     const response = await fetch(
-  //       `../../dataValues.json?paging=false&pe=${period}&ds=${dataSet}&de=${de}&ou=${orgUnit}&cc=${cc}&cp=${cp}&co=${co}`
-  //     );
-  //     const data = await response.json();
-  //     const value = data.length > 0 ? parseInt(data[0]) + 1 : 0;
-  //     return { response: true, value };
-  //   } catch (error) {
-  //     console.error("Error fetching aggregated data value", error);
-  //     return { response: true, value: 1 };
-  //   }
-  // };
 
   const getAggregatedDataValue = async (period, dataSet, de, orgUnit, cc, cp, co) => {
     let defaultvalue = 0;
@@ -293,10 +251,6 @@ const Home = () => {
     alert("Aggeration is Started Click on Ok!");
     setStatus(true);
     try {
-      const headersMapGrpByDomain = {}; // Replace with actual data
-      // const initialSummary = prepareListFromMap(headersMapGrpByDomain); // Uncomment if needed
-      const importSummary = {};
-      const importSummaryMap = [];
       const AntibioticPDataSet = "OL1AwznvNuS";
       const AntimicrobialDataSet = "aTVFyw659rT";
       //  let coDefault;
@@ -307,181 +261,167 @@ const Home = () => {
         if (!(teiResponse !== null && teiResponse !== void 0 && teiResponse.attributes)) return "";
         const attrObj = teiResponse.attributes.find(attr => attr.attribute === attributeId);
         return attrObj ? attrObj.value : "";
-      };
+      }; // function to get the attribute value for specific Id
       const getAgeGroup = age => {
         if (age === null || age === undefined || age === "") return "";
         const numericAge = parseInt(age, 10);
         if (isNaN(numericAge)) return "";
-        if (numericAge >= 0 && numericAge <= 4) return "0-4";
-        if (numericAge >= 5 && numericAge <= 14) return "5-14";
-        if (numericAge >= 15 && numericAge <= 44) return "15-44";
-        if (numericAge >= 45 && numericAge <= 60) return "45-60";
-        if (numericAge > 60) return ">60";
+        if (numericAge >= 0 && numericAge <= 2) return "0-2";
+        if (numericAge >= 3 && numericAge <= 12) return "3-12";
+        if (numericAge >= 13 && numericAge <= 17) return "13-17";
+        if (numericAge >= 18 && numericAge <= 49) return "18-49";
+        if (numericAge >= 50 && numericAge <= 69) return "50-69";
+        if (numericAge > 70) return ">70";
+        // if (numericAge >= 0 && numericAge <= 4) return "0-4";
+        // if (numericAge >= 5 && numericAge <= 14) return "5-14";
+        // if (numericAge >= 15 && numericAge <= 44) return "15-44";
+        // if (numericAge >= 45 && numericAge <= 60) return "45-60";
+        // if (numericAge > 60) return ">60";
+
         return "";
-      };
+      }; // calculating the age Group from the age
+
       for (let i = 0; i < eventList.length; i++) {
         var _eventList$i;
-        let rationality1DataTEI = "";
         let locationDataTEI = "";
-        let therapy1DataTEI = "";
         let purposeOfSampleDataTEI = "";
-        const organismDataTEIList = []; // ✅ MULTI organisms
-        const ORGANISM_DATAELEMENT_IDS = ["NyvwQVM48pt",
+
+        // ==========================
+        // MULTI Rationality
+        // ==========================
+        const RATIONALITY_DATAELEMENT_IDS = ["zxKDqCNXTkn",
         // Organism 1
-        "bsSyJOsqs9c",
+        "og7a4BdIriw",
         // Organism 2
-        "HNAzUCVo9Ef",
+        "jUu5GBcjU2P",
         // Organism 3
-        "r3EBeH8JAOn", "P3o7Py0xmJf", "d65XJBtpnoN"];
+        "Oz5WM8SyQbf", "y4tVZyF76JP", "IwD9Bqz5oIW"];
+        const rationalityDataTEIList = [];
+
+        // ==========================
+        // MULTI Therapy
+        // ==========================
+        const THERAPY_DATAELEMENT_IDS = ["qZhuQxgR5ag", "JoVSWyfdyXY", "I4qgg3ccMIT", "TnBjw6vpu9K", "Fsi9Fw8ovEP", "w76Dd6hhcXv"];
+        const therapyDataTEIList = [];
+
+        // ==========================
+        // MULTI Organism
+        // ==========================
+        const organismDataTEIList = [];
+        const ORGANISM_DATAELEMENT_IDS = ["NyvwQVM48pt", "bsSyJOsqs9c", "HNAzUCVo9Ef", "r3EBeH8JAOn", "P3o7Py0xmJf", "d65XJBtpnoN"];
         const antibioticCategoryOptionComboUIDsTEI = [];
         let tempAggregateDE = "";
         let tempCategoryOptions = "";
         const aggregateorgUnit = eventList[i].orgUnit;
         const tempEventForUpdate = eventList[i];
         const isoPeriod = eventList[i].eventDate.split("T")[0].substring(0, 7).replace("-", "");
-        let Tei = (_eventList$i = eventList[i]) === null || _eventList$i === void 0 ? void 0 : _eventList$i.trackedEntityInstance;
-        const teiResponse = await TeiDetails(Tei);
-        console.log("TTTTTTTTTTTTTTTT", teiResponse);
+        let TrackedEntityId = (_eventList$i = eventList[i]) === null || _eventList$i === void 0 ? void 0 : _eventList$i.trackedEntityInstance;
+        const teiResponse = await TeiDetails(TrackedEntityId);
         let patientGender = getTeiAttributeValue(teiResponse, "imDytkRwhGs");
         let patientAge = getTeiAttributeValue(teiResponse, "nPjc1MTpKnO");
-        console.log("patientAge", patientAge);
-        console.log("patientGender", patientGender);
         let patientAgeGroup = getAgeGroup(patientAge);
-        console.log("patientAgeGroup===========", patientAgeGroup);
+
         // ==========================
         // Collect Data Values
         // ==========================
         for (let j = 0; j < eventList[i].dataValues.length; j++) {
           const dv = eventList[i].dataValues[j];
-          if (dv.dataElement === "zxKDqCNXTkn") rationality1DataTEI = dv.value;
-          if (dv.dataElement === "Qrkr0VB5l8N") locationDataTEI = dv.value;
-          if (dv.dataElement === "oJjnZpO0Map") therapy1DataTEI = dv.value;
-          if (dv.dataElement === "l4kqMRq38bm") purposeOfSampleDataTEI = dv.value;
+          if (dv.dataElement === "oJjnZpO0Map") locationDataTEI = dv.value;
 
-          // ✅ Collect ALL organisms
+          // 🔴 NEW: Collect ALL Rationalities
+          if (RATIONALITY_DATAELEMENT_IDS.includes(dv.dataElement) && dv.value) {
+            rationalityDataTEIList.push(dv.value.trim());
+          }
+
+          // 🔴 NEW: Collect ALL Therapies
+          if (THERAPY_DATAELEMENT_IDS.includes(dv.dataElement) && dv.value) {
+            therapyDataTEIList.push(dv.value.trim());
+          }
+
+          // Existing: Collect ALL organisms
           if (ORGANISM_DATAELEMENT_IDS.includes(dv.dataElement) && dv.value) {
-            organismDataTEIList.push(dv.value);
+            organismDataTEIList.push(dv.value.trim());
           }
         }
 
-        // Remove duplicates (optional but safe)
+        // ==========================
+        // Deduplicate
+        // ==========================
         const uniqueOrganisms = [...new Set(organismDataTEIList)];
+        const uniqueRationalities = [...new Set(rationalityDataTEIList)];
+        const uniqueTherapies = [...new Set(therapyDataTEIList)];
+        console.log("Unique Rationalities:", uniqueRationalities);
+        console.log("Unique Therapies:", uniqueTherapies);
+        console.log("Unique Organisms:", uniqueOrganisms);
 
         // ==========================
-        // Category Option Combo (ONCE per event)
+        // MULTI CategoryOptionCombo (Rationality × Therapy)
         // ==========================
-        if (rationality1DataTEI && locationDataTEI && therapy1DataTEI && patientAgeGroup) {
-          let tempArray = [patientAgeGroup, rationality1DataTEI, locationDataTEI, therapy1DataTEI];
-          tempArray.sort();
-          const categoryOptionComboKey = tempArray.join("");
-          const categoryOptionCombo = tempCategoryCombos["Antibioticprescription"].categoryOptionCombos[categoryOptionComboKey];
-          if (categoryOptionCombo) {
-            antibioticCategoryOptionComboUIDsTEI.push(categoryOptionCombo);
-            console.log("Matched combo UID:", categoryOptionCombo);
-          } else {
-            console.error("No matching categoryOptionCombo:", tempArray);
+        if (locationDataTEI && patientAgeGroup && uniqueRationalities.length > 0 && uniqueTherapies.length > 0) {
+          for (const rationalityValue of uniqueRationalities) {
+            for (const therapyValue of uniqueTherapies) {
+              let tempArray = [patientAgeGroup, rationalityValue, locationDataTEI, therapyValue];
+              tempArray.sort();
+              const categoryOptionComboKey = tempArray.join("");
+              const categoryOptionCombo = tempCategoryCombos["Antibioticprescription"].categoryOptionCombos[categoryOptionComboKey];
+              if (categoryOptionCombo) {
+                antibioticCategoryOptionComboUIDsTEI.push(categoryOptionCombo);
+                console.log("Matched combo UID:", {
+                  rationalityValue,
+                  therapyValue,
+                  combo: categoryOptionCombo
+                });
+              } else {
+                console.error("No matching categoryOptionCombo:", tempArray);
+              }
+            }
+          }
+        }
+
+        // =================================================
+        // 🔁 PROCESS EACH ORGANISM (UNCHANGED CORE LOGIC)
+        // BUT NOW LOOP OVER rationality × therapy
+        // =================================================
+        function normalizeKey(value) {
+          return value === null || value === void 0 ? void 0 : value.toString().trim();
+        }
+        function normalizeKeyFull(value) {
+          return value === null || value === void 0 ? void 0 : value.toString().trim().toLowerCase().replace(/\s+/g, "").replace(/-/g, "");
+        }
+        for (const organismDataTEI of uniqueOrganisms) {
+          const normalizedOrganism = normalizeKey(organismDataTEI);
+          const baseNorm = normalizeKeyFull(normalizedOrganism);
+          const genderNorm = normalizeKeyFull(patientGender);
+          let baseDeId = null;
+          for (const key of Object.keys(dataElementObjects)) {
+            const normKey = normalizeKeyFull(key);
+            if (normKey === baseNorm || normKey === baseNorm + genderNorm) {
+              baseDeId = dataElementObjects[key].id;
+              break;
+            }
+          }
+          if (!baseDeId) continue;
+          tempAggregateDE = baseDeId;
+
+          // 🔴 LOOP Rationality × Therapy FOR CATEGORY OPTIONS
+          for (const rationalityValue of uniqueRationalities) {
+            for (const therapyValue of uniqueTherapies) {
+              tempCategoryOptions = tempCategoryCombos[ANTIBIOTIC_PRESCRIPTION_CODE].categoryOptions[locationDataTEI] + ";" + tempCategoryCombos[ANTIBIOTIC_PRESCRIPTION_CODE].categoryOptions[therapyValue] + ";" + tempCategoryCombos[ANTIBIOTIC_PRESCRIPTION_CODE].categoryOptions[rationalityValue] + ";" + tempCategoryCombos[ANTIBIOTIC_PRESCRIPTION_CODE].categoryOptions[patientAgeGroup];
+              let defaultValue = 0;
+              const aggregatedDataValueGetResponse = await getAggregatedDataValue(isoPeriod, AntibioticPDataSet, tempAggregateDE, aggregateorgUnit, cCombo, tempCategoryOptions, coDefault);
+              if (aggregatedDataValueGetResponse !== null && aggregatedDataValueGetResponse !== void 0 && aggregatedDataValueGetResponse.response) {
+                defaultValue = Number(aggregatedDataValueGetResponse.value) || 0;
+              }
+              await postAggregatedDataValue(isoPeriod, AntibioticPDataSet, tempAggregateDE, aggregateorgUnit, cCombo, tempCategoryOptions, coDefault, defaultValue);
+            }
           }
         }
 
         // ==========================
-        // Category Options String
+        // Update Event (ONCE per event)
         // ==========================
-        if (locationDataTEI && therapy1DataTEI && rationality1DataTEI && patientAgeGroup) {
-          tempCategoryOptions = tempCategoryCombos[ANTIBIOTIC_PRESCRIPTION_CODE].categoryOptions[locationDataTEI] + ";" + tempCategoryCombos[ANTIBIOTIC_PRESCRIPTION_CODE].categoryOptions[therapy1DataTEI] + ";" + tempCategoryCombos[ANTIBIOTIC_PRESCRIPTION_CODE].categoryOptions[rationality1DataTEI] + ";" + tempCategoryCombos[ANTIBIOTIC_PRESCRIPTION_CODE].categoryOptions[patientAgeGroup];
-          console.log("tempCategoryOptions ===>", tempCategoryOptions);
-
-          // =================================================
-          // 🔁 PROCESS EACH ORGANISM (MAIN CHANGE)
-          // =================================================
-          function normalizeKey(value) {
-            return value === null || value === void 0 ? void 0 : value.toString().trim();
-          }
-          function normalizeKeyFull(value) {
-            return value === null || value === void 0 ? void 0 : value.toString().trim().toLowerCase().replace(/\s+/g, "").replace(/-/g, "");
-          }
-          for (const organismDataTEI of uniqueOrganisms) {
-            console.log("Processing organism:", organismDataTEI);
-            const normalizedOrganism = normalizeKey(organismDataTEI);
-
-            // ==========================
-            // BASE ORGANISM DE (NO GENDER)
-            // ==========================
-            let baseDeId = null;
-            const baseNorm = normalizeKeyFull(normalizedOrganism);
-            const genderNorm = normalizeKeyFull(patientGender);
-            for (const key of Object.keys(dataElementObjects)) {
-              const normKey = normalizeKeyFull(key);
-
-              // 1️⃣ Exact organism match
-              if (normKey === baseNorm) {
-                baseDeId = dataElementObjects[key].id;
-                break;
-              }
-
-              // 2️⃣ Organism + gender match (DIRECT PASS)
-              if (normKey === baseNorm + genderNorm) {
-                baseDeId = dataElementObjects[key].id;
-                break;
-              }
-            }
-            if (!baseDeId) {
-              console.warn("❌ No base DE found for organism:", normalizedOrganism, "gender:", patientGender);
-              continue; // this organism skipped
-            }
-
-            tempAggregateDE = baseDeId;
-
-            // ==========================
-            // DEFAULT AGGREGATE (ALWAYS POST)
-            // ==========================
-            let defaultValue = 0;
-            const aggregatedDataValueGetResponse = await getAggregatedDataValue(isoPeriod, AntibioticPDataSet, tempAggregateDE, aggregateorgUnit, cCombo, tempCategoryOptions, coDefault);
-            if (aggregatedDataValueGetResponse !== null && aggregatedDataValueGetResponse !== void 0 && aggregatedDataValueGetResponse.response) {
-              defaultValue = Number(aggregatedDataValueGetResponse.value) || 0;
-            }
-
-            // 🔴 ALWAYS POST
-            await postAggregatedDataValue(isoPeriod, AntibioticPDataSet, tempAggregateDE, aggregateorgUnit, cCombo, tempCategoryOptions, coDefault, defaultValue);
-
-            // ==========================
-            // GENDER-WISE (USING patientGender)
-            // ==========================
-            if (antibioticCategoryOptionComboUIDsTEI.length > 0 && patientGender) {
-              var _dataElementObjects$k, _dataElementObjects$k2;
-              let deAntibioticWise = null;
-              const genderKey = patientGender.toString().trim();
-              const keyWithDash = `${normalizedOrganism}-${genderKey}`;
-              const keyWithoutDash = `${normalizedOrganism}${genderKey}`;
-              if ((_dataElementObjects$k = dataElementObjects[keyWithDash]) !== null && _dataElementObjects$k !== void 0 && _dataElementObjects$k.id) {
-                deAntibioticWise = dataElementObjects[keyWithDash].id;
-              } else if ((_dataElementObjects$k2 = dataElementObjects[keyWithoutDash]) !== null && _dataElementObjects$k2 !== void 0 && _dataElementObjects$k2.id) {
-                deAntibioticWise = dataElementObjects[keyWithoutDash].id;
-              }
-              console.log("Gender-wise DE ===>", deAntibioticWise);
-              if (!deAntibioticWise) {
-                console.warn(`❌ No gender-wise DE for ${normalizedOrganism} + ${patientGender}`);
-                continue;
-              }
-              for (const antiCategoryOptionCombo of antibioticCategoryOptionComboUIDsTEI) {
-                let genderValue = 0;
-                const genderGetResp = await getAggregatedDataValue(isoPeriod, AntibioticPDataSet, deAntibioticWise, aggregateorgUnit, cCombo, tempCategoryOptions, antiCategoryOptionCombo);
-                if (genderGetResp !== null && genderGetResp !== void 0 && genderGetResp.response) {
-                  genderValue = Number(genderGetResp.value) || 0;
-                }
-
-                // 🔴 ALWAYS POST (even if GET had no value)
-                const aggregatedDataValuePostResponse = await postAggregatedDataValue(isoPeriod, AntibioticPDataSet, deAntibioticWise, aggregateorgUnit, cCombo, tempCategoryOptions, antiCategoryOptionCombo, genderValue);
-                console.log("Gender aggregate updated:", aggregatedDataValuePostResponse);
-              }
-            }
-          }
-
-          // ==========================
-          // Update Event (ONCE per event)
-          // ==========================
-          const eventUpdateResponse = updateEventStatus(tempEventForUpdate);
-          console.log(eventUpdateResponse);
-        }
+        const eventUpdateResponse = updateEventStatus(tempEventForUpdate);
+        console.log(eventUpdateResponse);
       }
       console.log("cCobo+++++++++++", cCombo);
       setStatus(false);
@@ -523,81 +463,201 @@ const Home = () => {
     }
   };
 
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const itemsPerPage = 50; // Adjust this value to set the number of items per page
+
+  // const handlePageChange = (pageNumber) => {
+  //   setCurrentPage(pageNumber);
+  // };
+
+  // var val = () => {
+  //   const indexOfLastItem = currentPage * itemsPerPage;
+  //   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  //   const currentData = Data.slice(indexOfFirstItem, indexOfLastItem);
+  //   console.log("current data", currentData);
+  //   if (currentData !== undefined) {
+  //     return currentData.map((ele, index) => {
+  //       if (ele.program) {
+  //         var dataValue = {};
+
+  //         let date = [];
+  //         let eventStatus = [];
+  //         eventStatus["value"] = ele.status;
+  //         date["value"] = ele.eventDate.substring(0, 10);
+  //         console.log("ele =======",ele)
+  //         for (let value of ele.dataValues) {
+  //           if (value.dataElement === "C7w2oe6vuwr") {
+  //             dataValue["1"] = value;
+  //           }
+  //           if (value.dataElement === "zxKDqCNXTkn") {
+  //             dataValue["10"] = value;
+  //           }
+  //           if (value.dataElement === "oJjnZpO0Map") {
+  //             dataValue["13"] = value; //location
+  //           }
+  //           if (value.dataElement === "KVYg3tnmNMU") {
+  //             dataValue["7"] = value;
+  //           }
+
+  //           if (value.dataElement === "l4kqMRq38bm") {
+  //             dataValue["10"] = value;
+  //           }
+  //           dataValue["6"] = date;
+
+  //           dataValue["11"] = eventStatus;
+  //         }
+
+  //         // Conditionally initialize missing values
+  //         if (!dataValue["1"]) {
+  //           dataValue["1"] = { value: "" };
+  //         }
+  //         if (!dataValue["2"]) {
+  //           dataValue["2"] = { value: "" };
+  //         }
+  //         if (!dataValue["3"]) {
+  //           dataValue["3"] = { value: "" };
+  //         }
+  //         if (!dataValue["7"]) {
+  //           dataValue["7"] = { value: "" };
+  //         }
+  //         if (!dataValue["10"]) {
+  //           dataValue["10"] = { value: "" };
+  //         }
+
+  //         return (
+  //           <>
+  //             <TableRow key={index}>
+  //               {Object.keys(dataValue).map((key) => (
+  //                 <TableCell key={key}>{dataValue[key].value}</TableCell>
+  //               ))}
+  //             </TableRow>
+  //           </>
+  //         );
+  //       }
+  //     });
+  //   }
+  // };
+
+  // return (
+  //   <>
+  //     <div style={{ padding: "10px" }}>
+  //       <div style={{ marginLeft: "5px" }}>
+  //         <Button primary={true} onClick={getEventList}>
+  //           Aggregate
+  //         </Button>
+  //         {pendingstatus ? (
+  //           <span style={{ paddingLeft: "10px" }}>
+  //             Pending Events: {pending}
+  //           </span>
+  //         ) : (
+  //           <span style={{ paddingLeft: "10px" }}>
+  //             Total Events: {TotalEvent}
+  //           </span>
+  //         )}
+  //       </div>
+
+  //       <div>
+  //         <Table>
+  //           <TableRow className={classes.header}>
+  //             <TableCell>
+  //               <b>Organism</b>
+  //             </TableCell>
+  //             <TableCell>
+  //               <b>Sample Type</b>
+  //             </TableCell>
+  //             <TableCell>
+  //               <b>Location</b>
+  //             </TableCell>
+  //             <TableCell>
+  //               <b>Event Date</b>
+  //             </TableCell>
+
+  //             <TableCell>
+  //               <b>Purpose of sample</b>
+  //             </TableCell>
+  //             <TableCell>
+  //               <b>Status</b>
+  //             </TableCell>
+  //           </TableRow>
+  //           {isLoading || status ? (
+  //             <div
+  //               style={{
+  //                 position: "absolute",
+  //                 top: "50%",
+  //                 left: "50%",
+  //                 transform: "translate(-50%, -50%)",
+  //               }}
+  //             >
+  //               <CircularProgress />
+  //             </div>
+  //           ) : (
+  //             <TableBody>{val()}</TableBody>
+  //           )}
+  //         </Table>
+
+  //         <ReactPaginate
+  //           activePage={currentPage}
+  //           itemsCountPerPage={itemsPerPage}
+  //           totalItemsCount={Data.length}
+  //           pageRangeDisplayed={5}
+  //           onChange={handlePageChange}
+  //           itemClass="page-item"
+  //           linkClass="page-link"
+  //         />
+  //       </div>
+  //     </div>
+  //   </>
+  // ================== Pagination State ==================
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 50; // Adjust this value to set the number of items per page
 
   const handlePageChange = pageNumber => {
     setCurrentPage(pageNumber);
   };
+
+  // ================== Table Data Render ==================
   var val = () => {
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentData = Data.slice(indexOfFirstItem, indexOfLastItem);
     console.log("current data", currentData);
-    if (currentData !== undefined) {
-      return currentData.map((ele, index) => {
-        if (ele.program) {
-          var dataValue = {};
-          let date = [];
-          let eventStatus = [];
-          eventStatus["value"] = ele.status;
-          date["value"] = ele.eventDate.substring(0, 10);
-          for (let value of ele.dataValues) {
-            if (value.dataElement === "C7w2oe6vuwr") {
-              dataValue["1"] = value;
-            }
-            if (value.dataElement === "zxKDqCNXTkn") {
-              dataValue["10"] = value;
-            }
-            if (value.dataElement === "oJjnZpO0Map") {
-              dataValue["13"] = value; //location
-            }
+    if (!currentData || currentData.length === 0) return null;
+    return currentData.map((ele, index) => {
+      console.log("ele =======", ele);
+      if (!ele.program) return null;
 
-            if (value.dataElement === "KVYg3tnmNMU") {
-              dataValue["7"] = value;
-            }
-            if (value.dataElement === "l4kqMRq38bm") {
-              dataValue["10"] = value;
-            }
-            dataValue["6"] = date;
-            dataValue["11"] = eventStatus;
+      // Defaults
+      let organism = "";
+      let ratinonal = "";
+      let location = "";
+      let eventDate = ele.eventDate ? ele.eventDate.substring(0, 10) : "";
+      let purposeOfSample = "";
+      let eventStatus = ele.status || "";
+      if (ele.dataValues && ele.dataValues.length > 0) {
+        for (let value of ele.dataValues) {
+          // Organism
+          // if (value.dataElement === "pNHNqJ1lOJh") {
+          //   organism = value.value || "";
+          // }
+
+          // Sample Type / Purpose of sample
+          if (value.dataElement === "zxKDqCNXTkn") {
+            ratinonal = value.value || "";
+            // purposeOfSample = value.value || "";
           }
 
-          // Conditionally initialize missing values
-          if (!dataValue["1"]) {
-            dataValue["1"] = {
-              value: ""
-            };
+          if (value.dataElement == "oJjnZpO0Map") {
+            location = value.value || "";
           }
-          if (!dataValue["2"]) {
-            dataValue["2"] = {
-              value: ""
-            };
-          }
-          if (!dataValue["3"]) {
-            dataValue["3"] = {
-              value: ""
-            };
-          }
-          if (!dataValue["7"]) {
-            dataValue["7"] = {
-              value: ""
-            };
-          }
-          if (!dataValue["10"]) {
-            dataValue["10"] = {
-              value: ""
-            };
-          }
-          return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(TableRow, {
-            key: index
-          }, Object.keys(dataValue).map(key => /*#__PURE__*/React.createElement(TableCell, {
-            key: key
-          }, dataValue[key].value))));
         }
-      });
-    }
+      }
+      return /*#__PURE__*/React.createElement(TableRow, {
+        key: index
+      }, /*#__PURE__*/React.createElement(TableCell, null, ratinonal), /*#__PURE__*/React.createElement(TableCell, null, location), /*#__PURE__*/React.createElement(TableCell, null, eventDate), /*#__PURE__*/React.createElement(TableCell, null, eventStatus));
+    });
   };
+
+  // ================== JSX RETURN PART ==================
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     style: {
       padding: "10px"
@@ -619,7 +679,7 @@ const Home = () => {
     }
   }, "Total Events: ", TotalEvent)), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Table, null, /*#__PURE__*/React.createElement(TableRow, {
     className: classes.header
-  }, /*#__PURE__*/React.createElement(TableCell, null, /*#__PURE__*/React.createElement("b", null, "Organism")), /*#__PURE__*/React.createElement(TableCell, null, /*#__PURE__*/React.createElement("b", null, "Sample Type")), /*#__PURE__*/React.createElement(TableCell, null, /*#__PURE__*/React.createElement("b", null, "Location")), /*#__PURE__*/React.createElement(TableCell, null, /*#__PURE__*/React.createElement("b", null, "Event Date")), /*#__PURE__*/React.createElement(TableCell, null, /*#__PURE__*/React.createElement("b", null, "Purpose of sample")), /*#__PURE__*/React.createElement(TableCell, null, /*#__PURE__*/React.createElement("b", null, "Status"))), isLoading || status ? /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(TableCell, null, /*#__PURE__*/React.createElement("b", null, "Irrational ")), /*#__PURE__*/React.createElement(TableCell, null, /*#__PURE__*/React.createElement("b", null, "Location")), /*#__PURE__*/React.createElement(TableCell, null, /*#__PURE__*/React.createElement("b", null, "Event Date")), /*#__PURE__*/React.createElement(TableCell, null, /*#__PURE__*/React.createElement("b", null, "Status"))), isLoading || status ? /*#__PURE__*/React.createElement("div", {
     style: {
       position: "absolute",
       top: "50%",

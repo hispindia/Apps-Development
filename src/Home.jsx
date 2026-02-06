@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -35,8 +34,7 @@ const Home = () => {
   const [pendingstatus, setPendingStatus] = useState(false);
   const TotalEvent = activeEventList?.length;
   const pending = Data?.length;
-  // console.log("Total events", TotalEvent);
-  // console.log("Data>>>", pending);
+
   const fetchCategoryCombosOptionsDetails = async () => {
     try {
       const response = await fetch(
@@ -240,24 +238,6 @@ const Home = () => {
 
       const responseData = await response.json();
 
-      // responseData.dataElements.forEach((de) => {
-      //   dataElements[de.id] = de.formName ? de.formName : de.displayName;
-      //   console.log("de===========", de);
-      //   de.attributeValues.forEach((attributeValue) => {
-      //     de[attributeValue.attribute.id] = attributeValue.value;
-
-      //     if (!dataElementObjects.attributeGroups[attributeValue.value]) {
-      //       dataElementObjects.attributeGroups[attributeValue.value] = [];
-      //     }
-
-      //     dataElementObjects.attributeGroups[attributeValue.value].push(de.id);
-      //   });
-
-      //   dataElementObjects[de.id] = de;
-      //   dataElementObjects[de.code] = de;
-      //   console.log("dataElementObjects========", dataElementObjects);
-      // });
-
       return responseData;
     } catch (error) {
       console.error(error.message);
@@ -299,28 +279,6 @@ const Home = () => {
       return null; // or throw an error
     }
   };
-
-  // const getAggregatedDataValue = async (
-  //   period,
-  //   dataSet,
-  //   de,
-  //   orgUnit,
-  //   cc,
-  //   cp,
-  //   co
-  // ) => {
-  //   try {
-  //     const response = await fetch(
-  //       `../../dataValues.json?paging=false&pe=${period}&ds=${dataSet}&de=${de}&ou=${orgUnit}&cc=${cc}&cp=${cp}&co=${co}`
-  //     );
-  //     const data = await response.json();
-  //     const value = data.length > 0 ? parseInt(data[0]) + 1 : 0;
-  //     return { response: true, value };
-  //   } catch (error) {
-  //     console.error("Error fetching aggregated data value", error);
-  //     return { response: true, value: 1 };
-  //   }
-  // };
 
   const getAggregatedDataValue = async (
     period,
@@ -373,11 +331,6 @@ const Home = () => {
     setStatus(true);
 
     try {
-      const headersMapGrpByDomain = {}; // Replace with actual data
-      // const initialSummary = prepareListFromMap(headersMapGrpByDomain); // Uncomment if needed
-      const importSummary = {};
-      const importSummaryMap = [];
-
       const AntibioticPDataSet = "OL1AwznvNuS";
       const AntimicrobialDataSet = "aTVFyw659rT";
       //  let coDefault;
@@ -389,31 +342,36 @@ const Home = () => {
       const cCombo = categoryCombos.Antibioticprescription.id;
 
       const eventList = activeEventList;
-     
+
       const getTeiAttributeValue = (teiResponse, attributeId) => {
-          if (!teiResponse?.attributes) return "";
+        if (!teiResponse?.attributes) return "";
 
-          const attrObj = teiResponse.attributes.find(
-            (attr) => attr.attribute === attributeId,
-          );
+        const attrObj = teiResponse.attributes.find(
+          (attr) => attr.attribute === attributeId,
+        );
 
-          return attrObj ? attrObj.value : "";
-        };
-        const getAgeGroup = (age) => {
-          if (age === null || age === undefined || age === "") return "";
+        return attrObj ? attrObj.value : "";
+      }; // function to get the attribute value for specific Id
+      const getAgeGroup = (age) => {
+        if (age === null || age === undefined || age === "") return "";
 
-          const numericAge = parseInt(age, 10);
+        const numericAge = parseInt(age, 10);
 
-          if (isNaN(numericAge)) return "";
+        if (isNaN(numericAge)) return "";
+        if (numericAge >= 0 && numericAge <= 2) return "0-2";
+        if (numericAge >= 3 && numericAge <= 12) return "3-12";
+        if (numericAge >= 13 && numericAge <= 17) return "13-17";
+        if (numericAge >= 18 && numericAge <= 49) return "18-49";
+        if (numericAge >= 50 && numericAge <= 69) return "50-69";
+        if (numericAge > 70) return ">70";
+        // if (numericAge >= 0 && numericAge <= 4) return "0-4";
+        // if (numericAge >= 5 && numericAge <= 14) return "5-14";
+        // if (numericAge >= 15 && numericAge <= 44) return "15-44";
+        // if (numericAge >= 45 && numericAge <= 60) return "45-60";
+        // if (numericAge > 60) return ">60";
 
-          if (numericAge >= 0 && numericAge <= 4) return "0-4";
-          if (numericAge >= 5 && numericAge <= 14) return "5-14";
-          if (numericAge >= 15 && numericAge <= 44) return "15-44";
-          if (numericAge >= 45 && numericAge <= 60) return "45-60";
-          if (numericAge > 60) return ">60";
-
-          return "";
-        };
+        return "";
+      }; // calculating the age Group from the age
 
       for (let i = 0; i < eventList.length; i++) {
         let rationality1DataTEI = "";
@@ -424,16 +382,16 @@ const Home = () => {
         const organismDataTEIList = []; // ✅ MULTI organisms
         const ORGANISM_DATAELEMENT_IDS = [
           "NyvwQVM48pt", // Organism 1
-        "bsSyJOsqs9c", // Organism 2
-        "HNAzUCVo9Ef", // Organism 3
-        "r3EBeH8JAOn",
-        "P3o7Py0xmJf",
-        "d65XJBtpnoN",
+          "bsSyJOsqs9c", // Organism 2
+          "HNAzUCVo9Ef", // Organism 3
+          "r3EBeH8JAOn",
+          "P3o7Py0xmJf",
+          "d65XJBtpnoN",
         ];
         const antibioticCategoryOptionComboUIDsTEI = [];
         let tempAggregateDE = "";
         let tempCategoryOptions = "";
-         const aggregateorgUnit = eventList[i].orgUnit;
+        const aggregateorgUnit = eventList[i].orgUnit;
 
         const tempEventForUpdate = eventList[i];
 
@@ -442,19 +400,16 @@ const Home = () => {
           .substring(0, 7)
           .replace("-", "");
 
-        let Tei = eventList[i]?.trackedEntityInstance;
-        const teiResponse = await TeiDetails(Tei);
+        let TrackedEntityId = eventList[i]?.trackedEntityInstance;
+        const teiResponse = await TeiDetails(TrackedEntityId);
         console.log("TTTTTTTTTTTTTTTT", teiResponse);
-        
-        let patientGender = getTeiAttributeValue(teiResponse, "imDytkRwhGs");
-        let patientAge = getTeiAttributeValue(teiResponse, "nPjc1MTpKnO");
+
+        let patientGender = getTeiAttributeValue(teiResponse, "imDytkRwhGs"); // get the Gender of single event
+        let patientAge = getTeiAttributeValue(teiResponse, "nPjc1MTpKnO"); // get the age
         console.log("patientAge", patientAge);
         console.log("patientGender", patientGender);
 
-       
-      
-
-        let patientAgeGroup = getAgeGroup(patientAge);
+        let patientAgeGroup = getAgeGroup(patientAge); // calculate the age Group from age
         console.log("patientAgeGroup===========", patientAgeGroup);
         // ==========================
         // Collect Data Values
@@ -463,10 +418,10 @@ const Home = () => {
           const dv = eventList[i].dataValues[j];
 
           if (dv.dataElement === "zxKDqCNXTkn") rationality1DataTEI = dv.value;
-          if (dv.dataElement === "Qrkr0VB5l8N") locationDataTEI = dv.value;
-          if (dv.dataElement === "oJjnZpO0Map") therapy1DataTEI = dv.value;
-          if (dv.dataElement === "l4kqMRq38bm")
-            purposeOfSampleDataTEI = dv.value;
+          if (dv.dataElement === "oJjnZpO0Map") locationDataTEI = dv.value;
+          if (dv.dataElement === "qZhuQxgR5ag") therapy1DataTEI = dv.value;
+          // if (dv.dataElement === "l4kqMRq38bm")
+          //   purposeOfSampleDataTEI = dv.value;
 
           // ✅ Collect ALL organisms
           if (ORGANISM_DATAELEMENT_IDS.includes(dv.dataElement) && dv.value) {
@@ -491,7 +446,7 @@ const Home = () => {
             rationality1DataTEI,
             locationDataTEI,
             therapy1DataTEI,
-          ];
+          ]; // make the category option combination
 
           tempArray.sort();
           const categoryOptionComboKey = tempArray.join("");
@@ -502,7 +457,7 @@ const Home = () => {
             ];
 
           if (categoryOptionCombo) {
-            antibioticCategoryOptionComboUIDsTEI.push(categoryOptionCombo);
+            antibioticCategoryOptionComboUIDsTEI.push(categoryOptionCombo); // push the category option combination Match Id
             console.log("Matched combo UID:", categoryOptionCombo);
           } else {
             console.error("No matching categoryOptionCombo:", tempArray);
@@ -544,74 +499,63 @@ const Home = () => {
             return value?.toString().trim();
           }
 
+          function normalizeKeyFull(value) {
+            return value
+              ?.toString()
+              .trim()
+              .toLowerCase()
+              .replace(/\s+/g, "")
+              .replace(/-/g, "");
+          }
+
           for (const organismDataTEI of uniqueOrganisms) {
             console.log("Processing organism:", organismDataTEI);
 
             const normalizedOrganism = normalizeKey(organismDataTEI);
 
-            function normalizeKeyFull(value) {
-              return value
-                ?.toString()
-                .trim()
-                .toLowerCase()
-                .replace(/\s+/g, "")
-                .replace(/-/g, "");
-            }
+            // ==========================
+            // BASE ORGANISM DE (NO GENDER)
+            // ==========================
+            let baseDeId = null;
 
-            function findDataElementIdWithGenderFallback(
-              organism,
-              dataElementObjects,
-            ) {
-              if (!organism) return null;
+            const baseNorm = normalizeKeyFull(normalizedOrganism);
+            const genderNorm = normalizeKeyFull(patientGender);
 
-              const base = normalizeKeyFull(organism);
+            for (const key of Object.keys(dataElementObjects)) {
+              const normKey = normalizeKeyFull(key);
 
-              const genders = ["female", "male", "transgender"];
-
-              // 1️⃣ Try exact base match first (no gender)
-              for (const key of Object.keys(dataElementObjects)) {
-                const normKey = normalizeKeyFull(key);
-
-                if (normKey === base) {
-                  return dataElementObjects[key].id;
-                }
+              // 1️⃣ Exact organism match
+              if (normKey === baseNorm) {
+                baseDeId = dataElementObjects[key].id;
+                break;
               }
 
-              // 2️⃣ Fallback: try gender-based match
-              for (const gender of genders) {
-                for (const key of Object.keys(dataElementObjects)) {
-                  const normKey = normalizeKeyFull(key);
-
-                  if (normKey === base + gender) {
-                    console.log("✅ Matched using gender fallback:", key);
-                    return dataElementObjects[key].id;
-                  }
-                }
+              // 2️⃣ Organism + gender match (DIRECT PASS)
+              if (normKey === baseNorm + genderNorm) {
+                baseDeId = dataElementObjects[key].id;
+                break;
               }
-
-              return null;
             }
 
-            const deId = findDataElementIdWithGenderFallback(
-              normalizedOrganism,
-              dataElementObjects,
-            );
-
-            if (!deId) {
+            if (!baseDeId) {
               console.warn(
-                "No matching dataElement found for organism:",
+                "❌ No base DE found for organism:",
                 normalizedOrganism,
+                "gender:",
+                patientGender,
               );
-              continue;
+              continue; // this organism skipped
             }
 
-            tempAggregateDE = deId;
+            tempAggregateDE = baseDeId;
 
-            let defaultValue;
+            // ==========================
+            // DEFAULT AGGREGATE (ALWAYS POST)
+            // ==========================
+            let defaultValue = 0;
 
             const aggregatedDataValueGetResponse = await getAggregatedDataValue(
               isoPeriod,
-              // defaultCatCombOption,
               AntibioticPDataSet,
               tempAggregateDE,
               aggregateorgUnit,
@@ -621,12 +565,12 @@ const Home = () => {
             );
 
             if (aggregatedDataValueGetResponse?.response) {
-              defaultValue = aggregatedDataValueGetResponse.value;
+              defaultValue = Number(aggregatedDataValueGetResponse.value) || 0;
             }
 
+            // 🔴 ALWAYS POST
             await postAggregatedDataValue(
               isoPeriod,
-              // defaultCatCombOption,
               AntibioticPDataSet,
               tempAggregateDE,
               aggregateorgUnit,
@@ -637,33 +581,54 @@ const Home = () => {
             );
 
             // ==========================
-            // Gender-wise logic (PER organism)
+            // GENDER-WISE (USING patientGender)
             // ==========================
-            if (antibioticCategoryOptionComboUIDsTEI.length > 0) {
-              const genders = ["Female", "Male", "Transgender"];
+            if (
+              antibioticCategoryOptionComboUIDsTEI.length > 0 &&
+              patientGender
+            ) {
               let deAntibioticWise = null;
 
-              for (const gender of genders) {
-                const keyWithDash = `${normalizedOrganism}-${gender}`;
-                const keyWithoutDash = `${normalizedOrganism}${gender}`;
+              const genderKey = patientGender.toString().trim();
 
-                if (dataElementObjects[keyWithDash]?.id) {
-                  deAntibioticWise = dataElementObjects[keyWithDash].id;
-                  break;
-                } else if (dataElementObjects[keyWithoutDash]?.id) {
-                  deAntibioticWise = dataElementObjects[keyWithoutDash].id;
-                  break;
-                }
+              const keyWithDash = `${normalizedOrganism}-${genderKey}`;
+              const keyWithoutDash = `${normalizedOrganism}${genderKey}`;
+
+              if (dataElementObjects[keyWithDash]?.id) {
+                deAntibioticWise = dataElementObjects[keyWithDash].id;
+              } else if (dataElementObjects[keyWithoutDash]?.id) {
+                deAntibioticWise = dataElementObjects[keyWithoutDash].id;
               }
 
-              console.log("deAntibioticWise ===>", deAntibioticWise);
+              console.log("Gender-wise DE ===>", deAntibioticWise);
 
-              for (let index in antibioticCategoryOptionComboUIDsTEI) {
-                const antiCategoryOptionCombo =
-                  antibioticCategoryOptionComboUIDsTEI[index];
+              if (!deAntibioticWise) {
+                console.warn(
+                  `❌ No gender-wise DE for ${normalizedOrganism} + ${patientGender}`,
+                );
+                continue;
+              }
 
-                const aggregatedDataValueGetResponse =
-                  await getAggregatedDataValue(
+              for (const antiCategoryOptionCombo of antibioticCategoryOptionComboUIDsTEI) {
+                let genderValue = 0;
+
+                const genderGetResp = await getAggregatedDataValue(
+                  isoPeriod,
+                  AntibioticPDataSet,
+                  deAntibioticWise,
+                  aggregateorgUnit,
+                  cCombo,
+                  tempCategoryOptions,
+                  antiCategoryOptionCombo,
+                );
+
+                if (genderGetResp?.response) {
+                  genderValue = Number(genderGetResp.value) || 0;
+                }
+
+                // 🔴 ALWAYS POST (even if GET had no value)
+                const aggregatedDataValuePostResponse =
+                  await postAggregatedDataValue(
                     isoPeriod,
                     AntibioticPDataSet,
                     deAntibioticWise,
@@ -671,25 +636,13 @@ const Home = () => {
                     cCombo,
                     tempCategoryOptions,
                     antiCategoryOptionCombo,
+                    genderValue,
                   );
 
-                if (aggregatedDataValueGetResponse?.response) {
-                  defaultValue = aggregatedDataValueGetResponse.value;
-
-                  const aggregatedDataValuePostResponse =
-                    await postAggregatedDataValue(
-                      isoPeriod,
-                      AntibioticPDataSet,
-                      deAntibioticWise,
-                      aggregateorgUnit,
-                      cCombo,
-                      tempCategoryOptions,
-                      antiCategoryOptionCombo,
-                      defaultValue,
-                    );
-
-                  console.log(aggregatedDataValuePostResponse);
-                }
+                console.log(
+                  "Gender aggregate updated:",
+                  aggregatedDataValuePostResponse,
+                );
               }
             }
           }
@@ -703,7 +656,7 @@ const Home = () => {
       }
 
       console.log("cCobo+++++++++++", cCombo);
-    
+
       setStatus(false);
 
       getActiveEventList();
@@ -745,6 +698,151 @@ const Home = () => {
     }
   };
 
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const itemsPerPage = 50; // Adjust this value to set the number of items per page
+
+  // const handlePageChange = (pageNumber) => {
+  //   setCurrentPage(pageNumber);
+  // };
+
+  // var val = () => {
+  //   const indexOfLastItem = currentPage * itemsPerPage;
+  //   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  //   const currentData = Data.slice(indexOfFirstItem, indexOfLastItem);
+  //   console.log("current data", currentData);
+  //   if (currentData !== undefined) {
+  //     return currentData.map((ele, index) => {
+  //       if (ele.program) {
+  //         var dataValue = {};
+
+  //         let date = [];
+  //         let eventStatus = [];
+  //         eventStatus["value"] = ele.status;
+  //         date["value"] = ele.eventDate.substring(0, 10);
+  //         console.log("ele =======",ele)
+  //         for (let value of ele.dataValues) {
+  //           if (value.dataElement === "C7w2oe6vuwr") {
+  //             dataValue["1"] = value;
+  //           }
+  //           if (value.dataElement === "zxKDqCNXTkn") {
+  //             dataValue["10"] = value;
+  //           }
+  //           if (value.dataElement === "oJjnZpO0Map") {
+  //             dataValue["13"] = value; //location
+  //           }
+  //           if (value.dataElement === "KVYg3tnmNMU") {
+  //             dataValue["7"] = value;
+  //           }
+
+  //           if (value.dataElement === "l4kqMRq38bm") {
+  //             dataValue["10"] = value;
+  //           }
+  //           dataValue["6"] = date;
+
+  //           dataValue["11"] = eventStatus;
+  //         }
+
+  //         // Conditionally initialize missing values
+  //         if (!dataValue["1"]) {
+  //           dataValue["1"] = { value: "" };
+  //         }
+  //         if (!dataValue["2"]) {
+  //           dataValue["2"] = { value: "" };
+  //         }
+  //         if (!dataValue["3"]) {
+  //           dataValue["3"] = { value: "" };
+  //         }
+  //         if (!dataValue["7"]) {
+  //           dataValue["7"] = { value: "" };
+  //         }
+  //         if (!dataValue["10"]) {
+  //           dataValue["10"] = { value: "" };
+  //         }
+
+  //         return (
+  //           <>
+  //             <TableRow key={index}>
+  //               {Object.keys(dataValue).map((key) => (
+  //                 <TableCell key={key}>{dataValue[key].value}</TableCell>
+  //               ))}
+  //             </TableRow>
+  //           </>
+  //         );
+  //       }
+  //     });
+  //   }
+  // };
+
+  // return (
+  //   <>
+  //     <div style={{ padding: "10px" }}>
+  //       <div style={{ marginLeft: "5px" }}>
+  //         <Button primary={true} onClick={getEventList}>
+  //           Aggregate
+  //         </Button>
+  //         {pendingstatus ? (
+  //           <span style={{ paddingLeft: "10px" }}>
+  //             Pending Events: {pending}
+  //           </span>
+  //         ) : (
+  //           <span style={{ paddingLeft: "10px" }}>
+  //             Total Events: {TotalEvent}
+  //           </span>
+  //         )}
+  //       </div>
+
+  //       <div>
+  //         <Table>
+  //           <TableRow className={classes.header}>
+  //             <TableCell>
+  //               <b>Organism</b>
+  //             </TableCell>
+  //             <TableCell>
+  //               <b>Sample Type</b>
+  //             </TableCell>
+  //             <TableCell>
+  //               <b>Location</b>
+  //             </TableCell>
+  //             <TableCell>
+  //               <b>Event Date</b>
+  //             </TableCell>
+
+  //             <TableCell>
+  //               <b>Purpose of sample</b>
+  //             </TableCell>
+  //             <TableCell>
+  //               <b>Status</b>
+  //             </TableCell>
+  //           </TableRow>
+  //           {isLoading || status ? (
+  //             <div
+  //               style={{
+  //                 position: "absolute",
+  //                 top: "50%",
+  //                 left: "50%",
+  //                 transform: "translate(-50%, -50%)",
+  //               }}
+  //             >
+  //               <CircularProgress />
+  //             </div>
+  //           ) : (
+  //             <TableBody>{val()}</TableBody>
+  //           )}
+  //         </Table>
+
+  //         <ReactPaginate
+  //           activePage={currentPage}
+  //           itemsCountPerPage={itemsPerPage}
+  //           totalItemsCount={Data.length}
+  //           pageRangeDisplayed={5}
+  //           onChange={handlePageChange}
+  //           itemClass="page-item"
+  //           linkClass="page-link"
+  //         />
+  //       </div>
+  //     </div>
+  //   </>
+  // ================== Pagination State ==================
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 50; // Adjust this value to set the number of items per page
 
@@ -752,73 +850,61 @@ const Home = () => {
     setCurrentPage(pageNumber);
   };
 
+  // ================== Table Data Render ==================
   var val = () => {
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentData = Data.slice(indexOfFirstItem, indexOfLastItem);
+
     console.log("current data", currentData);
-    if (currentData !== undefined) {
-      return currentData.map((ele, index) => {
-        if (ele.program) {
-          var dataValue = {};
 
-          let date = [];
-          let eventStatus = [];
-          eventStatus["value"] = ele.status;
-          date["value"] = ele.eventDate.substring(0, 10);
-          for (let value of ele.dataValues) {
-            if (value.dataElement === "C7w2oe6vuwr") {
-              dataValue["1"] = value;
-            }
-            if (value.dataElement === "zxKDqCNXTkn") {
-              dataValue["10"] = value;
-            }
-            if (value.dataElement === "oJjnZpO0Map") {
-              dataValue["13"] = value; //location
-            }
-            if (value.dataElement === "KVYg3tnmNMU") {
-              dataValue["7"] = value;
-            }
+    if (!currentData || currentData.length === 0) return null;
 
-            if (value.dataElement === "l4kqMRq38bm") {
-              dataValue["10"] = value;
-            }
-            dataValue["6"] = date;
+    return currentData.map((ele, index) => {
+      console.log("ele =======", ele);
 
-            dataValue["11"] = eventStatus;
-          }
+      if (!ele.program) return null;
 
-          // Conditionally initialize missing values
-          if (!dataValue["1"]) {
-            dataValue["1"] = { value: "" };
-          }
-          if (!dataValue["2"]) {
-            dataValue["2"] = { value: "" };
-          }
-          if (!dataValue["3"]) {
-            dataValue["3"] = { value: "" };
-          }
-          if (!dataValue["7"]) {
-            dataValue["7"] = { value: "" };
-          }
-          if (!dataValue["10"]) {
-            dataValue["10"] = { value: "" };
-          }
+      // Defaults
+      let organism = "";
+      let ratinonal = "";
+      let location = "";
+      let eventDate = ele.eventDate ? ele.eventDate.substring(0, 10) : "";
+      let purposeOfSample = "";
+      let eventStatus = ele.status || "";
 
-          return (
-            <>
-              <TableRow key={index}>
-                {Object.keys(dataValue).map((key) => (
-                  <TableCell key={key}>{dataValue[key].value}</TableCell>
-                ))}
-              </TableRow>
-            </>
-          );
+      if (ele.dataValues && ele.dataValues.length > 0) {
+        for (let value of ele.dataValues) {
+          // Organism
+          // if (value.dataElement === "pNHNqJ1lOJh") {
+          //   organism = value.value || "";
+          // }
+
+          // Sample Type / Purpose of sample
+          if (value.dataElement === "zxKDqCNXTkn") {
+            ratinonal = value.value || "";
+            // purposeOfSample = value.value || "";
+          }
+          if (value.dataElement == "oJjnZpO0Map") {
+            location = value.value || "";
+          }
         }
-      });
-    }
+      }
+
+      return (
+        <TableRow key={index}>
+          {/* <TableCell>{organism}</TableCell> */}
+          <TableCell>{ratinonal}</TableCell>
+          <TableCell>{location}</TableCell>
+          <TableCell>{eventDate}</TableCell>
+          {/* <TableCell>{purposeOfSample}</TableCell> */}
+          <TableCell>{eventStatus}</TableCell>
+        </TableRow>
+      );
+    });
   };
 
+  // ================== JSX RETURN PART ==================
   return (
     <>
       <div style={{ padding: "10px" }}>
@@ -826,6 +912,7 @@ const Home = () => {
           <Button primary={true} onClick={getEventList}>
             Aggregate
           </Button>
+
           {pendingstatus ? (
             <span style={{ paddingLeft: "10px" }}>
               Pending Events: {pending}
@@ -841,11 +928,9 @@ const Home = () => {
           <Table>
             <TableRow className={classes.header}>
               <TableCell>
-                <b>Organism</b>
+                <b>Irrational </b>
               </TableCell>
-              <TableCell>
-                <b>Sample Type</b>
-              </TableCell>
+
               <TableCell>
                 <b>Location</b>
               </TableCell>
@@ -854,12 +939,10 @@ const Home = () => {
               </TableCell>
 
               <TableCell>
-                <b>Purpose of sample</b>
-              </TableCell>
-              <TableCell>
                 <b>Status</b>
               </TableCell>
             </TableRow>
+
             {isLoading || status ? (
               <div
                 style={{
