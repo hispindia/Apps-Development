@@ -1,4 +1,4 @@
-// updating code for the same 
+// updating code for the same
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -105,7 +105,7 @@ const Home = () => {
   const getActiveEventList = async rootOrgUnit => {
     setIsLoading(true);
     try {
-      const response = await fetch(`../../events.json?skipPaging=true&program=l23GiPXIhzS&orgUnit=v1oUZMLy8sK&ouMode=DESCENDANTS&status=ACTIVE&fields=*`, {
+      const response = await fetch(`../../events.json?skipPaging=true&program=l23GiPXIhzS&programStage=gFH6iolfh2J&orgUnit=v1oUZMLy8sK&ouMode=DESCENDANTS&status=ACTIVE&fields=*`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json"
