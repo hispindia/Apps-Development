@@ -39,6 +39,7 @@
     "bootstrap": "^5.3.2",
     "bootstrap-4-react": "^0.0.59",
     "react-datepicker": "^4.21.0",
-    "react-js-pagination": "^3.0.3"
+    "react-js-pagination": "^3.0.3",
+    "react-router-dom": "6.3.0"
   }
 }

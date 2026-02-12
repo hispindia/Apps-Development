@@ -7,6 +7,7 @@ import ReactPaginate from "react-js-pagination";
 import { CircularProgress } from "@material-ui/core";
 import classes from "./App.module.css";
 import "./Pagination.css"; // Custom CSS file for pagination
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const TRACKER_PROGRAM = "Uj0u5eXg0RK";
@@ -134,7 +135,7 @@ const Home = () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `../../events.json?skipPaging=true&program=l23GiPXIhzS&orgUnit=v1oUZMLy8sK&ouMode=DESCENDANTS&status=ACTIVE&fields=*`,
+        `../../events.json?skipPaging=true&program=l23GiPXIhzS&programStage=gFH6iolfh2J&orgUnit=v1oUZMLy8sK&ouMode=DESCENDANTS&status=ACTIVE&fields=*`,
         {
           method: "GET",
           headers: {
@@ -245,6 +246,7 @@ const Home = () => {
       // return { attributeGroups: {} };
     }
   };
+  const navigate = useNavigate();
 
   const postAggregatedDataValue = async (
     period,
@@ -365,35 +367,255 @@ const Home = () => {
         if (numericAge >= 18 && numericAge <= 49) return "18-49";
         if (numericAge >= 50 && numericAge <= 69) return "50-69";
         if (numericAge > 70) return ">70";
-        // if (numericAge >= 0 && numericAge <= 4) return "0-4";
-        // if (numericAge >= 5 && numericAge <= 14) return "5-14";
-        // if (numericAge >= 15 && numericAge <= 44) return "15-44";
-        // if (numericAge >= 45 && numericAge <= 60) return "45-60";
-        // if (numericAge > 60) return ">60";
-
         return "";
       }; // calculating the age Group from the age
+
+      // for (let i = 0; i < eventList.length; i++) {
+      //   let locationDataTEI = "";
+      //   let purposeOfSampleDataTEI = "";
+
+      //   // ==========================
+      //   // MULTI Rationality
+      //   // ==========================
+      //   const RATIONALITY_DATAELEMENT_IDS = [
+      //     "zxKDqCNXTkn", // Organism 1
+      //     "og7a4BdIriw", // Organism 2
+      //     "jUu5GBcjU2P", // Organism 3
+      //     "Oz5WM8SyQbf",
+      //     "y4tVZyF76JP",
+      //     "IwD9Bqz5oIW",
+      //   ];
+      //   const rationalityDataTEIList = [];
+
+      //   // ==========================
+      //   // MULTI Therapy
+      //   // ==========================
+      //   const THERAPY_DATAELEMENT_IDS = [
+      //     "qZhuQxgR5ag",
+      //     "JoVSWyfdyXY",
+      //     "I4qgg3ccMIT",
+      //     "TnBjw6vpu9K",
+      //     "Fsi9Fw8ovEP",
+      //     "w76Dd6hhcXv",
+      //   ];
+      //   const therapyDataTEIList = [];
+
+      //   // ==========================
+      //   // MULTI Organism
+      //   // ==========================
+      //   const organismDataTEIList = [];
+      //   const ORGANISM_DATAELEMENT_IDS = [
+      //     "NyvwQVM48pt",
+      //     "bsSyJOsqs9c",
+      //     "HNAzUCVo9Ef",
+      //     "r3EBeH8JAOn",
+      //     "P3o7Py0xmJf",
+      //     "d65XJBtpnoN",
+      //   ];
+
+      //   const antibioticCategoryOptionComboUIDsTEI = [];
+      //   let tempAggregateDE = "";
+      //   let tempCategoryOptions = "";
+      //   const aggregateorgUnit = eventList[i].orgUnit;
+      //   const tempEventForUpdate = eventList[i];
+
+      //   const isoPeriod = eventList[i].eventDate
+      //     .split("T")[0]
+      //     .substring(0, 7)
+      //     .replace("-", "");
+
+      //   let TrackedEntityId = eventList[i]?.trackedEntityInstance;
+      //   const teiResponse = await TeiDetails(TrackedEntityId);
+
+      //   let patientGender = getTeiAttributeValue(teiResponse, "imDytkRwhGs");
+      //   let patientAge = getTeiAttributeValue(teiResponse, "nPjc1MTpKnO");
+      //   let patientAgeGroup = getAgeGroup(patientAge);
+
+      //   // ==========================
+      //   // Collect Data Values
+      //   // ==========================
+      //   for (let j = 0; j < eventList[i].dataValues.length; j++) {
+      //     const dv = eventList[i].dataValues[j];
+
+      //     if (dv.dataElement === "oJjnZpO0Map") locationDataTEI = dv.value;
+
+      //     // 🔴 NEW: Collect ALL Rationalities
+      //     if (
+      //       RATIONALITY_DATAELEMENT_IDS.includes(dv.dataElement) &&
+      //       dv.value
+      //     ) {
+      //       rationalityDataTEIList.push(dv.value.trim());
+      //     }
+
+      //     // 🔴 NEW: Collect ALL Therapies
+      //     if (THERAPY_DATAELEMENT_IDS.includes(dv.dataElement) && dv.value) {
+      //       therapyDataTEIList.push(dv.value.trim());
+      //     }
+
+      //     // Existing: Collect ALL organisms
+      //     if (ORGANISM_DATAELEMENT_IDS.includes(dv.dataElement) && dv.value) {
+      //       organismDataTEIList.push(dv.value.trim());
+      //     }
+      //   }
+
+      //   // ==========================
+      //   // Deduplicate
+      //   // ==========================
+      //   const uniqueOrganisms = [...new Set(organismDataTEIList)];
+      //   const uniqueRationalities = [...new Set(rationalityDataTEIList)];
+      //   const uniqueTherapies = [...new Set(therapyDataTEIList)];
+
+      //   console.log("Unique Rationalities:", uniqueRationalities);
+      //   console.log("Unique Therapies:", uniqueTherapies);
+      //   console.log("Unique Organisms:", uniqueOrganisms);
+
+      //   // ==========================
+      //   // MULTI CategoryOptionCombo (Rationality × Therapy)
+      //   // ==========================
+      //   if (
+      //     locationDataTEI &&
+      //     patientAgeGroup &&
+      //     uniqueRationalities.length > 0 &&
+      //     uniqueTherapies.length > 0
+      //   ) {
+      //     for (const rationalityValue of uniqueRationalities) {
+      //       for (const therapyValue of uniqueTherapies) {
+      //         let tempArray = [
+      //           patientAgeGroup,
+      //           rationalityValue,
+      //           locationDataTEI,
+      //           therapyValue,
+      //         ];
+
+      //         tempArray.sort();
+      //         const categoryOptionComboKey = tempArray.join("");
+
+      //         const categoryOptionCombo =
+      //           tempCategoryCombos["Antibioticprescription"]
+      //             .categoryOptionCombos[categoryOptionComboKey];
+
+      //         if (categoryOptionCombo) {
+      //           antibioticCategoryOptionComboUIDsTEI.push(categoryOptionCombo);
+      //           console.log("Matched combo UID:", {
+      //             rationalityValue,
+      //             therapyValue,
+      //             combo: categoryOptionCombo,
+      //           });
+      //         } else {
+      //           console.error("No matching categoryOptionCombo:", tempArray);
+      //         }
+      //       }
+      //     }
+      //   }
+
+      //   // =================================================
+      //   // 🔁 PROCESS EACH ORGANISM (UNCHANGED CORE LOGIC)
+      //   // BUT NOW LOOP OVER rationality × therapy
+      //   // =================================================
+      //   function normalizeKey(value) {
+      //     return value?.toString().trim();
+      //   }
+
+      //   function normalizeKeyFull(value) {
+      //     return value
+      //       ?.toString()
+      //       .trim()
+      //       .toLowerCase()
+      //       .replace(/\s+/g, "")
+      //       .replace(/-/g, "");
+      //   }
+
+      //   for (const organismDataTEI of uniqueOrganisms) {
+      //     const normalizedOrganism = normalizeKey(organismDataTEI);
+      //     const baseNorm = normalizeKeyFull(normalizedOrganism);
+      //     const genderNorm = normalizeKeyFull(patientGender);
+
+      //     let baseDeId = null;
+
+      //     for (const key of Object.keys(dataElementObjects)) {
+      //       const normKey = normalizeKeyFull(key);
+
+      //       if (normKey === baseNorm || normKey === baseNorm + genderNorm) {
+      //         baseDeId = dataElementObjects[key].id;
+      //         break;
+      //       }
+      //     }
+
+      //     if (!baseDeId) continue;
+
+      //     tempAggregateDE = baseDeId;
+
+      //     // 🔴 LOOP Rationality × Therapy FOR CATEGORY OPTIONS
+      //     for (const rationalityValue of uniqueRationalities) {
+      //       for (const therapyValue of uniqueTherapies) {
+      //         tempCategoryOptions =
+      //           tempCategoryCombos[ANTIBIOTIC_PRESCRIPTION_CODE]
+      //             .categoryOptions[locationDataTEI] +
+      //           ";" +
+      //           tempCategoryCombos[ANTIBIOTIC_PRESCRIPTION_CODE]
+      //             .categoryOptions[therapyValue] +
+      //           ";" +
+      //           tempCategoryCombos[ANTIBIOTIC_PRESCRIPTION_CODE]
+      //             .categoryOptions[rationalityValue] +
+      //           ";" +
+      //           tempCategoryCombos[ANTIBIOTIC_PRESCRIPTION_CODE]
+      //             .categoryOptions[patientAgeGroup];
+
+      //         let defaultValue = 0;
+
+      //         const aggregatedDataValueGetResponse =
+      //           await getAggregatedDataValue(
+      //             isoPeriod,
+      //             AntibioticPDataSet,
+      //             tempAggregateDE,
+      //             aggregateorgUnit,
+      //             cCombo,
+      //             tempCategoryOptions,
+      //             coDefault,
+      //           );
+
+      //         if (aggregatedDataValueGetResponse?.response) {
+      //           defaultValue =
+      //             Number(aggregatedDataValueGetResponse.value) || 0;
+      //         }
+
+      //         await postAggregatedDataValue(
+      //           isoPeriod,
+      //           AntibioticPDataSet,
+      //           tempAggregateDE,
+      //           aggregateorgUnit,
+      //           cCombo,
+      //           tempCategoryOptions,
+      //           coDefault,
+      //           defaultValue,
+      //         );
+      //       }
+      //     }
+      //   }
+
+      //   // ==========================
+      //   // Update Event (ONCE per event)
+      //   // ==========================
+      //   const eventUpdateResponse = updateEventStatus(tempEventForUpdate);
+      //   console.log(eventUpdateResponse);
+      // }/// duplicates data push try 1
 
       for (let i = 0; i < eventList.length; i++) {
         let locationDataTEI = "";
         let purposeOfSampleDataTEI = "";
 
         // ==========================
-        // MULTI Rationality
+        // MULTI Rationality / Therapy / Organism (SLOT DEFINITIONS)
         // ==========================
         const RATIONALITY_DATAELEMENT_IDS = [
-          "zxKDqCNXTkn", // Organism 1
-          "og7a4BdIriw", // Organism 2
-          "jUu5GBcjU2P", // Organism 3
+          "zxKDqCNXTkn",
+          "og7a4BdIriw",
+          "jUu5GBcjU2P",
           "Oz5WM8SyQbf",
           "y4tVZyF76JP",
           "IwD9Bqz5oIW",
         ];
-        const rationalityDataTEIList = [];
 
-        // ==========================
-        // MULTI Therapy
-        // ==========================
         const THERAPY_DATAELEMENT_IDS = [
           "qZhuQxgR5ag",
           "JoVSWyfdyXY",
@@ -402,12 +624,7 @@ const Home = () => {
           "Fsi9Fw8ovEP",
           "w76Dd6hhcXv",
         ];
-        const therapyDataTEIList = [];
 
-        // ==========================
-        // MULTI Organism
-        // ==========================
-        const organismDataTEIList = [];
         const ORGANISM_DATAELEMENT_IDS = [
           "NyvwQVM48pt",
           "bsSyJOsqs9c",
@@ -417,9 +634,11 @@ const Home = () => {
           "d65XJBtpnoN",
         ];
 
-        const antibioticCategoryOptionComboUIDsTEI = [];
-        let tempAggregateDE = "";
-        let tempCategoryOptions = "";
+        // Slot-aligned arrays
+        const tempRationalities = [];
+        const tempTherapies = [];
+        const tempOrganisms = [];
+
         const aggregateorgUnit = eventList[i].orgUnit;
         const tempEventForUpdate = eventList[i];
 
@@ -436,86 +655,64 @@ const Home = () => {
         let patientAgeGroup = getAgeGroup(patientAge);
 
         // ==========================
-        // Collect Data Values
+        // Collect Data Values (SLOT-SAFE — ORDER INDEPENDENT)
         // ==========================
         for (let j = 0; j < eventList[i].dataValues.length; j++) {
           const dv = eventList[i].dataValues[j];
 
-          if (dv.dataElement === "oJjnZpO0Map") locationDataTEI = dv.value;
+          if (dv.dataElement === "oJjnZpO0Map") {
+            locationDataTEI = dv.value;
+          }
 
-          // 🔴 NEW: Collect ALL Rationalities
+          // ---- Rationality by slot ----
+          const ratIdx = RATIONALITY_DATAELEMENT_IDS.indexOf(dv.dataElement);
+          if (ratIdx !== -1 && dv.value) {
+            tempRationalities[ratIdx] = dv.value.trim();
+          }
+
+          // ---- Therapy by slot ----
+          const therIdx = THERAPY_DATAELEMENT_IDS.indexOf(dv.dataElement);
+          if (therIdx !== -1 && dv.value) {
+            tempTherapies[therIdx] = dv.value.trim();
+          }
+
+          // ---- Organism by slot ----
+          const orgIdx = ORGANISM_DATAELEMENT_IDS.indexOf(dv.dataElement);
+          if (orgIdx !== -1 && dv.value) {
+            tempOrganisms[orgIdx] = dv.value.trim();
+          }
+        }
+
+        // ==========================
+        // Build MATCHED Triplets (TRUE ROW-WISE MATCHING)
+        // ==========================
+        const matchedTriplets = [];
+        const maxLen = Math.max(
+          ORGANISM_DATAELEMENT_IDS.length,
+          RATIONALITY_DATAELEMENT_IDS.length,
+          THERAPY_DATAELEMENT_IDS.length,
+        );
+
+        for (let idx = 0; idx < maxLen; idx++) {
           if (
-            RATIONALITY_DATAELEMENT_IDS.includes(dv.dataElement) &&
-            dv.value
+            tempOrganisms[idx] &&
+            tempRationalities[idx] &&
+            tempTherapies[idx]
           ) {
-            rationalityDataTEIList.push(dv.value.trim());
-          }
-
-          // 🔴 NEW: Collect ALL Therapies
-          if (THERAPY_DATAELEMENT_IDS.includes(dv.dataElement) && dv.value) {
-            therapyDataTEIList.push(dv.value.trim());
-          }
-
-          // Existing: Collect ALL organisms
-          if (ORGANISM_DATAELEMENT_IDS.includes(dv.dataElement) && dv.value) {
-            organismDataTEIList.push(dv.value.trim());
+            matchedTriplets.push({
+              organism: tempOrganisms[idx],
+              rationality: tempRationalities[idx],
+              therapy: tempTherapies[idx],
+              slot: idx + 1, // for debugging
+            });
           }
         }
 
-        // ==========================
-        // Deduplicate
-        // ==========================
-        const uniqueOrganisms = [...new Set(organismDataTEIList)];
-        const uniqueRationalities = [...new Set(rationalityDataTEIList)];
-        const uniqueTherapies = [...new Set(therapyDataTEIList)];
-
-        console.log("Unique Rationalities:", uniqueRationalities);
-        console.log("Unique Therapies:", uniqueTherapies);
-        console.log("Unique Organisms:", uniqueOrganisms);
+        console.log("Matched Triplets (slot-safe):", matchedTriplets);
 
         // ==========================
-        // MULTI CategoryOptionCombo (Rationality × Therapy)
+        // NORMALIZERS
         // ==========================
-        if (
-          locationDataTEI &&
-          patientAgeGroup &&
-          uniqueRationalities.length > 0 &&
-          uniqueTherapies.length > 0
-        ) {
-          for (const rationalityValue of uniqueRationalities) {
-            for (const therapyValue of uniqueTherapies) {
-              let tempArray = [
-                patientAgeGroup,
-                rationalityValue,
-                locationDataTEI,
-                therapyValue,
-              ];
-
-              tempArray.sort();
-              const categoryOptionComboKey = tempArray.join("");
-
-              const categoryOptionCombo =
-                tempCategoryCombos["Antibioticprescription"]
-                  .categoryOptionCombos[categoryOptionComboKey];
-
-              if (categoryOptionCombo) {
-                antibioticCategoryOptionComboUIDsTEI.push(categoryOptionCombo);
-                console.log("Matched combo UID:", {
-                  rationalityValue,
-                  therapyValue,
-                  combo: categoryOptionCombo,
-                });
-              } else {
-                console.error("No matching categoryOptionCombo:", tempArray);
-              }
-            }
-          }
-        }
-
-        // =================================================
-        // 🔁 PROCESS EACH ORGANISM (UNCHANGED CORE LOGIC)
-        // BUT NOW LOOP OVER rationality × therapy
-        // =================================================
         function normalizeKey(value) {
           return value?.toString().trim();
         }
@@ -529,7 +726,16 @@ const Home = () => {
             .replace(/-/g, "");
         }
 
-        for (const organismDataTEI of uniqueOrganisms) {
+        // ==========================
+        // PROCESS ONLY MATCHED TRIPLETS (DEDUP SAFE)
+        // ==========================
+        const processedAggregateKeys = new Set();
+
+        for (const triplet of matchedTriplets) {
+          const organismDataTEI = triplet.organism;
+          const rationalityValue = triplet.rationality;
+          const therapyValue = triplet.therapy;
+
           const normalizedOrganism = normalizeKey(organismDataTEI);
           const baseNorm = normalizeKeyFull(normalizedOrganism);
           const genderNorm = normalizeKeyFull(patientGender);
@@ -545,56 +751,79 @@ const Home = () => {
             }
           }
 
-          if (!baseDeId) continue;
-
-          tempAggregateDE = baseDeId;
-
-          // 🔴 LOOP Rationality × Therapy FOR CATEGORY OPTIONS
-          for (const rationalityValue of uniqueRationalities) {
-            for (const therapyValue of uniqueTherapies) {
-              tempCategoryOptions =
-                tempCategoryCombos[ANTIBIOTIC_PRESCRIPTION_CODE]
-                  .categoryOptions[locationDataTEI] +
-                ";" +
-                tempCategoryCombos[ANTIBIOTIC_PRESCRIPTION_CODE]
-                  .categoryOptions[therapyValue] +
-                ";" +
-                tempCategoryCombos[ANTIBIOTIC_PRESCRIPTION_CODE]
-                  .categoryOptions[rationalityValue] +
-                ";" +
-                tempCategoryCombos[ANTIBIOTIC_PRESCRIPTION_CODE]
-                  .categoryOptions[patientAgeGroup];
-
-              let defaultValue = 0;
-
-              const aggregatedDataValueGetResponse =
-                await getAggregatedDataValue(
-                  isoPeriod,
-                  AntibioticPDataSet,
-                  tempAggregateDE,
-                  aggregateorgUnit,
-                  cCombo,
-                  tempCategoryOptions,
-                  coDefault,
-                );
-
-              if (aggregatedDataValueGetResponse?.response) {
-                defaultValue =
-                  Number(aggregatedDataValueGetResponse.value) || 0;
-              }
-
-              await postAggregatedDataValue(
-                isoPeriod,
-                AntibioticPDataSet,
-                tempAggregateDE,
-                aggregateorgUnit,
-                cCombo,
-                tempCategoryOptions,
-                coDefault,
-                defaultValue,
-              );
-            }
+          if (!baseDeId) {
+            console.warn(
+              "No DataElement found for organism:",
+              organismDataTEI,
+              "slot:",
+              triplet.slot,
+            );
+            continue;
           }
+
+          const tempAggregateDE = baseDeId;
+
+          // ==========================
+          // Category Options (MATCHED)
+          // ==========================
+          const tempCategoryOptions =
+            tempCategoryCombos[ANTIBIOTIC_PRESCRIPTION_CODE].categoryOptions[
+              locationDataTEI
+            ] +
+            ";" +
+            tempCategoryCombos[ANTIBIOTIC_PRESCRIPTION_CODE].categoryOptions[
+              therapyValue
+            ] +
+            ";" +
+            tempCategoryCombos[ANTIBIOTIC_PRESCRIPTION_CODE].categoryOptions[
+              rationalityValue
+            ] +
+            ";" +
+            tempCategoryCombos[ANTIBIOTIC_PRESCRIPTION_CODE].categoryOptions[
+              patientAgeGroup
+            ];
+
+          // ✅ FINAL DEDUP KEY
+          const aggregateKey = `${tempAggregateDE}||${tempCategoryOptions}`;
+
+          if (processedAggregateKeys.has(aggregateKey)) {
+            console.log(
+              "Skipping duplicate aggregate push:",
+              aggregateKey,
+              "slot:",
+              triplet.slot,
+            );
+            continue;
+          }
+
+          processedAggregateKeys.add(aggregateKey);
+
+          let defaultValue = 0;
+
+          const aggregatedDataValueGetResponse = await getAggregatedDataValue(
+            isoPeriod,
+            AntibioticPDataSet,
+            tempAggregateDE,
+            aggregateorgUnit,
+            cCombo,
+            tempCategoryOptions,
+            coDefault,
+          );
+
+          if (aggregatedDataValueGetResponse?.response) {
+            defaultValue = Number(aggregatedDataValueGetResponse.value) || 0;
+          }
+
+          await postAggregatedDataValue(
+            isoPeriod,
+            AntibioticPDataSet,
+            tempAggregateDE,
+            aggregateorgUnit,
+            cCombo,
+            tempCategoryOptions,
+            coDefault,
+            defaultValue,
+          );
         }
 
         // ==========================
@@ -646,152 +875,6 @@ const Home = () => {
       return null; // or throw an error
     }
   };
-
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const itemsPerPage = 50; // Adjust this value to set the number of items per page
-
-  // const handlePageChange = (pageNumber) => {
-  //   setCurrentPage(pageNumber);
-  // };
-
-  // var val = () => {
-  //   const indexOfLastItem = currentPage * itemsPerPage;
-  //   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  //   const currentData = Data.slice(indexOfFirstItem, indexOfLastItem);
-  //   console.log("current data", currentData);
-  //   if (currentData !== undefined) {
-  //     return currentData.map((ele, index) => {
-  //       if (ele.program) {
-  //         var dataValue = {};
-
-  //         let date = [];
-  //         let eventStatus = [];
-  //         eventStatus["value"] = ele.status;
-  //         date["value"] = ele.eventDate.substring(0, 10);
-  //         console.log("ele =======",ele)
-  //         for (let value of ele.dataValues) {
-  //           if (value.dataElement === "C7w2oe6vuwr") {
-  //             dataValue["1"] = value;
-  //           }
-  //           if (value.dataElement === "zxKDqCNXTkn") {
-  //             dataValue["10"] = value;
-  //           }
-  //           if (value.dataElement === "oJjnZpO0Map") {
-  //             dataValue["13"] = value; //location
-  //           }
-  //           if (value.dataElement === "KVYg3tnmNMU") {
-  //             dataValue["7"] = value;
-  //           }
-
-  //           if (value.dataElement === "l4kqMRq38bm") {
-  //             dataValue["10"] = value;
-  //           }
-  //           dataValue["6"] = date;
-
-  //           dataValue["11"] = eventStatus;
-  //         }
-
-  //         // Conditionally initialize missing values
-  //         if (!dataValue["1"]) {
-  //           dataValue["1"] = { value: "" };
-  //         }
-  //         if (!dataValue["2"]) {
-  //           dataValue["2"] = { value: "" };
-  //         }
-  //         if (!dataValue["3"]) {
-  //           dataValue["3"] = { value: "" };
-  //         }
-  //         if (!dataValue["7"]) {
-  //           dataValue["7"] = { value: "" };
-  //         }
-  //         if (!dataValue["10"]) {
-  //           dataValue["10"] = { value: "" };
-  //         }
-
-  //         return (
-  //           <>
-  //             <TableRow key={index}>
-  //               {Object.keys(dataValue).map((key) => (
-  //                 <TableCell key={key}>{dataValue[key].value}</TableCell>
-  //               ))}
-  //             </TableRow>
-  //           </>
-  //         );
-  //       }
-  //     });
-  //   }
-  // };
-
-  // return (
-  //   <>
-  //     <div style={{ padding: "10px" }}>
-  //       <div style={{ marginLeft: "5px" }}>
-  //         <Button primary={true} onClick={getEventList}>
-  //           Aggregate
-  //         </Button>
-  //         {pendingstatus ? (
-  //           <span style={{ paddingLeft: "10px" }}>
-  //             Pending Events: {pending}
-  //           </span>
-  //         ) : (
-  //           <span style={{ paddingLeft: "10px" }}>
-  //             Total Events: {TotalEvent}
-  //           </span>
-  //         )}
-  //       </div>
-
-  //       <div>
-  //         <Table>
-  //           <TableRow className={classes.header}>
-  //             <TableCell>
-  //               <b>Organism</b>
-  //             </TableCell>
-  //             <TableCell>
-  //               <b>Sample Type</b>
-  //             </TableCell>
-  //             <TableCell>
-  //               <b>Location</b>
-  //             </TableCell>
-  //             <TableCell>
-  //               <b>Event Date</b>
-  //             </TableCell>
-
-  //             <TableCell>
-  //               <b>Purpose of sample</b>
-  //             </TableCell>
-  //             <TableCell>
-  //               <b>Status</b>
-  //             </TableCell>
-  //           </TableRow>
-  //           {isLoading || status ? (
-  //             <div
-  //               style={{
-  //                 position: "absolute",
-  //                 top: "50%",
-  //                 left: "50%",
-  //                 transform: "translate(-50%, -50%)",
-  //               }}
-  //             >
-  //               <CircularProgress />
-  //             </div>
-  //           ) : (
-  //             <TableBody>{val()}</TableBody>
-  //           )}
-  //         </Table>
-
-  //         <ReactPaginate
-  //           activePage={currentPage}
-  //           itemsCountPerPage={itemsPerPage}
-  //           totalItemsCount={Data.length}
-  //           pageRangeDisplayed={5}
-  //           onChange={handlePageChange}
-  //           itemClass="page-item"
-  //           linkClass="page-link"
-  //         />
-  //       </div>
-  //     </div>
-  //   </>
-  // ================== Pagination State ==================
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 50; // Adjust this value to set the number of items per page
 
