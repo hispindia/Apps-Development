@@ -269,7 +269,7 @@ excelImport
                             headers: {
                                 "Content-Type": "text/plain",
                                 //'Authorization': 'aGlzcGRldjpEZXZoaXNwQDE=',
-                                'Authorization': 'Basic ' + btoa('****' + ":" + '****'),
+                                'Authorization': 'Basic ' + btoa('*****' + ":" + '*****'),
                             },
                             json: true,
                             crossDomain: true,
@@ -399,7 +399,7 @@ excelImport
 
                                         headers: {
                                             //'Authorization': 'aGlzcGRldjpEZXZoaXNwQDE=',
-                                            'Authorization': 'Basic ' + btoa('hispdev' + ":" + 'DEvhisp@1'),
+                                            'Authorization': 'Basic ' + btoa('******' + ":" + '******'),
                                         },
 
                                         json: true,
@@ -482,7 +482,7 @@ excelImport
                                         url: 'https://bpr.ippf.org/api/events/',
                                         headers: {
                                             //'Authorization': 'aGlzcGRldjpEZXZoaXNwQDE=',
-                                            'Authorization': 'Basic ' + btoa('****' + ":" + '****'),
+                                            'Authorization': 'Basic ' + btoa('admin' + ":" + 'district'),
                                         },
                                         json: true,
                                         crossDomain: true,
@@ -552,7 +552,7 @@ excelImport
                                         url: 'https://bpr.ippf.org/api/trackedEntityInstances/',
                                         headers: {
                                             //'Authorization': 'aGlzcGRldjpEZXZoaXNwQDE=',
-                                            'Authorization': 'Basic ' + btoa('****' + ":" + '****'),
+                                            'Authorization': 'Basic ' + btoa('admin' + ":" + 'district'),
                                         },
                                         json: true,
                                         crossDomain: true,
@@ -2049,6 +2049,7 @@ excelImport
 
                     // orgUnit geometry update from one instance to another instance
                     // add cors white list like -- https://ln3.hispindia.org/
+                    //https://nc.hispindia.org/ https://nc.hispindia.org
                     //https://dhis.searo.who.int/
                     else if( sheetName === 'orgUnitGeometryUpdate' ){
 
@@ -2067,10 +2068,10 @@ excelImport
                                 contentType: "application/json",
                                 headers: {
                                     //'Authorization': 'aGlzcGRldjpEZXZoaXNwQDE=',
-                                    'Authorization': 'Basic ' + btoa('***' + ":" + '****'),
+                                    'Authorization': 'Basic ' + btoa('*****' + ":" + '*****'),
                                 },
                                 //url: 'https://samiksha.piramalswasthya.org/amrit/api/organisationUnits/' + row.sourceuid + ".json?paging=false",
-                                url: 'https://links.hispindia.org/who_leprosy/api/organisationUnits/' + row.sourceuid + ".json?paging=false",
+                                url: 'https://tracker.hivaids.gov.np/save-child-2.27/api/organisationUnits/' + row.sourceuid + ".json?paging=false",
                                 success: function (orgUnitResponse) {
                                     let updateOrgUnitGeometry = {};
                                     updateOrgUnitGeometry = orgUnitResponse.geometry;
@@ -2493,6 +2494,79 @@ excelImport
                         });
                         */
                     }
+
+                    // orgUnit AttributeValue update
+                    else if( sheetName === 'orgUnitAttributeValueUpdate' ){
+                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        var json_object = JSON.stringify(XL_row_object);
+                        var objectKeys = Object.keys(XL_row_object["0"]);
+                        var importCount = 1;
+
+                        XL_row_object.forEach(row => {
+                            importCount++;
+
+                            $.ajax({
+                                type: "GET",
+                                async: false,
+                                url: '../../organisationUnits/' + row.uid + ".json?paging=false",
+                                success: function (orgUnitResponse) {
+
+                                    var updateOrgUnit = orgUnitResponse;
+
+                                    var tempAttributeValues = [
+                                        {   value:row.attributeValue,
+                                            attribute:{
+                                                id:row.attribute,
+                                            }
+                                        }
+                                    ];
+
+                                    updateOrgUnit.attributeValues = tempAttributeValues;
+
+                                    $.ajax({
+                                        type: "PUT",
+                                        async: false,
+                                        dataType: "json",
+                                        contentType: "application/json",
+                                        data: JSON.stringify(updateOrgUnit),
+                                        url: '../../organisationUnits/' + row.uid,
+
+                                        success: function (response) {
+                                            //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                            console.log(  "Row - " + importCount + " update done response: " + JSON.stringify(response) );
+                                        },
+                                        error: function (response) {
+                                            console.log(  "Row - " + importCount + " error response: " + JSON.stringify(response ));
+                                        },
+                                        warning: function (response) {
+                                            console.log( "Row - " + importCount + "Warning response : " +  JSON.stringify(response ) );
+                                        }
+
+                                    });
+                                },
+                                error: function (orgUnitResponse) {
+                                    console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( orgUnitResponse ) );
+                                },
+                                warning: function (orgUnitResponse) {
+                                    console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( orgUnitResponse ) );
+                                }
+                            });
+
+                            //console.log( "Row - " + importCount + " update done for organisationUnit " + row.uid );
+                            if( importCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " update complete ");
+
+                            }
+                        });
+                    }
+
+
+
+
+
+
+
+
 
                     // organisationUnits  update
                     else if( sheetName === 'organisationUnitsPUT' ){
@@ -3003,6 +3077,151 @@ excelImport
                     }
 
 
+                    // optionGroups  sharing-setting update
+                    else if( sheetName === 'optionGroupSharingPost' ){
+                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        var json_object = JSON.stringify(XL_row_object);
+                        var objectKeys = Object.keys(XL_row_object["0"]);
+                        var importCount = 1;
+                        XL_row_object.forEach(row => {
+                            importCount++;
+                            //console.log( row );
+                            // for point coordinates: [row.coordinates.split(",")[0], row.coordinates.split(",")[1]]
+                            // for polygon coordinates: row.coordinates
+                            //sharing?type=categoryOption&id=vQMzMHPnk6g
+                            $.ajax({
+                                type: "GET",
+                                async: false,
+                                url: '../../sharing.json?type=optionGroup&id=' + row.uid,
+                                success: function (optionGroupResponse) {
+                                    var optionGroupSharingResponse = optionGroupResponse;
+
+                                    let optionGroupSharingPostRequest = {
+                                        allowPublicAccess : optionGroupResponse.allowPublicAccess,
+                                        allowExternalAccess : optionGroupResponse.allowExternalAccess,
+                                        object : {
+                                            id: optionGroupResponse.object.id,
+                                            name: optionGroupResponse.object.name,
+                                            displayName: optionGroupResponse.object.displayName,
+                                            user: optionGroupResponse.object.user,
+                                            userGroupAccesses: optionGroupResponse.object.userGroupAccesses,
+                                            userAccesses: optionGroupResponse.object.userAccesses,
+                                            externalAccess: optionGroupResponse.object.externalAccess,
+                                            publicAccess: row.publicAccess
+                                        }
+                                    };
+                                    $.ajax({
+                                        type: "POST",
+                                        async: false,
+                                        dataType: "json",
+                                        contentType: "application/json",
+                                        data: JSON.stringify(optionGroupSharingPostRequest),
+                                        url: '../../sharing.json?type=optionGroup&id=' + row.uid,
+
+                                        success: function (response) {
+                                            //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                            console.log(  "Row - " + importCount + " update done response: " + JSON.stringify(response) );
+                                        },
+                                        error: function (response) {
+                                            console.log(  "Row - " + importCount + " error response: " + JSON.stringify(response ));
+                                        },
+                                        warning: function (response) {
+                                            console.log( "Row - " + importCount + "Warning response : " +  JSON.stringify(response ) );
+                                        }
+
+                                    });
+                                },
+                                error: function (optionGroupResponse) {
+                                    console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( deCOResponse ) );
+                                },
+                                warning: function (indicatorResponse) {
+                                    console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( deCOResponse ) );
+                                }
+                            });
+
+                            //console.log( "Row - " + importCount + " update done for organisationUnit " + row.uid );
+                            if( importCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " update complete ");
+
+                            }
+                        });
+
+                    }
+
+                    // optionSet  sharing-setting update
+                    else if( sheetName === 'optionSetSharingPost' ){
+                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        var json_object = JSON.stringify(XL_row_object);
+                        var objectKeys = Object.keys(XL_row_object["0"]);
+                        var importCount = 1;
+                        XL_row_object.forEach(row => {
+                            importCount++;
+                            //console.log( row );
+                            // for point coordinates: [row.coordinates.split(",")[0], row.coordinates.split(",")[1]]
+                            // for polygon coordinates: row.coordinates
+                            //sharing?type=categoryOption&id=vQMzMHPnk6g
+                            $.ajax({
+                                type: "GET",
+                                async: false,
+                                url: '../../sharing.json?type=optionSet&id=' + row.uid,
+                                success: function (optionSetResponse) {
+                                    var optionSetSharingResponse = optionSetResponse;
+
+                                    let optionSetResponseSharingPostRequest = {
+                                        allowPublicAccess : optionSetResponse.allowPublicAccess,
+                                        allowExternalAccess : optionSetResponse.allowExternalAccess,
+                                        object : {
+                                            id: optionSetResponse.object.id,
+                                            name: optionSetResponse.object.name,
+                                            displayName: optionSetResponse.object.displayName,
+                                            user: optionSetResponse.object.user,
+                                            userGroupAccesses: optionSetResponse.object.userGroupAccesses,
+                                            userAccesses: optionSetResponse.object.userAccesses,
+                                            externalAccess: optionSetResponse.object.externalAccess,
+                                            publicAccess: row.publicAccess
+                                        }
+                                    };
+                                    $.ajax({
+                                        type: "POST",
+                                        async: false,
+                                        dataType: "json",
+                                        contentType: "application/json",
+                                        data: JSON.stringify(optionSetResponseSharingPostRequest),
+                                        url: '../../sharing.json?type=optionSet&id=' + row.uid,
+
+                                        success: function (response) {
+                                            //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                            console.log(  "Row - " + importCount + " update done response: " + JSON.stringify(response) );
+                                        },
+                                        error: function (response) {
+                                            console.log(  "Row - " + importCount + " error response: " + JSON.stringify(response ));
+                                        },
+                                        warning: function (response) {
+                                            console.log( "Row - " + importCount + "Warning response : " +  JSON.stringify(response ) );
+                                        }
+
+                                    });
+                                },
+                                error: function (optionGroupResponse) {
+                                    console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( deCOResponse ) );
+                                },
+                                warning: function (indicatorResponse) {
+                                    console.log( JSON.stringify( row.uid ) +  " -- "+ "Error!: " +  JSON.stringify( deCOResponse ) );
+                                }
+                            });
+
+                            //console.log( "Row - " + importCount + " update done for organisationUnit " + row.uid );
+                            if( importCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " update complete ");
+
+                            }
+                        });
+
+                    }
+
+
+
+
 
 
                     // indicator name/short-name update
@@ -3488,6 +3707,73 @@ excelImport
 
                     }
 
+                    // dataValueSet post dataValueSetPeriodsColumn
+                    else if( sheetName === 'dataValueSetPeriodsColumn' ){
+                        let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        //let json_object = JSON.stringify(XL_row_object);
+                        let objectKeys = Object.keys(XL_row_object["0"]);
+                        console.log("objectKeys : " + objectKeys );
+                        //let importCount = 1;
+                        //let str = '2022-01-01';
+                        //let res = str.replace(/-/g, "");
+                        //res = 20220101
+                        let dataValues = [];
+                        let objectKeysLength = parseInt(objectKeys.length)-4;
+                        let deKey = parseInt(objectKeys.length)-3;
+                        let cocKey = parseInt(objectKeys.length)-2;
+                        let orgKey = parseInt(objectKeys.length)-1;
+
+                        //XL_row_object.forEach(row => {
+                        for(let row = 0; row < XL_row_object.length; row++) {
+                            for (let i = 0; i < objectKeysLength; i++) {
+                                let dataValue = {};
+                                if (XL_row_object[row][objectKeys[i]] !== undefined && XL_row_object[row][objectKeys[i]] !== "") {
+                                    dataValue.dataElement = XL_row_object[row][objectKeys[deKey]];
+                                    dataValue.categoryOptionCombo = XL_row_object[row][objectKeys[cocKey]];
+                                    dataValue.orgUnit = XL_row_object[row][objectKeys[orgKey]];
+                                    dataValue.period = objectKeys[i];
+                                    dataValue.value = XL_row_object[row][objectKeys[i]];
+                                    dataValues.push(dataValue);
+                                }
+                            }
+                        }
+                        let dataValueSet = {};
+                        dataValueSet.dataValues = dataValues;
+                        console.log( " final dataValues length : " + dataValues.length + " final dataValueSet length : " + dataValueSet.length);
+                        console.log(" final dataValueSet : " + JSON.stringify(dataValueSet) );
+                        let dataJSON = JSON.stringify(dataValueSet);
+
+                        $.ajax({
+                            type: "POST",
+                            async: false,
+                            dataType: "json",
+                            contentType: "application/json",
+                            data: dataJSON,
+                            url: '../../dataValueSets',
+
+                            success: function (response) {
+                                //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+
+                                console.log("response : " + response);
+                                console.log("conflicts : " + response.conflicts);
+
+                                let impCount = response.response.importCount.imported;
+                                let upCount = response.response.importCount.updated;
+                                let igCount = response.response.importCount.ignored;
+                                let conflictsDetails   = response.conflicts;
+
+                                console.log(  "impCount - " + impCount + " upCount - " + upCount + " igCount - " + igCount + " conflictsDetails - " + conflictsDetails  );
+                            },
+                            error: function (response) {
+                                console.log("error : " + response.conflicts );
+                            },
+                            warning: function (response) {
+                                console.log("warning : " + response.conflicts );
+                            }
+                        });
+
+                    }
+
                     // dataValueSet post
                     else if( sheetName === 'dataValueSet' ){
                         let XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
@@ -3935,6 +4221,102 @@ excelImport
                         });
 
                     }
+
+
+                    // optionGroup delete
+                    else if( sheetName === 'optionGroupsDelete' ){
+                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        //var json_object = JSON.stringify(XL_row_object);
+                        //var objectKeys = Object.keys(XL_row_object["0"]);
+                        let deleteCount = 1;
+                        XL_row_object.forEach(row => {
+                            deleteCount++;
+
+                            $.ajax({
+                                type: "DELETE",
+                                async: false,
+                                dataType: "json",
+                                contentType: "application/json",
+                                url: '../../optionGroups/' + row.uid,
+
+                                success: function (response) {
+                                    //console.log( __rowNum__ + " -- "+ row.event + "Event updated with " + row.value + "response: " + response );
+                                    console.log( "Row - " + deleteCount  + " response: " + JSON.stringify(response) );
+                                },
+                                error: function (response) {
+                                    console.log(  "Row - " + deleteCount  + " response: " + JSON.stringify(response ));
+                                },
+                                warning: function (response) {
+                                    console.log(  "Row - " + deleteCount  + " response: " + JSON.stringify(response ));
+                                }
+                            });
+
+                            //importCount++;
+                            //console.log( "Row - " + importCount + " update done for event " + row.event );
+                            if( deleteCount === parseInt(XL_row_object.length) + 1 ){
+                                console.log( " optionGroup delete done ");
+                            }
+                        });
+
+                    }
+
+
+
+
+                    // update optionGroup members post
+                    // optionGroup members  PUT
+                    else if( sheetName === 'optionGroupMembers' ){
+                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        var json_object = JSON.stringify(XL_row_object);
+                        var objectKeys = Object.keys(XL_row_object["0"]);
+                        var importCount = 1;
+
+                        var optionGroupMembers = [];
+                        var optionGroupID = "";
+                        XL_row_object.forEach(row => {
+                            optionGroupID = row.optionGroupUID;
+                            optionGroupMembers.push({
+                                'id': row.optionGroupMember
+                            });
+                        });
+                        $.ajax({
+                            type: "GET",
+                            async: false,
+                            url: '../../optionGroups/' + optionGroupID + ".json?paging=false",
+                            success: function (optionGroupResponse) {
+                                var updateOptionGroup = optionGroupResponse;
+                                //updateOrgUnitGroup.id = orgUnitGroupID;
+                                updateOptionGroup.options = optionGroupMembers;
+
+                                $.ajax({
+                                    type: "PUT",
+                                    async: false,
+                                    dataType: "json",
+                                    contentType: "application/json",
+                                    data: JSON.stringify(updateOptionGroup),
+                                    url: '../../optionGroups/' + optionGroupID + "?mergeMode=REPLACE",
+
+                                    success: function (response) {
+                                        console.log(  " optionGroup Member length -- " + optionGroupMembers.length + " update done response: " + JSON.stringify(response) );
+                                    },
+                                    error: function (response) {
+                                        console.log(  " optionGroup Member" + optionGroupMembers.length + " error response: " + JSON.stringify(response ));
+                                    },
+                                    warning: function (response) {
+                                        console.log( " optionGroup Member" + optionGroupMembers.length  + "Warning response : " +  JSON.stringify(response ) );
+                                    }
+
+                                });
+                            },
+                            error: function (optionGroupResponse) {
+                                console.log(  " -- Error!: " +  JSON.stringify( optionGroupResponse ) );
+                            },
+                            warning: function (optionGroupResponse) {
+                                console.log(  " -- Error!: " +  JSON.stringify( optionGroupResponse ) );
+                            }
+                        });
+                    }
+
 
                     // categoryOption post
                     else if( sheetName === 'categoryOptionsPost' ){
