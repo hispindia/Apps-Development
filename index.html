@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <title>Routine Immunization</title>
     <style>
         table {
             border-collapse: collapse;
         }
 
-        @page {
-            size: A4 portrait;
-            margin: 10;
-        }
-
-
         @media print {
-            * {
-                font-size: 6px;
+            *{
+                font-size: 10px;
             }
+
+            @page {
+                size: A4 portrait;
+                margin: 10mm;
+            }
+
 
             td,
             th {
@@ -27,628 +28,663 @@
                 print-color-adjust: exact;
             }
 
+            .page {
+                page-break-after: always;
+            }
+
+            /* 
             #page {
                 position: relative;
                 height: 100vh;
                 width: 100vw;
-            }
+            } */
 
 
-            .normal {
+            /* .normal {
                 height: 50vh;
-            }
+            } */
 
-            .rotated {
+            /* .rotated {
                 position: absolute;
                 bottom: 10px;
                 left: 260px;
                 transform: rotate(90deg);
 
-            }
+            } */
         }
     </style>
 </head>
+
 <body>
-    <div class="page" id="page">
-        <div class="normal">
-            <table width="100%">
-                <thead>
+
+    <div style="width: 40%; margin-left:30%;">
+        <table class="table table-striped table-bordered">
+            <tr>
+                <td style="font-size: 15px;padding-top: 15px;">
+                    Identity:
+                </td>
+                <td style="width: 60%;">
+                    <input type="text" class="form-control" id="teiId">
+                </td>
+            </tr>
+            <tr>
+                <td><button onClick="getData()" class="btn btn-primary" id="tap">Submit</button></td>
+                <td style="text-align: right;">
+                    <img src="https://img.icons8.com/color/35/000000/pdf.png" onmouseover="this.style.cursor='pointer'"
+                        onclick="printContent()" alt="xlsx" style="cursor: pointer;">
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="content" style="margin:10px">
+        <div class="page">
+            <div class="normal">
+                <table width="100%">
+                    <thead>
+                        <tr>
+                            <td colspan="14" style="text-align: center;">
+                                ပုံမှန်ကာကွယ်ဆေးထိုး၊ ဆေးတိုက်ခြင်းနှင့် ပုံမှန်ကာကွယ်ဆေးထိုး၊ ဆေးတိုက်ရန် <br />
+                                အသင့်တော်ဆုံးအသက်အရွယ်တွင် မထိုး၊ မတိုက်လိုက်ရသောကလေးများအတွက်လမ်းညွှန
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="border: 1px solid #ccc;"> ကာကွယ်ဆေး </td>
+                            <td style="border: 1px solid #ccc;"> မွေးစ<span style="color:#ed1e26;">*</span> </td>
+                            <td style="border: 1px solid #ccc;"> ၂-လ </td>
+                            <td style="border: 1px solid #ccc;"> ၄-လ </td>
+                            <td style="border: 1px solid #ccc;"> ၆-လ </td>
+                            <td style="border: 1px solid #ccc;"> ၉-လ </td>
+                            <td style="border: 1px solid #ccc;"> ၁-နှစ် </td>
+                            <td style="border: 1px solid #ccc;"> ၁-နှစ်ခွဲ </td>
+                            <td style="border: 1px solid #ccc;"> ၂-နှစ် </td>
+                            <td style="border: 1px solid #ccc;"> ၃-နှစ် </td>
+                            <td style="border: 1px solid #ccc;"> ၅-နှစ် </td>
+                            <td style="border: 1px solid #ccc;"> ၇-နှစ် </td>
+                            <td style="border: 1px solid #ccc;"> ၉-နှစ </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="2"> ဘီစီဂ<span style="color:#ed1e26">**</span> </td>
+                            <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"> အသည်းရောင်အသားဝါ (ဘီ) </td>
+                            <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ccc;"> ပြင်းထန်ဝမ်းပျက်ဝမ်းလျှော (ရိုတာ) </td>
+                            <td style="border: 1px solid #ccc;"> ပထမအကြိမ် </td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ccc;"> ပြင်းထန်ဝမ်းပျက်ဝမ်းလျှော (ရိုတာ) </td>
+                            <td style="border: 1px solid #ccc;"> ဒုတိယအကြိမ် </td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ccc;"> ပိုလီယို </td>
+                            <td style="border: 1px solid #ccc;"> ပထမအကြိမ် </td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ccc;"> ပိုလီယို </td>
+                            <td style="border: 1px solid #ccc;"> ဒုတိယအကြိမ် </td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ccc;"> ပိုလီယို </td>
+                            <td style="border: 1px solid #ccc;"> တတိယအကြိမ် </td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ccc;"> ပိုလီယိုကာကွယ်ဆေးထိုးဆေး </td>
+                            <td style="border: 1px solid #ccc;"> ပထမအကြိမ် </td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ccc;"> ပိုလီယိုကာကွယ်ဆေးထိုးဆေး </td>
+                            <td style="border: 1px solid #ccc;"> ဒုတိယအကြိမ် </td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ccc;"> ပြင်းထန်အဆုတ်ရောင် (ပီစီဗီ) </td>
+                            <td style="border: 1px solid #ccc;"> ပထမအကြိမ် </td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ccc;"> ပြင်းထန်အဆုတ်ရောင် (ပီစီဗီ) </td>
+                            <td style="border: 1px solid #ccc;"> ဒုတိယအကြိမ် </td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ccc;"> ပြင်းထန်အဆုတ်ရောင် (ပီစီဗီ) </td>
+                            <td style="border: 1px solid #ccc;"> တတိယအကြိမ် </td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ccc;"> ဆုံဆို့-ကြက်ညှာ-မေးခိုင်-အသည်းရောင်အသားဝါ (ဘီ)- <br />
+                                ဦးနှောက်အမြှေးရောင် (ငါးမျိုးစပ်ကာကွယ်ဆေး) </td>
+                            <td style="border: 1px solid #ccc;"> ပထမအကြိမ် </td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ccc;"> ဆုံဆို့-ကြက်ညှာ-မေးခိုင်-အသည်းရောင်အသားဝါ (ဘီ)- <br />
+                                ဦးနှောက်အမြှေးရောင် (ငါးမျိုးစပ်ကာကွယ်ဆေး) </td>
+                            <td style="border: 1px solid #ccc;"> ဒုတိယအကြိမ် </td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ccc;"> ဆုံဆို့-ကြက်ညှာ-မေးခိုင်-အသည်းရောင်အသားဝါ (ဘီ)- <br />
+                                ဦးနှောက်အမြှေးရောင် (ငါးမျိုးစပ်ကာကွယ်ဆေး) </td>
+                            <td style="border: 1px solid #ccc;"> တတိယအကြိမ် </td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ccc;"> ဆုံဆို့-ကြက်ညှာ-မေးခိုင်-အသည်းရောင်အသားဝါ (ဘီ)- <br />
+                                ဦးနှောက်အမြှေးရောင် (ငါးမျိုးစပ်ကာကွယ်ဆေး) </td>
+                            <td style="border: 1px solid #ccc;"> ပထမထပ်ဆောင်း </td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">ဂျပန်ဦးနှောက်ရောင်</td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ccc;"> ဝက်သက်-ဂျိုက်သိုး </td>
+                            <td style="border: 1px solid #ccc;"> ပထမအကြိမ် </td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ccc;"> ဝက်သက်-ဂျိုက်သို </td>
+                            <td style="border: 1px solid #ccc;"> ဒုတိယအကြိမ် </td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ccc;"> ဆုံဆို့-မေးခိုင် </td>
+                            <td style="border: 1px solid #ccc;"> ဒုတိယထပ်ဆောင်း </td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ccc;"> သားအိမ်ခေါင်းကင်ဆာရောဂါကာကွယ်ဆေး </td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc;"></td>
+                            <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="14"> <span style="color:#ed1e26">*</span>မွေးဖွားသည်မှ (၂၄)နာရီအတွင်းထိုးရန်။
+                                အကယ်၍
+                                မထိုးနိုင်ပါက
+                                (၇)ရက်အတွင်းထိုးပေးနိုင်ပါသည်။ <span style="color:#ed1e26">**</span>ဘီစီဂျီကာကွယ်ဆေးကို
+                                မွေးစတွင်မထိုးနှံနိုင်ပါက
+                                အသက်(၂)လမတိုင်မီတွင်လည်းကောင်း၊ အသက် (၂)လတွင်
+                                အခြားကာကွယ်ဆေးများနှင့်အတူလည်းကောင်း ထိုးနှံရပါမည်။
+                                <span style="color:#254aa5;">တစ်ကြိမ်နှင့်တစ်ကြိမ်ကြားတွင် အနည်းဆုံး
+                                    (၂၈)ရက် ခြားရပါမည်။ အပိုဆောင်းကာကွယ်ဆေးထိုး၊ ဆေးတိုက်ခြင်းကို ပုံမှန်ကာကွယ်ဆေးထိုး၊
+                                    ဆေးတိုက်ခြင်းတွင် ထည့်သွင်းရေတွက်ခြင်း မပြုရပါ။ ကလေးငယ်များအား
+                                    ဒုတိယအကြိမ်ကာကွယ်ဆေးထိုးစဉ်တွင်
+                                    ပိုလီယိုအစက်ချဆေးအပြင် ပိုလီယိုထိုးဆေးကိုပါထိုးနှံပေးရန် လိုအပ်ပါသည်။
+                                </span>
+                                <br />
+                                <div style="display: flex;align-items: center;">
+                                    <div
+                                        style="height:25px;width:250px;background-color: #89c947;display: inline-block;margin-right: 5px;">
+                                    </div>ကာကွယ်ဆေးထိုး၊ ဆေးတိုက်ရန် အသင့်တော်ဆုံးအသက်အရွယ် ဖြစ်ပါသည်။
+                                </div>
+                                <div style="display: flex;align-items: center;">
+                                    <div
+                                        style="height:25px;width:250px;background-color: #fef49f;display: inline-block;margin-right: 5px;">
+                                    </div>အသင့်တော်ဆုံးအချိန်တွင် မထိုး၊ မတိုက်လိုက်ရပါက ဤအသက်အရွယ်တွင် ကာကွယ်ဆေးထိုး၊
+                                    ဆေးတိုက်ပေးနိုင်ပါသည်။
+                                </div>
+                                <div style="display: flex;align-items: center;">
+                                    <div
+                                        style="height:25px;width:250px;background-color: #e2e2e3;display: inline-block;margin-right: 5px;">
+                                    </div>ဤအသက်အရွယ်တွင် ကာကွယ်ဆေးထိုး၊ တိုက်ရန် မလိုအပ်တော့ပါ။
+                                </div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="page">
+            <div class="rotated">
+                <div style="text-align: right;width:100%">
+                    <p>ကာကွယ်ဆေးထိုးမှတ်ပုံတင်အမှတ်</p>
+                </div>
+                <div style="text-align: center;margin:20px">
+                    <img src="./moh_logo.png" height="200" width="300" />
+                    <p style="font-size:16px">ကျန်းမာရေးဝန်ကြီးဌာန</p>
+                    <h1 style="margin: 10px 0;font-size:30px;"> ကာကွယ်ဆေးထိုး မှတ်တမ်းကတ် </h1>
+                    <img src="./child.png" height="150" width="150" />
+                </div>
+                <div style="width: 100%;margin:100px 0;display: flex;justify-content: center;">
+                    <table width="70%">
+                        <tr>
+                            <td style="font-size:20px;">အမည်</td>
+                            <td>- ........................</td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:20px;">မွေးနေ့သက္ကရာဇ်</td>
+                            <td>........................</td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:20px;">မိဘအမည်</td>
+                            <td>........................</td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:20px;">နေရပ်လိပ်စာ</td>
+                            <td>........................</td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:20px;">ကျန်းမာရေးဌာနခွဲ/ဌာန</td>
+                            <td>........................</td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:20px;">မြို့နယ်</td>
+                            <td>........................</td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="margin-top:150px">
+                    <h2
+                        style="display:inline-block;margin:0;background-color:#ff2e17;border:1px solid #ff2e17;border-radius: 40px 40px 0 0;padding:0 10px;">
+                        ဤကတ်ပြားသည်</h2>
+                    <h5
+                        style="margin:0;background: #fffbe2;border:1px solid #ff2e17;border-radius: 0 40px 40px 40px;padding:10px;">
+                        သင့်ရင်သွေးငယ်အတွက် အရေးကြီးသော ကျန်းမာရေးမှတ်တမ်းတစ်ခုဖြစ်သဖြင့်
+                        ကျောင်းဝင်ချိန်တွင်ပြသနိုင်ရန်အတွက် မွေးစာရင်းနှင့်အတူ သေချာစွာသိမ်းဆည်းပါ။</h5>
+                    <h5 style="text-align: center;margin: 10px;">(၂ဝ၂၅ ခုနှစ်၊ ဇူလိုင်လ)တွင် ထုတ်ဝေသည်။</h5>
+                </div>
+            </div>
+        </div>
+        <div class="page">
+            <table class="table table-bordered" width="100%">
+                <tbody>
                     <tr>
-                        <td colspan="14" style="text-align: center;">
-                            ပုံမှန်ကာကွယ်ဆေးထိုး၊ ဆေးတိုက်ခြင်းနှင့် ပုံမှန်ကာကွယ်ဆေးထိုး၊ ဆေးတိုက်ရန် <br />
-                            အသင့်တော်ဆုံးအသက်အရွယ်တွင် မထိုး၊ မတိုက်လိုက်ရသောကလေးများအတွက်လမ်းညွှန
+                        <td colspan="6" style="text-align:center">
+                            <span style="color:#4dc6f4">ပုံမှန်ကာကွယ်ဆေးတိုက်၊ ဆေးထိုးပြီး အခြေအနေပြဇယား</span>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2" style="border: 1px solid #ccc;"> ကာကွယ်ဆေး </td>
-                        <td style="border: 1px solid #ccc;"> မွေးစ<span style="color:#ed1e26;">*</span> </td>
-                        <td style="border: 1px solid #ccc;"> ၂-လ </td>
-                        <td style="border: 1px solid #ccc;"> ၄-လ </td>
-                        <td style="border: 1px solid #ccc;"> ၆-လ </td>
-                        <td style="border: 1px solid #ccc;"> ၉-လ </td>
-                        <td style="border: 1px solid #ccc;"> ၁-နှစ် </td>
-                        <td style="border: 1px solid #ccc;"> ၁-နှစ်ခွဲ </td>
-                        <td style="border: 1px solid #ccc;"> ၂-နှစ် </td>
-                        <td style="border: 1px solid #ccc;"> ၃-နှစ် </td>
-                        <td style="border: 1px solid #ccc;"> ၅-နှစ် </td>
-                        <td style="border: 1px solid #ccc;"> ၇-နှစ် </td>
-                        <td style="border: 1px solid #ccc;"> ၉-နှစ </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td colspan="2"> ဘီစီဂ<span style="color:#ed1e26">**</span> </td>
-                        <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                        <td style="border: 1px solid #ccc; background-color: #dbf4fd;font-weight: bold;"> အသက် </td>
+                        <td style="border: 1px solid #ccc; background-color: #dbf4fd;font-weight: bold"> ကာကွယ်ဆေး </td>
+                        <td style="border: 1px solid #ccc; background-color: #dbf4fd;font-weight: bold"> အကြိမ် </td>
+                        <td style="border: 1px solid #ccc; background-color: #dbf4fd;font-weight: bold"> ဆေးထိုးရန်ရက်
+                        </td>
+                        <td style="border: 1px solid #ccc; background-color: #dbf4fd;font-weight: bold"> ဆေးထိုးသည့်ရက်
+                        </td>
+                        <td style="border: 1px solid #ccc; background-color: #dbf4fd;font-weight: bold"> မှတ်ချက် </td>
                     </tr>
                     <tr>
-                        <td colspan="2"> အသည်းရောင်အသားဝါ (ဘီ) </td>
-                        <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                        <td rowspan="2"> မွေးစ </td>
+                        <td style="border: 1px solid #ccc;"> ဘီစီဂျီ </td>
+                        <td style="border: 1px solid #ccc;"> တစ်ကြိမ် </td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ccc;"> အသည်းရောင်အသားဝါ (ဘီ) </td>
+                        <td style="border: 1px solid #ccc;"> တစ်ကြိမ် </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="5"> (၂) လ </td>
+                        <td style="border: 1px solid #ccc;"> ဘီစီဂျီ </td>
+                        <td style="border: 1px solid #ccc;"> မွေးစတွင် မထိုးနှံခဲ့ပါက </td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ccc;"> ပိုလီယို </td>
+                        <td style="border: 1px solid #ccc;"> ပထမအကြိမ် </td>
                     </tr>
                     <tr>
                         <td style="border: 1px solid #ccc;"> ပြင်းထန်ဝမ်းပျက်ဝမ်းလျှော (ရိုတာ) </td>
                         <td style="border: 1px solid #ccc;"> ပထမအကြိမ် </td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ccc;"> ပြင်းထန်အဆုတ်ရောင် (ပီစီဗီ) </td>
+                        <td style="border: 1px solid #ccc;"> ပထမအကြိမ် </td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ccc;"> ဆုံဆို့-ကြက်ညှာ-မေးခိုင်-အသည်းရောင် အသားဝါ (ဘီ)- <br />
+                            ဦးနှောက်အမြှေးရောင် (ငါးမျိုးစပ်ကာကွယ်ဆေး) </td>
+                        <td style="border: 1px solid #ccc;"> ပထမအကြိမ် </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="5"> (၄) လ </td>
+                        <td style="border: 1px solid #ccc;"> ပိုလီယို </td>
+                        <td style="border: 1px solid #ccc;"> ဒုတိယအကြိမ် </td>
                     </tr>
                     <tr>
                         <td style="border: 1px solid #ccc;"> ပြင်းထန်ဝမ်းပျက်ဝမ်းလျှော (ရိုတာ) </td>
                         <td style="border: 1px solid #ccc;"> ဒုတိယအကြိမ် </td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid #ccc;"> ပိုလီယို </td>
-                        <td style="border: 1px solid #ccc;"> ပထမအကြိမ် </td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid #ccc;"> ပိုလီယို </td>
-                        <td style="border: 1px solid #ccc;"> ဒုတိယအကြိမ် </td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid #ccc;"> ပိုလီယို </td>
-                        <td style="border: 1px solid #ccc;"> တတိယအကြိမ် </td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
                     </tr>
                     <tr>
                         <td style="border: 1px solid #ccc;"> ပိုလီယိုကာကွယ်ဆေးထိုးဆေး </td>
                         <td style="border: 1px solid #ccc;"> ပထမအကြိမ် </td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
                     </tr>
                     <tr>
+                        <td style="border: 1px solid #ccc;"> ပြင်းထန်အဆုတ်ရောင် (ပီစီဗီ) </td>
+                        <td style="border: 1px solid #ccc;"> ဒုတိယအကြိမ် </td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ccc;"> ဆုံဆို့-ကြက်ညှာ-မေးခိုင်-အသည်းရောင် အသားဝါ (ဘီ)- <br />
+                            ဦးနှောက်အမြှေးရောင် (ငါးမျိုးစပ်ကာကွယ်ဆေး) </td>
+                        <td style="border: 1px solid #ccc;"> ဒုတိယအကြိမ် </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3"> (၉) လ </td>
                         <td style="border: 1px solid #ccc;"> ပိုလီယိုကာကွယ်ဆေးထိုးဆေး </td>
                         <td style="border: 1px solid #ccc;"> ဒုတိယအကြိမ် </td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid #ccc;"> ပြင်းထန်အဆုတ်ရောင် (ပီစီဗီ) </td>
-                        <td style="border: 1px solid #ccc;"> ပထမအကြိမ် </td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid #ccc;"> ပြင်းထန်အဆုတ်ရောင် (ပီစီဗီ) </td>
-                        <td style="border: 1px solid #ccc;"> ဒုတိယအကြိမ် </td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid #ccc;"> ပြင်းထန်အဆုတ်ရောင် (ပီစီဗီ) </td>
-                        <td style="border: 1px solid #ccc;"> တတိယအကြိမ် </td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid #ccc;"> ဆုံဆို့-ကြက်ညှာ-မေးခိုင်-အသည်းရောင်အသားဝါ (ဘီ)- <br />
-                            ဦးနှောက်အမြှေးရောင် (ငါးမျိုးစပ်ကာကွယ်ဆေး) </td>
-                        <td style="border: 1px solid #ccc;"> ပထမအကြိမ် </td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid #ccc;"> ဆုံဆို့-ကြက်ညှာ-မေးခိုင်-အသည်းရောင်အသားဝါ (ဘီ)- <br />
-                            ဦးနှောက်အမြှေးရောင် (ငါးမျိုးစပ်ကာကွယ်ဆေး) </td>
-                        <td style="border: 1px solid #ccc;"> ဒုတိယအကြိမ် </td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid #ccc;"> ဆုံဆို့-ကြက်ညှာ-မေးခိုင်-အသည်းရောင်အသားဝါ (ဘီ)- <br />
-                            ဦးနှောက်အမြှေးရောင် (ငါးမျိုးစပ်ကာကွယ်ဆေး) </td>
-                        <td style="border: 1px solid #ccc;"> တတိယအကြိမ် </td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid #ccc;"> ဆုံဆို့-ကြက်ညှာ-မေးခိုင်-အသည်းရောင်အသားဝါ (ဘီ)- <br />
-                            ဦးနှောက်အမြှေးရောင် (ငါးမျိုးစပ်ကာကွယ်ဆေး) </td>
-                        <td style="border: 1px solid #ccc;"> ပထမထပ်ဆောင်း </td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">ဂျပန်ဦးနှောက်ရောင်</td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
                     </tr>
                     <tr>
                         <td style="border: 1px solid #ccc;"> ဝက်သက်-ဂျိုက်သိုး </td>
                         <td style="border: 1px solid #ccc;"> ပထမအကြိမ် </td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
                     </tr>
                     <tr>
-                        <td style="border: 1px solid #ccc;"> ဝက်သက်-ဂျိုက်သို </td>
+                        <td style="border: 1px solid #ccc;"> ဂျပန်ဦးနှောက်ရောင် </td>
+                        <td style="border: 1px solid #ccc;"> တစ်ကြိမ် </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3"> (၆) လ </td>
+                        <td style="border: 1px solid #ccc;"> ပိုလီယို </td>
+                        <td style="border: 1px solid #ccc;"> တတိယအကြိမ် </td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ccc;">ပြင်းထန်အဆုတ်ရောင် (ပီစီဗီ)</td>
+                        <td style="border: 1px solid #ccc;">တတိယအကြိမ်</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ccc;">ဆုံဆို့-ကြက်ညှာ-မေးခိုင်-အသည်းရောင် အသားဝါ (ဘီ)- <br />
+                            ဦးနှောက်အမြှေးရောင် (ငါးမျိုးစပ်ကာကွယ်ဆေး) </td>
+                        <td style="border: 1px solid #ccc;">တတိယအကြိမ</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2"> (၁) နှစ်ခွဲ </td>
+                        <td style="border: 1px solid #ccc;"> ဝက်သက်-ဂျိုက်သိုး </td>
                         <td style="border: 1px solid #ccc;"> ဒုတိယအကြိမ် </td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
                     </tr>
                     <tr>
+                        <td style="border: 1px solid #ccc;"> ဆုံဆို့-ကြက်ညှာ-မေးခိုင်-အသည်းရောင် အသားဝါ (ဘီ)- <br />
+                            ဦးနှောက်အမြှေးရောင် (ငါးမျိုးစပ်ကာကွယ်ဆေး) </td>
+                        <td style="border: 1px solid #ccc;"> ပထမထပ်ဆောင်း </td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ccc;"> (၅) နှစ် </td>
                         <td style="border: 1px solid #ccc;"> ဆုံဆို့-မေးခိုင် </td>
                         <td style="border: 1px solid #ccc;"> ဒုတိယထပ်ဆောင်း </td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #fef49f;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #e2e2e3;"></td>
                     </tr>
                     <tr>
+                        <td style="border: 1px solid #ccc;"> (၉) နှစ် </td>
                         <td style="border: 1px solid #ccc;"> သားအိမ်ခေါင်းကင်ဆာရောဂါကာကွယ်ဆေး </td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc;"></td>
-                        <td style="border: 1px solid #ccc; background-color: #89c947;"></td>
+                        <td style="border: 1px solid #ccc;"> တစ်ကြိမ </td>
                     </tr>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="14"> <span style="color:#ed1e26">*</span>မွေးဖွားသည်မှ (၂၄)နာရီအတွင်းထိုးရန်။ အကယ်၍
-                            မထိုးနိုင်ပါက
-                            (၇)ရက်အတွင်းထိုးပေးနိုင်ပါသည်။ <span style="color:#ed1e26">**</span>ဘီစီဂျီကာကွယ်ဆေးကို
-                            မွေးစတွင်မထိုးနှံနိုင်ပါက
-                            အသက်(၂)လမတိုင်မီတွင်လည်းကောင်း၊ အသက် (၂)လတွင်
-                            အခြားကာကွယ်ဆေးများနှင့်အတူလည်းကောင်း ထိုးနှံရပါမည်။
-                            <span style="color:#254aa5;">တစ်ကြိမ်နှင့်တစ်ကြိမ်ကြားတွင် အနည်းဆုံး
-                                (၂၈)ရက် ခြားရပါမည်။ အပိုဆောင်းကာကွယ်ဆေးထိုး၊ ဆေးတိုက်ခြင်းကို ပုံမှန်ကာကွယ်ဆေးထိုး၊
-                                ဆေးတိုက်ခြင်းတွင် ထည့်သွင်းရေတွက်ခြင်း မပြုရပါ။ ကလေးငယ်များအား
-                                ဒုတိယအကြိမ်ကာကွယ်ဆေးထိုးစဉ်တွင်
-                                ပိုလီယိုအစက်ချဆေးအပြင် ပိုလီယိုထိုးဆေးကိုပါထိုးနှံပေးရန် လိုအပ်ပါသည်။
+                        <td colspan="6">
+                            <span style="color:#ed1e26">အထက်တွင်ဖော်ပြထားသော ကာကွယ်ဆေးအားလုံးကို
+                                သတ်မှတ်ထားသောအကြိမ်နှင့်
+                                သတ်မှတ်ထားသောအသက်အရွယ်တွင် ဆေးထိုး၊ ဆေးတိုက်ပေးနိုင်မှသာလျှင် ကလေးငယ်တို့ကို
+                                ပြင်းထန်တီဘီရောဂါ၊
+                                ဆုံဆို့နာရောဂါ၊
+                                ကြက်ညှာချောင်းဆိုးရောဂါ၊ မေးခိုင်ရောဂါ၊ အသည်းရောင်အသားဝါ(ဘီ)ရောဂါ၊
+                                ဦးနှောက်အမြှေးရောင်ရောဂါ၊
+                                ပြင်းထန်အဆုတ်ရောင်ရောဂါ၊ ပိုလီယိုအကြောသေရောဂါ၊ ပြင်းထန်ဝမ်းပျက်ဝမ်းလျှောရောဂါ၊
+                                ဂျပန်ဦးနှောက်ရောင်ရောဂါ၊
+                                ဝက်သက်ရောဂါ၊ ဂျိုက်သိုးရောဂါနှင့် သားအိမ်ခေါင်းကင်ဆာရောဂါတို့မှ
+                                ကာကွယ်ပေးနိုင်မည်ဖြစ်ပါသည်။
                             </span>
-                            <br />
-                            <div style="display: flex;align-items: center;">
-                                <div
-                                    style="height:25px;width:250px;background-color: #89c947;display: inline-block;margin-right: 5px;">
-                                </div>ကာကွယ်ဆေးထိုး၊ ဆေးတိုက်ရန် အသင့်တော်ဆုံးအသက်အရွယ် ဖြစ်ပါသည်။
-                            </div>
-                            <div style="display: flex;align-items: center;">
-                                <div
-                                    style="height:25px;width:250px;background-color: #fef49f;display: inline-block;margin-right: 5px;">
-                                </div>အသင့်တော်ဆုံးအချိန်တွင် မထိုး၊ မတိုက်လိုက်ရပါက ဤအသက်အရွယ်တွင် ကာကွယ်ဆေးထိုး၊
-                                ဆေးတိုက်ပေးနိုင်ပါသည်။
-                            </div>
-                            <div style="display: flex;align-items: center;">
-                                <div
-                                    style="height:25px;width:250px;background-color: #e2e2e3;display: inline-block;margin-right: 5px;">
-                                </div>ဤအသက်အရွယ်တွင် ကာကွယ်ဆေးထိုး၊ တိုက်ရန် မလိုအပ်တော့ပါ။
-                            </div>
                         </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6"><span style="color:#ed1e26">*</span>မွေးဖွားသည်မှ (၂၄)နာရီအတွင်းထိုးရန်။ အကယ်၍
+                            မထိုးနိုင်ပါက
+                            (၇)ရက်အတွင်းထိုးနှံနိုင်ပါသည်။ </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6"><span style="color:#ed1e26">**</span>ဘီစီဂျီကာကွယ်ဆေးကို
+                            မွေးစတွင်မထိုးနှံနိုင်ပါက
+                            အသက်(၂)လမတိုင်မီတွင်လည်းကောင်း၊ အသက်
+                            (၂)လတွင် အခြားကာကွယ်ဆေးများနှင့်အတူလည်းကောင်း ထိုးနှံရပါမည်။</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" style="text-align: center;">(အုပ်ထိန်းသူကို ပေးရန်)</td>
                     </tr>
                 </tfoot>
             </table>
         </div>
-        <div class="rotated">
-            <div style="text-align: right;width:100%">
-                <p>ကာကွယ်ဆေးထိုးမှတ်ပုံတင်အမှတ်</p>
-            </div>
-            <div style="text-align: center;margin:20px">
-                <img src="./moh_logo.png" height="200" width="300" />
-                <p style="font-size:16px">ကျန်းမာရေးဝန်ကြီးဌာန</p>
-                <h1 style="margin: 10px 0;font-size:30px;"> ကာကွယ်ဆေးထိုး မှတ်တမ်းကတ် </h1>
-                <img src="./child.png" height="150" width="150" />
-            </div>
-            <div style="width: 100%;margin:100px 0;">
-
-                <table width="70%" style="font-size:20px;">
-                    <tr>
-                        <td>အမည်</td>
-                        <td>- ........................</td>
-                    </tr>
-                    <tr>
-                        <td>မွေးနေ့သက္ကရာဇ်</td>
-                        <td>........................</td>
-                    </tr>
-                    <tr>
-                        <td>မိဘအမည်</td>
-                        <td>........................</td>
-                    </tr>
-                    <tr>
-                        <td>နေရပ်လိပ်စာ</td>
-                        <td>........................</td>
-                    </tr>
-                    <tr>
-                        <td>ကျန်းမာရေးဌာနခွဲ/ဌာန</td>
-                        <td>........................</td>
-                    </tr>
-                    <tr>
-                        <td>မြို့နယ်</td>
-                        <td>........................</td>
-                    </tr>
-                </table>
-            </div>
-            <div style="font-size: 24px;margin-top:150px">
-                <h2
-                    style="display:inline-block;margin:0;background-color:#ff2e17;border:1px solid #ff2e17;border-radius: 40px 40px 0 0;padding:0 10px;">
-                    ဤကတ်ပြားသည်</h2>
-                <h5
-                    style="margin:0;background: #fffbe2;border:1px solid #ff2e17;border-radius: 0 40px 40px 40px;padding:10px;">
-                    သင့်ရင်သွေးငယ်အတွက် အရေးကြီးသော ကျန်းမာရေးမှတ်တမ်းတစ်ခုဖြစ်သဖြင့်
-                    ကျောင်းဝင်ချိန်တွင်ပြသနိုင်ရန်အတွက် မွေးစာရင်းနှင့်အတူ သေချာစွာသိမ်းဆည်းပါ။</h5>
-                <h5 style="text-align: center;margin: 10px;">(၂ဝ၂၅ ခုနှစ်၊ ဇူလိုင်လ)တွင် ထုတ်ဝေသည်။</h5>
-            </div>
-        </div>
-    </div>
-    <div class="page" sid="second-page">
-        <table class="table table-bordered" width="100%">
-            <tbody>
-                <tr>
-                    <td colspan="6" style="text-align:center">
-                        <span style="color:#4dc6f4">ပုံမှန်ကာကွယ်ဆေးတိုက်၊ ဆေးထိုးပြီး အခြေအနေပြဇယား</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="border: 1px solid #ccc; background-color: #dbf4fd;font-weight: bold;"> အသက် </td>
-                    <td style="border: 1px solid #ccc; background-color: #dbf4fd;font-weight: bold"> ကာကွယ်ဆေး </td>
-                    <td style="border: 1px solid #ccc; background-color: #dbf4fd;font-weight: bold"> အကြိမ် </td>
-                    <td style="border: 1px solid #ccc; background-color: #dbf4fd;font-weight: bold"> ဆေးထိုးရန်ရက် </td>
-                    <td style="border: 1px solid #ccc; background-color: #dbf4fd;font-weight: bold"> ဆေးထိုးသည့်ရက်
-                    </td>
-                    <td style="border: 1px solid #ccc; background-color: #dbf4fd;font-weight: bold"> မှတ်ချက် </td>
-                </tr>
-                <tr>
-                    <td rowspan="2"> မွေးစ </td>
-                    <td style="border: 1px solid #ccc;"> ဘီစီဂျီ </td>
-                    <td style="border: 1px solid #ccc;"> တစ်ကြိမ် </td>
-                </tr>
-                <tr>
-                    <td style="border: 1px solid #ccc;"> အသည်းရောင်အသားဝါ (ဘီ) </td>
-                    <td style="border: 1px solid #ccc;"> တစ်ကြိမ် </td>
-                </tr>
-                <tr>
-                    <td rowspan="5"> (၂) လ </td>
-                    <td style="border: 1px solid #ccc;"> ဘီစီဂျီ </td>
-                    <td style="border: 1px solid #ccc;"> မွေးစတွင် မထိုးနှံခဲ့ပါက </td>
-                </tr>
-                <tr>
-                    <td style="border: 1px solid #ccc;"> ပိုလီယို </td>
-                    <td style="border: 1px solid #ccc;"> ပထမအကြိမ် </td>
-                </tr>
-                <tr>
-                    <td style="border: 1px solid #ccc;"> ပြင်းထန်ဝမ်းပျက်ဝမ်းလျှော (ရိုတာ) </td>
-                    <td style="border: 1px solid #ccc;"> ပထမအကြိမ် </td>
-                </tr>
-                <tr>
-                    <td style="border: 1px solid #ccc;"> ပြင်းထန်အဆုတ်ရောင် (ပီစီဗီ) </td>
-                    <td style="border: 1px solid #ccc;"> ပထမအကြိမ် </td>
-                </tr>
-                <tr>
-                    <td style="border: 1px solid #ccc;"> ဆုံဆို့-ကြက်ညှာ-မေးခိုင်-အသည်းရောင် အသားဝါ (ဘီ)- <br />
-                        ဦးနှောက်အမြှေးရောင် (ငါးမျိုးစပ်ကာကွယ်ဆေး) </td>
-                    <td style="border: 1px solid #ccc;"> ပထမအကြိမ် </td>
-                </tr>
-                <tr>
-                    <td rowspan="5"> (၄) လ </td>
-                    <td style="border: 1px solid #ccc;"> ပိုလီယို </td>
-                    <td style="border: 1px solid #ccc;"> ဒုတိယအကြိမ် </td>
-                </tr>
-                <tr>
-                    <td style="border: 1px solid #ccc;"> ပြင်းထန်ဝမ်းပျက်ဝမ်းလျှော (ရိုတာ) </td>
-                    <td style="border: 1px solid #ccc;"> ဒုတိယအကြိမ် </td>
-                </tr>
-                <tr>
-                    <td style="border: 1px solid #ccc;"> ပိုလီယိုကာကွယ်ဆေးထိုးဆေး </td>
-                    <td style="border: 1px solid #ccc;"> ပထမအကြိမ် </td>
-                </tr>
-                <tr>
-                    <td style="border: 1px solid #ccc;"> ပြင်းထန်အဆုတ်ရောင် (ပီစီဗီ) </td>
-                    <td style="border: 1px solid #ccc;"> ဒုတိယအကြိမ် </td>
-                </tr>
-                <tr>
-                    <td style="border: 1px solid #ccc;"> ဆုံဆို့-ကြက်ညှာ-မေးခိုင်-အသည်းရောင် အသားဝါ (ဘီ)- <br />
-                        ဦးနှောက်အမြှေးရောင် (ငါးမျိုးစပ်ကာကွယ်ဆေး) </td>
-                    <td style="border: 1px solid #ccc;"> ဒုတိယအကြိမ် </td>
-                </tr>
-                <tr>
-                    <td rowspan="3"> (၉) လ </td>
-                    <td style="border: 1px solid #ccc;"> ပိုလီယိုကာကွယ်ဆေးထိုးဆေး </td>
-                    <td style="border: 1px solid #ccc;"> ဒုတိယအကြိမ် </td>
-                </tr>
-                <tr>
-                    <td style="border: 1px solid #ccc;"> ဝက်သက်-ဂျိုက်သိုး </td>
-                    <td style="border: 1px solid #ccc;"> ပထမအကြိမ် </td>
-                </tr>
-                <tr>
-                    <td style="border: 1px solid #ccc;"> ဂျပန်ဦးနှောက်ရောင် </td>
-                    <td style="border: 1px solid #ccc;"> တစ်ကြိမ် </td>
-                </tr>
-                <tr>
-                    <td rowspan="3"> (၆) လ </td>
-                    <td style="border: 1px solid #ccc;"> ပိုလီယို </td>
-                    <td style="border: 1px solid #ccc;"> တတိယအကြိမ် </td>
-                </tr>
-                <tr>
-                    <td style="border: 1px solid #ccc;">ပြင်းထန်အဆုတ်ရောင် (ပီစီဗီ)</td>
-                    <td style="border: 1px solid #ccc;">တတိယအကြိမ်</td>
-                </tr>
-                <tr>
-                    <td style="border: 1px solid #ccc;">ဆုံဆို့-ကြက်ညှာ-မေးခိုင်-အသည်းရောင် အသားဝါ (ဘီ)- <br />
-                        ဦးနှောက်အမြှေးရောင် (ငါးမျိုးစပ်ကာကွယ်ဆေး) </td>
-                    <td style="border: 1px solid #ccc;">တတိယအကြိမ</td>
-                </tr>
-                <tr>
-                    <td rowspan="2"> (၁) နှစ်ခွဲ </td>
-                    <td style="border: 1px solid #ccc;"> ဝက်သက်-ဂျိုက်သိုး </td>
-                    <td style="border: 1px solid #ccc;"> ဒုတိယအကြိမ် </td>
-                </tr>
-                <tr>
-                    <td style="border: 1px solid #ccc;"> ဆုံဆို့-ကြက်ညှာ-မေးခိုင်-အသည်းရောင် အသားဝါ (ဘီ)- <br />
-                        ဦးနှောက်အမြှေးရောင် (ငါးမျိုးစပ်ကာကွယ်ဆေး) </td>
-                    <td style="border: 1px solid #ccc;"> ပထမထပ်ဆောင်း </td>
-                </tr>
-                <tr>
-                    <td style="border: 1px solid #ccc;"> (၅) နှစ် </td>
-                    <td style="border: 1px solid #ccc;"> ဆုံဆို့-မေးခိုင် </td>
-                    <td style="border: 1px solid #ccc;"> ဒုတိယထပ်ဆောင်း </td>
-                </tr>
-                <tr>
-                    <td style="border: 1px solid #ccc;"> (၉) နှစ် </td>
-                    <td style="border: 1px solid #ccc;"> သားအိမ်ခေါင်းကင်ဆာရောဂါကာကွယ်ဆေး </td>
-                    <td style="border: 1px solid #ccc;"> တစ်ကြိမ </td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="6">
-                        <span style="color:#ed1e26">အထက်တွင်ဖော်ပြထားသော ကာကွယ်ဆေးအားလုံးကို သတ်မှတ်ထားသောအကြိမ်နှင့်
-                            သတ်မှတ်ထားသောအသက်အရွယ်တွင် ဆေးထိုး၊ ဆေးတိုက်ပေးနိုင်မှသာလျှင် ကလေးငယ်တို့ကို
-                            ပြင်းထန်တီဘီရောဂါ၊
-                            ဆုံဆို့နာရောဂါ၊
-                            ကြက်ညှာချောင်းဆိုးရောဂါ၊ မေးခိုင်ရောဂါ၊ အသည်းရောင်အသားဝါ(ဘီ)ရောဂါ၊ ဦးနှောက်အမြှေးရောင်ရောဂါ၊
-                            ပြင်းထန်အဆုတ်ရောင်ရောဂါ၊ ပိုလီယိုအကြောသေရောဂါ၊ ပြင်းထန်ဝမ်းပျက်ဝမ်းလျှောရောဂါ၊
-                            ဂျပန်ဦးနှောက်ရောင်ရောဂါ၊
-                            ဝက်သက်ရောဂါ၊ ဂျိုက်သိုးရောဂါနှင့် သားအိမ်ခေါင်းကင်ဆာရောဂါတို့မှ ကာကွယ်ပေးနိုင်မည်ဖြစ်ပါသည်။
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="6"><span style="color:#ed1e26">*</span>မွေးဖွားသည်မှ (၂၄)နာရီအတွင်းထိုးရန်။ အကယ်၍
-                        မထိုးနိုင်ပါက
-                        (၇)ရက်အတွင်းထိုးနှံနိုင်ပါသည်။ </td>
-                </tr>
-                <tr>
-                    <td colspan="6"><span style="color:#ed1e26">**</span>ဘီစီဂျီကာကွယ်ဆေးကို မွေးစတွင်မထိုးနှံနိုင်ပါက
-                        အသက်(၂)လမတိုင်မီတွင်လည်းကောင်း၊ အသက်
-                        (၂)လတွင် အခြားကာကွယ်ဆေးများနှင့်အတူလည်းကောင်း ထိုးနှံရပါမည်။</td>
-                </tr>
-                <tr>
-                    <td colspan="6" style="text-align: center;">(အုပ်ထိန်းသူကို ပေးရန်)</td>
-                </tr>
-            </tfoot>
-        </table>
-        <div>
+        <div class="page">
             <hr style="border:none; border-top:2px dotted #999;">
             <table class="table table-bordered" width="100%">
                 <thead>
