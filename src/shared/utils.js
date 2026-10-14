@@ -43,14 +43,14 @@ export const filterAttrEvents = (tei, startDate, endDate, sample) => {
                 rowList[sampleId][id].forEach((ids) => {
                   if (ids == "Infant1" || ids == "Infant1" || ids == "Infant3")
                     val.push(`${ids}`);
-                  else val.push(`${ev[ids] ? ev[ids] : ""}`);
+                  else val.push(`${ev[ids] ? String(ev[ids]).trim() : ""}`);
                 });
                 values.push(val);
               }
             }
           } else {
             rowList[sampleId].forEach((ids) => {
-              let val = `${ev[ids] ? ev[ids] : ""}`;
+              let val = `${ev[ids] ? String(ev[ids]).trim() : ""}`;
               values.push(val);
             });
           }
